@@ -1,0 +1,20 @@
+.displayHeading {
+  @apply inline-flex items-center;
+}
+
+.rightSide,
+.leftSide {
+  font-size: 12px;
+  font-weight: 400;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+}
+
+.leftSide {
+  @apply bg-neutral-300;
+}
+
+.rightSide {
+  @apply bg-accent-b-200;
+}

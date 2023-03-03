@@ -1,0 +1,12 @@
+.customCheckbox {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+  border: 1px solid #E8E8E8;
+  box-sizing: border-box;
+}
+
+.customCheckbox_checked {
+  @apply content-none before:block before:absolute before:top-[3px] before:left-[7px] before:w-[4px] before:h-[9px] before:border-shades-white before:border-t-0 before:border-r-[2px] before:border-b-[2px] before:border-l-0 before:rotate-45 bg-accent-b-200 !border-accent-b-200;
+}

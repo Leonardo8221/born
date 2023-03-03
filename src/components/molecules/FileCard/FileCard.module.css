@@ -1,0 +1,11 @@
+.bannerVariant {
+  @apply h-full w-full absolute;
+  background: radial-gradient(#ffffff, rgba(71, 68, 68, 0.5));
+
+  border-radius: 4px;
+}
+
+.circleVariant {
+  @apply rounded-full !bg-shades-white absolute w-full h-full;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.04);
+}

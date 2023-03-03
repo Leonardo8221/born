@@ -1,0 +1,126 @@
+.lgProductCard {
+  max-width: 352px;
+  padding: 16px;
+  padding-top: 8px;
+}
+
+.lgProductCardId {
+  @apply text-[12px] leading-[16px];
+  margin-bottom: 8px;
+}
+
+.lgProductCardTitle {
+  @apply text-[18px] leading-[24px];
+  margin: 8px 0;
+}
+
+.lgProductCardColors {
+  margin-bottom: 16px;
+}
+
+.lgProductCardPrices {
+  column-gap: 8px;
+  margin-top: 16px;
+}
+
+.lgProductCardPrice {
+  @apply text-[12px] leading-[16px];
+  min-width: 86px;
+}
+
+.smProductCard {
+  max-width: 160px;
+  padding: 8px;
+  padding-top: 4px;
+}
+
+.smProductCardId {
+  @apply text-[10px] leading-[16px];
+  margin-bottom: 4px;
+}
+
+.smProductCardTitle {
+  @apply text-[10px] leading-[16px];
+  margin: 4px 0;
+}
+
+.smProductCardColors {
+  margin-bottom: 8px;
+}
+
+.smProductCardPrices {
+  column-gap: 6px;
+  margin-top: 8px;
+}
+
+.smProductCardPrice {
+  @apply text-[8px] leading-[16px];
+  min-width: 44px;
+}
+
+/*end of sm*/
+
+.productCardImage {
+  width: 100%;
+  height: auto;
+}
+
+.productCardImageWrapper {
+  position: relative;
+}
+
+.productCardTags {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.productCardId {
+  @apply text-shades-black font-light;
+}
+
+.productCardTitle {
+  @apply text-shades-black font-normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.productCardColors {
+  display: flex;
+  column-gap: 8px;
+}
+
+.productCardColor {
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 2px solid #ffffff;
+}
+
+.productCardCheckbox {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.productCardPrices {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.productCardPrice {
+  @apply font-normal text-shades-black;
+  margin: 0;
+}
+
+.priceLabel {
+  @apply text-neutral-400 text-[8px] leading-[16px] font-normal;
+  letter-spacing: 0.06em;
+  margin: 0;
+  margin-bottom: 4px;
+}
