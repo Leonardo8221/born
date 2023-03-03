@@ -1,12 +1,12 @@
 import { FC } from "react";
 import clsx from "clsx";
 import { fonts } from "@/config/fonts";
-import { TageSizes, TagSize, TagType, TagTypes } from "./utils";
+import { TagSize, TagType } from "./utils";
 
 export interface TagProps {
   label?: string;
-  type?: TagTypes,
-  size?: TageSizes,
+  type?: typeof TagType[keyof typeof TagType],
+  size?: typeof TagSize[keyof typeof TagSize],
   className?: string;
   children?: JSX.Element;
 }

@@ -5,7 +5,8 @@ export const Paragraph = ({
   size,
   color = "",
   fontWeight,
-  uppercase,
+  uppercase = false,
+  className = '',
   children,
   ...props
 }) => {
@@ -16,7 +17,8 @@ export const Paragraph = ({
         color,
         theme.fonts.fontWeights[fontWeight || "regular"],
         theme.fonts.text[size || "base"],
-        uppercase ? "uppercase" : ""
+        uppercase ? "uppercase" : "",
+        className,
       )}
       {...props}
     >

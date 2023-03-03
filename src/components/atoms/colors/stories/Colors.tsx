@@ -58,7 +58,7 @@ export const Colors = () => {
   return (
     <div>
       {colorsArr?.map((color: Color) => (
-        <div className="flex gap-6 mb-11">
+        <div className="flex gap-6 mb-11" key={color}>
           <div className="color--name w-[250px] min-w-[250px]">
             <h3 className="text-[#1C1C1C] text-2xl font-medium m-0 capitalize">
               {getColorName(color)}
@@ -70,7 +70,7 @@ export const Colors = () => {
 
           {filterColorByPrefix(flattenedColors, color)?.map(
             ([colorName, colorValue]: any[]) => (
-              <div className="">
+              <div key={colorValue} className="">
                 <div
                   className="h-[50px] w-[130px] text-xs text-[#1C1C1C] capitalize rounded-[5px] mb-1.5"
                   style={{ background: `${colorValue || ''}` }}

@@ -3,19 +3,16 @@ import clsx from "clsx";
 
 import {
   PillAppearance,
-  PillAppearances,
   PillSize,
-  PillSizes,
   PillType,
-  PillTypes,
 } from "./utils";
 import { fonts } from "../../../config/fonts";
 
 export interface PillProps {
   label?: string;
-  type?: PillTypes,
-  size?: PillSizes,
-  appearance?: PillAppearances,
+  type?: typeof PillType[keyof typeof PillType],
+  size?: typeof PillSize[keyof typeof PillSize],
+  appearance?: typeof PillAppearance[keyof typeof PillAppearance],
   hasIcon?: boolean;
   isSelectable?: boolean;
   children?: JSX.Element;

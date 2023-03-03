@@ -5,6 +5,7 @@ export const Heading = ({
   color = "",
   fontWeight = 'regular',
   size = 'base',
+  className = '',
   children,
   ...props
 }) => {
@@ -14,7 +15,8 @@ export const Heading = ({
         "m-0 tracking-[.06em] block",
         color,
         theme.fonts.fontWeights[fontWeight],
-        theme.fonts.headings[size]
+        theme.fonts.headings[size],
+        className,
       )}
       {...props}
     >

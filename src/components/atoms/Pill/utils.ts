@@ -1,9 +1,3 @@
-export type PillTypes = 'active' | 'inactive';
-
-export type PillAppearances = 'outlined' | 'filled';
-
-export type PillSizes = 'sm' | 'md';
-
 export const PillType = {
   ACTIVE: "active",
   INACTIVE: "inactive",
