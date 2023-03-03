@@ -21,7 +21,7 @@ const Template = (args) => <DropdownMenu {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   avatarSrc:
-    "https://media.istockphoto.com/id/1311467082/photo/head-shot-profile-of-a-young-puppy-beagles-dog-isolated.jpg?b=1&s=170667a&w=0&k=20&c=fKep3SwEMunVucpp7cfyPJ_LPXlRuUG6fOZQEWDSBpg=",
+    "https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
   altText: "dog",
   options: [
     {

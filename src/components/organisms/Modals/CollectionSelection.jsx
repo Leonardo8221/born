@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import ImageText from '../../molecules/ImageText';
-import { Button } from '../../molecules/Button';
-import ProductImage from '../../../assets/images/product-image.png';
-import { ReactComponent as PlusIcon } from '../../../assets/svgs/plus.svg';
-import { fonts } from '../../../config/fonts';
-import Modal from '../../molecules/Modal';
+import ImageText from '@/components/molecules/ImageText';
+import { Button } from '@/components/molecules/Button';
+import Modal from '@/components/molecules/Modal';
+import PlusIcon from '@/assets/svgs/plus.svg';
+import ProductImage from '@/assets/images/product-image.png';
+import { fonts } from '@/config/fonts';
 
 const CollectionSelectionModal = () => {
   const [isOpen, setIsOpen] = useState(false);

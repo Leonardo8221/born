@@ -1,6 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import clsx from "clsx";
+import Image from 'next/image';
 import {
   variantClasses,
   variantImageClasses,
@@ -17,7 +18,7 @@ const ImageText = ({
 }) => {
   return (
     <div className={clsx(variantClasses[variant], 'items-center')}>
-      <img src={imgSrc} alt={altText} className={clsx(variantImageClasses[variant])} />
+      <Image src={imgSrc} alt={altText} className={clsx('object-cover', variantImageClasses[variant])} />
       <div>
         <h3 className={clsx(variantTitleClasses[variant], 'text-shades-black tracking-[0.06em]')}>
           {title}

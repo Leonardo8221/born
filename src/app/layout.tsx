@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import localFont from 'next/font/local';
+import './globals.css';
 
 export const primaryFont = localFont({
   src: [
@@ -31,9 +32,6 @@ export const primaryFont = localFont({
   ],
   variable: '--font-primary'
 });
-
-
-import './globals.css';
 
 export const metadata = {
   title: 'Create Next App',

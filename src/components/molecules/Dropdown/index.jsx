@@ -2,11 +2,12 @@ import {Fragment, useState, useRef, useEffect} from 'react';
 import {Listbox, Transition} from '@headlessui/react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import {theme} from '../../../config/theme';
+import {theme} from '@/config/theme';
+import DropDownDownIcon from '@/assets/svgs/dark/icon-dropdown-down.svg';
+import DropDownUpIcon from '@/assets/svgs/dark/icon-dropdown-up.svg';
+import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
 import styles from './Dropdown.module.css';
-import DropDownDownIcon from '../../../assets/svgs/dark/icon-dropdown-down.svg';
-import DropDownUpIcon from '../../../assets/svgs/dark/icon-dropdown-up.svg';
-import CheckIcon from '../../../assets/svgs/dark/icon-check.svg';
+
 export default function Dropdown({label, onChange, options, isValid}) {
   const [selected, setSelected] = useState (options[0]);
   const [isExpand, setIsExpand] = useState (false);
@@ -60,11 +61,13 @@ export default function Dropdown({label, onChange, options, isValid}) {
                 <span className={styles.name}>{selected.name}</span>
                 <span className="flex items-center">
                   {isValid
-                    ? <img src={CheckIcon} className="mx-3" alt="check" />
-                    : null}
+                    ? <CheckIcon className="mx-3" alt="check" />
+                    : null
+                  }
                   {isExpand
-                    ? <img src={DropDownUpIcon} alt="check" />
-                    : <img src={DropDownDownIcon} alt="dropDown" />}
+                    ? <DropDownUpIcon />
+                    : <DropDownDownIcon />
+                  }
                 </span>
               </Listbox.Button>
               <Transition

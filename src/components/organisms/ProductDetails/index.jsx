@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import Image from 'next/image';
 import { fonts } from '../../../config/fonts';
 import { Button } from '../../molecules/Button';
 import { Icon } from '../../molecules/Icon';
@@ -12,7 +13,7 @@ const ProductDetails = ({ productImages, priceList, description, colors, tags, s
       <div className='h-fit'>
         <div className='flex w-full max-w-[736px] flex-wrap gap-1'>
           {productImages.map(item => (
-            <img src={item} alt="products" className='h-full max-h-[366px] w-[366px] rounded' />
+            <Image src={item} alt="products" className='h-full max-h-[366px] w-[366px] rounded' />
           ))}
           <div className='flex h-full h-[366px] w-full max-w-[366px] m-auto justify-center'>
             <div className='flex h-[304px] w-full max-w-[304px] m-auto bg-neutral-400 items-center justify-center rounded'>

@@ -1,19 +1,23 @@
 import React from 'react';
-import {PropTypes} from 'prop-types';
-const StyledImage = ({children, variant, alt, ...props}) => {
+import { PropTypes } from 'prop-types';
+import Image from 'next/image';
+
+const StyledImage = ({ alt, src, Icon }) => {
+  if (Icon) {
+    return <Icon className="w-5 h-5 ml-3 mr-3" />
+  }
+
   return (
-    <img className="w-5 h-5 ml-3 mr-3" alt={alt} {...props}>
-      {children}
-    </img>
+    <img className="w-5 h-5 ml-3 mr-3" alt={alt} src={src} />
   );
 };
 
-export const SocialBar = ({icons}) => {
+export const SocialBar = ({ icons }) => {
   return (
     <div className="bg-shades-black flex w-44 px-4 m-auto h-[72px] items-center justify-center">
       {icons.map (icon => (
         <a href={icon.link} target="_blank" rel="noreferrer">
-          <StyledImage src={icon.src} alt={`Logo ${icon.name}`} />
+          <StyledImage src={icon.src} alt={`Logo ${icon.name}`} Icon={icon.Icon} />
         </a>
       ))}
     </div>

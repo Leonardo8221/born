@@ -1,6 +1,7 @@
 import React from 'react';
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from 'clsx';
+import Image from 'next/image';
 import { Table } from '../../Table';
 import { DropdownMenu } from '../../../molecules/DropdownMenu';
 import { fonts } from '../../../../config/fonts';
@@ -33,7 +34,7 @@ const BrandTable = ({ brands }) => {
       id: "organzation",
       cell: ({ row }) => (
         <div className='flex items-center gap-x-4 pl-4'>
-          <img
+          <Image
             src={row?.original?.logoUrl}
             alt={`${row?.original?.organization} logo`}
             className="h-12 w-12 rounded-full border border-neutral-200 p-1"

@@ -1,8 +1,8 @@
 import propTypes from "prop-types";
 import clsx from "clsx";
+import Image from "next/image";
+import { fonts } from "@/config/fonts";
 import styles from "./CollectionCard.module.css";
-import { fonts } from "../../../config/fonts";
-import { gradients } from "../../../config/gradients";
 
 const clsVariations = {
   lg: {
@@ -74,7 +74,7 @@ export const CollectionCard = ({
             </div>
           </div>
         )}
-        <img
+        <Image
           src={backgroundImageSrc}
           alt="Collection Card Background"
           className="absolute w-full h-full object-cover z-[0]"
@@ -87,7 +87,7 @@ export const CollectionCard = ({
             "rounded-md bg-neutral-100 relative mt-[66px] border border-neutral-200"
           )}
         >
-          <img
+          <Image
             src={imageSrc}
             alt="Collection Card"
             className="absolute w-full h-full object-contain p-1"

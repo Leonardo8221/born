@@ -1,3 +1,5 @@
+const { fontFamily } = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -50,7 +52,7 @@ module.exports = {
         large: "0px 0px 64px -24px rgba(0, 0, 0, 0.16)",
       },
       fontFamily: {
-        sans: ['var(--font-primary)'],
+        sans: ['var(--font-primary)', 'sans-serif'],
       },
     },
   },

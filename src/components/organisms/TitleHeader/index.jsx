@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import clsx from 'clsx';
 import { Icon } from '../../molecules/Icon';
-import { ReactComponent as Logo } from '../../../assets/svgs/logo.svg';
+import Logo from '../../../assets/svgs/logo.svg';
 import { fonts } from '../../../config/fonts';
 
 const TitleHeader = ({ title, description, icon }) => {

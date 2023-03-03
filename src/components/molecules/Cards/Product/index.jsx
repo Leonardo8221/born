@@ -1,7 +1,8 @@
 import React from "react";
 import clsx from "clsx";
+import Image from "next/image";
 import PropTypes from "prop-types";
-import productImage from "../../../../assets/images/product.png";
+import productImage from "@/assets/images/product.png";
 import { Badge } from "../../Badge";
 import { Checkbox } from "../../Checkbox";
 import styles from "./product.module.css";
@@ -67,7 +68,7 @@ export const ProductCard = ({
       <div className={clsProductCardId}>{id}</div>
       <div>
         <div className={styles.productCardImageWrapper}>
-          <img
+          <Image
             src={productImage}
             alt={title}
             className={styles.productCardImage}

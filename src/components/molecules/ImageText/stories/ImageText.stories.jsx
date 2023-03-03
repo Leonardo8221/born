@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageText from '..';
-import LogoImage from '../../../../assets/images/logo-image.png';
-import ProductImage from '../../../../assets/images/product-image.png'
+import LogoImage from '@/assets/images/logo-image.png';
+import ProductImage from '@/assets/images/product-image.png'
 
 export default {
   title: 'Molecules/ImageText',
