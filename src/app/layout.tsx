@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import localFont from 'next/font/local';
+import AuthContext from "@/components/AuthContext";
 import './globals.css';
 
 export const primaryFont = localFont({
@@ -41,11 +42,13 @@ export const metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={clsx(primaryFont.variable, 'font-sans')}>{children}</body>
+      <AuthContext>
+        <body className={clsx(primaryFont.variable, 'font-sans')}>{children}</body>
+      </AuthContext>
     </html>
-  )
+  );
 }
