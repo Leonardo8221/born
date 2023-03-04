@@ -1,4 +1,4 @@
-import ProductImage from '../../../../../assets/images/products/product.png';
+import ProductImage from '@/assets/images/products/product.png';
 
 export const products = [
   {
