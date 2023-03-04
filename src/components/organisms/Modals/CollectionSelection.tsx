@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import ImageText from '@/components/molecules/ImageText';
 import { Button } from '@/components/molecules/Button';
@@ -29,11 +29,19 @@ const CollectionSelectionModal = () => {
             <div className='flex h-[80px] w-[80px] cursor-pointer items-center justify-center bg-neutral-100 border border-neutral-400 rounded'>
               <PlusIcon />
             </div>
-            <h3 className={clsx(fonts.text.xl, 'text-shades-black tracking-[0.06em]')}>New collection</h3>
+            <h3 className={clsx(fonts.text.xl, 'text-shades-black tracking-[0.06em]')}>
+              New collection
+            </h3>
           </div>
 
-          {collections.map(collection => (
-            <ImageText title={collection.title} imgSrc={collection.url} variant="product" />
+          {collections.map((collection, index) => (
+            <ImageText
+              key={index}
+              title={collection.title}
+              imgSrc={collection.url}
+              altText={`${collection.title} logo`}
+              variant="product"
+            />
           ))}
         </div>
       </Modal>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Button } from '../../molecules/Button';
-import { Icon } from '../../molecules/Icon';
-import Modal from '../../molecules/Modal';
+import { useState } from 'react';
+import { Button } from '@/components/molecules/Button';
+import { Icon } from '@/components/molecules/Icon';
+import Modal from '@/components/molecules/Modal';
 
 const FileUpload = () => {
   const [isOpen, setIsOpen] = useState(false);

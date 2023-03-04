@@ -1,4 +1,4 @@
-import React from 'react';
+import { StoryFn } from '@storybook/react';
 import CollectionSelection from '../CollectionSelection';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: CollectionSelection,
 };
 
-const Template = args => <CollectionSelection {...args} />;
+const Template = () => <CollectionSelection />;
 
-export const Default = Template.bind ({});
+export const Default: StoryFn = Template.bind ({});
 Default.args = {};

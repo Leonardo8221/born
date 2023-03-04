@@ -11,7 +11,7 @@ import {
 export interface ImageTextProps {
   variant: 'brand' | 'product' | 'brand-two';
   title: string;
-  subTitle: string
+  subTitle?: string
   imgSrc: StaticImageData | string;
   altText: string;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { StoryFn } from '@storybook/react';
 import FileUpload from '../FileUpload';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: FileUpload,
 };
 
-const Template = args => <FileUpload {...args} />;
+const Template = () => <FileUpload />;
 
-export const Default = Template.bind ({});
+export const Default: StoryFn = Template.bind ({});
 Default.args = {};

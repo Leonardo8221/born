@@ -1,4 +1,4 @@
-import React from 'react';
+import { StoryFn } from '@storybook/react';
 import Lookbook from '../Lookbook';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: Lookbook,
 };
 
-const Template = args => <Lookbook {...args} />;
+const Template = () => <Lookbook />;
 
-export const Default = Template.bind ({});
+export const Default: StoryFn = Template.bind ({});
 Default.args = {};
