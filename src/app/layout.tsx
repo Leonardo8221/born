@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import AuthContext from "@/components/AuthContext";
 import './globals.css';
 
-const primaryFont = localFont({
+export const primaryFont = localFont({
   src: [
     {
       path: '../assets/fonts/untitled-sans-black.otf',
