@@ -47,7 +47,7 @@ export const Tag: FC<TagProps> = ({
       {...rest}
     >
       {label}
-      {children}
+      {children && children}
     </div>
   );
 };

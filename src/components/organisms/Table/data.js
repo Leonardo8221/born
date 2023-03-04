@@ -13,24 +13,24 @@ export const defaultData = [
   },
 ];
 
-const columnHelper = createColumnHelper();
+const columnHelper: any = createColumnHelper();
 
 export const defaultColumns = [
   columnHelper.accessor("teamMemberName", {
-    cell: (info) => (
+    cell: (info: any) => (
       <div className="text-[16px] leading-[24px] tracking-[.06em] font-normal">
         {info.getValue()}
       </div>
     ),
     header: () => "Team member name",
   }),
-  columnHelper.accessor((row) => row.lastLoggedIn, {
+  columnHelper.accessor((row: any) => row.lastLoggedIn, {
     id: "lastLoggedIn",
-    cell: (info) => <div>{info.getValue()}</div>,
+    cell: (info: any) => <div>{info.getValue()}</div>,
     header: () => <span>Last logged in</span>,
   }),
   columnHelper.accessor("permission", {
     header: () => "Permission",
-    cell: (info) => info.renderValue(),
+    cell: (info: any) => info.renderValue(),
   }),
 ];

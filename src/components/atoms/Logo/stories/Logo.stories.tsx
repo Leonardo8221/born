@@ -11,17 +11,17 @@ export default {
 
 const Template = (args: LogoProps) => <Logo {...args} />;
 
-export const light: StoryFn = Template.bind({});
-light.args = {
+export const Light: StoryFn = Template.bind({});
+Light.args = {
   variant: 'light',
 };
 
-export const dark: StoryFn = Template.bind({});
-dark.args = {
+export const Dark: StoryFn = Template.bind({});
+Dark.args = {
   variant: 'dark',
 };
 
-export const neutral: StoryFn = Template.bind({});
-neutral.args = {
+export const Neutral: StoryFn = Template.bind({});
+Neutral.args = {
   variant: 'neutral',
 };

@@ -20,7 +20,7 @@ const argTypes = {
   },
 };
 
-export const Default: StoryFn = Template.bind({});
+export const Default: StoryFn<TagProps> = Template.bind({});
 
 Default.argTypes = argTypes;
 Default.args = {
@@ -29,7 +29,7 @@ Default.args = {
   type: TagType.DEFAULT,
 };
 
-export const Status: StoryFn = Template.bind({});
+export const Status: StoryFn<TagProps> = Template.bind({});
 
 Status.argTypes = argTypes;
 Status.args = {

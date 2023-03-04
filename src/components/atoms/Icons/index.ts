@@ -51,3 +51,5 @@ export const icons = {
   'icon-logout': IconLogout,
   'icon-info-circle': IconInfoCircle,
 };
+
+export type Icons = keyof typeof icons;
