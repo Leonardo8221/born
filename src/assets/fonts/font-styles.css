@@ -1,43 +1,38 @@
 @font-face {
-  font-family: 'Untitled Sans';
-  src: url('untitled-sans-black.otf') format('opentype');
+  font-family: "Untitled Sans";
+  src: url("untitled-sans-black.otf") format("opentype");
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Untitled Sans';
-  src: url('untitled-sans-bold.otf') format('opentype');
+  font-family: "Untitled Sans";
+  src: url("untitled-sans-bold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Untitled Sans';
-  src: url('untitled-sans-light.otf') format('opentype');
+  font-family: "Untitled Sans";
+  src: url("untitled-sans-light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Untitled Sans';
-  src: url('untitled-sans-regular.otf') format('opentype');
+  font-family: "Untitled Sans";
+  src: url("untitled-sans-regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Untitled Sans';
-  src: url('untitled-sans-medium.otf') format('opentype');
+  font-family: "Untitled Sans";
+  src: url("untitled-sans-medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
-}
-
-html,
-body {
-  font-family: Untitled Sans;
 }

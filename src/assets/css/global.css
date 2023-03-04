@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("../fonts/font-styles.css");
+
+:root {
+  --font-family: "Untitled Sans";
+  --var-background-color: "#D8D8D8";
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--var-background-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    max-width: 720px;
+    padding: 20px 30px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .container {
+    max-width: 960px;
+    padding: 24px 50px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+    padding: 32px 70px;
+  }
+}
