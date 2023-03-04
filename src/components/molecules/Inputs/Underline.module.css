@@ -1,0 +1,107 @@
+.check_icon {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	margin: 10px;
+}
+.form__group {
+	position: relative;
+	width: 414px;
+	height: 40px;
+}
+
+.defaultForm__field {
+	font-family: 'Untitled Sans';
+	width: 100%;
+	border-bottom: 1px solid #d8d8d8;
+	font-size: 18px;
+	@apply text-neutral-700;
+	padding: 8px;
+	background: white;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+	letter-spacing: 0.06em;
+}
+
+.defaultForm__field::placeholder {
+	color: transparent;
+}
+.activeForm__field::placeholder {
+	color: transparent;
+}
+
+.defaultForm__label {
+	position: absolute;
+	top: 0;
+	display: block;
+	font-size: 14px;
+	font-weight: 300;
+	@apply text-neutral-700;
+	font-family: 'Untitled Sans';
+	font-style: normal;
+	line-height: 24px;
+	letter-spacing: 0.06em;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+.defaultForm__field:placeholder-shown ~ .defaultForm__label {
+	font-size: 14px;
+	cursor: text;
+	top: 25px;
+}
+.activeForm__label {
+	position: absolute;
+	top: 0;
+	display: block;
+	font-size: 14px;
+	font-weight: 300;
+	@apply text-shades-black;
+	font-family: 'Untitled Sans';
+	font-style: normal;
+	line-height: 24px;
+	letter-spacing: 0.06em;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.defaultForm__field:focus {
+	font-weight: 400;
+	font-size: 18px;
+	@apply text-shades-black;
+	border-bottom: 2px solid #77d5d3;
+}
+.activeForm__field {
+	font-family: 'Untitled Sans';
+	width: 100%;
+	padding: 8px;
+	background: white;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+	letter-spacing: 0.06em;
+	font-weight: 400;
+	font-size: 18px;
+	@apply text-shades-black;
+	border-bottom: 2px solid #77d5d3;
+}
+
+.defaultForm__field:focus ~ .defaultForm__label {
+	position: absolute;
+	top: 0;
+	display: block;
+	font-size: 14px;
+	@apply text-shades-black;
+	font-weight: 300;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+.defaultForm__field:required,
+.defaultForm__field:invalid {
+	box-shadow: none;
+}
