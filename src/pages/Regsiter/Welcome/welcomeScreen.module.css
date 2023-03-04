@@ -1,6 +1,0 @@
-.welcome_style {
-  @apply relative flex min-h-screen items-center justify-center content-none before:absolute before:bg-[rgba(30,30,30,0.48)] before:h-full before:w-full before:left-0 before:right-0 before:top-0 before:bottom-0 before:z-0;
-  background: url("../../../../assets/images/welcome-screen/who-we-are.png")
-    no-repeat center;
-  background-size: cover;
-}
