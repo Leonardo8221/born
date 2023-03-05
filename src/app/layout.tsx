@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import localFont from 'next/font/local';
 import AuthContext from "@/components/AuthContext";
+import { NextFontWithVariable } from 'next/dist/compiled/@next/font';
 import './globals.css';
 
-export const primaryFont = localFont({
+const primaryFont: NextFontWithVariable = localFont({
   src: [
     {
       path: '../assets/fonts/untitled-sans-black.otf',

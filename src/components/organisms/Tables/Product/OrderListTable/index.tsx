@@ -1,25 +1,30 @@
-import React from 'react';
+import { FC } from 'react';
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from 'clsx';
+import ImageText from '@/components/molecules/ImageText';
+import { Icon } from '@/components/molecules/Icon';
+import { fonts } from '@/config/fonts';
 import { Table } from '../../../Table';
-import ImageText from '../../../../molecules/ImageText';
 import Badges from '../Badges';
-import { fonts } from '../../../../../config/fonts';
-import { Icon } from '../../../../molecules/Icon';
 
-const OrderListTable = ({ products }) => {
-  const columnHelper = createColumnHelper();
+export interface OrderListTableProps {
+  products: any[];
+}
+
+const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
+  const columnHelper: any = createColumnHelper();
 
   const columns = [
-    columnHelper.accessor((row) => row, {
+    columnHelper.accessor((row: any) => row, {
       size: 222,
       id: "name",
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <div>
           <ImageText
             title={row?.original?.name || ''}
             subTitle={row?.original?.title || ''}
             imgSrc={row?.original?.imageUrl}
+            altText={row?.original?.title + ' logo'}
             variant="product"
           />
         </div>
@@ -29,12 +34,12 @@ const OrderListTable = ({ products }) => {
     columnHelper.accessor('colors', {
       size: 122,
       id: "colors",
-      cell: (info) => {
+      cell: (info: any) => {
         const colors = info.getValue();
         return (
           <div className='flex flex-col gap-y-2'>
-            {colors.map(item => (
-              <div className='flex items-center gap-x-2'>
+            {colors.map((item: any) => (
+              <div key={item.label} className='flex items-center gap-x-2'>
                 <div
                   className="h-4 w-4 rounded border-2 border-shades-white"
                   style={item.value && { backgroundColor: item.value }}
@@ -50,19 +55,19 @@ const OrderListTable = ({ products }) => {
     columnHelper.accessor('season', {
       size: 96,
       id: "season",
-      cell: (info) => <Badges items={info.getValue()} />,
+      cell: (info: any) => <Badges items={info.getValue()} />,
       header: () => "Season",
     }),
     columnHelper.accessor('department', {
       size: 128,
       id: "department",
-      cell: (info) => <Badges items={info.getValue()} />,
+      cell: (info: any) => <Badges items={info.getValue()} />,
       header: () => "Department",
     }),
     columnHelper.accessor('wholesalePrice', {
       size: 153,
       id: "wholesalePrice",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black tracking-[0.06em] text-center', fonts.text.xl)}>
           {info.getValue()}
         </div>
@@ -72,7 +77,7 @@ const OrderListTable = ({ products }) => {
     columnHelper.accessor('quantities', {
       size: 95,
       id: "quantites",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black tracking-[0.06em] text-center', fonts.text.xl)}>
           {info.getValue()}
         </div>
@@ -82,7 +87,7 @@ const OrderListTable = ({ products }) => {
     columnHelper.accessor('totalWholesalePrice', {
       size: 180,
       id: "totalWholesalePrice",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black tracking-[0.06em] text-center', fonts.text.xl)}>
           {info.getValue()}
         </div>

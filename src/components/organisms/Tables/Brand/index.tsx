@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from 'clsx';
 import Image from 'next/image';
 import { Table } from '../../Table';
-import { DropdownMenu } from '../../../molecules/DropdownMenu';
-import { fonts } from '../../../../config/fonts';
-import { Icon } from '../../../molecules/Icon';
+import { DropdownMenu } from '@/components/molecules/DropdownMenu';
+import { fonts } from '@/config/fonts';
+import { Icon } from '@/components/molecules/Icon';
 
-const BrandTable = ({ brands }) => {
-  const columnHelper = createColumnHelper();
+export interface BrandTableProps {
+  brands: any[];
+};
+
+const BrandTable: FC<any> = ({ brands }) => {
+  const columnHelper: any = createColumnHelper();
 
   const options = [
     {
@@ -29,10 +33,10 @@ const BrandTable = ({ brands }) => {
   ]
 
   const columns = [
-    columnHelper.accessor((row) => row, {
+    columnHelper.accessor((row: any) => row, {
       size: 209,
       id: "organzation",
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <div className='flex items-center gap-x-4 pl-4'>
           <Image
             src={row?.original?.logoUrl}
@@ -49,7 +53,7 @@ const BrandTable = ({ brands }) => {
     columnHelper.accessor('title', {
       size: 189,
       id: "title",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>
@@ -59,7 +63,7 @@ const BrandTable = ({ brands }) => {
     columnHelper.accessor('permission', {
       size: 99,
       id: "permission",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>

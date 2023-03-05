@@ -1,4 +1,5 @@
-import { Table } from "..";
+import { StoryFn } from "@storybook/react";
+import { Table, TableProps } from "..";
 import { defaultColumns, defaultData } from "../data";
 
 export default {
@@ -6,9 +7,9 @@ export default {
   component: Table,
 };
 
-const Template = (args) => <Table {...args} />;
+const Template = (args: TableProps) => <Table {...args} />;
 
-export const SimpleExample = Template.bind({});
+export const SimpleExample: StoryFn<TableProps> = Template.bind({});
 
 SimpleExample.args = {
   tableData: defaultData,

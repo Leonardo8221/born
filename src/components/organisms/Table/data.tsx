@@ -13,7 +13,7 @@ export const defaultData = [
   },
 ];
 
-const columnHelper = createColumnHelper();
+const columnHelper = createColumnHelper<any>();
 
 export const defaultColumns = [
   columnHelper.accessor("teamMemberName", {

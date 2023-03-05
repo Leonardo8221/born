@@ -1,7 +1,12 @@
-import React from 'react';
-import { Badge } from '../../../molecules/Badge';
+import { FC } from 'react';
+import { Badge } from '@/components/molecules/Badge';
 
-const Badges = ({ items = [], countLimit = 1 }) => {
+interface BadgeProps {
+  items: string[];
+  countLimit: number;
+}
+
+const Badges: FC<BadgeProps> = ({ items = [], countLimit = 1 }) => {
   const itemsToShow = [...items]?.splice(0, countLimit);
   const itemsCount = [...items]?.splice(countLimit)?.length;
   return (

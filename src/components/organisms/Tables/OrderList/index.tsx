@@ -1,13 +1,17 @@
-import React from 'react';
+import { FC } from 'react';
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from 'clsx';
 import { Table } from '../../Table';
-import { DropdownMenu } from '../../../molecules/DropdownMenu';
-import { fonts } from '../../../../config/fonts';
-import { Button } from '../../../molecules/Button';
+import { DropdownMenu } from '@/components/molecules/DropdownMenu';
+import { fonts } from '@/config/fonts';
+import { Button } from '@/components/molecules/Button';
 
-const OrderListTable = ({ orders }) => {
-  const columnHelper = createColumnHelper();
+export interface OrderListTableProps {
+  orders: any[];
+}
+
+const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
+  const columnHelper: any = createColumnHelper();
 
   const options = [
     {
@@ -31,7 +35,7 @@ const OrderListTable = ({ orders }) => {
     columnHelper.accessor('name', {
       size: 341,
       id: "name",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black tracking-[0.06em] pl-4', fonts.text.lg)}>
           {info.getValue()}
         </div>
@@ -41,7 +45,7 @@ const OrderListTable = ({ orders }) => {
     columnHelper.accessor('retailerName', {
       size: 120,
       id: "retailerName",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>
@@ -51,7 +55,7 @@ const OrderListTable = ({ orders }) => {
     columnHelper.accessor('buyerName', {
       size: 120,
       id: "buyerName",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>
@@ -61,7 +65,7 @@ const OrderListTable = ({ orders }) => {
     columnHelper.accessor('total', {
       size: 120,
       id: "total",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>
@@ -71,7 +75,7 @@ const OrderListTable = ({ orders }) => {
     columnHelper.accessor('season', {
       size: 120,
       id: "season",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>
@@ -81,7 +85,7 @@ const OrderListTable = ({ orders }) => {
     columnHelper.accessor('orderDate', {
       size: 120,
       id: "orderDate",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>

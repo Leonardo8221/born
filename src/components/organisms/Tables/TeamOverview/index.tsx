@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from 'clsx';
+import { DropdownMenu } from '@/components/molecules/DropdownMenu';
+import { fonts } from '@/config/fonts';
 import { Table } from '../../Table';
-import { DropdownMenu } from '../../../molecules/DropdownMenu';
-import { fonts } from '../../../../config/fonts';
 
-const TeamOverTable = ({ teams }) => {
-  const columnHelper = createColumnHelper();
+export interface TeamOverViewProps {
+  teams: any[];
+}
+
+const TeamOverView: FC<TeamOverViewProps> = ({ teams }) => {
+  const columnHelper: any = createColumnHelper();
 
   const options = [
     {
@@ -27,10 +31,10 @@ const TeamOverTable = ({ teams }) => {
   ]
 
   const columns = [
-    columnHelper.accessor((row) => row, {
+    columnHelper.accessor((row: any) => row, {
       size: 209,
       id: "teamMemberName",
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <div className='pl-4'>
           <h3 className={clsx('text-shades-blak tracking-[0.06em]', fonts.text.lg)}>
             {row?.original?.name}
@@ -45,7 +49,7 @@ const TeamOverTable = ({ teams }) => {
     columnHelper.accessor('lastLoggedIn', {
       size: 185,
       id: "lastLoggedIn",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>
@@ -55,7 +59,7 @@ const TeamOverTable = ({ teams }) => {
     columnHelper.accessor('permission', {
       size: 97,
       id: "permission",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
           {info.getValue()}
         </div>
@@ -83,4 +87,4 @@ const TeamOverTable = ({ teams }) => {
   )
 }
 
-export default TeamOverTable;
+export default TeamOverView;

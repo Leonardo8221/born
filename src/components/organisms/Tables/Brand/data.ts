@@ -1,4 +1,4 @@
-import BrandLogo from '../../../../assets/images/logo-image.png';
+import BrandLogo from '@/assets/images/logo-image.png';
 
 export const brands = [
   {

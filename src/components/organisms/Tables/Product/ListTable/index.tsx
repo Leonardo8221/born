@@ -1,16 +1,20 @@
-import React from 'react';
+import { FC } from 'react';
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from 'clsx';
-import { Table } from '../../../Table';
-import ImageText from '../../../../molecules/ImageText';
-import { DropdownMenu } from '../../../../molecules/DropdownMenu';
-import LivePreviewToggle from '../../../../molecules/LivePreviewToggle';
+import ImageText from '@/components/molecules/ImageText';
+import { DropdownMenu } from '@/components/molecules/DropdownMenu';
+import LivePreviewToggle from '@/components/molecules/LivePreviewToggle';
 import ListPrices from '../../../ProductDetails/ListPrices';
+import { Table } from '../../../Table';
 import Badges from '../Badges';
-import { fonts } from '../../../../../config/fonts';
+import { fonts } from '@/config/fonts';
 
-const ListTable = ({ products }) => {
-  const columnHelper = createColumnHelper();
+export interface ListTableProps {
+  products: any[];
+}
+
+const ListTable: FC<ListTableProps> = ({ products }) => {
+  const columnHelper: any = createColumnHelper();
 
   const options = [
     {
@@ -31,14 +35,15 @@ const ListTable = ({ products }) => {
   ]
 
   const columns = [
-    columnHelper.accessor((row) => row, {
+    columnHelper.accessor((row: any) => row, {
       size: 221,
       id: "name",
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <div>
           <ImageText
             title={row?.original?.name || ''}
             subTitle={row?.original?.title || ''}
+            altText={row?.original?.title + 'logo'}
             imgSrc={row?.original?.imageUrl}
             variant="product"
           />
@@ -49,12 +54,12 @@ const ListTable = ({ products }) => {
     columnHelper.accessor('colors', {
       size: 122,
       id: "colors",
-      cell: (info) => {
+      cell: (info: any) => {
         const colors = info.getValue();
         return (
           <div className='flex flex-col gap-y-2'>
-            {colors.map(item => (
-              <div className='flex items-center gap-x-2'>
+            {colors.map((item: any) => (
+              <div key={item.value} className='flex items-center gap-x-2'>
                 <div
                   className="h-4 w-4 rounded border-2 border-shades-white"
                   style={item.value && { backgroundColor: item.value }}
@@ -70,19 +75,19 @@ const ListTable = ({ products }) => {
     columnHelper.accessor('season', {
       size: 87,
       id: "season",
-      cell: (info) => <Badges items={info.getValue()} />,
+      cell: (info: any) => <Badges items={info.getValue()} />,
       header: () => "Season",
     }),
     columnHelper.accessor('collections', {
       size: 190,
       id: "collections",
-      cell: (info) => <Badges items={info.getValue()} />,
+      cell: (info: any) => <Badges items={info.getValue()} />,
       header: () => "Collections",
     }),
     columnHelper.accessor('currencies', {
       size: 83,
       id: "currencies",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className={clsx('text-shades-black tracking-[0.06em]', fonts.text.sm)}>
           {info.getValue()?.join(', ')}
         </div>
@@ -92,7 +97,7 @@ const ListTable = ({ products }) => {
     columnHelper.accessor('priceList', {
       size: 271,
       id: "priceList",
-      cell: (info) => (
+      cell: (info: any) => (
         <div className='[&>div]:flex-wrap'>
           <ListPrices items={info.getValue() || []} isSmall />
         </div>
@@ -102,7 +107,7 @@ const ListTable = ({ products }) => {
     columnHelper.accessor('status', {
       size: 106,
       id: 'status',
-      cell: (info) => (
+      cell: (info: any) => (
         <div>
           <LivePreviewToggle showPreview={info.getValue()} />
         </div>

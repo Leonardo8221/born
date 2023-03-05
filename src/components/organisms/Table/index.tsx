@@ -1,16 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useMemo, useReducer, useState } from "react";
+import { FC, useMemo, useReducer, useState } from "react";
 import clsx from "clsx";
 import {
   // flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { TableHead } from "../../molecules/TableHead";
-import { TableBody } from "../../molecules/TableBody";
+import { TableHead } from "@/components/molecules/TableHead";
+import { TableBody } from "@/components/molecules/TableBody";
 
-export const Table = ({ tableData, columns, className = "" }) => {
+export interface TableProps {
+  tableData: any[];
+  columns: any[];
+  className?: string;
+}
+
+export const Table: FC<TableProps> = ({ tableData, columns, className = "" }) => {
   const [data, setData] = useState(() => [...tableData]);
   const rerender = useReducer(() => ({}), {})[1];
 
@@ -22,7 +28,7 @@ export const Table = ({ tableData, columns, className = "" }) => {
 
   const colWidthStyle = useMemo(
     () =>
-      table.getVisibleFlatColumns()?.map(({ columnDef: col }) => {
+      table.getVisibleFlatColumns()?.map(({ columnDef: col }: any) => {
         if (col.minWidth && col.maxWidth)
           return `minmax(${col.minWidth}, ${col.maxWidth})`;
         if (col.minWidth) return `minmax(${col.minWidth}, 1fr)`;

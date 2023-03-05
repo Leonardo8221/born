@@ -19,7 +19,7 @@ export interface DropdownMenuProps {
   avatarSrc?: string;
   altText?: string;
   buttonLabel?: string,
-  label: string;
+  label?: string;
   variant: keyof typeof dropdownVariants;
   options: Option[];
   buttonProps?: ButtonProps;
