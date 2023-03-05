@@ -1,5 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { ProductCard, ProductCardProps } from '..';
+import productImage from "@/assets/images/product.png";
 
 export default {
   title: 'Molecules/Product Card',
@@ -14,7 +15,8 @@ Large.args = {
   id: '01234567',
   title: 'Medium Paved Star',
   tags: ['AW23', 'Core'],
-  colors: ['#7B6A3D', '#e8a973'],
+  colors: [{ label: 'Lemon', value: '#7B6A3D' }, { label: 'Noisette', value: '#e8a973'}],
+  imageUrl: productImage,
   isSelectable: false,
   isSelected: false,
   prices: [
@@ -32,9 +34,10 @@ Small.args = {
   id: '01234567',
   title: 'Medium Paved Star',
   tags: ['AW23', 'Core'],
-  colors: ['#7B6A3D'],
+  colors: [{ label: 'Lemon', value: '#7B6A3D' }, { label: 'Noisette', value: '#e8a973'}],
   isSelectable: false,
   isSelected: false,
+  imageUrl: productImage,
   prices: [
     { price: "£3,345.00", label: "Landed" },
     { price: "£3,345.00", label: "Exwork" },
@@ -50,8 +53,9 @@ Selectable.args = {
   id: '01234567',
   title: 'Medium Paved Star',
   tags: ['AW23', 'Core'],
-  colors: ['#7B6A3D', '#e8a973'],
+  colors: [{ label: 'Lemon', value: '#7B6A3D' }, { label: 'Noisette', value: '#e8a973'}],
   isSelectable: true,
+  imageUrl: productImage,
   isSelected: false,
   prices: [
     { price: "£3,345.00", label: "Landed" },
@@ -69,9 +73,10 @@ SelectableSmall.args = {
   id: '01234567',
   title: 'Medium Paved Star',
   tags: ['AW23', 'Core'],
-  colors: ['#7B6A3D', '#e8a973'],
+  colors: [{ label: 'Lemon', value: '#7B6A3D' }, { label: 'Noisette', value: '#e8a973'}],
   isSelectable: true,
   isSelected: false,
+  imageUrl: productImage,
   prices: [
     { price: "£3,345.00", label: "Landed" },
     { price: "£3,345.00", label: "Exwork" },

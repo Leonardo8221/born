@@ -6,12 +6,12 @@ import styles from "./CollectionCard.module.css";
 
 export interface CollectionCardProps {
   backgroundImageSrc: StaticImageData;
-  imageSrc: StaticImageData;
+  imageSrc?: StaticImageData;
   label: string;
-  author: string;
-  headerText: string;
-  size: 'lg';
-  hasOverlay: boolean;
+  author?: string;
+  headerText?: string;
+  size?: 'lg';
+  hasOverlay?: boolean;
 }
 
 const clsVariations = {
@@ -91,18 +91,20 @@ export const CollectionCard: FC<CollectionCardProps> = ({
         />
         <div className={styles.cardBackground}></div>
 
-        <div
-          className={clsx(
-            clsVariations[size].innerImageSize,
-            "rounded-md bg-neutral-100 relative mt-[66px] border border-neutral-200"
-          )}
-        >
-          <Image
-            src={imageSrc}
-            alt="Collection Card"
-            className="absolute w-full h-full object-contain p-1"
-          />
-        </div>
+        {imageSrc && (
+            <div
+              className={clsx(
+                clsVariations[size].innerImageSize,
+                "rounded-md bg-neutral-100 relative mt-[66px] border border-neutral-200"
+              )}
+            >
+              <Image
+                src={imageSrc}
+                alt="Collection Card"
+                className="absolute w-full h-full object-contain p-1"
+              />
+          </div>
+        )}
         <p className={clsx("z-[1] pt-2", clsVariations[size].clsLabel)}>
           {label}
         </p>

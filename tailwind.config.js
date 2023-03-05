@@ -53,6 +53,7 @@ module.exports = {
         small: "0px 0px 88px -24px rgba(0, 0, 0, 0.08)",
         medium: "0px 8px 24px rgba(0, 0, 0, 0.04)",
         large: "0px 0px 64px -24px rgba(0, 0, 0, 0.16)",
+        extra: '0px 0px 30px rgba(0, 0, 0, 0.15)',
       },
       fontFamily: {
         sans: ['var(--font-primary)', 'sans-serif'],

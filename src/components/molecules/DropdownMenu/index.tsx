@@ -48,7 +48,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
           className="relative"
           onClick={toggleDropdown}
         >
-          <Icon name="icon-add" />
+          <Icon name="icon-chevron-down" />
         </Button>
       )
     }
@@ -80,10 +80,11 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
         leave="transition ease-in duration-75 transform"
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
+        className="z-10"
       >
         <div
           className={clsx(
-            "absolute z-10 w-[141px] ring-1 rounded-[4px] ring-shades-black ring-opacity-5",
+            "absolute z-10 w-[141px] ring-1 rounded-[4px] ring-shades-black ring-opacity-5 shadow-extra",
             styles.dropdown,
             styles.dropdownTriangle,
             dropdownVariants[variant]

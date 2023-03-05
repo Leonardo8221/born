@@ -94,9 +94,9 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
       ),
       header: () => "Currency",
     }),
-    columnHelper.accessor('priceList', {
+    columnHelper.accessor('prices', {
       size: 271,
-      id: "priceList",
+      id: "prices",
       cell: (info: any) => (
         <div className='[&>div]:flex-wrap'>
           <ListPrices items={info.getValue() || []} isSmall />

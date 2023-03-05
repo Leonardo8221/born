@@ -1,7 +1,6 @@
 import { FC } from "react";
 import clsx from "clsx";
-import Image from "next/image";
-import productImage from "@/assets/images/product.png";
+import Image, { StaticImageData } from "next/image";
 import { Badge } from "../../Badge";
 import { Checkbox } from "../../Checkbox";
 import styles from "./product.module.css";
@@ -11,15 +10,21 @@ type Price = {
   label: string;
 }
 
+type Color = {
+  label: string;
+  value: string;
+}
+
 export interface ProductCardProps {
-  size: 'lg' | 'sm';
+  size?: 'lg' | 'sm';
   id: string;
   title: string,
+  imageUrl: StaticImageData | string;
   tags: string[];
-  colors: string[];
-  isSelectable: boolean;
-  isSelected: boolean;
-  onSelect: () => void,
+  colors: Color[];
+  isSelectable?: boolean;
+  isSelected?: boolean;
+  onSelect?: () => void,
   prices: Price[];
 };
 
@@ -27,11 +32,12 @@ export const ProductCard: FC<ProductCardProps> = ({
   size = 'lg',
   id,
   title,
+  imageUrl,
   tags,
   colors,
   isSelectable,
   isSelected,
-  onSelect,
+  onSelect = () => {},
   prices,
 }) => {
   const renderCheckbox = isSelectable && (
@@ -85,19 +91,19 @@ export const ProductCard: FC<ProductCardProps> = ({
       <div>
         <div className={styles.productCardImageWrapper}>
           <Image
-            src={productImage}
-            alt={title}
+            src={imageUrl}
+            alt={title + 'image'}
             className={styles.productCardImage}
           />
           {renderCheckbox}
         </div>
         <h3 className={clsProductCardTitle}>{title}</h3>
         <div className={clsProductCardColors}>
-          {colors?.map((color: string) => (
+          {colors?.map((color: Color) => (
             <div
-              key={color}
+              key={color.value}
               className={clsProductCardColor}
-              style={color ? { backgroundColor: color } : {}}
+              style={color ? { backgroundColor: color.value } : {}}
             />
           ))}
         </div>
