@@ -3,7 +3,7 @@ import { Badge } from '@/components/molecules/Badge';
 
 interface BadgeProps {
   items: string[];
-  countLimit: number;
+  countLimit?: number;
 }
 
 const Badges: FC<BadgeProps> = ({ items = [], countLimit = 1 }) => {

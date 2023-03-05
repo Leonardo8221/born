@@ -1,5 +1,5 @@
 import { FC, Fragment } from "react";
-import { fonts, TextSize } from "@/config/fonts";
+import { fonts } from "@/config/fonts";
 import { Heading } from "@/components/molecules/Heading";
 import { Paragraph } from "@/components/molecules/Paragraph";
 import styles from "./Typography.module.css";
@@ -23,7 +23,7 @@ export const Typography: FC = () => {
           <div className={styles.leftSide}>Display Heading</div>
           <div className={styles.rightSide}>40px / 48px</div>
         </div>
-        <Heading className="mt-3" style={{ fontSize: "64px", lineHeight: "80px", fontWeight: 600 }}>
+        <Heading className="mt-3 text-[64px] leading-[80px] font-[600]">
           Display Heading - Reg - 400
         </Heading>
       </div>
@@ -63,7 +63,7 @@ export const Typography: FC = () => {
           Heading 2 - Light - 300
         </Heading>
       </div>
-      {textSize.map((item: typeof textSize[keyof typeof textSize], index: number) => (
+      {textSize.map((item: any, index: number) => (
         <Fragment key={index}>
           <div>
             <div className={styles.displayHeading}>
