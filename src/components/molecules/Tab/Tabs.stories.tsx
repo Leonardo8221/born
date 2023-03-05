@@ -1,15 +1,28 @@
-import { StoryFn } from '@storybook/react';
-import React from 'react';
-import Tabs, { TabsProps } from './Tabs';
+import React from "react";
+import { Meta, StoryFn } from "@storybook/react";
+import Tabs, { Tab } from "./Tabs";
 
 export default {
-  title: 'Molecules/Tab',
+  title: "Molecules/Tab",
   component: Tabs,
+} as Meta;
+
+type TabsArgs = {
+  tabs: Tab[];
 };
 
-const Template = (args: TabsProps) => <Tabs {...args} />;
+const Template: StoryFn<TabsArgs> = (args) => <Tabs {...args} />;
 
-export const Primary: StoryFn<TabsProps> = Template.bind ({});
+const TabContent: React.FC = () => {
+  return <div className="text-[#000]">Tab Content</div>;
+};
+
+export const Primary = Template.bind({});
 Primary.args = {
-  tabs: ['Draft', 'Confirmed', 'Approved', 'Cancelled'],
+  tabs: [
+    { id: 1, label: "Draft", content: <TabContent /> },
+    { id: 2, label: "Confirmed" },
+    { id: 3, label: "Approved" },
+    { id: 4, label: "Cancelled" },
+  ],
 };

@@ -1,37 +1,62 @@
-import { FC, useState } from 'react';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-export interface TabsProps {
-  tabs: string[];
+export interface Tab {
+  id: number;
+  label: string;
+  content?: React.ReactNode;
 }
 
-const Tabs: FC<TabsProps> = ({ tabs }) => {
-  const [activeTab, setActiveTab] = useState (0);
+interface TabsProps {
+  tabs: Tab[];
+}
+
+function Tabs({ tabs }: TabsProps) {
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
+
+  const handleTabClick = (tabId: number) => {
+    setActiveTab(tabId);
+  };
 
   return (
     <div>
-      <div className="container mx-auto p-10">
+      <div className="mx-auto p-10">
         <div className="flex">
-          {tabs.map ((tab, index) => (
+          {tabs.map((tab, index) => (
             <div key={index} className="cursor-pointer">
               <span
-                onClick={() => setActiveTab (index)}
+                onClick={() => handleTabClick(tab.id)}
                 className={`${
-                  index === activeTab
-                    ? 'w-[124px] h-[56px] px-10 py-4 border-b-2 text-shades-black text-base tracking-[.08em]'
-                    : 'w-[124px] h-[56px] px-10 py-4 text-neutral-700 text-base tracking-[.08em]'
+                  tab.id === activeTab
+                    ? "w-[124px] h-[56px] px-10 py-4 border-b-2 text-shades-black text-base tracking-[.08em]"
+                    : "w-[124px] h-[56px] px-10 py-4 text-neutral-700 text-base tracking-[.08em]"
                 }`}
               >
-                {tab}
+                {tab.label}
               </span>
             </div>
           ))}
         </div>
       </div>
-      <div className="container mx-auto px-24 py-6">
-        {activeTab}
+      <div className="py-6">
+        {tabs.map((tab) => (
+          <div key={tab.id} className={tab.id === activeTab ? "active" : ""}>
+            {tab.id === activeTab ? tab.content : null}
+          </div>
+        ))}
       </div>
     </div>
   );
 }
+
+Tabs.propTypes = {
+  tabs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+      content: PropTypes.node.isRequired,
+    })
+  ).isRequired,
+};
 
 export default Tabs;
