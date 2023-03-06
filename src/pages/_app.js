@@ -1,4 +1,5 @@
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { SessionProvider } from "next-auth/react"
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import Layout from "../components/layouts/DefaultLayout";
@@ -43,10 +44,12 @@ const client = new ApolloClient({
 
 export default function MyApp({ Component, pageProps }) {
     return (
-        <ApolloProvider client={client}>
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
-        </ApolloProvider>
+        <SessionProvider session={pageProps.session}>
+            <ApolloProvider client={client}>
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </ApolloProvider>
+        </SessionProvider>
     );
 }
