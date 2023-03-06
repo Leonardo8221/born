@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { products } from "@/components/organisms/Tables/Product/ListTable/data";
 import ProductList from "@/components/page-components/common/ProductList";

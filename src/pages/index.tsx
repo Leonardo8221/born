@@ -1,7 +1,5 @@
-"use client";
-
-import styles from "./page.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
+import styles from "../assets/css/page.module.css";
 
 export default function Home() {
   const { data: session, status } = useSession();

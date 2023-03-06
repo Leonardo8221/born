@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { CollectionCard } from "@/components/molecules/CollectionCard";
 import { products } from "@/components/organisms/Tables/Product/ListTable/data";

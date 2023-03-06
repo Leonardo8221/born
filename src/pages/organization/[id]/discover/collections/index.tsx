@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import { CollectionCard } from "@/components/molecules/CollectionCard";
 import Footer from "@/components/layouts/Footer";
