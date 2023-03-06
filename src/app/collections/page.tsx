@@ -8,13 +8,14 @@ import backgroundImageSrc from "@/assets/images/collection-card/collection-card-
 import Description from "@/components/page-components/Collections/Description";
 import Filters from "@/components/page-components/Collections/Filters";
 import { GridType } from "@/components/molecules/IconButtonGroup";
+import Footer from "@/components/layouts/Footer";
 
 const CollectionsPage = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
 
   return (
-    <div className="mb-8">
+    <div>
       <Header />
       <div className="max-w-[1120px] mt-6 mx-auto">
         <div>
@@ -28,6 +29,7 @@ const CollectionsPage = () => {
         />
         <ProductList gridType={gridType} products={products} selectable={isSelectable} />
       </div>
+      <Footer />
     </div>
   )
 }

@@ -14,14 +14,14 @@ const ProductList: FC<ProductListProps> = ({ products, gridType = 'grid', select
 
   if(gridType === 'list') {
     return (
-      <div className="mt-8">
+      <div className="mb-8 mt-8">
         <ListTable products={products} />
       </div>
     )
   }
 
   return (
-    <div className={clsx('grid mt-8 gap-4', gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3')}>
+    <div className={clsx('grid mb-8 mt-8 gap-4', gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3')}>
       {
         products?.map((item: ProductCardProps, index) => (
           <ProductCard
