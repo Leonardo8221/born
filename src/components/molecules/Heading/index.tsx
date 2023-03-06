@@ -5,9 +5,10 @@ import { theme } from "@/config/theme";
 interface HeadingProps {
   color?: string;
   fontWeight?: 'regular' | 'light';
-  size: keyof typeof theme.fonts.headings;
+  size?: keyof typeof theme.fonts.headings;
   className: string;
   children: ReactNode;
+  as?: string;
 }
 
 export const Heading: FC<HeadingProps> = ({

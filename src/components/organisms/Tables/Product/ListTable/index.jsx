@@ -7,7 +7,7 @@ import { DropdownMenu } from '../../../../molecules/DropdownMenu';
 import LivePreviewToggle from '../../../../molecules/LivePreviewToggle';
 import ListPrices from '../../../ProductDetails/ListPrices';
 import Badges from '../Badges';
-import { fonts } from '../../../../../config/fonts';
+import { fonts } from '@/config/fonts';
 
 const ListTable = ({ products }) => {
   const columnHelper = createColumnHelper();
@@ -54,7 +54,7 @@ const ListTable = ({ products }) => {
         return (
           <div className='flex flex-col gap-y-2'>
             {colors.map(item => (
-              <div className='flex items-center gap-x-2'>
+              <div key={item.value} className='flex items-center gap-x-2'>
                 <div
                   className="h-4 w-4 rounded border-2 border-shades-white"
                   style={item.value && { backgroundColor: item.value }}
