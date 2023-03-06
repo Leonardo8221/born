@@ -1,33 +1,59 @@
 "use client";
-import { useState } from "react";
+import Link from "next/link";
 import { CollectionCard } from "@/components/molecules/CollectionCard";
-import { products } from "@/components/organisms/Tables/Product/ListTable/data";
-import Header from "@/components/page-components/Collections/Header";
-import ProductList from "@/components/page-components/Collections/ProductList";
-import backgroundImageSrc from "@/assets/images/collection-card/collection-card-background-image.png";
-import Description from "@/components/page-components/Collections/Description";
-import Filters from "@/components/page-components/Collections/Filters";
-import { GridType } from "@/components/molecules/IconButtonGroup";
 import Footer from "@/components/layouts/Footer";
+import backgroundImageSrc from "@/assets/images/collection-card/collection-card-background-image.png";
+import imageSrc from "@/assets/images/collection-card/inner-collection-card-image.png";
 
 const CollectionsPage = () => {
-  const [gridType, setGrid] = useState<GridType>('grid');
-  const [isSelectable, setIsSelectable] = useState(false);
-
+  const collections = [
+    {
+      slug: 1,
+      backgroundImageSrc,
+      label: "SS23",
+      imageSrc,
+      author: 'by Irene Lance',
+      description: 'For the past 40 years Ballot-Flurin has been leading the industry and provide wellness solutions.',
+    },
+    {
+      slug: 2,
+      backgroundImageSrc,
+      label: "SS23",
+      imageSrc,
+      author: 'by Irene Lance',
+      description: 'For the past 40 years Ballot-Flurin has been leading the industry and provide wellness solutions.',
+    },
+    {
+      slug: 3,
+      backgroundImageSrc,
+      label: "SS23",
+      imageSrc,
+      author: 'by Irene Lance',
+      description: 'For the past 40 years Ballot-Flurin has been leading the industry and provide wellness solutions.',
+    },
+  ]
   return (
-    <div>
-      <Header />
-      <div className="max-w-[1120px] mt-6 mx-auto">
-        <div>
-          <CollectionCard backgroundImageSrc={backgroundImageSrc} label="SS23" />
-          <Description />
-        </div>
-        <Filters
-          onGridChange={setGrid}
-          gridType={gridType}
-          onSelect={() => setIsSelectable(!isSelectable)}
-        />
-        <ProductList gridType={gridType} products={products} selectable={isSelectable} />
+    <div className="mt-12">
+      <div className="min-h-[calc(100vh-200px)]">
+        {
+          collections.map(item => (
+            <div key={item.slug} className="mb-[96px]">
+              <Link href={`/collections/${item.slug}`}>
+                <CollectionCard
+                  backgroundImageSrc={item.backgroundImageSrc}
+                  label={item.label}
+                  author={item.author}
+                  imageSrc={item.imageSrc}
+                />
+              </Link>
+              <div className="mt-8">
+                <p className="max-w-[544px] mx-auto text-shades-black text-center text-[18px] tracking-[0.06em] leading-[32px]">
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          ))
+        }
       </div>
       <Footer />
     </div>

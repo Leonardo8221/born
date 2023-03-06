@@ -46,7 +46,14 @@ const Filters: FC<FiltersProps> = ({
       </div>
       <div className="flex items-center">
         <div className="pr-4 mr-4 border-r border-neutral-400">
-          <Button variant="outlined" size="sm" onClick={onSelect}>Select</Button>
+          <Button
+            variant="outlined"
+            size="sm"
+            onClick={onSelect}
+            className="!border-neutral-600 text-shades-black"
+          >
+            Select
+          </Button>
         </div>
         <div>
           <IconButtonGroup value={gridType} handleChange={onGridChange} />
