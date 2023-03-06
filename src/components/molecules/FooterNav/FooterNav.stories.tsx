@@ -10,5 +10,18 @@ const Template = (args: FooterNavProps) => <FooterNav {...args} />;
 
 export const Primary: StoryFn<FooterNavProps> = Template.bind ({});
 Primary.args = {
-  nav: ['CONTACT SUPPORT', 'TERMS & CONDITIONS', 'PRIVACY POLICY'],
+  nav: [
+    {
+      name: 'CONTACT SUPPORT',
+      url: '/support',
+    },
+    {
+      name: 'TERMS & CONDITIONS',
+      url: '/terms-condition',
+    },
+    {
+      name: 'PRIVACY POLICY',
+      url: '/policy',
+    }
+  ],
 };

@@ -3,7 +3,10 @@ const { fontFamily } = require('tailwindcss/defaultTheme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './src/**/*.{js,ts,jsx,tsx}',
+    "./app/**/*.{js,ts,jsx,tsx}", // Note the addition of the `app` directory.
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     colors: {
@@ -42,14 +45,15 @@ module.exports = {
         100: "#c55757",
       },
     },
-    fontSize:{
-      normal:'32px'
+    fontSize: {
+      normal: '32px'
     },
     extend: {
       boxShadow: {
         small: "0px 0px 88px -24px rgba(0, 0, 0, 0.08)",
         medium: "0px 8px 24px rgba(0, 0, 0, 0.04)",
         large: "0px 0px 64px -24px rgba(0, 0, 0, 0.16)",
+        extra: '0px 0px 30px rgba(0, 0, 0, 0.15)',
       },
       fontFamily: {
         sans: ['var(--font-primary)', 'sans-serif'],

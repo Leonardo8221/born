@@ -6,7 +6,7 @@ export const buttonVariants = {
 };
 
 export const outlinedButtonVariants = {
-  black: "border-[1px] !border-shades-black !text-shades-black hover:!bg-shades-black hover:!text-shades-white",
+  black: "border-[1px] border-shades-black text-shades-black hover:bg-shades-black hover:text-shades-white",
   white: "border-[1px] !border-shades-white !text-shades-white",
   accent: "border-[1px] !border-accent-a-200 !text-accent-a-200",
   neutral: "border-[1px] !border-neutral-400 !text-neutral-400",

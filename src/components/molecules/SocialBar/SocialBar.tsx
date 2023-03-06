@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import Image, { StaticImageData } from 'next/image';
+import clsx from 'clsx';
 
 interface Icon {
   Icon: any;
@@ -10,6 +11,7 @@ interface Icon {
 
 export interface SocialBarProps {
   icons: Icon[];
+  className?: string;
 }
 
 interface StyledImageProps {
@@ -28,9 +30,9 @@ const StyledImage: FC<StyledImageProps> = ({ alt, src, Icon }) => {
   );
 };
 
-export const SocialBar: FC<SocialBarProps> = ({ icons }) => {
+export const SocialBar: FC<SocialBarProps> = ({ icons, className }) => {
   return (
-    <div className="bg-shades-black flex w-44 px-4 m-auto h-[72px] items-center justify-center">
+    <div className={clsx("bg-shades-black flex w-44 px-4 m-auto h-[72px] items-center justify-center", className)}>
       {icons.map (icon => (
         <a key={icon.link} href={icon.link} target="_blank" rel="noreferrer">
           <StyledImage src={icon.src} alt={`Logo ${icon.name}`} Icon={icon.Icon} />
