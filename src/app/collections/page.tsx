@@ -34,7 +34,7 @@ const CollectionsPage = () => {
   ]
   return (
     <div className="mt-12">
-      <div className="min-h-[calc(100vh-200px)]">
+      <div className="min-h-[calc(100vh-120px)]">
         {
           collections.map(item => (
             <div key={item.slug} className="mb-[96px]">
