@@ -2,6 +2,7 @@ import { Button } from "@/components/molecules/Button";
 import { DropdownMenu } from "@/components/molecules/DropdownMenu";
 import { Icon } from "@/components/molecules/Icon";
 import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
+import Link from "next/link";
 
 const Header = () => {
   const items = [
@@ -19,7 +20,9 @@ const Header = () => {
   return (
     <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
       <div>
-        <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
+        <Link href="/collections">
+          <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
+        </Link>
       </div>
       <div className="flex items-center gap-x-4">
         <div>
