@@ -3,15 +3,19 @@ import clsx from "clsx";
 import Image, { StaticImageData } from "next/image";
 import { fonts } from "@/config/fonts";
 import styles from "./CollectionCard.module.css";
+import { Button } from "../Button";
 
 export interface CollectionCardProps {
   backgroundImageSrc: StaticImageData;
   imageSrc?: StaticImageData;
-  label: string;
+  label?: string;
   author?: string;
   headerText?: string;
   size?: 'lg';
   hasOverlay?: boolean;
+  editBanner?: boolean;
+  onEdit?: (event: any) => void;
+  cardClasses?: string;
 }
 
 const clsVariations = {
@@ -62,13 +66,17 @@ export const CollectionCard: FC<CollectionCardProps> = ({
   headerText = "",
   size = "lg",
   hasOverlay = false,
+  editBanner,
+  onEdit,
+  cardClasses,
 }) => {
   return (
     <div className="m-5 flex flex-col items-center">
       <div
         className={clsx(
           clsVariations[size].cardSize,
-          "rounded-[4px] relative flex flex-col items-center justify-start cursor-pointer"
+          "relative rounded-[4px] relative flex flex-col items-center justify-start cursor-pointer",
+          cardClasses
         )}
       >
         {hasOverlay && (
@@ -105,14 +113,26 @@ export const CollectionCard: FC<CollectionCardProps> = ({
               />
           </div>
         )}
-        <p className={clsx("z-[1] pt-2", clsVariations[size].clsLabel)}>
-          {label}
-        </p>
+        {label && (
+          <p className={clsx("z-[1] pt-2", clsVariations[size].clsLabel)}>
+            {label}
+          </p>
+        )}
 
         {!!author && (
           <div className={clsx("z-[1]", clsVariations[size].clsAuthor)}>
             {author}
           </div>
+        )}
+        {editBanner && (
+          <Button
+            color="white"
+            size="sm"
+            className="absolute max-w-[104px] right-4 bottom-4 text-[12px] leading-[16px]"
+            onClick={onEdit}
+          >
+            Edit banner
+          </Button>
         )}
       </div>
       {!!headerText && (
