@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import clsx from "clsx";
 
 export interface Tab {
   id: number;
@@ -9,9 +10,10 @@ export interface Tab {
 
 interface TabsProps {
   tabs: Tab[];
+  className?: string;
 }
 
-function Tabs({ tabs }: TabsProps) {
+function Tabs({ tabs, className }: TabsProps) {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   const handleTabClick = (tabId: number) => {
@@ -20,16 +22,16 @@ function Tabs({ tabs }: TabsProps) {
 
   return (
     <div>
-      <div className="mx-auto p-10">
-        <div className="flex">
+      <div className="mx-auto">
+        <div className={clsx("flex", className)}>
           {tabs.map((tab, index) => (
             <div key={index} className="cursor-pointer">
               <span
                 onClick={() => handleTabClick(tab.id)}
-                className={`${
+                className={`inline-flex justify-center ${
                   tab.id === activeTab
-                    ? "w-[124px] h-[56px] px-10 py-4 border-b-2 text-shades-black text-base tracking-[.08em]"
-                    : "w-[124px] h-[56px] px-10 py-4 text-neutral-700 text-base tracking-[.08em]"
+                    ? "w-[124px] h-[56px] py-4 border-b-2 text-shades-black text-base tracking-[.08em]"
+                    : "w-[124px] h-[56px] py-4 text-neutral-700 text-base tracking-[.08em]"
                 }`}
               >
                 {tab.label}

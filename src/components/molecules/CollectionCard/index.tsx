@@ -20,7 +20,7 @@ export interface CollectionCardProps {
 
 const clsVariations = {
   lg: {
-    cardSize: "w-[732px] h-[272px]",
+    cardSize: "w-full max-w-[1120px] h-[436px]",
     innerImageSize: "w-[92px] h-[92px]",
     clsLabel: clsx(
       fonts.text["2xl"],
@@ -80,7 +80,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
         )}
       >
         {hasOverlay && (
-          <div className="absolute w-[512px] left-0 h-full z-[4]">
+          <div className="absolute w-[662px] left-0 h-full z-[4]">
             <div className={clsVariations[size].clsOverlay}></div>
             <div
               className={clsx(
@@ -95,7 +95,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
         <Image
           src={backgroundImageSrc}
           alt="Collection Card Background"
-          className="absolute w-full h-full object-cover z-[0]"
+          className="absolute w-full h-full object-cover z-[0] rounded"
         />
         <div className={styles.cardBackground}></div>
 
@@ -128,7 +128,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
           <Button
             color="white"
             size="sm"
-            className="absolute max-w-[104px] right-4 bottom-4 text-[12px] leading-[16px]"
+            className="absolute !max-w-[104px] right-4 bottom-4 text-[12px] leading-[16px]"
             onClick={onEdit}
           >
             Edit banner

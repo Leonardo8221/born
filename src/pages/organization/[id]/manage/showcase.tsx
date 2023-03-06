@@ -1,7 +1,11 @@
+import Categories from "@/components/page-components/showcase/Categories";
+import ShowcaseLogo from "@/components/page-components/showcase/Logo";
+
 const ShowcasePage = () => {
   return (
-    <div>
-      <h1> Showcase page is under construction!</h1>
+    <div className="mx-auto">
+      <ShowcaseLogo />
+      <Categories />
     </div>
   )
 }
