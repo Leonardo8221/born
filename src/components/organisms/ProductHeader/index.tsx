@@ -5,6 +5,7 @@ import LogoImage from "@/assets/images/logo-image.png";
 import { Button } from "@/components/molecules/Button";
 import clsx from "clsx";
 import styles from './ProductHeaderProps.module.css'
+import Link from 'next/link';
 
 export interface ProductHeaderProps {
 	srcLogo?: string;
@@ -15,6 +16,7 @@ export interface ProductHeaderProps {
 	onDraftOrder: () => void;
 	onBack: () => void;
 	containerClassName?: string;
+	hrefBack?: string;
 }
 
 const ProductHeader: FC<ProductHeaderProps> = ({
@@ -24,17 +26,18 @@ const ProductHeader: FC<ProductHeaderProps> = ({
 	onEdit,
 	onAddToCollection,
 	onDraftOrder,
-    onBack,
+    hrefBack = '/',
 	containerClassName,
 }) => {
 	return (
 		<div className={clsx("w-[1300px] mx-auto", containerClassName)}>
 			<div className="flex items-center">
-				<Icon
-					onClick={onBack}
-					className="mt-[12px] mr-[26px]"
-					name="icon-arrow-left"
-				/>
+				<Link href={hrefBack}>
+					<Icon
+						className="mt-[12px] mr-[26px]"
+						name="icon-arrow-left"
+					/>
+				</Link>
 				<div className="mr-auto">
 					<ImageText
 						title={title || ""}
