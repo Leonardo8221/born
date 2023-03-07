@@ -9,11 +9,12 @@ import {
 } from './utils';
 
 export interface ImageTextProps {
-  variant: 'brand' | 'product' | 'brand-two';
+  variant?: 'brand' | 'product' | 'brand-two';
   title: string;
   subTitle?: string
   imgSrc: StaticImageData | string;
   altText: string;
+  titleClassName?: string
 }
 
 const ImageText: FC<ImageTextProps> = ({
@@ -22,6 +23,7 @@ const ImageText: FC<ImageTextProps> = ({
   subTitle,
   imgSrc,
   altText,
+  titleClassName,
 }) => {
   return (
     <div className={clsx(variantClasses[variant], 'items-center')}>
@@ -31,7 +33,7 @@ const ImageText: FC<ImageTextProps> = ({
         className={clsx('object-cover', variantImageClasses[variant])}
       />
       <div>
-        <h3 className={clsx(variantTitleClasses[variant], 'text-shades-black tracking-[0.06em]')}>
+        <h3 className={clsx(variantTitleClasses[variant], titleClassName, 'text-shades-black tracking-[0.06em]')}>
           {title}
         </h3>
         {subTitle && (
