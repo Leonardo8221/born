@@ -40,6 +40,8 @@ next-env.d.ts
 
 # storybook
 /storybook-static
+storybook-static
+
 
 package-lock.json
 yarn.lock
