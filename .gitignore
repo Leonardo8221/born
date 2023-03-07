@@ -39,8 +39,8 @@ next-env.d.ts
 .vscode
 
 # storybook
-/storybook-static
-storybook-static
+/storybook-static/
+storybook-static/
 
 
 package-lock.json
