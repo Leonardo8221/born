@@ -2,10 +2,10 @@ import { useState } from "react";
 import { products } from "@/components/organisms/Tables/Product/ListTable/data";
 import ProductList from "@/components/page-components/common/ProductList";
 import Filters from "@/components/page-components/common/Filters";
+import ShowcaseLayout from "@/components/layouts/ShowcaseLayout";
 import { GridType } from "@/components/molecules/IconButtonGroup";
-import Footer from "@/components/layouts/Footer";
+import { PRODUCTS_QUERY } from "@/queries/products";
 import { useQuery } from "@apollo/client";
-import { PRODUCTS_BY_SEARCH_AND_ORGANIZATION_QUERY } from "@/queries/Products";
 
 const ProductsPage = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -42,13 +42,13 @@ const ProductsPage = () => {
       name: 'Delete',
       action: () => 'Deleted!',
     },
-  ]
+  ];
 
-  const { data, error, loading } = useQuery(PRODUCTS_BY_SEARCH_AND_ORGANIZATION_QUERY);
+  const { data, error, loading } = useQuery(PRODUCTS_QUERY);
   console.log(data, error, loading);
 
   return (
-    <div>
+    <ShowcaseLayout>
       <div className="max-w-[1120px] mt-6 mx-auto">
         <Filters
           onGridChange={setGrid}
@@ -59,8 +59,7 @@ const ProductsPage = () => {
         />
         <ProductList gridType={gridType} products={products} selectable={isSelectable} />
       </div>
-      <Footer />
-    </div>
+    </ShowcaseLayout>
   )
 }
 

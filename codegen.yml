@@ -1,0 +1,10 @@
+overwrite: true
+schema: https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql
+documents: "src/queries/**/*.{gql,graphql}"
+generates:
+  generated/schema.ts:
+    preset: "client"
+    plugins: []
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

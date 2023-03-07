@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const PRODUCT_FRAGMENT = gql`
-  fragment Product on ProductGraphqlDTO {
+  fragment ProductGraphqlDTO on ProductGraphqlDTO {
     id
     product_id
     description

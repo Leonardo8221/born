@@ -16,7 +16,11 @@ export interface TableProps {
   className?: string;
 }
 
-export const Table: FC<TableProps> = ({ tableData, columns, className = "" }) => {
+export const Table: FC<TableProps> = ({
+  tableData,
+  columns,
+  className = "",
+}) => {
   const [data, setData] = useState(() => [...tableData]);
   const rerender = useReducer(() => ({}), {})[1];
 
@@ -42,10 +46,7 @@ export const Table: FC<TableProps> = ({ tableData, columns, className = "" }) =>
   return (
     <div>
       <table
-        className={clsx(
-          "border-collapse",
-          className
-        )}
+        className={clsx("border-collapse", className)}
         style={{ gridTemplateColumns: colWidthStyle.join(" ") }}
       >
         <TableHead table={table} />

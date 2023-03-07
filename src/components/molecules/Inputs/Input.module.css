@@ -1,23 +1,23 @@
 .label {
-	@apply bg-shades-white text-shades-black;
-	padding: 0 4px;
-	font-size: 12px;
-	font-weight: 300;
-	transform-origin: top left;
-	position: absolute;
-	transform: translate(16px, -8px);
+  @apply bg-shades-white text-shades-black;
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 300;
+  transform-origin: top left;
+  position: absolute;
+  transform: translate(16px, -8px);
 }
-input:focus-visible {
-	outline: 1px dashed transparent;
+.my-input:focus-visible {
+  outline: 1px dashed transparent;
 }
 
 .defaultInputFieldCard {
-	border: 1px solid #cccccc;
+  border: 1px solid #cccccc;
 }
 .validInputFieldCard {
-	border: 1px solid #333333;
+  border: 1px solid #333333;
 }
 
 .errorInputFieldCard {
-	border: 1px solid #c55757;
+  border: 1px solid #c55757;
 }

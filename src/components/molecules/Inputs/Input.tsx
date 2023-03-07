@@ -1,7 +1,7 @@
-import { ChangeEvent, FC } from 'react';
-import clsx from 'clsx';
-import styles from './Input.module.css';
-import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
+import { ChangeEvent, FC } from "react";
+import clsx from "clsx";
+import styles from "./Input.module.css";
+import CheckIcon from "@/assets/svgs/dark/icon-check.svg";
 
 export interface InputProps {
   value: string;
@@ -27,13 +27,13 @@ const Input: FC<InputProps> = ({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     if (onChange) {
-      onChange (newValue);
+      onChange(newValue);
     }
   };
 
-  !isError && !isValid && onError ('Error');
+  !isError && !isValid && onError("Error");
 
-  const clsInputFieldCard = clsx ({
+  const clsInputFieldCard = clsx({
     [styles.validInputFieldCard]: isValid === true,
     [styles.errorInputFieldCard]: isError === true,
     [styles.defaultInputFieldCard]: !isError && !isValid,
@@ -53,7 +53,7 @@ const Input: FC<InputProps> = ({
               defaultValue={value}
               type={type}
               name={name}
-              className="w-full flex p-4 rounded text-shades-black"
+              className="my-input w-full flex p-4 rounded text-shades-black"
               onChange={handleChange}
             />
             <div className="flex items-center ml-3 mr-4 my-[15px] w-6 h-6">
@@ -65,6 +65,6 @@ const Input: FC<InputProps> = ({
       </div>
     </div>
   );
-}
+};
 
 export default Input;

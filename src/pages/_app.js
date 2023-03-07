@@ -1,9 +1,10 @@
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
-import { SessionProvider } from "next-auth/react"
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import Layout from "../components/layouts/DefaultLayout";
 import "../assets/css/global.css";
+import { getSession } from "next-auth/react";
+import AuthContext from '../components/AuthContext'
 
 // create http link to your graphql endpoint
 const httpLink = new HttpLink({
@@ -25,16 +26,16 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 // create auth link to set authorization header
-const authLink = setContext((_, { headers }) => {
-    const accessToken = localStorage.getItem("accessToken");
-    console.log(process.env.NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT)
+const authLink = setContext(async (_, { headers }) => {
+    const session = await getSession();
     return {
         headers: {
             ...headers,
-            authorization: accessToken ? `Bearer ${accessToken}` : "",
+            authorization: `Bearer ${session.token}`
         },
     };
 });
+
 
 // create apollo client instance
 const client = new ApolloClient({
@@ -44,12 +45,12 @@ const client = new ApolloClient({
 
 export default function MyApp({ Component, pageProps }) {
     return (
-        <SessionProvider session={pageProps.session}>
+        <AuthContext >
             <ApolloProvider client={client}>
                 <Layout>
                     <Component {...pageProps} />
                 </Layout>
             </ApolloProvider>
-        </SessionProvider>
+        </AuthContext>
     );
 }
