@@ -4,6 +4,8 @@ import ProductList from "@/components/page-components/common/ProductList";
 import Filters from "@/components/page-components/common/Filters";
 import { GridType } from "@/components/molecules/IconButtonGroup";
 import Footer from "@/components/layouts/Footer";
+import { useQuery } from "@apollo/client";
+import { PRODUCTS_BY_SEARCH_AND_ORGANIZATION_QUERY } from "@/queries/Products";
 
 const ProductsPage = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -41,6 +43,9 @@ const ProductsPage = () => {
       action: () => 'Deleted!',
     },
   ]
+
+  const { data, error, loading } = useQuery(PRODUCTS_BY_SEARCH_AND_ORGANIZATION_QUERY);
+  console.log(data, error, loading);
 
   return (
     <div>
