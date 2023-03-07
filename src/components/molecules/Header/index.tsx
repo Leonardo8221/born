@@ -1,3 +1,5 @@
+import clsx from "clsx";
+import Link from "next/link";
 import { FC, ReactNode } from "react";
 import { Logo } from "../../atoms/Logo";
 import { variations } from "./utils";
@@ -9,8 +11,9 @@ type Item = {
 
 export interface HeaderProps {
   items: Item[];
-  variant: keyof typeof variations;
+  variant?: keyof typeof variations;
   rightNavNode: ReactNode;
+  fixed?: boolean;
 }
 
 export interface NavItemProps extends JSX.IntrinsicAttributes {
@@ -21,23 +24,26 @@ export interface NavItemProps extends JSX.IntrinsicAttributes {
 
 const NavItem: FC<NavItemProps> = ({ label, href, variant, ...props }) => {
   return (
-    <a className={variations[variant].clsNavItem} href={href} {...props}>
+    <Link className={variations[variant].clsNavItem} href={href} {...props}>
       {label}
-    </a>
+    </Link>
   );
 };
 
 export const Header: FC<HeaderProps> = ({
   items = [],
   variant = "header1",
-  rightNavNode
+  rightNavNode,
+  fixed = false,
 }) => {
   return (
-    <>
-      <nav className={variations[variant].clsNav}>
-        <div className="flex h-full items-center">
-          <div className="px-8">
-            <Logo variant="dark" />
+    <header className={clsx('w-full z-[20] bg-shades-white', fixed ? 'fixed top-0 left-0 right-0' : 'relative')}>
+      <nav className={clsx(variations[variant].clsNav)}>
+        <div className="flex h-full items-center gap-[8px]">
+          <div className="pr-8">
+            <Link href="/">
+              <Logo variant="dark" />
+            </Link>
           </div>
           {items.map((item, index) => (
             <NavItem key={index} variant={variant} {...item} />
@@ -49,6 +55,6 @@ export const Header: FC<HeaderProps> = ({
           </div>
         )}
       </nav>
-    </>
+    </header>
   );
 };

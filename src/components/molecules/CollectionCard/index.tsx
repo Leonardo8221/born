@@ -98,32 +98,33 @@ export const CollectionCard: FC<CollectionCardProps> = ({
           className="absolute w-full h-full object-cover z-[0] rounded"
         />
         <div className={styles.cardBackground}></div>
+        <div className="relative m-auto">
+          {imageSrc && (
+              <div
+                className={clsx(
+                  clsVariations[size].innerImageSize,
+                  "rounded-md bg-neutral-100 relative border border-neutral-200"
+                )}
+              >
+                <Image
+                  src={imageSrc}
+                  alt="Collection Card"
+                  className="absolute w-full h-full object-contain p-1"
+                />
+            </div>
+          )}
+          {label && (
+            <p className={clsx("z-[1] pt-2", clsVariations[size].clsLabel)}>
+              {label}
+            </p>
+          )}
 
-        {imageSrc && (
-            <div
-              className={clsx(
-                clsVariations[size].innerImageSize,
-                "rounded-md bg-neutral-100 relative mt-[66px] border border-neutral-200"
-              )}
-            >
-              <Image
-                src={imageSrc}
-                alt="Collection Card"
-                className="absolute w-full h-full object-contain p-1"
-              />
-          </div>
-        )}
-        {label && (
-          <p className={clsx("z-[1] pt-2", clsVariations[size].clsLabel)}>
-            {label}
-          </p>
-        )}
-
-        {!!author && (
-          <div className={clsx("z-[1]", clsVariations[size].clsAuthor)}>
-            {author}
-          </div>
-        )}
+          {!!author && (
+            <div className={clsx("z-[1]", clsVariations[size].clsAuthor)}>
+              {author}
+            </div>
+          )}
+        </div>
         {editBanner && (
           <Button
             color="white"
@@ -134,10 +135,10 @@ export const CollectionCard: FC<CollectionCardProps> = ({
             Edit banner
           </Button>
         )}
+        {!!headerText && (
+          <p className={clsVariations[size].clsHeaderText}>{headerText}</p>
+        )}
       </div>
-      {!!headerText && (
-        <p className={clsVariations[size].clsHeaderText}>{headerText}</p>
-      )}
     </div>
   );
 };

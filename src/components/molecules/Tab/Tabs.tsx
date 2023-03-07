@@ -40,7 +40,7 @@ function Tabs({ tabs, className }: TabsProps) {
           ))}
         </div>
       </div>
-      <div className="py-6">
+      <div className="py-4">
         {tabs.map((tab) => (
           <div key={tab.id} className={tab.id === activeTab ? "active" : ""}>
             {tab.id === activeTab ? tab.content : null}

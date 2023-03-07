@@ -28,7 +28,7 @@ const Filters: FC<FiltersProps> = ({
   const [searchKeyword, setSearchKeyword] = useState('');
 
   return (
-    <div className="mt-[64px] flex items-center justify-between">
+    <div className="mt-4 flex items-center justify-between">
       <div className="flex items-center">
         <SearchInput
           value={searchKeyword}
