@@ -4,41 +4,7 @@ import { TagCollection } from "../../molecules/TagCollection";
 import OrderListTable from "../../organisms/Tables/OrderList";
 import { Button } from "../../molecules/Button";
 
-export const Draft = () => {
-    const orders = [
-        {
-            buyerName: "Julie McKenzie",
-            name: "Missoma X Selfridges - AW 23",
-            orderDate: "02/09/23",
-            retailerName: "Selfridges",
-            season: "Spring 23",
-            total: "33,034.00",
-        },
-        {
-            buyerName: "Julie McKenzie",
-            name: "Missoma X Selfridges - AW 23",
-            orderDate: "02/09/23",
-            retailerName: "Selfridges",
-            season: "Spring 23",
-            total: "33,034.00",
-        },
-        {
-            buyerName: "Julie McKenzie",
-            name: "Missoma X Selfridges - AW 23",
-            orderDate: "02/09/23",
-            retailerName: "Selfridges",
-            season: "Spring 23",
-            total: "33,034.00",
-        },
-        {
-            buyerName: "Julie McKenzie",
-            name: "Missoma X Selfridges - AW 23",
-            orderDate: "02/09/23",
-            retailerName: "Selfridges",
-            season: "Spring 23",
-            total: "33,034.00",
-        },
-    ];
+export const Draft = ({ orders }) => {
     return (
         <div>
             <div id="header" className="flex justify-between">
@@ -84,7 +50,7 @@ export const Draft = () => {
                     <Button variant="outlined">Export</Button>
                 </div>
             </div>
-            <OrderListTable orders={orders} />
+            <OrderListTable orders={orders?.content || []} />
         </div>
     );
 };
