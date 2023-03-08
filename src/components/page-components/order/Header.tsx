@@ -6,12 +6,14 @@ import ArrowIconLeft from "@/assets/svgs/arrow-left.svg";
 import { Heading } from "@/components/molecules/Heading";
 import Link from "next/link";
 import { Pill } from "@/components/atoms/Pill";
+import { useRouter } from "next/router";
 
 interface HeaderProps {
   heading: string;
 }
 
 const Header: FC<HeaderProps> = ({ heading }) => {
+  const router = useRouter();
   const items = [
     {
       label: "PDF",
@@ -27,9 +29,12 @@ const Header: FC<HeaderProps> = ({ heading }) => {
   return (
     <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
       <div className="flex w-[600px] justify-evenly items-center">
-        <Link href="/organization/1">
-          <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
-        </Link>
+        <ArrowIconLeft
+          height={40}
+          width={40}
+          className="cursor-pointer"
+          onClick={() => router.back()}
+        />
         <Pill label="Draft" appearance={"outlined"} size={"sm"} />
         <Heading fontWeight="light" className=" " size="sm">
           {heading}

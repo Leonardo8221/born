@@ -38,21 +38,20 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       size: 341,
       id: "name",
       cell: (info: any) => (
-        <Link href="/about">
+        <Link href={`${router.asPath}/${info.row.original.id}`}>
           <div
             className={clsx(
               "text-shades-black tracking-[0.06em] pl-4",
               fonts.text.lg
             )}
           >
-            {JSON.stringify(info.row.original.id)}
             {info.getValue()}
           </div>
         </Link>
       ),
       header: () => "Order name",
     }),
-    columnHelper.accessor("retailerName", {
+    columnHelper.accessor("retailer", {
       size: 120,
       id: "retailerName",
       cell: (info: any) => (
@@ -67,7 +66,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       ),
       header: () => "Retailer name",
     }),
-    columnHelper.accessor("buyerName", {
+    columnHelper.accessor("buyer_name", {
       size: 120,
       id: "buyerName",
       cell: (info: any) => (
@@ -112,7 +111,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       ),
       header: () => "Season",
     }),
-    columnHelper.accessor("orderDate", {
+    columnHelper.accessor("created_date", {
       size: 120,
       id: "orderDate",
       cell: (info: any) => (

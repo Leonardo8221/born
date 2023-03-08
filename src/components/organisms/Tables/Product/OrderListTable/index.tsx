@@ -12,6 +12,11 @@ export interface OrderListTableProps {
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
+  console.log(products, "products");
+
+  // const productDetails = products.map((item) => {
+  //   return item.product;
+  // });
   const columnHelper: any = createColumnHelper();
 
   const columns = [
@@ -31,14 +36,14 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
       ),
       header: () => "Product name",
     }),
-    columnHelper.accessor("colors", {
+    columnHelper.accessor("colour_families", {
       size: 122,
       id: "colors",
       cell: (info: any) => {
         const colors = info.getValue();
         return (
           <div className="flex flex-col gap-y-2">
-            {colors.map((item: any) => (
+            {colors?.map((item: any) => (
               <div key={item.label} className="flex items-center gap-x-2">
                 <div
                   className="h-4 w-4 rounded border-2 border-shades-white"

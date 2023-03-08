@@ -85,6 +85,9 @@ function OrderPreview() {
   });
   console.log({ error });
   const details = data?.orderByOrderId || {};
+  const productData = details.order_details;
+
+  console.log(productData);
 
   const columnData = {
     column1: [
@@ -170,7 +173,7 @@ function OrderPreview() {
   if (loading) {
     return <>Loading...</>;
   }
-  console.log({ details });
+  // console.log({ details });
 
   return (
     <div>
@@ -186,7 +189,7 @@ function OrderPreview() {
             column3={columnData.column3}
           />
         </div>
-        <div className="flex shadow-lg shadow-xlg-top bg-white p-6 my-7">
+        <div className="flex items-center shadow-lg shadow-xlg-top bg-white p-6 my-7">
           <Dropdown
             options={dropdownmenu}
             isValid={false}
@@ -220,7 +223,7 @@ function OrderPreview() {
           {/* <Button variant="outlined" label="Export" size="sm" /> */}
           <Pill label="Export" appearance={"outlined"} size={"md"} />
         </div>
-        <OrderListTable products={[]} />
+        <OrderListTable products={productData} />
       </div>
       <Footer />
     </div>
