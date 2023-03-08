@@ -8,7 +8,7 @@ import { PRODUCTS_QUERY } from "@/queries/products";
 import { useQuery } from "@apollo/client";
 
 const ProductsPage = () => {
-  const [gridType, setGrid] = useState<GridType>('grid');
+  const [gridType, setGrid] = useState<GridType>("grid");
   const [isSelectable, setIsSelectable] = useState(false);
 
   const filterTags = [
@@ -27,20 +27,20 @@ const ProductsPage = () => {
       size: "default",
       type: "default",
     },
-  ]
+  ];
 
   const actions = [
     {
-      name: 'Add to draft order',
-      action: () => 'Draft order added!',
+      name: "Add to draft order",
+      action: () => "Draft order added!",
     },
     {
-      name: 'Add to collection',
-      action: () => 'Added to collection!',
+      name: "Add to collection",
+      action: () => "Added to collection!",
     },
     {
-      name: 'Delete',
-      action: () => 'Deleted!',
+      name: "Delete",
+      action: () => "Deleted!",
     },
   ];
 
@@ -57,10 +57,14 @@ const ProductsPage = () => {
           filterTags={filterTags}
           actions={actions}
         />
-        <ProductList gridType={gridType} products={products} selectable={isSelectable} />
+        <ProductList
+          gridType={gridType}
+          products={products}
+          selectable={isSelectable}
+        />
       </div>
     </ShowcaseLayout>
-  )
-}
+  );
+};
 
 export default ProductsPage;

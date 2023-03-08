@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 import clsx from "clsx";
 import styles from "./DropdownMenu.module.css";
 import { Transition } from "@headlessui/react";
-import { Button, ButtonProps } from '../Button';
-import { Icon } from '../Icon';
+import { Button, ButtonProps } from "../Button";
+import { Icon } from "../Icon";
 import { Avatar } from "../../atoms/avatar";
 import { fonts } from "../../../config/fonts";
 import { dropdownVariants } from "./utils";
@@ -13,12 +13,12 @@ type Option = {
   label: string;
   value: string;
   action: () => void;
-}
+};
 
 export interface DropdownMenuProps {
   avatarSrc?: string;
   altText?: string;
-  buttonLabel?: string,
+  buttonLabel?: string;
   label?: string;
   variant?: keyof typeof dropdownVariants;
   options: Option[];
@@ -40,7 +40,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
   };
 
   const renderButtonVariants = () => {
-    if (variant === 'button') {
+    if (variant === "button") {
       return (
         <Button
           label={label}
@@ -50,7 +50,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
         >
           <Icon name="icon-chevron-down" />
         </Button>
-      )
+      );
     }
 
     return (
@@ -59,14 +59,14 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
         className="relaive flex items-center focus:outline-none"
         onClick={toggleDropdown}
       >
-        {
-          variant === 'avatar'
-            ? <Avatar imageSrc={avatarSrc} altText={altText} />
-            : <Icon name="icon-ellipsis" />
-        }
+        {variant === "avatar" ? (
+          <Avatar imageSrc={avatarSrc} altText={altText} />
+        ) : (
+          <Icon name="icon-ellipsis" />
+        )}
       </button>
-    )
-  }
+    );
+  };
 
   return (
     <div className="relative flex">
@@ -104,8 +104,8 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
                 key={option.value}
                 className="w-[calc(100%-16px)] text-left mx-2 py-2 my-1 rounded-[4px] text-shades-black hover:bg-neutral-200 focus:outline-none focus:bg-neutral-200"
                 onClick={() => {
-                  setIsOpen(false);
                   option.action();
+                  setIsOpen(false);
                 }}
                 role="menuitem"
               >

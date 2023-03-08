@@ -4,42 +4,54 @@ import { Confirmed } from "../../../../components/page-components/order/confirme
 import Tabs from "../../../../components/molecules/Tab/Tabs";
 import { Heading } from "../../../../components/molecules/Heading";
 import { gql, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
+import ShowcaseLayout from "@/components/layouts/ShowcaseLayout";
+
+const GET_ORDERS = gql`
+  query GetOrders($organizationId: BigInteger!, $start: Int!, $rows: Int!) {
+    ordersBySearch(
+      organizationId: $organizationId
+      start: $start
+      rows: $rows
+    ) {
+      content {
+        id
+        name
+        total
+        billing_address
+        buyer_name
+        created_date
+        delivery_address
+        discount
+        email_address
+        last_modified_by
+        last_updated
+        note
+        payment_terms
+        pricing_condition
+        purchase_order
+        retailer
+        approved
+        cancelled
+        confirmed
+        size
+        retailer
+      }
+      total_pages
+      total_elements
+      number_of_elements
+      size
+    }
+  }
+`;
 
 export default function OrderManagement() {
-  const GET_ORDERS = gql`
-    query {
-      ordersBySearch(organizationId: 1, start: 0, rows: 10) {
-        content {
-          id
-          name
-          total
-          billing_address
-          buyer_name
-          created_date
-          delivery_address
-          discount
-          email_address
-          last_modified_by
-          last_updated
-          note
-          payment_terms
-          pricing_condition
-          purchase_order
-          retailer
-          approved
-          cancelled
-          confirmed
-          size
-          retailer
-        }
-        total_pages
-        total_elements
-        number_of_elements
-        size
-      }
-    }
-  `;
-  const { data, error, loading } = useQuery(GET_ORDERS);
+  const router = useRouter();
+  const organizationId = Number(router.query.id);
+
+  const { data, error, loading } = useQuery(GET_ORDERS, {
+    variables: { organizationId: organizationId, start: 0, rows: 10 },
+  });
   console.log({ error });
 
   const tabs = [
@@ -58,11 +70,13 @@ export default function OrderManagement() {
   }
 
   return (
-    <div className="container">
-      <Heading fontWeight="light" size={"sm"} className="">
-        Order Management
-      </Heading>
-      <Tabs tabs={tabs} />
-    </div>
+    <ShowcaseLayout>
+      <div className="max-w-[1120px] mt-6 mx-auto">
+        <Heading fontWeight="light" size={"sm"} className="">
+          Order Management
+        </Heading>
+        <Tabs tabs={tabs} />
+      </div>
+    </ShowcaseLayout>
   );
 }

@@ -5,12 +5,14 @@ import { Table } from "../../Table";
 import { DropdownMenu } from "@/components/molecules/DropdownMenu";
 import { fonts } from "@/config/fonts";
 import { Button } from "@/components/molecules/Button";
-
+import { useRouter } from "next/router";
+import Link from "next/link";
 export interface OrderListTableProps {
   orders: any[];
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
+  const router = useRouter();
   const columnHelper: any = createColumnHelper();
 
   const options = [
@@ -29,12 +31,6 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       value: "delete",
       action: () => console.log("Deleted!"),
     },
-    {
-      label: "Details",
-      value: "details",
-      action: () => console.log("Details Added!"),
-      onclick: () => console.log("Details Clicked"),
-    },
   ];
 
   const columns = [
@@ -42,14 +38,17 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       size: 341,
       id: "name",
       cell: (info: any) => (
-        <div
-          className={clsx(
-            "text-shades-black tracking-[0.06em] pl-4",
-            fonts.text.lg
-          )}
-        >
-          {info.getValue()}
-        </div>
+        <Link href="/about">
+          <div
+            className={clsx(
+              "text-shades-black tracking-[0.06em] pl-4",
+              fonts.text.lg
+            )}
+          >
+            {JSON.stringify(info.row.original.id)}
+            {info.getValue()}
+          </div>
+        </Link>
       ),
       header: () => "Order name",
     }),
