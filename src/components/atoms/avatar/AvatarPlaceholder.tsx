@@ -8,7 +8,7 @@ const AvatarPlaceholder: FC = (): JSX.Element => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_134_2210)">
+    <g clipPath="url(#clip0_134_2210)">
       <rect
         x="1"
         y="1"
@@ -36,8 +36,8 @@ const AvatarPlaceholder: FC = (): JSX.Element => (
         y2="41"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="white" />
-        <stop offset="1" stop-color="#DBDBDB" />
+        <stop stopColor="white" />
+        <stop offset="1" stopColor="#DBDBDB" />
       </linearGradient>
       <linearGradient
         id="paint1_linear_134_2210"
@@ -47,8 +47,8 @@ const AvatarPlaceholder: FC = (): JSX.Element => (
         y2="68"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#DBDBDB" />
-        <stop offset="1" stop-color="white" stop-opacity="0.01" />
+        <stop stopColor="#DBDBDB" />
+        <stop offset="1" stopColor="white" stopOpacity="0.01" />
       </linearGradient>
       <linearGradient
         id="paint2_linear_134_2210"
@@ -58,8 +58,8 @@ const AvatarPlaceholder: FC = (): JSX.Element => (
         y2="68"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#DBDBDB" />
-        <stop offset="1" stop-color="white" stop-opacity="0.01" />
+        <stop stopColor="#DBDBDB" />
+        <stop offset="1" stopColor="white" stopOpacity="0.01" />
       </linearGradient>
       <clipPath id="clip0_134_2210">
         <rect x="1" y="1" width="40" height="40" rx="20" fill="white" />
