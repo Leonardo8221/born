@@ -126,7 +126,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
     <Table
       tableData={products}
       columns={columns}
-      className="w-full max-w-[1120px] [&>tbody>tr>td]:pt-4"
+      className="w-full [&>tbody>tr>td]:pt-4"
     />
   );
 };

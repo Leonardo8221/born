@@ -41,14 +41,10 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className="flex justify-center">
-      <div className=" m-10">
+      <div className=" my-10 mx-2">
         <div className="relative">
           <label className={styles.label}>{label}</label>
-          <div
-            className={
-              `border  rounded flex h-[56px] w-[356px] ` + clsInputFieldCard
-            }
-          >
+          <div className={`border rounded flex h-[56px] ` + clsInputFieldCard}>
             <input
               defaultValue={value}
               type={type}

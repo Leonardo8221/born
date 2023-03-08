@@ -5,8 +5,7 @@ import Tabs from "../../../../components/molecules/Tab/Tabs";
 import { Heading } from "../../../../components/molecules/Heading";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import Footer from "@/components/layouts/Footer";
-import { Header } from "@/components/molecules/Header";
+import ShowcaseLayout from "@/components/layouts/ShowcaseLayout";
 
 const GET_ORDERS = gql`
   query GetOrders($organizationId: BigInteger!, $start: Int!, $rows: Int!) {
@@ -71,15 +70,13 @@ export default function OrderManagement() {
   }
 
   return (
-    <div>
-      <Header rightNavNode={null} items={[{ label: "Retailers", href: "#" }]} />
+    <ShowcaseLayout>
       <div className="max-w-[1120px] mt-6 mx-auto">
         <Heading fontWeight="light" size={"sm"} className="">
           Order Management
         </Heading>
         <Tabs tabs={tabs} />
       </div>
-      <Footer />
-    </div>
+    </ShowcaseLayout>
   );
 }

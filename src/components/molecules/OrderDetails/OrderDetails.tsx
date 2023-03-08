@@ -33,7 +33,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ column1, column2, column3 }) => {
           </div>
         ))}
       </div>
-      <div className="container mx-auto px-2 py-10">
+      <div className="container mx-auto">
         {column2.map((item, index) => (
           <div key={index} className="flex">
             <div className="text-neutral-600 w-[132px] mx-2 my-1.5">
@@ -45,7 +45,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ column1, column2, column3 }) => {
           </div>
         ))}
       </div>
-      <div className="container mx-auto  px-2 py-10">
+      <div className="container mx-auto">
         {column3.map((item, index) => (
           <div key={index} className="flex">
             <div className="text-neutral-600 w-[132px] mx-2 my-1.5">

@@ -59,7 +59,10 @@ const Dropdown: FC<DropdownProps> = ({ label, onChange, options, isValid }) => {
   return (
     <div ref={dropdownRef}>
       <div
-        className={clsx(`flex justify-center m-10 `, theme.fonts.text["base"])}
+        className={clsx(
+          `flex justify-center my-10 mx-2`,
+          theme.fonts.text["base"]
+        )}
       >
         <div onClick={handleClick}>
           <Listbox value={selected} onChange={handleChange}>

@@ -4,11 +4,13 @@ import OrderDetails from "../../../../components/molecules/OrderDetails/OrderDet
 import Dropdown from "../../../../components/molecules/Dropdown";
 import Input from "../../../../components/molecules/Inputs/Input";
 import { TotalQuantity } from "../../../../components/atoms/TotalQuantity/TotalQuantity";
-import { Button } from "../../../../components/molecules/Button";
+// import { Button } from "../../../../components/molecules/Button";
+import { Pill } from "../../../../components/atoms/Pill";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Heading } from "../../../../components/molecules/Heading";
 import Footer from "@/components/layouts/Footer";
+import Header from "@/components/page-components/order/Header";
 
 const GET_ORDER_BY_ID = gql`
   query GetOrderByID($orderId: BigInteger!) {
@@ -168,23 +170,26 @@ function OrderPreview() {
   if (loading) {
     return <>Loading...</>;
   }
+  console.log({ details });
 
   return (
     <div>
-      <div className="max-w-[1120px] mt-6 mx-auto">
-        <Heading fontWeight="light" size={"sm"} className="">
-          Order Preview
-        </Heading>
-        Order Preview
-        <OrderDetails
-          column1={columnData.column1}
-          column2={columnData.column2}
-          column3={columnData.column3}
-        />
-        <div className="flex flex-wrap">
+      <Header heading={"Missoma X Selfridges - AW23"} />
+      <div className="max-w-[1240px] mx-auto min-h-[calc(100vh-170px)] pt-[72px]">
+        <div className="mb-6 flex flex-row-reverse">
+          <Pill label="Export" appearance={"outlined"} size={"md"} />
+        </div>
+        <div className="w-[1000px]">
+          <OrderDetails
+            column1={columnData.column1}
+            column2={columnData.column2}
+            column3={columnData.column3}
+          />
+        </div>
+        <div className="flex shadow-lg shadow-xlg-top bg-white p-6 my-7">
           <Dropdown
             options={dropdownmenu}
-            isValid={true}
+            isValid={false}
             label="Select Category"
             onChange={handleDropdownChange}
           />
@@ -211,8 +216,9 @@ function OrderPreview() {
           <TotalQuantity title="Total Quantity" value={30} />
           <TotalQuantity title="Total price" value={3345.0} />
         </div>
-        <div className="mb-6">
-          <Button variant="outlined" label="Select" size="sm" />
+        <div className="mb-6 flex flex-row-reverse">
+          {/* <Button variant="outlined" label="Export" size="sm" /> */}
+          <Pill label="Export" appearance={"outlined"} size={"md"} />
         </div>
         <OrderListTable products={[]} />
       </div>
