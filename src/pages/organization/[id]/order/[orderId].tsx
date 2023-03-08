@@ -4,77 +4,12 @@ import OrderDetails from "../../../../components/molecules/OrderDetails/OrderDet
 import Dropdown from "../../../../components/molecules/Dropdown";
 import Input from "../../../../components/molecules/Inputs/Input";
 import { TotalQuantity } from "../../../../components/atoms/TotalQuantity/TotalQuantity";
-// import { Button } from "../../../../components/molecules/Button";
 import { Pill } from "../../../../components/atoms/Pill";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { Heading } from "../../../../components/molecules/Heading";
 import Footer from "@/components/layouts/Footer";
 import Header from "@/components/page-components/order/Header";
-
-const GET_ORDER_BY_ID = gql`
-  query GetOrderByID($orderId: BigInteger!) {
-    orderByOrderId(orderId: $orderId) {
-      id
-      billing_address
-      buyer_name
-      created_date
-      delivery_address
-      discount
-      email_address
-      last_modified_by
-      last_updated
-      note
-      payment_terms
-      pricing_condition
-      purchase_order
-      retailer
-      approved
-      cancelled
-      confirmed
-      size
-      retailer
-      order_details {
-        note
-        quantity
-        product {
-          id
-          description
-          colour_code
-          colour_name
-          colour_families
-          associated_prices {
-            currency
-            exworks
-            landed
-            retail
-          }
-          first_category
-          second_category
-          third_category
-          fourth_category
-          compositions
-          country_of_origin
-          delivery_lead_time
-          delivery_window_end_date
-          delivery_window_start_date
-          description
-          upc
-          style_number
-          style_id
-          size_type
-          size_options
-          size_category
-          season
-          min_order_value
-          min_order_quantity
-          measurements
-          materials
-        }
-      }
-    }
-  }
-`;
+import { GET_ORDER_BY_ID } from "../../../../queries/orders/details";
 
 function OrderPreview() {
   const router = useRouter();
@@ -173,7 +108,6 @@ function OrderPreview() {
   if (loading) {
     return <>Loading...</>;
   }
-  // console.log({ details });
 
   return (
     <div>
@@ -220,7 +154,6 @@ function OrderPreview() {
           <TotalQuantity title="Total price" value={3345.0} />
         </div>
         <div className="mb-6 flex flex-row-reverse">
-          {/* <Button variant="outlined" label="Export" size="sm" /> */}
           <Pill label="Export" appearance={"outlined"} size={"md"} />
         </div>
         <OrderListTable products={productData} />
