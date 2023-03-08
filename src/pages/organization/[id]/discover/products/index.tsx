@@ -4,9 +4,10 @@ import ProductList from "@/components/page-components/common/ProductList";
 import Filters from "@/components/page-components/common/Filters";
 import { GridType } from "@/components/molecules/IconButtonGroup";
 import Footer from "@/components/layouts/Footer";
+import Header from "@/components/molecules/Modal/Header";
 
 const ProductsPage = () => {
-  const [gridType, setGrid] = useState<GridType>('grid');
+  const [gridType, setGrid] = useState<GridType>("grid");
   const [isSelectable, setIsSelectable] = useState(false);
 
   const filterTags = [
@@ -25,22 +26,22 @@ const ProductsPage = () => {
       size: "default",
       type: "default",
     },
-  ]
+  ];
 
   const actions = [
     {
-      name: 'Add to draft order',
-      action: () => 'Draft order added!',
+      name: "Add to draft order",
+      action: () => "Draft order added!",
     },
     {
-      name: 'Add to collection',
-      action: () => 'Added to collection!',
+      name: "Add to collection",
+      action: () => "Added to collection!",
     },
     {
-      name: 'Delete',
-      action: () => 'Deleted!',
+      name: "Delete",
+      action: () => "Deleted!",
     },
-  ]
+  ];
 
   return (
     <div>
@@ -52,11 +53,15 @@ const ProductsPage = () => {
           filterTags={filterTags}
           actions={actions}
         />
-        <ProductList gridType={gridType} products={products} selectable={isSelectable} />
+        <ProductList
+          gridType={gridType}
+          products={products}
+          selectable={isSelectable}
+        />
       </div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default ProductsPage;

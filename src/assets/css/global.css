@@ -21,30 +21,3 @@ body {
 * {
   box-sizing: border-box;
 }
-
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  /* padding: 20px 20px; */
-}
-
-@media only screen and (min-width: 768px) {
-  .container {
-    max-width: 720px;
-    /* padding: 20px 30px; */
-  }
-}
-
-@media only screen and (min-width: 992px) {
-  .container {
-    max-width: 960px;
-    /* padding: 24px 50px; */
-  }
-}
-
-@media only screen and (min-width: 1200px) {
-  .container {
-    max-width: 1140px;
-    /* padding: 32px 70px; */
-  }
-}

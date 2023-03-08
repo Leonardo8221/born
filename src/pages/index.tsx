@@ -3,6 +3,7 @@ import styles from "../assets/css/page.module.css";
 
 export default function Home() {
   const { data: session, status } = useSession();
+  console.log({ session });
 
   if (status === "loading") {
     return <div>Loading...</div>;

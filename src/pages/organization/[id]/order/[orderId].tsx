@@ -7,6 +7,8 @@ import { TotalQuantity } from "../../../../components/atoms/TotalQuantity/TotalQ
 import { Button } from "../../../../components/molecules/Button";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
+import { Heading } from "../../../../components/molecules/Heading";
+import Footer from "@/components/layouts/Footer";
 
 const GET_ORDER_BY_ID = gql`
   query GetOrderByID($orderId: BigInteger!) {
@@ -76,41 +78,45 @@ function OrderPreview() {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
 
+  const { loading, error, data } = useQuery(GET_ORDER_BY_ID, {
+    variables: { orderId: orderId },
+  });
+  console.log({ error });
+  const details = data?.orderByOrderId || {};
+
   const columnData = {
     column1: [
       {
         key: "Purchase order",
-        value: "092356",
+        value: details?.purchase_order,
       },
       {
         key: "Retailer",
-        value: "Selfrdiges",
+        value: details?.retailer,
       },
       {
         key: "Buyer name",
-        value: "Julie McKenzie",
+        value: details?.buyer_name,
       },
       {
         key: "Email address",
-        value: "jem@selfridges.com",
+        value: details?.email_address,
       },
     ],
     column2: [
       {
         key: "Billing address",
-        value:
-          "Yox Net-A-Porter Group SPA (DC4) C/O Class S.P.A NET-A-PORTER Inbound Stock Via Privata Paolo Baffi, 2 Landriano (Pavia), 27015 Italy",
+        value: details?.billing_address,
       },
       {
         key: "Delivery address",
-        value:
-          "Yox Net-A-Porter Group SPA (DC4) C/O Class S.P.A NET-A-PORTER Inbound Stock Via Privata Paolo Baffi, 2 Landriano (Pavia), 27015 Italy",
+        value: details?.delivery_address,
       },
     ],
     column3: [
       {
         key: "Payment terms",
-        value: "Net 60",
+        value: details?.payment_terms,
       },
       {
         key: "Delivery lead time",
@@ -118,7 +124,7 @@ function OrderPreview() {
       },
       {
         key: "Last updated",
-        value: "09/03/2023",
+        value: details?.last_updated,
       },
       {
         key: "Last modified",
@@ -148,10 +154,6 @@ function OrderPreview() {
       isDisabled: false,
     },
   ];
-  const { loading, error, data } = useQuery(GET_ORDER_BY_ID, {
-    variables: { orderId: orderId },
-  });
-  console.log({ data, error, loading });
 
   const handleDropdownChange = () => {
     console.log("DropDown Changed");
@@ -163,46 +165,58 @@ function OrderPreview() {
     console.log("Input Changes Handled");
   };
 
+  if (loading) {
+    return <>Loading...</>;
+  }
+
   return (
-    <div className="container">
-      Order Preview
-      <OrderDetails
-        column1={columnData.column1}
-        column2={columnData.column2}
-        column3={columnData.column3}
-      />
-      <div className="flex flex-wrap">
-        <Dropdown
-          options={dropdownmenu}
-          isValid={true}
-          label="Select Category"
-          onChange={handleDropdownChange}
+    <div>
+      <div className="max-w-[1120px] mt-6 mx-auto">
+        <Heading fontWeight="light" size={"sm"} className="">
+          Order Preview
+        </Heading>
+        Order Preview
+        <OrderDetails
+          column1={columnData.column1}
+          column2={columnData.column2}
+          column3={columnData.column3}
         />
-        <Input
-          value="90"
-          label="Discount"
-          type="text"
-          name="Brand"
-          isError={false}
-          isValid={false}
-          onError={handleError}
-          onChange={handleChange}
-        />
-        <Input
-          value="100"
-          label="Discount"
-          type="text"
-          name="Brand"
-          isError={false}
-          isValid={false}
-          onError={handleError}
-          onChange={handleChange}
-        />
-        <TotalQuantity title="Total Quantity" value={30} />
-        <TotalQuantity title="Total price" value={3345.0} />
+        <div className="flex flex-wrap">
+          <Dropdown
+            options={dropdownmenu}
+            isValid={true}
+            label="Select Category"
+            onChange={handleDropdownChange}
+          />
+          <Input
+            value="90"
+            label="Discount"
+            type="text"
+            name="Brand"
+            isError={false}
+            isValid={false}
+            onError={handleError}
+            onChange={handleChange}
+          />
+          <Input
+            value="100"
+            label="Discount"
+            type="text"
+            name="Brand"
+            isError={false}
+            isValid={false}
+            onError={handleError}
+            onChange={handleChange}
+          />
+          <TotalQuantity title="Total Quantity" value={30} />
+          <TotalQuantity title="Total price" value={3345.0} />
+        </div>
+        <div className="mb-6">
+          <Button variant="outlined" label="Select" size="sm" />
+        </div>
+        <OrderListTable products={[]} />
       </div>
-      <Button variant="outlined" label="Export" />
-      <OrderListTable products={[]} />
+      <Footer />
     </div>
   );
 }
