@@ -1,10 +1,15 @@
 overwrite: true
-schema: https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql
-documents: "src/queries/**/*.{gql,graphql}"
+schema: 
+  - https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql:
+      headers:
+        Authorization: 'Bearer <Access Token Here>'
+documents: "src/queries/**/*.{ts,tsx,js,jsx}"
 generates:
-  generated/schema.ts:
-    preset: "client"
-    plugins: []
-  ./graphql.schema.json:
+  ./src/generated/types.ts:
     plugins:
-      - "introspection"
+      - typescript
+      - typescript-operations
+
+hooks:
+  afterAllFileWrite:
+    - prettier --write
