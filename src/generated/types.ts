@@ -369,6 +369,115 @@ export type ProductGraphqlDtoFragment = {
   } | null> | null;
 };
 
+export type GetOrderByIdQueryVariables = Exact<{
+  orderId: Scalars["BigInteger"];
+}>;
+
+export type GetOrderByIdQuery = {
+  __typename?: "Query";
+  orderByOrderId?: {
+    __typename?: "OrderGraphqlDTO";
+    id?: any | null;
+    billing_address?: string | null;
+    buyer_name?: string | null;
+    created_date?: any | null;
+    delivery_address?: string | null;
+    discount?: any | null;
+    email_address?: string | null;
+    last_modified_by?: string | null;
+    last_updated?: any | null;
+    note?: string | null;
+    payment_terms?: string | null;
+    pricing_condition?: string | null;
+    purchase_order?: string | null;
+    retailer?: string | null;
+    approved: boolean;
+    cancelled: boolean;
+    confirmed: boolean;
+    size?: string | null;
+    order_details?: Array<{
+      __typename?: "OrderDetailGraphqlDTO";
+      note?: string | null;
+      quantity?: number | null;
+      product?: {
+        __typename?: "ProductGraphqlDTO";
+        id?: any | null;
+        description?: string | null;
+        colour_code?: string | null;
+        colour_name?: string | null;
+        colour_families?: Array<string | null> | null;
+        first_category?: string | null;
+        second_category?: string | null;
+        third_category?: string | null;
+        fourth_category?: string | null;
+        compositions?: Array<string | null> | null;
+        country_of_origin?: string | null;
+        delivery_lead_time?: number | null;
+        delivery_window_end_date?: any | null;
+        delivery_window_start_date?: any | null;
+        upc?: string | null;
+        style_number?: string | null;
+        style_id?: string | null;
+        size_type?: string | null;
+        size_options?: Array<string | null> | null;
+        size_category?: string | null;
+        season?: string | null;
+        min_order_value?: number | null;
+        min_order_quantity?: number | null;
+        measurements?: Array<string | null> | null;
+        materials?: Array<string | null> | null;
+        associated_prices?: Array<{
+          __typename?: "PriceGraphqlDTO";
+          currency?: string | null;
+          exworks?: any | null;
+          landed?: any | null;
+          retail?: any | null;
+        } | null> | null;
+      } | null;
+    } | null> | null;
+  } | null;
+};
+
+export type GetOrdersQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+  start: Scalars["Int"];
+  rows: Scalars["Int"];
+}>;
+
+export type GetOrdersQuery = {
+  __typename?: "Query";
+  ordersBySearch?: {
+    __typename?: "PageWrapper_OrderGraphqlDTO";
+    total_pages: number;
+    total_elements: any;
+    number_of_elements: number;
+    size: number;
+    content?: Array<{
+      __typename?: "OrderGraphqlDTO";
+      id?: any | null;
+      name?: string | null;
+      total?: any | null;
+      billing_address?: string | null;
+      buyer_name?: string | null;
+      created_date?: any | null;
+      delivery_address?: string | null;
+      discount?: any | null;
+      email_address?: string | null;
+      last_modified_by?: string | null;
+      last_updated?: any | null;
+      note?: string | null;
+      payment_terms?: string | null;
+      pricing_condition?: string | null;
+      purchase_order?: string | null;
+      retailer?: string | null;
+      approved: boolean;
+      cancelled: boolean;
+      confirmed: boolean;
+      size?: string | null;
+    } | null> | null;
+  } | null;
+};
+
 export type GetUserWithOrganizationsAndUpdateLastLoggedInDateQueryVariables =
   Exact<{ [key: string]: never }>;
 

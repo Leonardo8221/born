@@ -5,16 +5,13 @@ import { Table } from "../../Table";
 import { DropdownMenu } from "@/components/molecules/DropdownMenu";
 import { fonts } from "@/config/fonts";
 import { Button } from "@/components/molecules/Button";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { OrderGraphqlDto } from "@/generated/types";
 export interface OrderListTableProps {
-  orders: any[];
+  orders: OrderGraphqlDto[];
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
-  // console.log(orders);
-
-  const router = useRouter();
   const columnHelper: any = createColumnHelper();
 
   const options = [
@@ -40,7 +37,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       size: 341,
       id: "name",
       cell: (info: any) => (
-        <Link href={`${router.asPath}/${info.row.original.id}`}>
+        <Link href={`${location.pathname}/${info.row.original.id}`}>
           <div
             className={clsx(
               "text-shades-black tracking-[0.06em] pl-4",

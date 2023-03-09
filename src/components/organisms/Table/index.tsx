@@ -1,17 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-import { FC, useMemo, useReducer, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import clsx from "clsx";
-import {
-  // flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { TableHead } from "@/components/molecules/TableHead";
 import { TableBody } from "@/components/molecules/TableBody";
+import { OrderGraphqlDto } from "@/generated/types";
 
 export interface TableProps {
-  tableData: any[];
+  tableData: OrderGraphqlDto[];
   columns: any[];
   className?: string;
 }
@@ -21,9 +16,7 @@ export const Table: FC<TableProps> = ({
   columns,
   className = "",
 }) => {
-  const [data, setData] = useState(() => [...tableData]);
-  const rerender = useReducer(() => ({}), {})[1];
-
+  const [data, setData] = useState(tableData);
   const table = useReactTable({
     data,
     columns,

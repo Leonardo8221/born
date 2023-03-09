@@ -9,28 +9,30 @@ import Badges from "../Badges";
 import Modal from "@/components/molecules/Modal";
 import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
 import { Button } from "@/components/molecules/Button";
+import ProductImage from "@/assets/images/products/product.png";
+import { OrderDetailGraphqlDto } from "@/generated/types";
 
-export interface OrderListTableProps {
-  products: any[];
+interface OrderDetails {
+  products: OrderDetailGraphqlDto[];
 }
 
-const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
-  console.log(products);
+const OrderListTable: FC<OrderDetails> = ({ products }) => {
+  console.log(products, "orderByOrderId");
 
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
 
   const columns = [
     columnHelper.accessor((row: any) => row, {
-      size: 222,
+      size: 221,
       id: "name",
       cell: ({ row }: any) => (
         <div>
           <ImageText
-            title={row?.original?.product?.description || ""}
-            subTitle={row?.original?.title || ""}
-            imgSrc={require("../../../../../assets/images/products/product-1.png")}
-            altText={row?.original?.title + " logo"}
+            title={row?.original?.product?.upc || ""}
+            subTitle={row?.original?.product?.title || ""}
+            altText={row?.original?.product?.title + "logo"}
+            imgSrc={ProductImage}
             variant="product"
           />
         </div>
@@ -41,20 +43,19 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
       size: 122,
       id: "colors",
       cell: ({ row }: any) => {
+        const colors = row?.original?.product?.colour_families || [];
         return (
           <div className="flex flex-col gap-y-2">
-            {Array.isArray(row?.product?.colour_families) &&
-              row?.original?.product?.colour_families.map(
-                ({ item, index }: any) => (
-                  <div key={index} className="flex items-center gap-x-2">
-                    <div className="h-4 w-4 rounded border-2 border-shades-white"></div>
-                    <span className="text-[#000]">
-                      {/* {row?.origin?.product?.colour_name} */}
-                      {item}
-                    </span>
-                  </div>
-                )
-              )}
+            {Array.isArray(colors) &&
+              colors.map((item: any) => (
+                <div key={item} className="flex items-center gap-x-2">
+                  <div
+                    className="h-4 w-4 rounded border-2 border-shades-white"
+                    style={item && { backgroundColor: `${item}` }}
+                  />
+                  <span>{item}</span>
+                </div>
+              ))}
           </div>
         );
       },
@@ -134,7 +135,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
   return (
     <Fragment>
       <Table
-        tableData={products?.length ? products : []}
+        tableData={products}
         columns={columns}
         className="w-full [&>tbody>tr>td]:pt-4"
       />

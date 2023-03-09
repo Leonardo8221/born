@@ -21,7 +21,6 @@ function OrderPreview() {
   });
   console.log({ error });
   const details = data?.orderByOrderId || {};
-  const productData = details.order_details;
 
   const columnData = {
     column1: [
@@ -155,7 +154,7 @@ function OrderPreview() {
         <div className="mb-6 pl-[1140px]">
           <Button variant="outlined">Select</Button>
         </div>
-        <OrderListTable products={productData} />
+        <OrderListTable products={details.order_details} />
       </div>
       <Footer />
     </div>

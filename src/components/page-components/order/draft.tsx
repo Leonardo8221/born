@@ -1,10 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 import { SearchInput } from "../../molecules/SearchInput";
 import { TagCollection } from "../../molecules/TagCollection";
 import OrderListTable from "../../organisms/Tables/OrderList";
 import { Button } from "../../molecules/Button";
+import { OrderGraphqlDto } from "@/generated/types";
 
-export const Draft = ({ orders }: any) => {
+interface DraftTableProps {
+  content: OrderGraphqlDto[];
+}
+
+export const Draft: FC<DraftTableProps> = ({ content }) => {
   return (
     <div>
       <div id="header" className="flex justify-between">
@@ -51,7 +56,7 @@ export const Draft = ({ orders }: any) => {
           <Button variant="outlined">Export</Button>
         </div>
       </div>
-      <OrderListTable orders={orders?.content || []} />
+      <OrderListTable orders={content} />
     </div>
   );
 };

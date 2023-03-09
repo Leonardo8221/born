@@ -16,12 +16,14 @@ export default function OrderManagement() {
   const { data, error, loading } = useQuery(GET_ORDERS, {
     variables: { organizationId: organizationId, start: 0, rows: 10 },
   });
+  const ordersBySearch = data?.ordersBySearch?.content || [];
+  console.log(data);
 
   const tabs = [
     {
       id: 1,
       label: "Draft",
-      content: <Draft orders={data?.ordersBySearch} />,
+      content: <Draft content={ordersBySearch} />,
     },
     { id: 2, label: "Confirmed", content: <Confirmed /> },
     { id: 3, label: "Approved" },
