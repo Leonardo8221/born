@@ -1,4 +1,5 @@
 import Tabs from "@/components/molecules/Tab/Tabs";
+import CarriedCurrencies from "@/components/page-components/marketing/CarriedCurrencies";
 import Marketing from "@/components/page-components/marketing/Marketing";
 import Showcase from "@/components/page-components/marketing/Showcase";
 import TermsAndConditions from "@/components/page-components/marketing/TermsAndConditions";
@@ -31,7 +32,7 @@ const MarketingPage = () => {
 		{
 			id: 2,
 			label: "Carried currencies",
-			content: <p>Carried currencies</p>,
+			content: <CarriedCurrencies />,
 		},
 	];
 

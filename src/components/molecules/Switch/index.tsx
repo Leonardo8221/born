@@ -9,10 +9,11 @@ import {
 } from './utils';
 
 export interface SwitchProps {
-  label?: string;
-  checked?: boolean;
-  onChange?: (checked: boolean) => void;
-  position?: 'start' | 'end';
+	label?: string;
+	checked?: boolean;
+	onChange?: (checked: boolean) => void;
+	position?: "start" | "end";
+  classNameLabel?: string;
 }
 
 const Switch: FC<SwitchProps> = ({
@@ -20,6 +21,7 @@ const Switch: FC<SwitchProps> = ({
   checked,
   onChange,
   position = 'end',
+  classNameLabel
 }) => {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -35,7 +37,7 @@ const Switch: FC<SwitchProps> = ({
   return (
     <div className={clsx("inline-flex gap-x-3 items-center", position === 'start' && 'flex-row-reverse')}>
       {label && (
-        <label className={clsx('inline-block min-w-[275px] mt-px text-shades-black', fonts.text.lg)}>{label}</label>
+        <label className={clsx('inline-block min-w-[275px] mt-px text-shades-black', fonts.text.lg, classNameLabel)}>{label}</label>
       )}
       <div className={clsx(defaultSwitchClasses, isChecked && toggleSwitchClasses)} onClick={handleToggle}>
         <div
