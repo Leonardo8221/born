@@ -311,6 +311,21 @@ export type UserOrganizationGraphqlDto = {
   user_entity: UserGraphqlDto;
 };
 
+export type OrganizationGraphqlDtoFragment = {
+  __typename?: "OrganizationGraphqlDTO";
+  id?: any | null;
+  name?: string | null;
+  address?: string | null;
+  description?: string | null;
+  city?: string | null;
+  country_of_origin?: string | null;
+  instagram_link?: string | null;
+  organization_type?: OrganizationType | null;
+  terms_and_conditions?: string | null;
+  website_link?: string | null;
+  year_of_inception?: string | null;
+};
+
 export type ProductGraphqlDtoFragment = {
   __typename?: "ProductGraphqlDTO";
   id?: any | null;
@@ -352,6 +367,30 @@ export type ProductGraphqlDtoFragment = {
     id?: any | null;
     name?: string | null;
   } | null> | null;
+};
+
+export type GetUserWithOrganizationsAndUpdateLastLoggedInDateQueryVariables =
+  Exact<{ [key: string]: never }>;
+
+export type GetUserWithOrganizationsAndUpdateLastLoggedInDateQuery = {
+  __typename?: "Query";
+  userWithOrganizationsAndUpdateLastLoggedInDate?: {
+    __typename?: "UserGraphqlDTO";
+    organizations?: Array<{
+      __typename?: "OrganizationGraphqlDTO";
+      id?: any | null;
+      name?: string | null;
+      address?: string | null;
+      description?: string | null;
+      city?: string | null;
+      country_of_origin?: string | null;
+      instagram_link?: string | null;
+      organization_type?: OrganizationType | null;
+      terms_and_conditions?: string | null;
+      website_link?: string | null;
+      year_of_inception?: string | null;
+    } | null> | null;
+  } | null;
 };
 
 export type GetProductsBySearchAndOrganizationIdQueryVariables = Exact<{
