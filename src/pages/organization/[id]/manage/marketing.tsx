@@ -1,4 +1,5 @@
 import Tabs from "@/components/molecules/Tab/Tabs";
+import Showcase from "@/components/page-components/marketing/Showcase";
 import WrapperMarketing from "@/components/page-components/marketing/WrapperMarketing";
 import { useState } from "react";
 
@@ -11,7 +12,7 @@ const MarketingPage = () => {
 		{
 			id: 1,
 			label: "Showcase",
-			content: <p>showcase</p>,
+			content: <Showcase />,
 		},
 		{
 			id: 2,
@@ -31,7 +32,7 @@ const MarketingPage = () => {
 			content: <p>Carried currencies</p>,
 		},
 	];
-	
+
 	return (
 		<WrapperMarketing
 			currentIndexItem={currentIndexItemMenu}

@@ -7,9 +7,13 @@
 	position: absolute;
 	transform: translate(16px, -8px);
 }
-input:focus-visible {
+.container input:focus-visible {
 	outline: 1px dashed transparent;
 }
-textarea {
+.textarea {
 	resize: none;
+}
+
+.errorTextarea {
+	border: 1px solid #c55757;
 }

@@ -12,12 +12,15 @@ const Template = (args: InputProps) => <Input {...args} />;
 
 export const Default: StoryFn<InputProps> = Template.bind ({});
 Default.args = {
-  value: '',
-  label: 'Enter name',
-  type: 'text',
-  name: 'brand',
-  isError: false,
-  isValid: false,
+	value: "",
+	label: "Enter name",
+	type: "text",
+	name: "brand",
+	isError: false,
+	isValid: false,
+	isRequired: false,
+	placeholder: "",
+	className: "",
 };
 
 export const Valid: StoryFn<InputProps> = Template.bind ({});
