@@ -1,4 +1,5 @@
 import Tabs from "@/components/molecules/Tab/Tabs";
+import Marketing from "@/components/page-components/marketing/Marketing";
 import Showcase from "@/components/page-components/marketing/Showcase";
 import WrapperMarketing from "@/components/page-components/marketing/WrapperMarketing";
 import { useState } from "react";
@@ -17,7 +18,7 @@ const MarketingPage = () => {
 		{
 			id: 2,
 			label: "Marketing",
-			content: <p>Marketing</p>,
+			content: <Marketing />,
 		},
 	];
 	const orderingTabs = [

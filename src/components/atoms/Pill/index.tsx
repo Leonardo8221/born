@@ -16,6 +16,7 @@ export interface PillProps {
   hasIcon?: boolean;
   isSelectable?: boolean;
   children?: JSX.Element;
+  className?: string;
 }
 
 const CheckIcon = (
@@ -43,6 +44,7 @@ export const Pill: FC<PillProps> = ({
   isSelectable = false,
   children,
   hasIcon = false,
+  className,
   ...rest
 }) => {
   const clsBaseStyle = {
@@ -85,7 +87,8 @@ export const Pill: FC<PillProps> = ({
         clsFontSize[size],
         clsPadding[size],
         clsAppearance[appearance]?.[selected],
-        hasIcon ? "inline-flex items-center justify-center" : ""
+        hasIcon ? "inline-flex items-center justify-center" : "",
+        className
       )}
       {...rest}
     >

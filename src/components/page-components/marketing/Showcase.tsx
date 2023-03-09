@@ -95,10 +95,24 @@ const Showcase = () => {
 					/>
 				</div>
 				<div className="w-[352px]">
-					<FileUpload labelText="Company logo" className="mt-3" />
+                    <FileUpload
+                        variant="circle"
+						acceptedFileTypes={[
+							"image/jpeg",
+							"image/png",
+							"image/heic",
+						]}
+						labelText="Company logo"
+						className="mt-3"
+					/>
 					<FileUpload
+						acceptedFileTypes={[
+							"image/jpeg",
+							"image/png",
+							"image/heic",
+						]}
 						labelText="Banner image"
-						className="mt-6 mb-3"
+						className="mt-[29px] mb-3"
 					/>
 					<Input
 						className="mr-auto"
