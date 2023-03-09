@@ -54,9 +54,9 @@ const Showcase = () => {
 						className="w-full"
 					/>
 					<DescriptionField
-                        label="Description"
-                        placeholder="Text..."
-						value={queryInputs.yearOfInception}
+						label="Description"
+						placeholder="Text..."
+						value={queryInputs.description}
 						onChange={changeQueryInputs("description")}
 						isError={errorDescription.length > 0}
 						onError={onErrorDescription}
@@ -96,8 +96,8 @@ const Showcase = () => {
 					/>
 				</div>
 				<div className="w-[352px]">
-                    <FileUpload
-                        variant="circle"
+					<FileUpload
+						variant="circle"
 						acceptedFileTypes={[
 							"image/jpeg",
 							"image/png",
