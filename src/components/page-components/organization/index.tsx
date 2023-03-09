@@ -3,20 +3,18 @@ import clsx from "clsx";
 import Image, { StaticImageData } from "next/image";
 import { fonts } from "@/config/fonts";
 import { Button } from "@/components/molecules/Button";
+import { OrganizationGraphqlDto } from "@/generated/types";
 
-export interface OrganizationCardProps {
+export interface OrganizationCardProps extends OrganizationGraphqlDto {
   imgSrc: string | StaticImageData;
   logoUrl: string | StaticImageData;
-  organizationName: string;
-  title?: string;
-  id: string | number;
 }
 
 const OrganizationCard: FC<OrganizationCardProps> = ({
   imgSrc,
   logoUrl,
-  organizationName,
-  title,
+  name,
+  address,
   id,
 }) => {
   return (
@@ -39,8 +37,8 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
         <div className="relative z-[2] m-auto text-center">
           <Image
             src={logoUrl}
-            alt={organizationName + "logo"}
-            className="h-10 w-10 rounded-full p-[3.33px] mx-auto"
+            alt={name + "logo"}
+            className="h-10 w-10 bg-shades-white rounded-full p-[3.33px] mx-auto"
           />
           <h3
             className={clsx(
@@ -48,23 +46,27 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
               fonts.text.xl
             )}
           >
-            {organizationName}
+            {name}
           </h3>
-          <h4
-            className={clsx(
-              "text-shades-white mt-[3px] tracking-[0.06em]",
-              fonts.text.sm
-            )}
-          >
-            {title}
-          </h4>
+          {
+            address && (
+              <h4
+                className={clsx(
+                  "text-shades-white mt-[3px] tracking-[0.06em]",
+                  fonts.text.sm
+                )}
+              >
+                {address}
+              </h4>
+            )
+          }
         </div>
       </div>
       <Button
         as="a"
         variant="outlined"
         className="w-full !max-w-[320px] mt-4 !tracking-[0.06em]"
-        href={`/organization/${id}/manage/showcase`}
+        href={`/organization/${id}/discover/story`}
       >
         Sign in
       </Button>
