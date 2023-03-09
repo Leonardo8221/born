@@ -54,7 +54,8 @@ const Showcase = () => {
 						className="w-full"
 					/>
 					<DescriptionField
-						label="Description"
+                        label="Description"
+                        placeholder="Text..."
 						value={queryInputs.yearOfInception}
 						onChange={changeQueryInputs("description")}
 						isError={errorDescription.length > 0}

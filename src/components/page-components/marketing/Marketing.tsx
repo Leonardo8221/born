@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const Marketing = () => {
 	const collections = [{ label: "SS23" }, { label: "Pre-spring 2023" }];
 	return (
-		<div>
+		<>
 			<p className="text-shades-black leading-8 text-[18px] mb-4">
 				Add your brand&#8217;s linesheet and lookbook to your profile,
 				or add them to a <br></br> specific collection.
@@ -40,7 +40,7 @@ const Marketing = () => {
 				labelText="Lookbook | PDF only (25 MB max)"
 				className="mb-8"
 			/>
-		</div>
+		</>
 	);
 };
 

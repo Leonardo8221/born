@@ -1,6 +1,7 @@
 import Tabs from "@/components/molecules/Tab/Tabs";
 import Marketing from "@/components/page-components/marketing/Marketing";
 import Showcase from "@/components/page-components/marketing/Showcase";
+import TermsAndConditions from "@/components/page-components/marketing/TermsAndConditions";
 import WrapperMarketing from "@/components/page-components/marketing/WrapperMarketing";
 import { useState } from "react";
 
@@ -25,7 +26,7 @@ const MarketingPage = () => {
 		{
 			id: 1,
 			label: "Terms and conditions",
-			content: <p>Terms and conditions</p>,
+			content: <TermsAndConditions />,
 		},
 		{
 			id: 2,
