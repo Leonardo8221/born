@@ -1,0 +1,9 @@
+.toolButton{
+    width: auto;
+    margin: 0;
+    white-space: nowrap;
+}
+.toolButton.addToCollection{
+    margin-right: 16px;
+    margin-left: 16px;
+}
