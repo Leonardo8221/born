@@ -5,14 +5,13 @@ import { Table } from "../../Table";
 import { DropdownMenu } from "@/components/molecules/DropdownMenu";
 import { fonts } from "@/config/fonts";
 import { Button } from "@/components/molecules/Button";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { OrderGraphqlDto } from "@/generated/types";
 export interface OrderListTableProps {
-  orders: any[];
+  orders: OrderGraphqlDto[];
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
-  const router = useRouter();
   const columnHelper: any = createColumnHelper();
 
   const options = [
@@ -38,21 +37,20 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       size: 341,
       id: "name",
       cell: (info: any) => (
-        <Link href="/about">
+        <Link href={`${location.pathname}/${info.row.original.id}`}>
           <div
             className={clsx(
               "text-shades-black tracking-[0.06em] pl-4",
               fonts.text.lg
             )}
           >
-            {JSON.stringify(info.row.original.id)}
             {info.getValue()}
           </div>
         </Link>
       ),
       header: () => "Order name",
     }),
-    columnHelper.accessor("retailerName", {
+    columnHelper.accessor("retailer", {
       size: 120,
       id: "retailerName",
       cell: (info: any) => (
@@ -67,7 +65,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       ),
       header: () => "Retailer name",
     }),
-    columnHelper.accessor("buyerName", {
+    columnHelper.accessor("buyer_name", {
       size: 120,
       id: "buyerName",
       cell: (info: any) => (
@@ -112,7 +110,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       ),
       header: () => "Season",
     }),
-    columnHelper.accessor("orderDate", {
+    columnHelper.accessor("created_date", {
       size: 120,
       id: "orderDate",
       cell: (info: any) => (
@@ -148,6 +146,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       header: () => "",
     }),
   ];
+
   return (
     <Table
       tableData={orders}
