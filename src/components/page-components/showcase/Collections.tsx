@@ -37,7 +37,7 @@ const Collections = () => {
         {
           collections.map(item => (
             <div key={item.slug} className="mb-[96px]">
-              <Link href={`/collections/${item.slug}`}>
+              <Link href={`/organization/1/discover/collections/${item.slug}`}>
                 <CollectionCard
                   backgroundImageSrc={item.backgroundImageSrc}
                   label={item.label}
