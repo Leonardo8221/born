@@ -27,8 +27,8 @@ const Header: FC<HeaderProps> = ({ heading }) => {
     },
   ];
   return (
-    <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
-      <div className="flex w-[600px] justify-evenly items-center">
+    <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[64px]">
+      <div className="flex w-[620px] justify-between items-center">
         <ArrowIconLeft
           height={40}
           width={40}
@@ -42,7 +42,13 @@ const Header: FC<HeaderProps> = ({ heading }) => {
       </div>
       <div className="flex items-center gap-x-4">
         <div>
-          <Button variant="outlined">Edit</Button>
+          <Button variant="outlined">
+            Add Note
+            <Icon
+              name="icon-message-square"
+              className="text-center cursor-pointer text-shades-black"
+            />
+          </Button>
         </div>
         <div>
           <DropdownMenu
@@ -56,7 +62,7 @@ const Header: FC<HeaderProps> = ({ heading }) => {
         </div>
         <div>
           <Button className="!w-[172px] !px-[28px] text-[14px] leading-6">
-            <Icon name="icon-add" /> Create order
+            Confirm
           </Button>
         </div>
       </div>

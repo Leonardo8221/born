@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import Footer from "@/components/layouts/Footer";
 import Header from "@/components/page-components/order/Header";
 import { GET_ORDER_BY_ID } from "../../../../queries/orders/details";
+import { Button } from "@/components/molecules/Button";
 
 function OrderPreview() {
   const router = useRouter();
@@ -21,8 +22,6 @@ function OrderPreview() {
   console.log({ error });
   const details = data?.orderByOrderId || {};
   const productData = details.order_details;
-
-  console.log(productData);
 
   const columnData = {
     column1: [
@@ -75,7 +74,7 @@ function OrderPreview() {
   const dropdownmenu = [
     {
       value: "0",
-      name: "Clothing",
+      name: "USD -Landed",
       isDisabled: false,
     },
     {
@@ -113,8 +112,8 @@ function OrderPreview() {
     <div>
       <Header heading={"Missoma X Selfridges - AW23"} />
       <div className="max-w-[1240px] mx-auto min-h-[calc(100vh-170px)] pt-[72px]">
-        <div className="mb-6 flex flex-row-reverse">
-          <Pill label="Export" appearance={"outlined"} size={"md"} />
+        <div className="mb-6 pl-[1100px]">
+          <Button variant="outlined">Edit Details</Button>
         </div>
         <div className="w-[1000px]">
           <OrderDetails
@@ -123,7 +122,7 @@ function OrderPreview() {
             column3={columnData.column3}
           />
         </div>
-        <div className="flex items-center shadow-lg shadow-xlg-top bg-white p-6 my-7">
+        <div className="flex items-center shadow-lg shadow-xlg-top bg-white pl-[16px] p-6 my-7 ">
           <Dropdown
             options={dropdownmenu}
             isValid={false}
@@ -131,7 +130,7 @@ function OrderPreview() {
             onChange={handleDropdownChange}
           />
           <Input
-            value="90"
+            value="90%"
             label="Discount"
             type="text"
             name="Brand"
@@ -142,7 +141,7 @@ function OrderPreview() {
           />
           <Input
             value="100"
-            label="Discount"
+            label="Surcharge"
             type="text"
             name="Brand"
             isError={false}
@@ -153,8 +152,8 @@ function OrderPreview() {
           <TotalQuantity title="Total Quantity" value={30} />
           <TotalQuantity title="Total price" value={3345.0} />
         </div>
-        <div className="mb-6 flex flex-row-reverse">
-          <Pill label="Export" appearance={"outlined"} size={"md"} />
+        <div className="mb-6 pl-[1140px]">
+          <Button variant="outlined">Select</Button>
         </div>
         <OrderListTable products={productData} />
       </div>

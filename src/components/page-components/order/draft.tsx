@@ -4,7 +4,7 @@ import { TagCollection } from "../../molecules/TagCollection";
 import OrderListTable from "../../organisms/Tables/OrderList";
 import { Button } from "../../molecules/Button";
 
-export const Draft = ({ orders }) => {
+export const Draft = ({ orders }: any) => {
   return (
     <div>
       <div id="header" className="flex justify-between">

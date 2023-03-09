@@ -10,12 +10,12 @@ import { GET_ORDERS } from "../../../../queries/orders/orders";
 
 export default function OrderManagement() {
   const router = useRouter();
-  const organizationId = Number(router.query.id);
+  const id = router?.query?.id || "";
+  const organizationId: number = +id;
 
   const { data, error, loading } = useQuery(GET_ORDERS, {
     variables: { organizationId: organizationId, start: 0, rows: 10 },
   });
-  console.log({ error });
 
   const tabs = [
     {

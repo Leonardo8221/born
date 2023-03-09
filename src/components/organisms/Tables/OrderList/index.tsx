@@ -12,6 +12,8 @@ export interface OrderListTableProps {
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
+  // console.log(orders);
+
   const router = useRouter();
   const columnHelper: any = createColumnHelper();
 
@@ -147,6 +149,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
       header: () => "",
     }),
   ];
+
   return (
     <Table
       tableData={orders}

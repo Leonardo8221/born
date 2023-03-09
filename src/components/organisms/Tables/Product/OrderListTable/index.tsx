@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Fragment, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import clsx from "clsx";
 import ImageText from "@/components/molecules/ImageText";
@@ -6,17 +6,18 @@ import { Icon } from "@/components/molecules/Icon";
 import { fonts } from "@/config/fonts";
 import { Table } from "../../../Table";
 import Badges from "../Badges";
+import Modal from "@/components/molecules/Modal";
+import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
+import { Button } from "@/components/molecules/Button";
 
 export interface OrderListTableProps {
   products: any[];
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
-  console.log(products, "products");
+  console.log(products);
 
-  // const productDetails = products.map((item) => {
-  //   return item.product;
-  // });
+  const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
 
   const columns = [
@@ -26,9 +27,9 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
       cell: ({ row }: any) => (
         <div>
           <ImageText
-            title={row?.original?.name || ""}
+            title={row?.original?.product?.description || ""}
             subTitle={row?.original?.title || ""}
-            imgSrc={row?.original?.imageUrl}
+            imgSrc={require("../../../../../assets/images/products/product-1.png")}
             altText={row?.original?.title + " logo"}
             variant="product"
           />
@@ -36,37 +37,39 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
       ),
       header: () => "Product name",
     }),
-    columnHelper.accessor("colour_families", {
+    columnHelper.accessor((row: any) => row, {
       size: 122,
       id: "colors",
-      cell: (info: any) => {
-        const colors = info.getValue();
+      cell: ({ row }: any) => {
         return (
           <div className="flex flex-col gap-y-2">
-            {colors?.map((item: any) => (
-              <div key={item.label} className="flex items-center gap-x-2">
-                <div
-                  className="h-4 w-4 rounded border-2 border-shades-white"
-                  style={item.value && { backgroundColor: item.value }}
-                />
-                <span>{item.label}</span>
-              </div>
-            ))}
+            {Array.isArray(row?.product?.colour_families) &&
+              row?.original?.product?.colour_families.map(
+                ({ item, index }: any) => (
+                  <div key={index} className="flex items-center gap-x-2">
+                    <div className="h-4 w-4 rounded border-2 border-shades-white"></div>
+                    <span className="text-[#000]">
+                      {/* {row?.origin?.product?.colour_name} */}
+                      {item}
+                    </span>
+                  </div>
+                )
+              )}
           </div>
         );
       },
       header: () => "Color name",
     }),
-    columnHelper.accessor("season", {
+    columnHelper.accessor((row: any) => row, {
       size: 96,
       id: "season",
-      cell: (info: any) => <Badges items={info.getValue()} />,
+      cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
       header: () => "Season",
     }),
-    columnHelper.accessor("department", {
+    columnHelper.accessor((row: any) => row, {
       size: 128,
       id: "department",
-      cell: (info: any) => <Badges items={info.getValue()} />,
+      cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
       header: () => "Department",
     }),
     columnHelper.accessor("wholesalePrice", {
@@ -84,7 +87,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
       ),
       header: () => "Wholesale Price",
     }),
-    columnHelper.accessor("quantities", {
+    columnHelper.accessor("quantity", {
       size: 95,
       id: "quantites",
       cell: (info: any) => (
@@ -119,6 +122,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
       id: "chat",
       cell: () => (
         <Icon
+          onClick={() => setOpen(true)}
           name="icon-message-square"
           className="text-center cursor-pointer text-shades-black"
         />
@@ -128,11 +132,23 @@ const OrderListTable: FC<OrderListTableProps> = ({ products }) => {
   ];
 
   return (
-    <Table
-      tableData={products}
-      columns={columns}
-      className="w-full [&>tbody>tr>td]:pt-4"
-    />
+    <Fragment>
+      <Table
+        tableData={products?.length ? products : []}
+        columns={columns}
+        className="w-full [&>tbody>tr>td]:pt-4"
+      />
+
+      {/* modal here */}
+      <Modal
+        title="Add a Product Note"
+        isOpen={open}
+        onClose={() => setOpen(false)}
+      >
+        <DescriptionField label="Product Note" placeholder="This Product...." />
+        <Button label="Save" />
+      </Modal>
+    </Fragment>
   );
 };
 

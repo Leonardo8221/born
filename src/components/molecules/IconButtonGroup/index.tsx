@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { IconButton } from "../IconButton";
 import { Icon } from "../Icon";
 
-export type GridType = 'list' | 'grid' | 'smallGrid';
+export type GridType = "list" | "grid" | "smallGrid";
 
 export interface IconButtonGroupProps {
   value: GridType;
