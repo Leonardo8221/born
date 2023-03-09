@@ -2,7 +2,7 @@ export const clsVariants = {
   rectangle: {
     clsContainer:
       "border border-neutral-600 w-full max-w-[351px] rounded-[4px] relative",
-    clsWrapper: "flex flex-col items-center py-6 px-7",
+    clsWrapper: "flex flex-col items-center py-5 px-7",
     clsDropzone:
       "w-[295px] h-[145px] border-[3px] rounded-[4px] border-neutral-200 flex justify-center items-center cursor-pointer",
   },
