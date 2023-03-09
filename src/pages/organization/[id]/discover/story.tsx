@@ -1,8 +1,15 @@
+import ShowcaseLayout from "@/components/layouts/ShowcaseLayout";
+import Categories from "@/components/page-components/showcase/Categories";
+import ShowcaseLogo from "@/components/page-components/showcase/Logo";
+
 const StoryPage = () => {
   return (
-    <div>
-      <h1>Story page is under construction!</h1>
-    </div>
+    <ShowcaseLayout>
+      <div className="mx-auto">
+        <ShowcaseLogo />
+        <Categories />
+      </div>
+    </ShowcaseLayout>
   )
 }
 
