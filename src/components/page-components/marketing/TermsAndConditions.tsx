@@ -1,13 +1,21 @@
 import { Button } from "@/components/molecules/Button";
 import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
-import React, { useState } from "react";
+import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
+import React, { FC, useEffect, useState } from "react";
 
-const TermsAndConditions = () => {
+const TermsAndConditions: FC<OrganizationProps> = ({organization}) => {
 	const [queryDescription, setQueryDescription] = useState("");
 	const [errorDescription, setErrorDescription] = useState("");
 	const onErrorDescription = (message: string) => {
 		if (message !== errorDescription) setErrorDescription(message);
 	};
+
+  useEffect(() => {
+   if(organization?.terms_and_conditions ){
+    setQueryDescription(organization.terms_and_conditions)
+   }
+  }, [organization])
+  
 
 	return (
     <>

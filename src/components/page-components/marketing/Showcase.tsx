@@ -1,20 +1,22 @@
 import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
 import Input from "@/components/molecules/Inputs/Input";
 import Dropdown from "@/components/molecules/Dropdown";
-import React, { useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { FileUpload } from "@/components/molecules/FileUpload";
 import { Button } from "@/components/molecules/Button";
+import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
 
-const Showcase = () => {
-	const [queryInputs, setQueryInputs] = useState({
-		companyName: "",
-		yearOfInception: "",
-		description: "",
-		address: "",
-		currencies: "",
-		websiteLink: "",
-		instagramLink: "",
-	});
+const Showcase: FC<OrganizationProps> = ({organization}) => {
+  const initialQueries = {
+		companyName: organization?.name || "",
+		yearOfInception: organization?.year_of_inception || "",
+		description: organization?.description || "",
+		address: organization?.address || "",
+		currencies: organization?.currency_types?.join(', ') || '',
+		websiteLink: organization?.website_link || "",
+		instagramLink: organization?.instagram_link || "",
+	}
+	const [queryInputs, setQueryInputs] = useState(initialQueries);
 	const changeQueryInputs =
 		(input: keyof typeof queryInputs) => (value: string) =>
 			setQueryInputs((prev) => ({
@@ -32,6 +34,13 @@ const Showcase = () => {
 	const isValidCurrencies = queryInputs.currencies.length > 0;
 	const isValidInstagramLink = queryInputs.instagramLink.length > 0;
 	const isValidWebsiteLink = queryInputs.websiteLink.length > 0;
+
+  useEffect(() => {
+    if(organization){
+      setQueryInputs(initialQueries)
+    }
+  }, [organization])
+  
 
     return (
       <>
@@ -64,9 +73,10 @@ const Showcase = () => {
             <Dropdown
               label="Country of origin"
               isValid={false}
+              selectedOption={{value: organization?.country_of_origin || '', name: 'String'}}
               options={[
+                { value: 'string', name: 'String' },
                 { value: 'hieros', name: 'Hieros' },
-                { value: 'test', name: 'Test' },
               ]}
               onChange={() => {}}
             />
@@ -74,6 +84,7 @@ const Showcase = () => {
               label="City"
               className="mt-6"
               isValid={false}
+              selectedOption={{value: organization?.city || '', name: 'String'}}
               options={[
                 { value: 'hieros', name: 'Hieros' },
                 { value: 'test', name: 'Test' },

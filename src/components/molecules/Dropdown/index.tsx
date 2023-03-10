@@ -19,6 +19,7 @@ export interface DropdownProps {
   onChange: (value: Option) => void;
   options: Option[];
   className?: string;
+  selectedOption?: Option;
 }
 
 const Dropdown: FC<DropdownProps> = ({
@@ -27,8 +28,9 @@ const Dropdown: FC<DropdownProps> = ({
   options,
   isValid,
   className,
+  selectedOption,
 }) => {
-  const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(selectedOption || options[0]);
   const [isExpand, setIsExpand] = useState(false);
 
   const clsDropDownCard = clsx({
