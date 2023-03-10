@@ -1,5 +1,5 @@
 import { StoryFn } from '@storybook/react';
-import OrderListTable, { OrderListTableProps } from '..';
+import OrderListTable, { OrderDetails } from '..';
 import { products } from '../data';
 
 export default {
@@ -7,10 +7,10 @@ export default {
   component: OrderListTable,
 };
 
-const Template = (args: OrderListTableProps) => <OrderListTable {...args} />;
+const Template = (args: OrderDetails) => <OrderListTable {...args} />;
 
-export const SimpleExample: StoryFn<OrderListTableProps> = Template.bind({});
+export const SimpleExample: StoryFn<OrderDetails> = Template.bind({});
 
 SimpleExample.args = {
-  products,
+  products: [],
 };

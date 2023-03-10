@@ -12,8 +12,8 @@ import { Button } from "@/components/molecules/Button";
 import ProductImage from "@/assets/images/products/product.png";
 import { OrderDetailGraphqlDto } from "@/generated/types";
 
-interface OrderDetails {
-  products: OrderDetailGraphqlDto[];
+export interface OrderDetails {
+  products: any[];
 }
 
 const OrderListTable: FC<OrderDetails> = ({ products }) => {

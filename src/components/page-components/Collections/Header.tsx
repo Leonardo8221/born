@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
       <div>
-        <Link href="/collections">
+        <Link href="/organization/1/discover?tab=collections">
           <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
         </Link>
       </div>

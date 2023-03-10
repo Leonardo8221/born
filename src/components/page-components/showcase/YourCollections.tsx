@@ -1,14 +1,25 @@
+import { FC } from "react";
 import { CollectionCard } from "@/components/molecules/CollectionCard";
-import bgImage1 from '@/assets/images/collection-card/collection-card-background-image.png';
-import InnerCardImage from '@/assets/images/collection-card/inner-collection-card-image.png';
-import { Heading } from "@/components/molecules/Heading"
+import { Heading } from "@/components/molecules/Heading";
 import { Button } from "@/components/molecules/Button";
 import { Icon } from "@/components/molecules/Icon";
+import bgImage1 from "@/assets/images/collection-card/collection-card-background-image.png";
+import InnerCardImage from "@/assets/images/collection-card/inner-collection-card-image.png";
 
-const YourCollections = () => {
+interface YourCollectionProps {
+  onViewCollections: (e: any) => void;
+}
+
+const YourCollections: FC<YourCollectionProps> = ({ onViewCollections }) => {
   return (
     <div className="max-w-[1120px] mx-auto">
-      <Heading as="h3" size="sm" className="mt-[64px] !font-light text-shades-black text-center">Your Collections</Heading>
+      <Heading
+        as="h3"
+        size="sm"
+        className="mt-[64px] !font-light text-shades-black text-center"
+      >
+        Your Collections
+      </Heading>
       <div className="flex mt-10">
         <CollectionCard
           backgroundImageSrc={bgImage1}
@@ -26,7 +37,7 @@ const YourCollections = () => {
       </div>
       <div className="mt-48px">
         <Button
-          href="organization/1/discover/collections"
+          onClick={onViewCollections}
           variant="link"
           className="!bg-shades-white !text-shades-black"
         >
@@ -34,7 +45,7 @@ const YourCollections = () => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default YourCollections;

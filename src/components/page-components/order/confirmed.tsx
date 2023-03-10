@@ -38,7 +38,7 @@ export const Confirmed = () => {
   ];
   return (
     <div>
-      <OrderListTable orders={orders} />
+      <OrderListTable orders={[]} />
     </div>
   );
 };

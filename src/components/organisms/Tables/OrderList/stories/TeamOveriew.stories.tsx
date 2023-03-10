@@ -12,5 +12,5 @@ const Template = (args: OrderListTableProps) => <OrderListTable {...args} />;
 export const SimpleExample: StoryFn<OrderListTableProps> = Template.bind({});
 
 SimpleExample.args = {
-  orders,
+  orders: [],
 };

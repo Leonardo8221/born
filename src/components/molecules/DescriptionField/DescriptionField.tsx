@@ -3,10 +3,12 @@ import clsx from "clsx";
 import { theme } from "@/config/theme";
 import styles from "./DescriptionField.module.css";
 
-export interface DescriptionFieldProps extends HTMLTextAreaElement {
+export interface DescriptionFieldProps {
   onError?: (message: string) => void;
   onChange?: (event: string) => void;
   label: string;
+  value?: string;
+  placeholder?: string;
 }
 
 const DescriptionField: FC<DescriptionFieldProps> = ({

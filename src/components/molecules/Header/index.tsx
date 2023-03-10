@@ -7,7 +7,7 @@ import { variations } from "./utils";
 type Item = {
   label: string;
   href: string;
-}
+};
 
 export interface HeaderProps {
   items: Item[];
@@ -37,7 +37,12 @@ export const Header: FC<HeaderProps> = ({
   fixed = false,
 }) => {
   return (
-    <header className={clsx('w-full z-[20] bg-shades-white', fixed ? 'fixed top-0 left-0 right-0' : 'relative')}>
+    <header
+      className={clsx(
+        "w-full z-[20] bg-shades-white",
+        fixed ? "fixed top-0 left-0 right-0" : "relative"
+      )}
+    >
       <nav className={clsx(variations[variant].clsNav)}>
         <div className="flex h-full items-center gap-[8px]">
           <div className="pr-8">
