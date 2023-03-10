@@ -18,7 +18,7 @@ const CarriedCurrencies = () => {
 							>
 								<Switch
 									label={currency.label}
-									classNameLabel="min-w-0"
+									classNameLabel="min-w-[0px]"
 								/>
 							</div>
 						);

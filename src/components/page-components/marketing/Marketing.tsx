@@ -1,4 +1,5 @@
 import { Pill } from '@/components/atoms/Pill';
+import { Button } from "@/components/molecules/Button";
 import { FileUpload } from '@/components/molecules/FileUpload';
 import React, { useState } from 'react';
 
@@ -56,6 +57,11 @@ const Marketing = () => {
         labelText="Lookbook | PDF only (25 MB max)"
         className="mb-8"
       />
+      <Button
+        className="ml-0 w-auto mt-[20px]"
+      >
+        Save
+      </Button>
     </>
   );
 };

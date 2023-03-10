@@ -30,7 +30,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
     if (onChange) {
       onChange(newValue);
     }
-    if (newValue.length > 10) {
+    if (newValue.length > 254) {
       onError?.('Description is too long');
     } else {
       onError?.('');

@@ -124,7 +124,6 @@ const Showcase = () => {
           </div>
         </div>
         <Button
-          onClick={() => console.log('fsd')}
           disabled={!isValidCompanyName || errorDescription.length > 0}
           className="ml-0 w-auto mt-[20px]"
         >
