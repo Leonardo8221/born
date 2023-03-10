@@ -311,6 +311,21 @@ export type UserOrganizationGraphqlDto = {
   user_entity: UserGraphqlDto;
 };
 
+export type GetCollectionsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCollectionsQuery = {
+  __typename?: "Query";
+  collectionsByOrganizationId?: Array<{
+    __typename?: "CollectionGraphqlDTO";
+    id?: any | null;
+    description?: string | null;
+    name?: string | null;
+    banner_guid?: string | null;
+    linesheet_guid?: string | null;
+    lookbook_guid?: string | null;
+  } | null> | null;
+};
+
 export type OrganizationGraphqlDtoFragment = {
   __typename?: "OrganizationGraphqlDTO";
   id?: any | null;
@@ -369,10 +384,9 @@ export type ProductGraphqlDtoFragment = {
   } | null> | null;
 };
 
-export type GetUserWithOrganizationsAndUpdateLastLoggedInDateQueryVariables =
-  Exact<{ [key: string]: never }>;
+export type GetOrganizationsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetUserWithOrganizationsAndUpdateLastLoggedInDateQuery = {
+export type GetOrganizationsQuery = {
   __typename?: "Query";
   userWithOrganizationsAndUpdateLastLoggedInDate?: {
     __typename?: "UserGraphqlDTO";
@@ -393,11 +407,9 @@ export type GetUserWithOrganizationsAndUpdateLastLoggedInDateQuery = {
   } | null;
 };
 
-export type GetProductsBySearchAndOrganizationIdQueryVariables = Exact<{
-  [key: string]: never;
-}>;
+export type GetProductsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetProductsBySearchAndOrganizationIdQuery = {
+export type GetProductsQuery = {
   __typename?: "Query";
   productsBySearchAndOrganizationId?: {
     __typename?: "PageWrapper_ProductGraphqlDTO";

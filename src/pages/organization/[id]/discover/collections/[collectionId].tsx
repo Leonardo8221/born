@@ -10,7 +10,7 @@ import { GridType } from "@/components/molecules/IconButtonGroup";
 import Footer from "@/components/layouts/Footer";
 
 const CollectionPage = () => {
-  const [gridType, setGrid] = useState<GridType>('grid');
+  const [gridType, setGrid] = useState<GridType>("grid");
   const [isSelectable, setIsSelectable] = useState(false);
   const filterTags = [
     {
@@ -23,14 +23,17 @@ const CollectionPage = () => {
       size: "default",
       type: "default",
     },
-  ]
+  ];
 
   return (
     <div>
       <Header />
       <div className="max-w-[1120px] mt-6 mx-auto">
-        <div>
-          <CollectionCard backgroundImageSrc={backgroundImageSrc} label="SS23" />
+        <div className="mb-[64px]">
+          <CollectionCard
+            backgroundImageSrc={backgroundImageSrc}
+            label="SS23"
+          />
           <Description />
         </div>
         <Filters
@@ -38,12 +41,20 @@ const CollectionPage = () => {
           gridType={gridType}
           onSelect={() => setIsSelectable(!isSelectable)}
           filterTags={filterTags}
+          isSelectable={false}
+          selectedItems={[]}
         />
-        <ProductList gridType={gridType} products={products} selectable={isSelectable} />
+        <ProductList
+          gridType={gridType}
+          products={products}
+          selectable={isSelectable}
+          selectedProducts={[]}
+          onSelect={() => {}}
+        />
       </div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default CollectionPage;

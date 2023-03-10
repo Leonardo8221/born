@@ -66,7 +66,7 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
         as="a"
         variant="outlined"
         className="w-full !max-w-[320px] mt-4 !tracking-[0.06em]"
-        href={`/organization/${id}/discover/story`}
+        href={`/organization/${id}/discover`}
       >
         Sign in
       </Button>

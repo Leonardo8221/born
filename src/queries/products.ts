@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { PRODUCT_FRAGMENT } from './fragments/product';
 
 export const PRODUCTS_QUERY = gql`
-  query getProductsBySearchAndOrganizationId {
+  query getProducts {
     productsBySearchAndOrganizationId (
       organizationId: 1
       start: 0
