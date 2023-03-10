@@ -1,26 +1,32 @@
-import { ChangeEvent, FC } from "react";
-import clsx from "clsx";
-import styles from "./Input.module.css";
-import CheckIcon from "@/assets/svgs/dark/icon-check.svg";
+import { ChangeEvent, FC } from 'react';
+import clsx from 'clsx';
+import styles from './Input.module.css';
+import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
 
 export interface InputProps {
   value: string;
   label: string;
-  type: string;
-  name: string;
-  isValid: boolean;
-  isError: boolean;
+  type?: string;
+  name?: string;
+  isValid?: boolean;
+  isError?: boolean;
+  isRequired?: boolean;
+  className?: string;
+  placeholder?: string;
   onChange: (value: string) => void;
-  onError: (message: string) => void;
+  onError?: (message: string) => void;
 }
 
 const Input: FC<InputProps> = ({
   label,
   value,
-  type,
+  type = 'text',
   name,
-  isValid,
-  isError,
+  isValid = false,
+  isError = false,
+  isRequired = false,
+  className = '',
+  placeholder,
   onChange,
   onError,
 }) => {
@@ -31,7 +37,7 @@ const Input: FC<InputProps> = ({
     }
   };
 
-  !isError && !isValid && onError("Error");
+  !isError && !isValid && onError && onError('Error');
 
   const clsInputFieldCard = clsx({
     [styles.validInputFieldCard]: isValid === true,
@@ -41,12 +47,18 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className="flex justify-center">
-      <div className=" my-10 mx-2">
+      <div className={clsx('my-3', className)}>
         <div className="relative">
-          <label className={styles.label}>{label}</label>
+          <label className={styles.label}>
+            {label}
+            {isRequired && (
+              <span className="text-neutral-600"> | Required</span>
+            )}
+          </label>
           <div className={`border rounded flex h-[56px] ` + clsInputFieldCard}>
             <input
               defaultValue={value}
+              placeholder={placeholder}
               type={type}
               name={name}
               className="my-input w-full flex p-4 rounded text-shades-black"

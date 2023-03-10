@@ -5,12 +5,12 @@ import Input, { InputProps } from '../Input';
 export default {
   title: 'Molecules/Inputs',
   component: Input,
-  argTypes: {onChange: {action: 'changed'}, onError: {action: 'onError'}},
+  argTypes: { onChange: { action: 'changed' }, onError: { action: 'onError' } },
 };
 
 const Template = (args: InputProps) => <Input {...args} />;
 
-export const Default: StoryFn<InputProps> = Template.bind ({});
+export const Default: StoryFn<InputProps> = Template.bind({});
 Default.args = {
   value: '',
   label: 'Enter name',
@@ -18,9 +18,12 @@ Default.args = {
   name: 'brand',
   isError: false,
   isValid: false,
+  isRequired: false,
+  placeholder: '',
+  className: '',
 };
 
-export const Valid: StoryFn<InputProps> = Template.bind ({});
+export const Valid: StoryFn<InputProps> = Template.bind({});
 Valid.args = {
   value: '',
   label: 'Enter name',
@@ -30,7 +33,7 @@ Valid.args = {
   isValid: true,
 };
 
-export const Errors: StoryFn<InputProps> = Template.bind ({});
+export const Errors: StoryFn<InputProps> = Template.bind({});
 Errors.args = {
   value: '',
   label: 'Enter name',

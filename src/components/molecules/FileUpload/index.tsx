@@ -16,6 +16,7 @@ export interface FileUploadProps {
   hasFilePreview?: boolean;
   handleFilePreviewClick?: (event: any) => void;
   icon?: ReactNode;
+  className?: string;
 }
 
 export const FileUpload: FC<FileUploadProps> = ({
@@ -31,7 +32,8 @@ export const FileUpload: FC<FileUploadProps> = ({
   icon,
   handleAcceptedFiles = () => {},
   handleFilePreviewClick = () => {},
-  handleUpload = () => {},
+  handleUpload = () => { },
+  className,
 }) => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -41,7 +43,7 @@ export const FileUpload: FC<FileUploadProps> = ({
       <Button
         variant="outlined"
         className={clsx(
-          "!max-w-[216px] mt-6",
+          "!max-w-[216px] mt-4",
           fonts.fontWeights.regular,
           fonts.text.md
         )}
@@ -74,7 +76,7 @@ export const FileUpload: FC<FileUploadProps> = ({
   });
 
   return (
-    <div className={clsVariants[variant].clsContainer}>
+    <div className={clsx(clsVariants[variant].clsContainer, className)}>
       {!!labelText && (
         <p
           className={clsx(
