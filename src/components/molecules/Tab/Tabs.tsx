@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import { useEffect, useState } from "react";
+import clsx from "clsx";
 
 export interface Tab {
-  id: number;
+  id: number | string;
   label: string;
   content?: React.ReactNode;
 }
@@ -11,14 +10,22 @@ export interface Tab {
 interface TabsProps {
   tabs: Tab[];
   className?: string;
+  onTabChange?: (tabId: number | string) => void;
+  active?: string | number;
 }
 
-function Tabs({ tabs, className }: TabsProps) {
+function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
-  const handleTabClick = (tabId: number) => {
-    setActiveTab(tabId);
+  const handleTabClick = (tabId: number | string) => {
+    onTabChange ? onTabChange(tabId) : setActiveTab(tabId);
   };
+
+  useEffect(() => {
+    if (active) {
+      setActiveTab(active);
+    }
+  }, [active]);
 
   return (
     <div>
@@ -50,15 +57,5 @@ function Tabs({ tabs, className }: TabsProps) {
     </div>
   );
 }
-
-Tabs.propTypes = {
-  tabs: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      label: PropTypes.string.isRequired,
-      content: PropTypes.node.isRequired,
-    })
-  ).isRequired,
-};
 
 export default Tabs;

@@ -6,7 +6,7 @@ export interface TotalQuantityProps {
 }
 
 export const TotalQuantity: FC<TotalQuantityProps> = ({ title, value }) => (
-  <div className="text-center">
+  <div className="w-[150px] text-center m-2">
     <div className="text-[32px] font-normal	text-shades-black leading-[48px] tracking-[0.06em]">
       {value}
     </div>

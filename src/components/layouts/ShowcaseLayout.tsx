@@ -19,6 +19,11 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
     },
   ];
 
+  const handleSignOut = () => {
+    signOut({ redirect: false });
+    router.push("/");
+  };
+
   const dropdownMenus = [
     {
       label: "Profile",
@@ -48,7 +53,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
     {
       label: "Sign out",
       value: "sign-out",
-      action: () => signOut(),
+      action: () => handleSignOut(),
     },
   ];
 

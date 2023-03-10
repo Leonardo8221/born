@@ -49,7 +49,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
           <div className='flex h-full h-[366px] w-full max-w-[366px] m-auto justify-center'>
             <div className='flex h-[304px] w-full max-w-[304px] m-auto bg-neutral-400 items-center justify-center rounded'>
               <div className='text-center'>
-                <Icon name="icon-image" className="text-neutral-600" />
+                <Icon name="icon-image" className="text-neutral-600 mx-auto" />
                 <Button
                   variant="outlined"
                   className={clsx("mt-6 h-8 max-w-[76px] !text-neutral-800 !border-neutral-600", fonts.text.md)}

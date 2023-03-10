@@ -3,62 +3,27 @@ import { Draft } from "../../../../components/page-components/order/draft";
 import { Confirmed } from "../../../../components/page-components/order/confirmed";
 import Tabs from "../../../../components/molecules/Tab/Tabs";
 import { Heading } from "../../../../components/molecules/Heading";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import ShowcaseLayout from "@/components/layouts/ShowcaseLayout";
-
-const GET_ORDERS = gql`
-  query GetOrders($organizationId: BigInteger!, $start: Int!, $rows: Int!) {
-    ordersBySearch(
-      organizationId: $organizationId
-      start: $start
-      rows: $rows
-    ) {
-      content {
-        id
-        name
-        total
-        billing_address
-        buyer_name
-        created_date
-        delivery_address
-        discount
-        email_address
-        last_modified_by
-        last_updated
-        note
-        payment_terms
-        pricing_condition
-        purchase_order
-        retailer
-        approved
-        cancelled
-        confirmed
-        size
-        retailer
-      }
-      total_pages
-      total_elements
-      number_of_elements
-      size
-    }
-  }
-`;
+import { GET_ORDERS } from "../../../../queries/orders/orders";
 
 export default function OrderManagement() {
   const router = useRouter();
-  const organizationId = Number(router.query.id);
+  const id = router?.query?.id || "";
+  const organizationId: number = +id;
 
   const { data, error, loading } = useQuery(GET_ORDERS, {
     variables: { organizationId: organizationId, start: 0, rows: 10 },
   });
-  console.log({ error });
+  const ordersBySearch = data?.ordersBySearch?.content || [];
+  console.log(data);
 
   const tabs = [
     {
       id: 1,
       label: "Draft",
-      content: <Draft orders={data?.ordersBySearch} />,
+      content: <Draft content={ordersBySearch} />,
     },
     { id: 2, label: "Confirmed", content: <Confirmed /> },
     { id: 3, label: "Approved" },

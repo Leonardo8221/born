@@ -26,7 +26,7 @@ const Modal: FC<ModalProps> = ({
       leaveTo="opacity-0"
       as={Fragment}
     >
-      <div className="h-[90vh] w-full flex justify-center items-center">
+      <div className="fixed h-full w-full flex justify-center items-center top-0 left-0 bottom-0 right-0 z-[50]">
         <div
           className="fixed inset-0 bg-shades-black/30 z-40"
           aria-hidden="true"

@@ -1,13 +1,13 @@
-import { ChangeEvent, FC, useState } from 'react';
-import clsx from 'clsx';
-import { theme } from '@/config/theme';
-import styles from './DescriptionField.module.css';
+import { ChangeEvent, FC, useState } from "react";
+import clsx from "clsx";
+import { theme } from "@/config/theme";
+import styles from "./DescriptionField.module.css";
 
 export interface DescriptionFieldProps {
   onError?: (message: string) => void;
   onChange?: (event: string) => void;
   label: string;
-  value: string;
+  value?: string;
   placeholder?: string;
   isError?: boolean;
   className?: string;

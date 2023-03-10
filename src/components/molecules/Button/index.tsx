@@ -30,7 +30,7 @@ export const Button: FC<ButtonProps> = ({
     as || "button",
     {
       className: clsx(
-        "flex w-full max-w-[352px] font-normal cursor-pointer items-center justify-center border-0 mx-auto my-0 gap-x-2",
+        "flex max-w-[352px] font-normal cursor-pointer items-center justify-center border-0 mx-auto my-0 gap-x-2",
         variant !== "outlined"
           ? buttonVariants[color || "black"]
           : outlinedButtonVariants[color || "black"],

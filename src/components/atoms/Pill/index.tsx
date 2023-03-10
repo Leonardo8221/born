@@ -1,18 +1,14 @@
 import { FC, useState } from "react";
 import clsx from "clsx";
 
-import {
-  PillAppearance,
-  PillSize,
-  PillType,
-} from "./utils";
+import { PillAppearance, PillSize, PillType } from "./utils";
 import { fonts } from "../../../config/fonts";
 
 export interface PillProps {
   label?: string;
-  type?: typeof PillType[keyof typeof PillType],
-  size?: typeof PillSize[keyof typeof PillSize],
-  appearance?: typeof PillAppearance[keyof typeof PillAppearance],
+  type?: (typeof PillType)[keyof typeof PillType];
+  size?: (typeof PillSize)[keyof typeof PillSize];
+  appearance?: (typeof PillAppearance)[keyof typeof PillAppearance];
   hasIcon?: boolean;
   isSelectable?: boolean;
   children?: JSX.Element;
@@ -28,8 +24,8 @@ const CheckIcon = (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       fill="white"
       d="M4.53033 7.46967C4.23743 7.76256 3.76256 7.76256 3.46967 7.46967L0.641243 4.64124C0.34835 4.34835 0.34835 3.87348 0.641242 3.58058C0.934136 3.28769 1.40901 3.28769 1.7019 3.58058L4 5.87868L9.12652 0.752155C9.41942 0.459262 9.89429 0.459262 10.1872 0.752155C10.4801 1.04505 10.4801 1.51992 10.1872 1.81282L4.53033 7.46967Z"
     />
