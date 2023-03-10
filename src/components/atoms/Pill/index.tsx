@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import clsx from "clsx";
 
 import { PillAppearance, PillSize, PillType } from "./utils";
@@ -13,6 +13,7 @@ export interface PillProps {
   isSelectable?: boolean;
   children?: JSX.Element;
   className?: string;
+  onClick?: () => void;
 }
 
 const CheckIcon = (
@@ -41,6 +42,7 @@ export const Pill: FC<PillProps> = ({
   children,
   hasIcon = false,
   className,
+  onClick,
   ...rest
 }) => {
   const clsBaseStyle = {
@@ -68,9 +70,17 @@ export const Pill: FC<PillProps> = ({
 
   const [selected, setSelected] = useState(type);
 
+  useEffect(() => {
+   setSelected(type)
+  }, [type]);
+  
+
   return (
     <div
       onClick={() => {
+        if (onClick) {
+          onClick();
+        }
         if (isSelectable) {
           setSelected(
             selected === PillType.ACTIVE ? PillType.INACTIVE : PillType.ACTIVE
