@@ -1,15 +1,15 @@
 .label {
-	@apply bg-shades-white text-shades-black;
-	padding: 0 4px;
-	font-size: 12px;
-	font-weight: 300;
-	transform-origin: top left;
-	position: absolute;
-	transform: translate(16px, -8px);
+  @apply bg-shades-white text-shades-black;
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 300;
+  transform-origin: top left;
+  position: absolute;
+  transform: translate(16px, -8px);
 }
-input:focus-visible {
-	outline: 1px dashed transparent;
+#input:focus-visible {
+  outline: 1px dashed transparent;
 }
-textarea {
-	resize: none;
+#input {
+  resize: none;
 }

@@ -1,18 +1,14 @@
 import { FC, useState } from "react";
 import clsx from "clsx";
 
-import {
-  PillAppearance,
-  PillSize,
-  PillType,
-} from "./utils";
+import { PillAppearance, PillSize, PillType } from "./utils";
 import { fonts } from "../../../config/fonts";
 
 export interface PillProps {
   label?: string;
-  type?: typeof PillType[keyof typeof PillType],
-  size?: typeof PillSize[keyof typeof PillSize],
-  appearance?: typeof PillAppearance[keyof typeof PillAppearance],
+  type?: (typeof PillType)[keyof typeof PillType];
+  size?: (typeof PillSize)[keyof typeof PillSize];
+  appearance?: (typeof PillAppearance)[keyof typeof PillAppearance];
   hasIcon?: boolean;
   isSelectable?: boolean;
   children?: JSX.Element;

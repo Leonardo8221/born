@@ -12,7 +12,7 @@ const Template = (args: TableProps) => <Table {...args} />;
 export const SimpleExample: StoryFn<TableProps> = Template.bind({});
 
 SimpleExample.args = {
-  tableData: defaultData,
+  tableData: [],
   columns: defaultColumns,
   className: "max-w-[700px]",
 };
