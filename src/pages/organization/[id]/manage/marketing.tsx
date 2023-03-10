@@ -17,9 +17,9 @@ export interface OrganizationProps {
 const MarketingPage = () => {
 	const [currentOrganization, setCurrentOrganization] =
     useState<OrganizationGraphqlDto | null>(null);
-	const { query } = useRouter();
+	const router = useRouter();
   const { data, loading } = useQuery(GET_ORGANIZATION_BY_ID, {
-    variables: { id: Number(query.id) },
+    variables: { id: Number(router.query.id) },
   });
 
 	useEffect(() => {
@@ -33,9 +33,19 @@ const MarketingPage = () => {
   //   //redirect or show message
   // }
 
-	const [currentIndexItemMenu, setCurrentIndexItemMenu] = useState(0);
-	const changeCurrentInexItemMenu = (index: number) =>
-		setCurrentIndexItemMenu(index);
+	const [activeTab, setActiveTab] = useState<string | number>("profile");
+
+	const handleTabChange = (id: string | number) => {
+		router.push(`/organization/${router.query.id}/manage/marketing?tab=${id}`);
+		setActiveTab(id);
+	};
+	
+	useEffect(() => {
+		if(router.isReady){
+			const activeTab = (router.query?.tab || "profile") as string | number;
+			handleTabChange(activeTab);
+		}
+	}, [router.isReady]);
 
 	const profileTabs = [
     {
@@ -62,16 +72,16 @@ const MarketingPage = () => {
 		},
 	];
 
-
 	return (
 		<WrapperMarketing
-			currentIndexItem={currentIndexItemMenu}
-			onChangeCurrentIndexItem={changeCurrentInexItemMenu}
+			currentTab={activeTab}
+			onTabChange={handleTabChange}
 			hrefBack="/"
 			hrefClose="/"
+			organization={currentOrganization}
 		>
-			{currentIndexItemMenu === 0 && <Tabs tabs={profileTabs} />}
-			{currentIndexItemMenu === 1 && <Tabs tabs={orderingTabs} />}
+			{activeTab === 'profile' && <Tabs tabs={profileTabs} />}
+			{activeTab === 'ordering' && <Tabs tabs={orderingTabs} />}
 		</WrapperMarketing>
 	);
 };

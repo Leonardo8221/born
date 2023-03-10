@@ -11,20 +11,22 @@ import { variantClasses, variantLogoStyles } from './utils';
 type Menu = {
   name: string;
   icon: keyof typeof icons;
+  value: number | string;
 };
 
-export interface IndexItemMenu {
-  currentIndexItem: number;
-  onChangeCurrentIndexItem: (item: number) => void;
+export interface TabMenu {
+  currentTab: number | string;
+  onTabChange: (item: number | string) => void;
 }
 
-export interface SidebarProps extends IndexItemMenu {
+export interface SidebarProps extends TabMenu {
   variant?: keyof typeof variantClasses;
   logoUrl?: StaticImageData | string;
   logo?: ReactNode;
   title: string;
   subTitle?: string;
   menuItems: Menu[];
+  onSignOut?: () => void;
 }
 
 const Sidebar: FC<SidebarProps> = ({
@@ -34,8 +36,9 @@ const Sidebar: FC<SidebarProps> = ({
   title,
   subTitle,
   menuItems,
-  currentIndexItem,
-  onChangeCurrentIndexItem,
+  currentTab,
+  onTabChange,
+  onSignOut
 }) => {
   const {
     height: heightLogo,
@@ -87,10 +90,10 @@ const Sidebar: FC<SidebarProps> = ({
           </div>
           <ul className="flex w-full max-w-[192px] flex-col mt-10 gap-y-[24px]">
             {menuItems?.map((item, index) => {
-              const isActive = currentIndexItem === index;
+              const isActive = currentTab === item.value;
               return (
                 <li
-                  onClick={() => onChangeCurrentIndexItem(index)}
+                  onClick={() => onTabChange(item.value)}
                   className={clsx(
                     'group cursor-pointer flex h-10 items-center !font-light text-neutral-700 rounded px-4 gap-x-3 hover:bg-shades-black hover:text-shades-white',
                     fonts.text.lg,
@@ -113,7 +116,7 @@ const Sidebar: FC<SidebarProps> = ({
         </div>
         <div className="w-full">
           {variant === 1 && (
-            <Button className="!w-full !max-w-[192px] !font-light !bg-neutral-100 !text-neutral-700 !border-none !justify-start !px-4 mt-10  hover:!bg-shades-black hover:!text-shades-white">
+            <Button onClick={onSignOut} className="!w-full !max-w-[192px] !font-light !bg-neutral-100 !text-neutral-700 !border-none !justify-start !px-4 mt-10  hover:!bg-shades-black hover:!text-shades-white">
               <Icon name="icon-arrow-left-circle" /> Sign out
             </Button>
           )}
