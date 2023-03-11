@@ -311,7 +311,11 @@ export type UserOrganizationGraphqlDto = {
   user_entity: UserGraphqlDto;
 };
 
-export type GetCollectionsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetCollectionsQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+  start?: InputMaybe<Scalars["Int"]>;
+  rows?: InputMaybe<Scalars["Int"]>;
+}>;
 
 export type GetCollectionsQuery = {
   __typename?: "Query";
@@ -339,6 +343,8 @@ export type OrganizationGraphqlDtoFragment = {
   terms_and_conditions?: string | null;
   website_link?: string | null;
   year_of_inception?: string | null;
+  logo_guid?: string | null;
+  banner_guid?: string | null;
 };
 
 export type ProductGraphqlDtoFragment = {
@@ -360,6 +366,7 @@ export type ProductGraphqlDtoFragment = {
   delivery_window_end_date?: any | null;
   delivery_window_start_date?: any | null;
   upc?: string | null;
+  style_name?: string | null;
   style_number?: string | null;
   style_id?: string | null;
   size_type?: string | null;
@@ -383,8 +390,6 @@ export type ProductGraphqlDtoFragment = {
     name?: string | null;
   } | null> | null;
 };
-
-export type GetOrganizationsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetOrderByIdQueryVariables = Exact<{
   orderId: Scalars["BigInteger"];
@@ -495,8 +500,7 @@ export type GetOrdersQuery = {
   } | null;
 };
 
-export type GetUserWithOrganizationsAndUpdateLastLoggedInDateQueryVariables =
-  Exact<{ [key: string]: never }>;
+export type GetOrganizationsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetOrganizationsQuery = {
   __typename?: "Query";
@@ -515,11 +519,45 @@ export type GetOrganizationsQuery = {
       terms_and_conditions?: string | null;
       website_link?: string | null;
       year_of_inception?: string | null;
+      logo_guid?: string | null;
+      banner_guid?: string | null;
     } | null> | null;
   } | null;
 };
 
-export type GetProductsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetOrganizationByIdQueryVariables = Exact<{
+  id: Scalars["BigInteger"];
+}>;
+
+export type GetOrganizationByIdQuery = {
+  __typename?: "Query";
+  userOrganizationByOrganizationId?: {
+    __typename?: "UserOrganizationGraphqlDTO";
+    organization: {
+      __typename?: "OrganizationGraphqlDTO";
+      currency_types?: Array<string | null> | null;
+      id?: any | null;
+      name?: string | null;
+      address?: string | null;
+      description?: string | null;
+      city?: string | null;
+      country_of_origin?: string | null;
+      instagram_link?: string | null;
+      organization_type?: OrganizationType | null;
+      terms_and_conditions?: string | null;
+      website_link?: string | null;
+      year_of_inception?: string | null;
+      logo_guid?: string | null;
+      banner_guid?: string | null;
+    };
+  } | null;
+};
+
+export type GetProductsQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+  start?: InputMaybe<Scalars["Int"]>;
+  rows?: InputMaybe<Scalars["Int"]>;
+}>;
 
 export type GetProductsQuery = {
   __typename?: "Query";
@@ -548,6 +586,7 @@ export type GetProductsQuery = {
       delivery_window_end_date?: any | null;
       delivery_window_start_date?: any | null;
       upc?: string | null;
+      style_name?: string | null;
       style_number?: string | null;
       style_id?: string | null;
       size_type?: string | null;

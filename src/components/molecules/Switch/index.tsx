@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from 'react';
-import clsx from "clsx";
-import { fonts } from "@/config/fonts";
+import clsx from 'clsx';
+import { fonts } from '@/config/fonts';
 import {
   defaultSwitchButtonClasses,
   defaultSwitchClasses,
   toggledButtonClasses,
-  toggleSwitchClasses
+  toggleSwitchClasses,
 } from './utils';
 
 export interface SwitchProps {
@@ -13,6 +13,7 @@ export interface SwitchProps {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   position?: 'start' | 'end';
+  classNameLabel?: string;
 }
 
 const Switch: FC<SwitchProps> = ({
@@ -20,6 +21,7 @@ const Switch: FC<SwitchProps> = ({
   checked,
   onChange,
   position = 'end',
+  classNameLabel,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -30,20 +32,40 @@ const Switch: FC<SwitchProps> = ({
   const handleToggle = () => {
     onChange && onChange(!isChecked);
     setIsChecked(!isChecked);
-  }
+  };
 
   return (
-    <div className={clsx("inline-flex gap-x-3 items-center", position === 'start' && 'flex-row-reverse')}>
-      {label && (
-        <label className={clsx('inline-block min-w-[275px] mt-px text-shades-black', fonts.text.lg)}>{label}</label>
+    <div
+      className={clsx(
+        'inline-flex gap-x-3 items-center',
+        position === 'start' && 'flex-row-reverse'
       )}
-      <div className={clsx(defaultSwitchClasses, isChecked && toggleSwitchClasses)} onClick={handleToggle}>
+    >
+      {label && (
+        <label
+          className={clsx(
+            'inline-block min-w-[275px] mt-px text-shades-black',
+            fonts.text.lg,
+            classNameLabel
+          )}
+        >
+          {label}
+        </label>
+      )}
+      <div
+        className={clsx(defaultSwitchClasses, isChecked && toggleSwitchClasses)}
+        onClick={handleToggle}
+      >
         <div
-          className={clsx(defaultSwitchButtonClasses, isChecked && toggledButtonClasses)}
-          style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }} />
+          className={clsx(
+            defaultSwitchButtonClasses,
+            isChecked && toggledButtonClasses
+          )}
+          style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Switch;

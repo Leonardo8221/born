@@ -30,15 +30,15 @@ function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
   return (
     <div>
       <div className="mx-auto">
-        <div className={clsx("flex", className)}>
+        <div className={clsx('flex', className)}>
           {tabs.map((tab, index) => (
             <div key={index} className="cursor-pointer">
               <span
                 onClick={() => handleTabClick(tab.id)}
-                className={`inline-flex justify-center ${
+                className={`inline-flex justify-center w-atuo py-4 px-2 mr-2 text-base tracking-[.08em] h-[56px] ${
                   tab.id === activeTab
-                    ? "w-[124px] h-[56px] py-4 border-b-2 text-shades-black text-base tracking-[.08em]"
-                    : "w-[124px] h-[56px] py-4 text-neutral-700 text-base tracking-[.08em]"
+                    ? 'border-b-2 text-shades-black'
+                    : 'text-neutral-700'
                 }`}
               >
                 {tab.label}
@@ -49,7 +49,7 @@ function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
       </div>
       <div className="py-4">
         {tabs.map((tab) => (
-          <div key={tab.id} className={tab.id === activeTab ? "active" : ""}>
+          <div key={tab.id} className={tab.id === activeTab ? 'active' : ''}>
             {tab.id === activeTab ? tab.content : null}
           </div>
         ))}

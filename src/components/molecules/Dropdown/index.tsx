@@ -1,11 +1,11 @@
-import { Fragment, useState, useRef, useEffect, FC } from "react";
-import { Listbox, Transition } from "@headlessui/react";
-import clsx from "clsx";
-import { theme } from "@/config/theme";
-import DropDownDownIcon from "@/assets/svgs/dark/icon-dropdown-down.svg";
-import DropDownUpIcon from "@/assets/svgs/dark/icon-dropdown-up.svg";
-import CheckIcon from "@/assets/svgs/dark/icon-check.svg";
-import styles from "./Dropdown.module.css";
+import { Fragment, useState, useRef, useEffect, FC } from 'react';
+import { Listbox, Transition } from '@headlessui/react';
+import clsx from 'clsx';
+import { theme } from '@/config/theme';
+import DropDownDownIcon from '@/assets/svgs/dark/icon-dropdown-down.svg';
+import DropDownUpIcon from '@/assets/svgs/dark/icon-dropdown-up.svg';
+import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
+import styles from './Dropdown.module.css';
 
 type Option = {
   value: string;
@@ -18,10 +18,19 @@ export interface DropdownProps {
   isValid: boolean;
   onChange: (value: Option) => void;
   options: Option[];
+  className?: string;
+  selectedOption?: Option;
 }
 
-const Dropdown: FC<DropdownProps> = ({ label, onChange, options, isValid }) => {
-  const [selected, setSelected] = useState(options[0]);
+const Dropdown: FC<DropdownProps> = ({
+  label,
+  onChange,
+  options,
+  isValid,
+  className,
+  selectedOption,
+}) => {
+  const [selected, setSelected] = useState(selectedOption || options[0]);
   const [isExpand, setIsExpand] = useState(false);
 
   const clsDropDownCard = clsx({
@@ -39,7 +48,7 @@ const Dropdown: FC<DropdownProps> = ({ label, onChange, options, isValid }) => {
 
   const handleClick = (event: any) => {
     setIsExpand(!isExpand);
-    if (event.target.getAttribute("data-headlessui-state") === "disabled") {
+    if (event.target.getAttribute('data-headlessui-state') === 'disabled') {
       setIsExpand(true);
     }
   };
@@ -50,9 +59,9 @@ const Dropdown: FC<DropdownProps> = ({ label, onChange, options, isValid }) => {
   }
 
   useEffect(() => {
-    document.addEventListener("click", handleDocumentClick);
+    document.addEventListener('click', handleDocumentClick);
     return () => {
-      document.removeEventListener("click", handleDocumentClick);
+      document.removeEventListener('click', handleDocumentClick);
     };
   }, []);
 
@@ -60,8 +69,9 @@ const Dropdown: FC<DropdownProps> = ({ label, onChange, options, isValid }) => {
     <div ref={dropdownRef}>
       <div
         className={clsx(
-          `flex justify-center my-10 mx-2`,
-          theme.fonts.text["base"]
+          `flex justify-center my-3 mx-2`,
+          theme.fonts.text['base'],
+          className
         )}
       >
         <div onClick={handleClick}>
@@ -86,9 +96,9 @@ const Dropdown: FC<DropdownProps> = ({ label, onChange, options, isValid }) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="w-full rounded-b border-r border-l border-b border-shades-black">
+                <Listbox.Options className="w-[inherit] rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white">
                   {options
-                    .filter((option) => option !== selected)
+                    .filter((option) => option.value !== selected.value)
                     .map((option, personIdx) => (
                       <Listbox.Option
                         key={personIdx}

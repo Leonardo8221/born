@@ -13,3 +13,7 @@
 #input {
   resize: none;
 }
+
+.errorTextarea {
+	border: 1px solid #c55757;
+}

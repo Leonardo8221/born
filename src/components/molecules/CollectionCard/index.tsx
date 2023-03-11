@@ -25,7 +25,7 @@ const clsVariations = {
     clsLabel: clsx(
       fonts.text["2xl"],
       fonts.fontWeights.regular,
-      "text-shades-white max-w-[105px] text-center"
+      "text-shades-white max-w-[205px] text-center"
     ),
     clsHeaderText: clsx(
       fonts.fontWeights.light,
@@ -35,7 +35,7 @@ const clsVariations = {
     clsAuthor: clsx(
       fonts.fontWeights.light,
       fonts.text.lg,
-      "text-shades-white text-center max-w-[115px]"
+      "text-shades-white text-center max-w-[215px]"
     ),
     clsOverlay: clsx("h-full w-full z-[2] absolute top-0", styles.overlay),
   },
@@ -103,7 +103,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
               <div
                 className={clsx(
                   clsVariations[size].innerImageSize,
-                  "rounded-md bg-neutral-100 relative border border-neutral-200"
+                  "mx-auto rounded-md bg-neutral-100 relative border border-neutral-200"
                 )}
               >
                 <Image

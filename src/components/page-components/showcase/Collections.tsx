@@ -5,16 +5,22 @@ import imageSrc from "@/assets/images/collection-card/inner-collection-card-imag
 import { useQuery } from "@apollo/client";
 import { COLLECTIONS_QUERY } from "@/queries/collecitons";
 import { CollectionGraphqlDto } from "@/generated/types";
+import { useRouter } from "next/router";
+import Loading from "../Loading";
+import ErrorMessage from "../Error/ErrorMessage";
 
 const Collections = () => {
-  const { data, loading, error } = useQuery(COLLECTIONS_QUERY);
+  const router = useRouter();
+  const id = router?.query?.id || "";
+  const organizationId: number = +id;
+  const { data, loading, error } = useQuery(COLLECTIONS_QUERY, { variables: { organizationId }});
 
   if (error) {
-    return <div>Something went wrong, please try again!</div>;
+    return <ErrorMessage errorMessage={error?.message} />;
   }
 
   if (loading) {
-    return <div>Loading collections...</div>;
+    return <Loading message="Loading collecitons" />;
   }
 
   return (

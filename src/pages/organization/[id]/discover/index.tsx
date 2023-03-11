@@ -1,11 +1,11 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import ShowcaseLayout from "@/components/layouts/ShowcaseLayout";
 import Tabs from "@/components/molecules/Tab/Tabs";
 import Collections from "@/components/page-components/showcase/Collections";
 import ShowcaseLogo from "@/components/page-components/showcase/Logo";
 import Products from "@/components/page-components/showcase/Products";
 import Story from "@/components/page-components/showcase/Story";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 const StoryPage = () => {
   const [activeTab, setActiveTab] = useState<string | number>("story");
@@ -43,7 +43,7 @@ const StoryPage = () => {
 
   return (
     <ShowcaseLayout>
-      <div className="mx-auto">
+      <div className="mx-auto overflow-x-hidden">
         <ShowcaseLogo />
         <Tabs
           tabs={tabs}

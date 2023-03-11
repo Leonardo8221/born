@@ -9,6 +9,8 @@ export interface DescriptionFieldProps {
   label: string;
   value?: string;
   placeholder?: string;
+  isError?: boolean;
+  className?: string;
 }
 
 const DescriptionField: FC<DescriptionFieldProps> = ({
@@ -17,36 +19,42 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   onError,
   value,
   placeholder,
+  isError,
+  className,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  // const [inputValue, setInputValue] = useState("");
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value;
 
-    setInputValue(newValue);
+    // setInputValue(newValue);
     if (onChange) {
       onChange(newValue);
     }
-    if (newValue.length === 10) {
-      onError?.("Description is too long");
+    if (newValue.length > 254) {
+      onError?.('Description is too long');
     } else {
-      onError?.("");
+      onError?.('');
     }
   };
 
   return (
-    <div className="flex justify-center">
-      <div className=" m-10">
+    <div className={clsx('flex justify-center', styles.container)}>
+      <div className={clsx('my-3', className)}>
         <div className="relative">
           <label className={styles.label}>{label}</label>
-          <div className="border border-neutral-500 rounded h-[190px]  ">
+          <div
+            className={clsx('border border-neutral-500 rounded h-[190px]', {
+              [styles.errorTextarea]: isError === true,
+            })}
+          >
             <textarea
               defaultValue={value}
               onChange={handleChange}
               placeholder={placeholder}
-              id={"input"}
               className={clsx(
-                `h-[188px] w-[600px] p-4 'text-shades-black' rounded focus:outline-none`,
-                theme.fonts.text["base"]
+                styles.textarea,
+                `h-[188px] w-[356px] p-4 'text-shades-black' rounded focus:outline-none`,
+                theme.fonts.text['base']
               )}
             />
           </div>

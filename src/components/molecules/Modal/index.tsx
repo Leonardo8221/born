@@ -1,6 +1,6 @@
-import { FC, Fragment, ReactNode } from "react";
-import { Transition } from "@headlessui/react";
-import Header from "./Header";
+import { FC, Fragment, ReactNode } from 'react';
+import { Transition } from '@headlessui/react';
+import Header from './Header';
 
 export interface ModalProps {
   title: string;
@@ -28,7 +28,7 @@ const Modal: FC<ModalProps> = ({
     >
       <div className="fixed h-full w-full flex justify-center items-center top-0 left-0 bottom-0 right-0 z-[50]">
         <div
-          className="fixed inset-0 bg-shades-black/30 z-40"
+          className="fixed inset-0 bg-[rgba(0,0,0,0.8)] z-40"
           aria-hidden="true"
         />
         <div className="relative z-50 w-full max-w-[736px] mx-auto bg-shades-white rounded-lg shadow-small">

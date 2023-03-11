@@ -11,3 +11,15 @@ export const ORGANIZATIONS_QUERY = gql`
   }
   ${ORGANIZATION_FRAGMENT}
 `;
+
+export const GET_ORGANIZATION_BY_ID = gql`
+  query getOrganizationById($id: BigInteger!) {
+    userOrganizationByOrganizationId(id: $id) {
+      organization {
+        ...OrganizationGraphqlDTO
+        currency_types
+      }
+    }
+  }
+  ${ORGANIZATION_FRAGMENT}
+`;

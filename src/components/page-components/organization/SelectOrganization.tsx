@@ -1,15 +1,17 @@
-import TitleHeader from "@/components/organisms/TitleHeader";
-import OrgBgImg1 from "@/assets/images/organization/organization-1.png";
-import OrgLogoImg1 from "@/assets/images/logo-image.png";
+import { useQuery } from '@apollo/client';
+import TitleHeader from '@/components/organisms/TitleHeader';
 import OrganizationCard, {
   OrganizationCardProps,
-} from "@/components/page-components/organization";
-import Header from "@/components/page-components/organization/Header";
-import { useQuery } from "@apollo/client";
-import { ORGANIZATIONS_QUERY } from "@/queries/organizations";
+} from '@/components/page-components/organization';
+import Header from '@/components/page-components/organization/Header';
+import { ORGANIZATIONS_QUERY } from '@/queries/organizations';
+import OrgBgImg1 from '@/assets/images/organization/organization-1.png';
+import OrgLogoImg1 from '@/assets/images/logo-image.png';
+import ErrorMessage from '../Error/ErrorMessage';
+import Loading from '../Loading';
 
 const SelectOrganization = () => {
-  const { data, error, loading } = useQuery(ORGANIZATIONS_QUERY);
+  const { data, error, loading, refetch } = useQuery(ORGANIZATIONS_QUERY);
 
   const renderOrganizations = () => {
     return data?.userWithOrganizationsAndUpdateLastLoggedInDate?.organizations?.map(
@@ -17,7 +19,7 @@ const SelectOrganization = () => {
         <OrganizationCard
           key={index}
           {...org}
-          id={org.id || index + 1}
+          id={org.id}
           logoUrl={OrgLogoImg1}
           imgSrc={OrgBgImg1}
         />
@@ -26,16 +28,26 @@ const SelectOrganization = () => {
   };
 
   if (error) {
-    return <div>Something went wrong, please refresh the page!</div>;
+    return (
+      <div className="mt-[60px]">
+        <ErrorMessage errorMessage={error?.message} refetch={refetch} />
+      </div>
+    )
   }
 
   return (
     <div>
       <Header />
       <TitleHeader title="Choose an organization" />
-      <div className="max-w-[1120px] grid grid-cols-3 mx-auto gap-[30px] mt-[56px]">
-        {loading ? <div>Loading organizations...</div> : renderOrganizations()}
-      </div>
+      {loading ? (
+        <div className="mt-[56px]">
+          <Loading message="Loading organizations" />
+        </div>
+      ) : (
+        <div className="max-w-[1120px] grid grid-cols-3 mx-auto gap-[30px] mt-[56px]">
+          {renderOrganizations()}
+        </div>
+      )}
     </div>
   );
 };
