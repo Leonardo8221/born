@@ -1,10 +1,11 @@
-import { Button } from "@/components/molecules/Button";
-import { DropdownMenu } from "@/components/molecules/DropdownMenu";
-import { Icon } from "@/components/molecules/Icon";
+import { useRouter } from 'next/router';
+import { Button } from '@/components/molecules/Button';
+import { DropdownMenu } from '@/components/molecules/DropdownMenu';
+import { Icon } from '@/components/molecules/Icon';
 import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
-import Link from "next/link";
 
 const Header = () => {
+  const router = useRouter();
   const items = [
     {
       label: 'PDF',
@@ -15,14 +16,14 @@ const Header = () => {
       label: 'Excel',
       value: 'excel',
       action: () => console.log('Excel downloaded!'),
-    }
-  ]
+    },
+  ];
   return (
     <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
       <div>
-        <Link href="/organization/1/discover?tab=collections">
+        <div onClick={() => router?.back()}>
           <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
-        </Link>
+        </div>
       </div>
       <div className="flex items-center gap-x-4">
         <div>
@@ -45,7 +46,7 @@ const Header = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Header;

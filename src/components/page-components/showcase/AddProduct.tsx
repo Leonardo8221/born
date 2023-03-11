@@ -1,103 +1,106 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import Modal from "@/components/molecules/Modal";
 import { Button } from "@/components/molecules/Button";
 import { Icon } from "@/components/molecules/Icon";
+import ProgressBar from "@/components/molecules/ProgressBar";
+import SuccessMessageBox from "@/components/molecules/SuccessBox";
 
-export interface AddProductModalProps {
-  isOpen: boolean;
-  setIsOpen: (event: any) => void;
-}
+export interface AddProductProps {}
 
-const AddProductModal: FC<AddProductModalProps> = ({
-  isOpen = false,
-  setIsOpen,
-}) => {
+const AddProduct: FC<AddProductProps> = () => {
   const [showProgress, setShowProgress] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: any) => {
-    console.log(acceptedFiles, "File Aaccepted");
-
     setShowProgress(true);
-    setTimeout(() => {
-      setShowProgress(false);
-      alert("File uploaded successfully!");
 
-      setTimeout(() => {
-        alert("File upload completed!");
-      }, 3000);
-    }, 3000);
+    if (typeof acceptedFiles === "object") {
+      console.log("files", acceptedFiles);
+    }
+
+    // Code to execute after a delay of 3 seconds
+    const delayedCode = () => {
+      setShowProgress(false);
+      setSuccess(true);
+    };
+
+    setTimeout(delayedCode, 3000);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
   return (
-    <Modal
-      title="Product Ingestion Tool"
-      isOpen={isOpen}
-      onClose={() => setIsOpen(!isOpen)}
-    >
-      <div className=" px-[90px] flex flex-col items-center justify-center w-full">
-        <div className="w-[500px] p-[110px] text-center border rounded-xl m-10 text-[32px] font-light">
-          <div {...getRootProps()}>
+    <div className="flex flex-col items-center justify-center w-full pt-6 pb-16">
+      <div
+        className={`w-[500px] min-h-[300px] p-9 flex items-center justify-center border rounded-xl m-10 cursor-pointer ${
+          success ? "border-[#64B980]" : "border"
+        }`}
+      >
+        {showProgress ? (
+          <ProgressBar percentage={50} />
+        ) : !showProgress && success ? (
+          <SuccessMessageBox
+            placeholder="Your file ‘filename.excel’ has been uploaded successfully"
+            buttonLabel="Back to products"
+          />
+        ) : (
+          <div className="flex flex-col items-center" {...getRootProps()}>
             <input {...getInputProps()} />
-            {isDragActive ? (
-              <p>Drop the files here ...</p>
-            ) : (
-              <p>Drag and Drop your CSV file here</p>
-            )}
-            {showProgress && (
-              <progress
-                className="w-full h-4 rounded-full bg-black"
-                max="100"
-                value="100"
-              ></progress>
-            )}
+            <Icon
+              name="icon-document"
+              className="mb-4"
+              height={40}
+              width={40}
+            />
+            <p className="leading-10 text-[32px] font-light text-center max-w-xs">
+              {isDragActive
+                ? "Drop files here"
+                : "Drag and Drop your CSV file here"}
+            </p>
           </div>
-        </div>
-        <p className="w-[500px] text-center text-[14px] text-[#666666]">
-          In order to upload your product CSV without any issues, please make
-          sure you have the correct CSV file format
-        </p>
-        <div className="py-2 flex flex-col items-center">
-          <h2 className="text-[18px] py-5">
-            Our latest CSV file format can be found here.
-          </h2>
-          <Button
-            variant="outlined"
-            className="h-[40px] w-[352px] !m-0"
-            size="sm"
-          >
-            <Icon name="icon-document" /> Download CSV template
-          </Button>
-        </div>
-        <div className="py-2 flex flex-col items-center">
-          <h2 className="text-[18px] py-5">
-            Further documentation about ingestion practices.
-          </h2>
-          <Button
-            variant="outlined"
-            className="h-[40px] w-[352px] !m-0"
-            size="sm"
-          >
-            <Icon name="icon-book" /> Ingestion resources
-          </Button>
-        </div>
-        <div className="py-2 flex flex-col items-center">
-          <h2 className="text-[18px] py-5">
-            Care to work on your existing product data?
-          </h2>
-          <Button
-            variant="outlined"
-            className="h-[40px] w-[352px] !m-0"
-            size="sm"
-          >
-            <Icon name="icon-document" /> Download product inventory CSV
-          </Button>
-        </div>
+        )}
       </div>
-    </Modal>
+      <p className="max-w-[500px] font-light text-center text-[14px] text-[#333333] pb-4">
+        In order to upload your product CSV without any issues, please make sure
+        you have the correct CSV file format
+      </p>
+      <div className="pb-[50px] flex flex-col items-center">
+        <h2 className="text-[18px] pb-8 text-[#333333] font-normal leading-6">
+          Our latest CSV file format can be found here.
+        </h2>
+        <Button
+          variant="outlined"
+          className="h-[40px] w-[352px] !m-0"
+          size="sm"
+        >
+          <Icon name="icon-document" /> Download CSV template
+        </Button>
+      </div>
+      <div className="pb-[50px] flex flex-col items-center">
+        <h2 className="text-[18px] pb-8 text-[#333333] font-normal leading-6">
+          Further documentation about ingestion practices.
+        </h2>
+        <Button
+          variant="outlined"
+          className="h-[40px] w-[352px] !m-0"
+          size="sm"
+        >
+          <Icon name="icon-book" /> Ingestion resources
+        </Button>
+      </div>
+      <div className="pb-[50px] flex flex-col items-center">
+        <h2 className="text-[18px] pb-8 text-[#333333] font-normal leading-6">
+          Care to work on your existing product data?
+        </h2>
+        <Button
+          variant="outlined"
+          className="h-[40px] w-[352px] !m-0"
+          size="sm"
+        >
+          <Icon name="icon-document" /> Download product inventory CSV
+        </Button>
+      </div>
+    </div>
   );
 };
 
-export default AddProductModal;
+export default AddProduct;

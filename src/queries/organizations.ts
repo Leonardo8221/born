@@ -17,6 +17,7 @@ export const GET_ORGANIZATION_BY_ID = gql`
     userOrganizationByOrganizationId(id: $id) {
       organization {
         ...OrganizationGraphqlDTO
+        currency_types
       }
     }
   }

@@ -33,6 +33,8 @@ const CollectionPage = () => {
           <CollectionCard
             backgroundImageSrc={backgroundImageSrc}
             label="SS23"
+            editBanner
+            onEdit={(e) => e.preventDefault()}
           />
           <Description />
         </div>
