@@ -5,10 +5,13 @@ import Filters from "@/components/page-components/common/Filters";
 import { GridType } from "@/components/molecules/IconButtonGroup";
 import { useQuery } from "@apollo/client";
 import { PRODUCTS_QUERY } from "@/queries/products";
+import { Button } from "@/components/molecules/Button";
+import AddProductModal from "@/components/page-components/showcase/AddProduct";
 
 const Products = () => {
   const [gridType, setGrid] = useState<GridType>("grid");
   const [isSelectable, setIsSelectable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<
     Array<string | number>
   >([]);
@@ -61,6 +64,12 @@ const Products = () => {
   return (
     <div>
       <div className="max-w-[1120px] mx-auto">
+        <div className="absolute top-[121px] right-[92px]">
+          <Button
+            label="+ Add Product"
+            onClick={() => setIsModalOpen(!isModalOpen)}
+          />
+        </div>
         <Filters
           onGridChange={setGrid}
           gridType={gridType}
@@ -78,6 +87,7 @@ const Products = () => {
           onSelect={handleSelectedProducts}
         />
       </div>
+      <AddProductModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </div>
   );
 };

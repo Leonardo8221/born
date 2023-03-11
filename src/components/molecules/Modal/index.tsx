@@ -1,11 +1,11 @@
-import { FC, Fragment, ReactNode } from "react";
+import { FC, Fragment, ReactNode, MouseEvent } from "react";
 import { Transition } from "@headlessui/react";
 import Header from "./Header";
 
 export interface ModalProps {
   title: string;
   isOpen: boolean;
-  onClose?: (e: any) => void;
+  onClose?: (event: MouseEvent) => void;
   children: ReactNode;
 }
 

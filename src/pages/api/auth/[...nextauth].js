@@ -15,7 +15,8 @@ export const authOptions = {
         // ...add more providers here
     ],
     callbacks: {
-        jwt: ({ token, account }) => {
+        jwt: ({ token, account, ...rest }) => {
+            console.log(token, account, rest)
             if (account?.access_token) {
                 token.accessToken = account.access_token;
             }
