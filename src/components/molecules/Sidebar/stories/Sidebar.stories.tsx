@@ -10,38 +10,40 @@ export default {
 
 const Template = (args: SidebarProps) => <Sidebar {...args} />;
 
-export const Variant1: StoryFn<SidebarProps> = Template.bind ({});
+export const Variant1: StoryFn<SidebarProps> = Template.bind({});
 Variant1.args = {
   variant: 1,
   title: 'Missoma',
   logo: <BrandLogo />,
+  currentTab: 'profile',
+  onTabChange: (index) => {},
   menuItems: [
     {
-      name: 'Profile',
-      icon: 'icon-user',
-      url: '#',
+      value: 'profile',
+      name: "Profile",
+      icon: "icon-user",
     },
     {
-      name: 'Ordering',
-      icon: 'icon-bag',
-      url: '#'
+      value: 'Ordering',
+      name: "Ordering",
+      icon: "icon-bag",
     },
     {
-      name: 'Teams',
-      icon: 'icon-users',
-      url: '#'
+      value: 'teams',
+      name: "Teams",
+      icon: "icon-users",
     },
     {
-      name: 'Settings',
-      icon: 'icon-settings',
-      url: '#'
+      value: 'settings',
+      name: "Settings",
+      icon: "icon-settings",
     },
     {
-      name: 'Switch Account',
-      icon: 'icon-swap',
-      url: '#'
+      value: 'switch-accounts',
+      name: "Switch Account",
+      icon: "icon-swap",
     },
-  ]
+  ],
 };
 
 export const Variant2: StoryFn<SidebarProps> = Template.bind({});
@@ -49,5 +51,5 @@ Variant2.args = {
   variant: 2,
   title: 'UMI',
   subTitle: 'VESD1567',
-  logoUrl: productImage
+  logoUrl: productImage,
 };

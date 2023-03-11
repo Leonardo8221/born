@@ -24,31 +24,33 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
     router.push("/");
   };
 
+  const returnRedirectManageLink = (tab: string) => `/organization/${router.query.id}/manage/marketing?tab=${tab}`
+
   const dropdownMenus = [
     {
       label: "Profile",
       value: "profile",
-      action: () => router.push("#"),
+      action: () => router.push(returnRedirectManageLink('profile')),
     },
     {
       label: "Ordering",
       value: "ordering",
-      action: () => router.push("#"),
+      action: () => router.push(returnRedirectManageLink('ordering')),
     },
     {
       label: "Teams",
       value: "teams",
-      action: () => router.push("#"),
+      action: () => router.push(returnRedirectManageLink('teams')),
     },
     {
       label: "Settings",
       value: "settings",
-      action: () => router.push("#"),
+      action: () => router.push(returnRedirectManageLink('settings')),
     },
     {
       label: "Switch accounts",
       value: "switch-accounts",
-      action: () => router.push("#"),
+      action: () => router.push(returnRedirectManageLink('switch-accounts')),
     },
     {
       label: "Sign out",

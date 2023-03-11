@@ -3,16 +3,17 @@ import clsx from "clsx";
 import { buttonSize, buttonVariants, outlinedButtonVariants } from "./utils";
 
 export interface ButtonProps {
-  as?: "a" | "button";
+  as?: 'a' | 'button';
   rounded?: boolean;
   href?: string;
-  variant?: "outlined" | "link";
+  variant?: 'outlined' | 'link';
   color?: keyof typeof buttonVariants;
   size?: keyof typeof buttonSize;
   label?: string;
   className?: string;
   onClick?: (e: any) => void;
   children?: any;
+  disabled?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -24,6 +25,7 @@ export const Button: FC<ButtonProps> = ({
   children,
   className = "",
   label = "",
+  disabled,
   ...props
 }) => {
   return createElement(
@@ -36,8 +38,10 @@ export const Button: FC<ButtonProps> = ({
           : outlinedButtonVariants[color || "black"],
         buttonSize[size || "lg"],
         rounded ? "rounded-[3rem]" : "rounded",
+        disabled && 'opacity-40',
         className
       ),
+      disabled,
       ...props,
     },
     <>
