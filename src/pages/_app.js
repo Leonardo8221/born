@@ -13,7 +13,7 @@ import '../assets/css/global.css';
 
 // create http link to your graphql endpoint
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT,
+    uri: process.env.NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT || "https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql",
 });
 
 // create error link to handle errors
