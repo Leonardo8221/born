@@ -26,12 +26,12 @@ const Modal: FC<ModalProps> = ({
       leaveTo="opacity-0"
       as={Fragment}
     >
-      <div className="fixed h-full w-full flex justify-center items-center top-0 left-0 bottom-0 right-0 z-[50]">
+      <div className="fixed mt-4 h-full w-full flex justify-center items-center top-0 left-0 bottom-0 right-0 z-[50]">
         <div
           className="fixed inset-0 bg-shades-black/30 z-40"
           aria-hidden="true"
         />
-        <div className="relative z-50 w-full max-w-[736px] mx-auto bg-shades-white rounded-lg shadow-small">
+        <div className="relative z-50 w-full max-w-auto mx-auto bg-shades-white rounded-lg shadow-small">
           <Header title={title} onClose={onClose} />
           <div className="px-8 pt-6 pb-8">{children}</div>
         </div>
