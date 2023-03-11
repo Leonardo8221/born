@@ -2,11 +2,11 @@ import { gql } from '@apollo/client';
 import { PRODUCT_FRAGMENT } from './fragments/product';
 
 export const PRODUCTS_QUERY = gql`
-  query getProducts {
+  query getProducts ($organizationId: BigInteger!, $start: Int, $rows: Int) {
     productsBySearchAndOrganizationId (
-      organizationId: 1
-      start: 0
-      rows: 10
+      organizationId: $organizationId
+      start: $start
+      rows: $rows
     ) {
       content {
         ...ProductGraphqlDTO

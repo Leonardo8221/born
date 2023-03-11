@@ -6,6 +6,8 @@ import {
 } from "@/components/molecules/Cards/Product";
 import { GridType } from "@/components/molecules/IconButtonGroup";
 import ListTable from "@/components/organisms/Tables/Product/ListTable";
+import { ProductGraphqlDto } from "@/generated/types";
+import productPlaceholderImage from '@/assets/images/product-placeholder.webp';
 
 interface ProductListProps {
   products: ProductCardProps[];
@@ -37,13 +39,14 @@ const ProductList: FC<ProductListProps> = ({
         gridType === "smallGrid" ? "grid-cols-6" : "grid-cols-3"
       )}
     >
-      {products?.map((item: ProductCardProps, index: number) => (
+      {products?.map((item: ProductGraphqlDto, index: number) => (
         <ProductCard
           key={index}
           size={gridType === "smallGrid" ? "sm" : "lg"}
           isSelectable={selectable}
           isSelected={!!selectedProducts?.includes(index)}
           onSelect={() => onSelect(index)}
+          imageUrl={productPlaceholderImage}
           {...item}
         />
       ))}

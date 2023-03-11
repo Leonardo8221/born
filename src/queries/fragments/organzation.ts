@@ -13,7 +13,6 @@ export const ORGANIZATION_FRAGMENT = gql`
     terms_and_conditions
     website_link
     year_of_inception
-    currency_types
     logo_guid
     banner_guid
   }

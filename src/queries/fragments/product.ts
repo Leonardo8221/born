@@ -26,6 +26,7 @@ export const PRODUCT_FRAGMENT = gql`
     delivery_window_start_date
     description
     upc
+    style_name
     style_number
     style_id
     size_type
