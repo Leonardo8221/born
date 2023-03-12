@@ -51,14 +51,21 @@ const StoryPage = () => {
           <div className="flex-1">
             <ShowcaseLogo />
           </div>
-          <div className="flex flex-1 justify-end">
-            {activeTab === 'collections' && (
-              <div className="inline-block mt-4">
-                <Button as="a" href="#" className="!max-w-[200px]">
-                  <Icon name="icon-add" />
-                  Add Collection
+          <div className="flex-1">
+            {router?.query?.tab !== 'story' && (
+              <div className='mt-8'>
+                <Button
+                  as="a"
+                  variant="link"
+                  href={`/organization/${router?.query?.id}/discover/product-ingestion`}
+                  className="!max-w-[205px] !ml-auto !mr-0"
+                >
+                  <Icon name="icon-add" />{' '}
+                  {router?.query?.tab === 'collections'
+                    ? 'Add Collections'
+                    : 'Add Products'}
                 </Button>
-              </div>
+                </div>
             )}
           </div>
         </div>
