@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { products } from '@/components/organisms/Tables/Product/ListTable/data';
 import ProductList from '@/components/page-components/common/ProductList';
 import Filters from '@/components/page-components/common/Filters';
 import { GridType } from '@/components/molecules/IconButtonGroup';
@@ -8,6 +7,7 @@ import { useQuery } from '@apollo/client';
 import { PRODUCTS_QUERY } from '@/queries/products';
 import Loading from '../Loading';
 import ErrorMessage from '../Error/ErrorMessage';
+import { Icon } from '@/components/molecules/Icon';
 
 const Products = () => {
   const [gridType, setGrid] = useState<GridType>('grid');

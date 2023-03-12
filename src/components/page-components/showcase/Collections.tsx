@@ -1,11 +1,11 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
 import { CollectionCard } from "@/components/molecules/CollectionCard";
 import backgroundImageSrc from "@/assets/images/collection-card/collection-card-background-image.png";
 import imageSrc from "@/assets/images/collection-card/inner-collection-card-image.png";
-import { useQuery } from "@apollo/client";
 import { COLLECTIONS_QUERY } from "@/queries/collecitons";
 import { CollectionGraphqlDto } from "@/generated/types";
-import { useRouter } from "next/router";
 import Loading from "../Loading";
 import ErrorMessage from "../Error/ErrorMessage";
 
@@ -13,6 +13,7 @@ const Collections = () => {
   const router = useRouter();
   const id = router?.query?.id || "";
   const organizationId: number = +id;
+
   const { data, loading, error } = useQuery(COLLECTIONS_QUERY, { variables: { organizationId }});
 
   if (error) {

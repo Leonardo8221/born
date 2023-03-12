@@ -7,7 +7,7 @@ import {
 import { GridType } from "@/components/molecules/IconButtonGroup";
 import ListTable from "@/components/organisms/Tables/Product/ListTable";
 import { ProductGraphqlDto } from "@/generated/types";
-import productPlaceholderImage from '@/assets/images/product-placeholder.webp';
+import productPlaceholderImage from '@/assets/images/product-image.png';
 
 interface ProductListProps {
   products: ProductCardProps[];
