@@ -13,6 +13,7 @@ export interface InputProps {
   isRequired?: boolean;
   className?: string;
   placeholder?: string;
+  isEditMode?: boolean;
   onChange: (value: string) => void;
   onError?: (message: string) => void;
 }
@@ -22,6 +23,7 @@ const Input: FC<InputProps> = ({
   value,
   type = 'text',
   name,
+  isEditMode = false,
   isValid = false,
   isError = false,
   isRequired = false,
@@ -55,20 +57,24 @@ const Input: FC<InputProps> = ({
               <span className="text-neutral-600"> | Required</span>
             )}
           </label>
-          <div className={`border rounded flex h-[56px] ` + clsInputFieldCard}>
-            <input
-              defaultValue={value}
-              placeholder={placeholder}
-              type={type}
-              name={name}
-              className="my-input w-full flex p-4 rounded text-shades-black"
-              onChange={handleChange}
-            />
-            <div className="flex items-center ml-3 mr-4 my-[15px] w-6 h-6">
-              {!isError &&
-                (isValid ? <CheckIcon height={24} width={24} /> : null)}
+          {isEditMode ? null : (
+            <div
+              className={`border rounded flex h-[56px] ` + clsInputFieldCard}
+            >
+              <input
+                defaultValue={value}
+                placeholder={placeholder}
+                type={type}
+                name={name}
+                className="my-input w-full flex p-4 rounded text-shades-black"
+                onChange={handleChange}
+              />
+              <div className="flex items-center ml-3 mr-4 my-[15px] w-6 h-6">
+                {!isError &&
+                  (isValid ? <CheckIcon height={24} width={24} /> : null)}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

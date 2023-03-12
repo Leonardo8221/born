@@ -68,6 +68,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
           height={20}
           width={20}
           className="cursor-pointer text-shades-black"
+          onClick={() => router.push(`/organization/${router.query.id}/order`)}
         />
       </div>
       <DropdownMenu options={dropdownMenus} />
