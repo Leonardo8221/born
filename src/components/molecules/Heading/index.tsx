@@ -4,18 +4,18 @@ import { theme } from "@/config/theme";
 
 interface HeadingProps {
   color?: string;
-  fontWeight?: 'regular' | 'light';
+  fontWeight?: "regular" | "light";
   size?: keyof typeof theme.fonts.headings;
-  className: string;
+  className?: string;
   children: ReactNode;
   as?: string;
 }
 
 export const Heading: FC<HeadingProps> = ({
   color = "",
-  fontWeight = 'regular',
-  size = 'base',
-  className = '',
+  fontWeight = "regular",
+  size = "base",
+  className = "",
   children,
   ...props
 }) => {
@@ -26,7 +26,7 @@ export const Heading: FC<HeadingProps> = ({
         color,
         theme.fonts.fontWeights[fontWeight],
         theme.fonts.headings[size],
-        className,
+        className
       )}
       {...props}
     >

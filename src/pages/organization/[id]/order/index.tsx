@@ -17,7 +17,6 @@ export default function OrderManagement() {
     variables: { organizationId: organizationId, start: 0, rows: 10 },
   });
   const ordersBySearch = data?.ordersBySearch?.content || [];
-  console.log(data);
 
   const tabs = [
     {

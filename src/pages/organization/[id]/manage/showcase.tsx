@@ -1,7 +1,3 @@
-const ShowcasePage = () => {
-  return (
-    <div>Showcase page is under construction!</div>
-  )
+export default function () {
+  return <>Showcase Page Under Construction</>;
 }
-
-export default ShowcasePage;

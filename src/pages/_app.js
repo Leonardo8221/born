@@ -13,12 +13,11 @@ import '../assets/css/global.css';
 
 // create http link to your graphql endpoint
 const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT || "https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql",
+  uri: process.env.NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT || "https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql",
 });
 
 // create error link to handle errors
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  console.log({ networkError, graphQLErrors });
   if (networkError?.statusCode === 401) {
     signOut({ redirect: false, callbackUrl: process.env.NEXTAUTH_URL }); // sign out the user when the token is expired!
     location?.replace('/');

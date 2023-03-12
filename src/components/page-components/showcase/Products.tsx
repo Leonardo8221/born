@@ -1,23 +1,23 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { products } from '@/components/organisms/Tables/Product/ListTable/data';
-import ProductList from '@/components/page-components/common/ProductList';
-import Filters from '@/components/page-components/common/Filters';
-import { GridType } from '@/components/molecules/IconButtonGroup';
-import { useQuery } from '@apollo/client';
-import { PRODUCTS_QUERY } from '@/queries/products';
-import Loading from '../Loading';
-import ErrorMessage from '../Error/ErrorMessage';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import ProductList from "@/components/page-components/common/ProductList";
+import Filters from "@/components/page-components/common/Filters";
+import { GridType } from "@/components/molecules/IconButtonGroup";
+import { useQuery } from "@apollo/client";
+import { PRODUCTS_QUERY } from "@/queries/products";
+import AddProductModal from "@/components/page-components/showcase/AddProduct";
+import Loading from "../Loading";
+import ErrorMessage from "../Error/ErrorMessage";
 
 const Products = () => {
-  const [gridType, setGrid] = useState<GridType>('grid');
+  const [gridType, setGrid] = useState<GridType>("grid");
   const [isSelectable, setIsSelectable] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<
     Array<string | number>
   >([]);
 
   const router = useRouter();
-  const id = router?.query?.id || '';
+  const id = router?.query?.id || "";
   const organizationId: number = +id;
 
   const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
@@ -26,34 +26,34 @@ const Products = () => {
 
   const filterTags = [
     {
-      label: 'collections',
-      size: 'default',
-      type: 'default',
+      label: "collections",
+      size: "default",
+      type: "default",
     },
     {
-      label: 'Colours',
-      size: 'default',
-      type: 'default',
+      label: "Colours",
+      size: "default",
+      type: "default",
     },
     {
-      label: 'Season',
-      size: 'default',
-      type: 'default',
+      label: "Season",
+      size: "default",
+      type: "default",
     },
   ];
 
   const actions = [
     {
-      name: 'Add to draft order',
-      action: () => 'Draft order added!',
+      name: "Add to draft order",
+      action: () => "Draft order added!",
     },
     {
-      name: 'Add to collection',
-      action: () => 'Added to collection!',
+      name: "Add to collection",
+      action: () => "Added to collection!",
     },
     {
-      name: 'Delete',
-      action: () => 'Deleted!',
+      name: "Delete",
+      action: () => "Deleted!",
     },
   ];
 
@@ -94,6 +94,7 @@ const Products = () => {
           onSelect={handleSelectedProducts}
         />
       </div>
+      <AddProductModal />
     </div>
   );
 };

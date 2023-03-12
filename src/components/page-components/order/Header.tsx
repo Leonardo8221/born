@@ -44,10 +44,10 @@ const Header: FC<HeaderProps> = ({ heading }) => {
         <div>
           <Button variant="outlined">
             Add Note
-            <Icon
+            {/* <Icon
               name="icon-message-square"
               className="text-center cursor-pointer text-shades-black"
-            />
+            /> */}
           </Button>
         </div>
         <div>

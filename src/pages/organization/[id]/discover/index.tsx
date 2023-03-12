@@ -6,6 +6,7 @@ import Collections from "@/components/page-components/showcase/Collections";
 import ShowcaseLogo from "@/components/page-components/showcase/Logo";
 import Products from "@/components/page-components/showcase/Products";
 import Story from "@/components/page-components/showcase/Story";
+import { Button } from "@/components/molecules/Button";
 
 const StoryPage = () => {
   const [activeTab, setActiveTab] = useState<string | number>("story");
@@ -44,7 +45,20 @@ const StoryPage = () => {
   return (
     <ShowcaseLayout>
       <div className="mx-auto overflow-x-hidden">
-        <ShowcaseLogo />
+        <div className="flex items-center justify-between">
+          <div className="flex-1"></div>
+          <div className="flex-1">
+            <ShowcaseLogo />
+          </div>
+          <div className="flex-1">
+            <Button
+              as="a"
+              variant="link"
+              href={`/organization/${router?.query?.id}/discover/product-ingestion`}
+              label="+ Add Product"
+            />
+          </div>
+        </div>
         <Tabs
           tabs={tabs}
           active={activeTab}

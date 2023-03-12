@@ -1,6 +1,6 @@
-export type TextSize = 'xs' | 'sm' | 'md' | 'base' | 'lg' | 'xl' | '2xl';
-export type HeadingSize = 'lg' | 'base' | 'md' | 'sm';
-export type fontWeights = 'light' | 'regular';
+export type TextSize = "xs" | "sm" | "md" | "base" | "lg" | "xl" | "2xl";
+export type HeadingSize = "lg" | "base" | "md" | "sm";
+export type fontWeights = "light" | "regular";
 
 export const fonts = {
   text: {
@@ -17,6 +17,7 @@ export const fonts = {
     base: "text-[40px] leading-[56px]",
     md: "text-[40px] leading-[48px]",
     sm: "text-[32px] leading-[48px]",
+    xs: "text-[24px] leading-[40px]",
   },
   fontWeights: {
     light: "font-light",
