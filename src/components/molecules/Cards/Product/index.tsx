@@ -7,9 +7,12 @@ import styles from './product.module.css';
 import { ProductGraphqlDto } from '@/generated/types';
 import {
   clsProductCard,
+  clsProductCardColor,
+  clsProductCardColors,
   clsProductCardId,
   clsProductCardPrice,
   clsProductCardPrices,
+  clsProductCardTags,
   clsProductCardTitle,
   currencies,
 } from './utils';
@@ -31,6 +34,8 @@ export const ProductCard: FC<ProductCardProps> = ({
   isSelected,
   onSelect = () => {},
   associated_prices,
+  colour_families,
+  collections
 }) => {
   const renderCheckbox = isSelectable && (
     <div className={styles.productCardCheckbox}>
@@ -60,22 +65,22 @@ export const ProductCard: FC<ProductCardProps> = ({
           {renderCheckbox}
         </div>
         <h3 className={clsProductCardTitle(size)}>{style_name}</h3>
-        {/* <div className={clsProductCardColors}>
-          {colors?.map((color: Color) => (
+        <div className={clsProductCardColors(size)}>
+          {colour_families?.map((color) => (
             <div
-              key={color.value}
-              className={clsProductCardColor}
-              style={color ? { backgroundColor: color.value } : {}}
+              key={color}
+              className={clsProductCardColor(size)}
+              style={color ? { backgroundColor: color } : {}}
             />
           ))}
-        </div> */}
-        {/* <div className={clsProductCardTags}>
-          {tags?.map((tag) => (
-            <Badge key={tag} size={size}>
-              {tag}
+        </div>
+        <div className={clsProductCardTags(size)}>
+          {collections?.map((collection) => (
+            <Badge key={collection?.id} size={size}>
+              {collection?.name}
             </Badge>
           ))}
-        </div> */}
+        </div>
         {associated_prices?.map(
           (item) =>
             item?.currency &&

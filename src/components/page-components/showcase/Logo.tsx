@@ -17,7 +17,7 @@ const ShowcaseLogo: FC = () => {
       <Heading
         size="md"
         as="h2"
-        className="mt-8 mb-4 text-shades-black tracking-[0.06em]"
+        className="mt-4 mb-4 text-shades-black tracking-[0.06em]"
       >
         Missoma
       </Heading>

@@ -5,7 +5,6 @@ import Filters from "@/components/page-components/common/Filters";
 import { GridType } from "@/components/molecules/IconButtonGroup";
 import { useQuery } from "@apollo/client";
 import { PRODUCTS_QUERY } from "@/queries/products";
-import AddProductModal from "@/components/page-components/showcase/AddProduct";
 import Loading from "../Loading";
 import ErrorMessage from "../Error/ErrorMessage";
 
@@ -94,7 +93,6 @@ const Products = () => {
           onSelect={handleSelectedProducts}
         />
       </div>
-      <AddProductModal />
     </div>
   );
 };
