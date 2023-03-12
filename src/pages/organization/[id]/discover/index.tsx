@@ -34,7 +34,8 @@ const StoryPage = () => {
   ];
 
   const handleTabChange = (id: string | number) => {
-    router.push(`/organization/1/discover?tab=${id}`);
+    if (!router?.query?.id) return;
+    router.push(`/organization/${router?.query?.id}/discover?tab=${id}`);
     setActiveTab(id);
   };
 
