@@ -1,19 +1,20 @@
-import { FC } from "react";
-import { useRouter } from "next/router";
-import { Icon } from "@/components/molecules/Icon";
-import ArrowIconLeft from "@/assets/svgs/arrow-left.svg";
-import { Heading } from "@/components/molecules/Heading";
+import { FC } from 'react';
+import { useRouter } from 'next/router';
+import { Icon } from '@/components/molecules/Icon';
+import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
+import { Heading } from '@/components/molecules/Heading';
 
 interface HeaderProps {
   heading: string;
+  href?: string;
 }
 
-const Header: FC<HeaderProps> = ({ heading = "" }) => {
+const Header: FC<HeaderProps> = ({ heading = '', href = '' }) => {
   const router = useRouter();
   return (
     <div className="flex w-full mx-auto items-center justify-between px-6 py-4 bg-[#fff] shadow-sm">
       <div className="flex items-center">
-        <div onClick={() => router?.back()}>
+        <div onClick={() => (href ? router.push(href) : router?.back())}>
           <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
         </div>
         <Heading className="ml-3" fontWeight="light" size="xs">

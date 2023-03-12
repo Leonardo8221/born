@@ -16,7 +16,6 @@ export const authOptions = {
     ],
     callbacks: {
         jwt: ({ token, account, ...rest }) => {
-            console.log(token, account, rest)
             if (account?.access_token) {
                 token.accessToken = account.access_token;
             }

@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
-import { DropdownMenu } from "@/components/molecules/DropdownMenu";
-import { Header } from "@/components/molecules/Header";
-import { Icon } from "@/components/molecules/Icon";
-import Footer from "./Footer";
-import { signOut } from "next-auth/react";
+import { useRouter } from 'next/router';
+import { DropdownMenu } from '@/components/molecules/DropdownMenu';
+import { Header } from '@/components/molecules/Header';
+import { Icon } from '@/components/molecules/Icon';
+import Footer from './Footer';
+import { signOut } from 'next-auth/react';
 
 interface LayoutProps<T> {
   children: React.ReactNode;
@@ -14,47 +14,48 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
 
   const items = [
     {
-      label: "Retailer",
-      href: "#",
+      label: 'Retailer',
+      href: '#',
     },
   ];
 
   const handleSignOut = () => {
     signOut({ redirect: false });
-    router.push("/");
+    router.push('/');
   };
 
-  const returnRedirectManageLink = (tab: string) => `/organization/${router.query.id}/manage/marketing?tab=${tab}`
+  const returnRedirectManageLink = (tab: string) =>
+    `/organization/${router.query.id}/manage/marketing?tab=${tab}`;
 
   const dropdownMenus = [
     {
-      label: "Profile",
-      value: "profile",
+      label: 'Profile',
+      value: 'profile',
       action: () => router.push(returnRedirectManageLink('profile')),
     },
     {
-      label: "Ordering",
-      value: "ordering",
-      action: () => router.push(returnRedirectManageLink('ordering')),
+      label: 'Ordering',
+      value: 'ordering',
+      action: () => router.push(`/organization/${router.query.id}/order`),
     },
     {
-      label: "Teams",
-      value: "teams",
+      label: 'Teams',
+      value: 'teams',
       action: () => router.push(returnRedirectManageLink('teams')),
     },
     {
-      label: "Settings",
-      value: "settings",
+      label: 'Settings',
+      value: 'settings',
       action: () => router.push(returnRedirectManageLink('settings')),
     },
     {
-      label: "Switch accounts",
-      value: "switch-accounts",
+      label: 'Switch accounts',
+      value: 'switch-accounts',
       action: () => router.push(returnRedirectManageLink('switch-accounts')),
     },
     {
-      label: "Sign out",
-      value: "sign-out",
+      label: 'Sign out',
+      value: 'sign-out',
       action: () => handleSignOut(),
     },
   ];
@@ -67,6 +68,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
           height={20}
           width={20}
           className="cursor-pointer text-shades-black"
+          onClick={() => router.push(`/organization/${router.query.id}/order`)}
         />
       </div>
       <DropdownMenu options={dropdownMenus} />

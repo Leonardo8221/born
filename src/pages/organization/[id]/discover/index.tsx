@@ -40,9 +40,11 @@ const StoryPage = () => {
   };
 
   useEffect(() => {
-    const activeTab = (router.query?.tab || 'story') as string | number;
-    handleTabChange(activeTab);
-  }, []);
+    if (router.isReady) {
+      const activeTab = (router.query?.tab || 'story') as string | number;
+      handleTabChange(activeTab);
+    }
+  }, [router.isReady]);
 
   return (
     <ShowcaseLayout>
@@ -54,7 +56,7 @@ const StoryPage = () => {
           </div>
           <div className="flex-1">
             {router?.query?.tab !== 'story' && (
-              <div className='mt-8'>
+              <div className="mt-8">
                 <Button
                   as="a"
                   variant="link"
@@ -66,7 +68,7 @@ const StoryPage = () => {
                     ? 'Add Collections'
                     : 'Add Products'}
                 </Button>
-                </div>
+              </div>
             )}
           </div>
         </div>
