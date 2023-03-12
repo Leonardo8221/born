@@ -1,9 +1,9 @@
-import { FC, useCallback, useState, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
-import { Button } from "@/components/molecules/Button";
-import { Icon } from "@/components/molecules/Icon";
-import ProgressBar from "@/components/molecules/ProgressBar";
-import SuccessMessageBox from "@/components/molecules/SuccessBox";
+import { FC, useCallback, useState, useEffect } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { Button } from '@/components/molecules/Button';
+import { Icon } from '@/components/molecules/Icon';
+import ProgressBar from '@/components/molecules/ProgressBar';
+import SuccessMessageBox from '@/components/molecules/SuccessBox';
 
 export interface AddProductProps {}
 
@@ -14,8 +14,8 @@ const AddProduct: FC<AddProductProps> = () => {
   const onDrop = useCallback((acceptedFiles: any) => {
     setShowProgress(true);
 
-    if (typeof acceptedFiles === "object") {
-      console.log("files", acceptedFiles);
+    if (typeof acceptedFiles === 'object') {
+      console.log('files', acceptedFiles);
     }
 
     // Code to execute after a delay of 3 seconds
@@ -32,7 +32,7 @@ const AddProduct: FC<AddProductProps> = () => {
     <div className="flex flex-col items-center justify-center w-full pt-6 pb-16">
       <div
         className={`w-[500px] min-h-[300px] p-9 flex items-center justify-center border rounded-xl m-10 cursor-pointer ${
-          success ? "border-[#64B980]" : "border"
+          success ? 'border-[#64B980]' : 'border'
         }`}
       >
         {showProgress ? (
@@ -53,8 +53,8 @@ const AddProduct: FC<AddProductProps> = () => {
             />
             <p className="leading-10 text-[32px] font-light text-center max-w-xs">
               {isDragActive
-                ? "Drop files here"
-                : "Drag and Drop your CSV file here"}
+                ? 'Drop files here'
+                : 'Drag and Drop your CSV file here'}
             </p>
           </div>
         )}
