@@ -11,6 +11,7 @@ import { TagCollection } from "@/components/molecules/TagCollection";
 type Action = {
   name: string;
   action: (e: any) => void;
+  disabled?: boolean;
 };
 
 interface FiltersProps {
@@ -21,6 +22,8 @@ interface FiltersProps {
   actions?: Action[];
   isSelectable: boolean;
   selectedItems: Array<string | number>;
+  searchKeyword?: string;
+  onSearch?: (value: string) => void;
 }
 
 const Filters: FC<FiltersProps> = ({
@@ -31,21 +34,23 @@ const Filters: FC<FiltersProps> = ({
   actions,
   isSelectable,
   selectedItems,
+  searchKeyword,
+  onSearch,
 }) => {
-  const [searchKeyword, setSearchKeyword] = useState("");
 
   return (
     <div className="mt-4 flex items-center justify-between">
       <div className="flex items-center">
         <SearchInput
-          value={searchKeyword}
+          value={searchKeyword || ''}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setSearchKeyword(e.target.value)
+            onSearch && onSearch(e?.target?.value)
           }
-          onClear={() => setSearchKeyword("")}
+          onClear={() => onSearch && onSearch('')}
           onEnter={function noRefCheck() {}}
           placeholder="Search"
           className="mr-2"
+          autoFocus
         />
         <TagCollection tags={filterTags} />
       </div>
@@ -71,6 +76,7 @@ const Filters: FC<FiltersProps> = ({
                 variant="outlined"
                 size="sm"
                 onClick={item.action}
+                disabled={item.disabled}
                 className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
               >
                 {item.name}

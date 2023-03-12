@@ -38,7 +38,7 @@ export const Button: FC<ButtonProps> = ({
           : outlinedButtonVariants[color || "black"],
         buttonSize[size || "lg"],
         rounded ? "rounded-[3rem]" : "rounded",
-        disabled && 'opacity-40',
+        disabled && 'opacity-40 cursor-not-allowed',
         className
       ),
       disabled,

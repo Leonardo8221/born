@@ -2,9 +2,15 @@ import { gql } from '@apollo/client';
 import { PRODUCT_FRAGMENT } from './fragments/product';
 
 export const PRODUCTS_QUERY = gql`
-  query getProducts ($organizationId: BigInteger!, $start: Int, $rows: Int) {
-    productsBySearchAndOrganizationId (
+  query getProducts(
+    $organizationId: BigInteger!
+    $search: String
+    $start: Int
+    $rows: Int
+  ) {
+    productsBySearchAndOrganizationId(
       organizationId: $organizationId
+      search: $search
       start: $start
       rows: $rows
     ) {
