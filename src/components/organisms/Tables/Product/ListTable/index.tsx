@@ -18,20 +18,21 @@ export interface ListTableProps {
 const ListTable: FC<ListTableProps> = ({ products }) => {
   const columnHelper: any = createColumnHelper();
 
-  // const getPriceList = (prices?: PriceGraphqlDto[]) => {
-  //   const items = prices?.map((item: any) => {
-  //     const keys = Object.keys(item || {});
-  //     return {
-  //       currency: item?.currency,
-  //       items: keys?.map((i: any) => ({
-  //         label: i,
-  //         value: item?.[i] || '',
-  //       }) || [])
-  //     }
-  //   })
-  //   console.log(items)
-  //   return items as any;
-  // }
+  const getPriceList = (prices?: PriceGraphqlDto[]) => {
+    const items = prices?.map((item: any) => {
+      const keys = Object.keys(item || {});
+      const priceKeys = ['exworks', 'landed', 'retail']
+      return {
+        currency: item?.currency,
+        items: keys?.map((i: any) => priceKeys.includes(i) && ({
+          label: i,
+          price: item?.[i] || '',
+        }) || [])
+      }
+    })
+    console.log(items)
+    return items as any;
+  }
 
   const options = [
     {
@@ -56,13 +57,14 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
       size: 221,
       id: "name",
       cell: ({ row }: any) => (
-        <div>
+        <div className='max-w-[221px]'>
           <ImageText
             title={row?.original?.style_name || ''}
             subTitle={row?.original?.style_number || ''}
             altText={row?.original?.style_name + 'logo'}
             imgSrc={row?.original?.imageUrl || productPlaceholderImage}
             variant="product"
+            titleClassName='max-w-[125px] overflow-hidden text-ellipsis whitespace-nowrap'
           />
         </div>
       ),
@@ -95,18 +97,18 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
       cell: (info: any) => <Badges items={['SS23']} />,
       header: () => "Season",
     }),
-    // columnHelper.accessor('collections', {
-    //   size: 190,
-    //   id: "collections",
-    //   cell: (info: any) => <Badges items={info?.getValue()?.filter((item: any) => item?.name) || []} />,
-    //   header: () => "Collections",
-    // }),
+    columnHelper.accessor('collections', {
+      size: 190,
+      id: "collections",
+      cell: (info: any) => <Badges items={info?.getValue()?.map((item: any) => item?.name) || []} />,
+      header: () => "Collections",
+    }),
     columnHelper.accessor('associated_prices', {
-      size: 83,
+      size: 105,
       id: "currencies",
       cell: (info: any) => (
         <div className={clsx('text-shades-black tracking-[0.06em]', fonts.text.sm)}>
-          {/* {info.getValue()?.filter?.((item: any) => item?.currency)?.join(', ')} */}
+          {info.getValue()?.map?.((item: any) => item?.currency)?.join(', ')}
         </div>
       ),
       header: () => "Currency",
@@ -116,7 +118,9 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
       id: "associated_prices",
       cell: (info: any) => (
         <div className='[&>div]:flex-wrap'>
-          {/* <ListPrices items={getPriceList?.(info.getValue() || [])} isSmall /> */}
+          {getPriceList?.(info.getValue() || []).map((item: any) => (
+            <ListPrices key={item.currency} items={item?.items || []} isSmall />
+          ))}
         </div>
       ),
       header: () => "Prices",
