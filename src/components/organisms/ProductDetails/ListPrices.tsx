@@ -54,13 +54,14 @@ const ListPrices: FC<ListPricesProps> = ({
   items,
   isSmall = false,
 }) => {
+  console.log(items);
   return (
-    <div className={clsx('flex', isSmall ? 'gap-x-3' : 'gap-x-[25px]')}>
+    <div className={clsx('flex justify-center', isSmall ? 'gap-x-3' : 'gap-x-[25px]')}>
       {currency && (
         <List label={currency} value="currency" isSmall={isSmall} />
       )}
       {
-        items?.map((item, index) => (
+        items?.map((item, index) => item?.price && (
           <List key={index} label={item.price} value={item.label} isSmall={isSmall} />
         ))
       }
