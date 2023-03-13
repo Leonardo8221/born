@@ -9,8 +9,11 @@ import { Button } from "@/components/molecules/Button";
 import { Icon } from "@/components/molecules/Icon";
 import Link from "next/link";
 import Footer from "@/components/layouts/Footer";
+import { useRouter } from "next/router";
 
 const ProductPage = () => {
+  const router = useRouter();
+
   return (
     <>
       <ProductHeader
@@ -18,7 +21,7 @@ const ProductPage = () => {
         onEdit={() => {}}
         onAddToCollection={() => {}}
         onDraftOrder={() => {}}
-        onBack={() => {}}
+        onBack={router.back}
         containerClassName="mt-[42px] mb-[64px]"
       />
       <div className="max-w-[1200px] mx-auto">
