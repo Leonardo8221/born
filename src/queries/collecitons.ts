@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const COLLECTIONS_QUERY = gql`
   query getCollections($organizationId: BigInteger!, $start: Int, $rows: Int) {

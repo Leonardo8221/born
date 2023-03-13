@@ -12,6 +12,9 @@ import { FC, useState } from 'react';
 import Modal from '@/components/molecules/Modal';
 import AddCollections from './AddCollections';
 import CreateCollection from './CreateCollection';
+import { apiConfig } from '@/utils/apiConfig';
+import { CollectionResourceApi } from 'client/command';
+import Toast from '../Toast';
 
 interface CollectionsProps {
   addCollectionsModal?: boolean;
@@ -26,10 +29,40 @@ const Collections: FC<CollectionsProps> = ({
   const id = router?.query?.id || '';
   const organizationId: number = +id;
   const [isCreateModal, setIsCreateModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const { data, loading, error } = useQuery(COLLECTIONS_QUERY, {
+  const { data, loading, error, refetch } = useQuery(COLLECTIONS_QUERY, {
     variables: { organizationId },
   });
+
+  const handleAddCollection = async (val: string) => {
+    setIsLoading(true);
+    try {
+      const config: any = await apiConfig();
+      const api = new CollectionResourceApi(config);
+      await api.apiCollectionCreateNewCollectionPost(organizationId, {
+        name: val,
+      });
+      setIsLoading(false);
+      toggleCollectionsModal?.(false);
+      setSuccessMessage(`Collection added sucessfully!!`);
+      refetch();
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (error: any) {
+      setIsLoading(false);
+      setErrorMessage(
+        error?.message || 'Something went wrong, please try again!'
+      );
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      console.error(error);
+    }
+  };
 
   if (error) {
     return <ErrorMessage errorMessage={error?.message} />;
@@ -70,7 +103,11 @@ const Collections: FC<CollectionsProps> = ({
         className="!max-h-[417px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
       >
         {isCreateModal ? (
-          <CreateCollection handleSubmit={() => toggleCollectionsModal?.(false)} />
+          <CreateCollection
+            handleSubmit={(collection) => {
+              handleAddCollection(collection);
+            }}
+          />
         ) : (
           <AddCollections
             collections={data?.collectionsByOrganizationId}
@@ -78,6 +115,7 @@ const Collections: FC<CollectionsProps> = ({
           />
         )}
       </Modal>
+      <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>
   );
 };

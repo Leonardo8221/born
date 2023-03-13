@@ -3,11 +3,18 @@ import Input from '@/components/molecules/Inputs';
 import { Button } from '@/components/molecules/Button';
 
 interface CreateCollectionProps {
-  handleSubmit?: (e: any) => void;
+  handleSubmit?: (collectionName: string) => void;
 }
 
 const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
   const [collectionName, setCollectionName] = useState('');
+
+  const handleClick = () => {
+    if (collectionName && handleSubmit) {
+      handleSubmit(collectionName);
+    }
+  };
+
   return (
     <div>
       <Input
@@ -17,7 +24,7 @@ const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
         }
         label="Collection name"
       />
-      <Button size="lg" className="max-w-[124px] mt-8" onClick={handleSubmit}>
+      <Button size="lg" className="max-w-[124px] mt-8" onClick={handleClick}>
         Save
       </Button>
     </div>
