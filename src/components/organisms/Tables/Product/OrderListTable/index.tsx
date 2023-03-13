@@ -1,23 +1,23 @@
-import { FC, Fragment, useState } from "react";
-import { createColumnHelper } from "@tanstack/react-table";
-import clsx from "clsx";
-import ImageText from "@/components/molecules/ImageText";
-import { Icon } from "@/components/molecules/Icon";
-import { fonts } from "@/config/fonts";
-import { Table } from "../../../Table";
-import Badges from "../Badges";
-import Modal from "@/components/molecules/Modal";
-import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
-import { Button } from "@/components/molecules/Button";
-import ProductImage from "@/assets/images/products/product.png";
-import { OrderDetailGraphqlDto } from "@/generated/types";
+import { FC, Fragment, useState } from 'react';
+import { createColumnHelper } from '@tanstack/react-table';
+import clsx from 'clsx';
+import ImageText from '@/components/molecules/ImageText';
+import { Icon } from '@/components/molecules/Icon';
+import { fonts } from '@/config/fonts';
+import { Table } from '../../../Table';
+import Badges from '../Badges';
+import Modal from '@/components/molecules/Modal';
+import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
+import { Button } from '@/components/molecules/Button';
+import ProductImage from '@/assets/images/products/product.png';
+import { OrderDetailGraphqlDto } from '@/generated/types';
 
 export interface OrderDetails {
   products: any[];
 }
 
 const OrderListTable: FC<OrderDetails> = ({ products }) => {
-  console.log(products, "orderByOrderId");
+  console.log(products, 'orderByOrderId');
 
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
@@ -25,23 +25,23 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
   const columns = [
     columnHelper.accessor((row: any) => row, {
       size: 221,
-      id: "name",
+      id: 'name',
       cell: ({ row }: any) => (
         <div>
           <ImageText
-            title={row?.original?.product?.upc || ""}
-            subTitle={row?.original?.product?.title || ""}
-            altText={row?.original?.product?.title + "logo"}
+            title={row?.original?.product?.upc || ''}
+            subTitle={row?.original?.product?.title || ''}
+            altText={row?.original?.product?.title + 'logo'}
             imgSrc={ProductImage}
             variant="product"
           />
         </div>
       ),
-      header: () => "Product name",
+      header: () => 'Product name',
     }),
     columnHelper.accessor((row: any) => row, {
       size: 122,
-      id: "colors",
+      id: 'colors',
       cell: ({ row }: any) => {
         const colors = row?.original?.product?.colour_families || [];
         return (
@@ -59,68 +59,68 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
           </div>
         );
       },
-      header: () => "Color name",
+      header: () => 'Color name',
     }),
     columnHelper.accessor((row: any) => row, {
       size: 96,
-      id: "season",
+      id: 'season',
       cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
-      header: () => "Season",
+      header: () => 'Season',
     }),
     columnHelper.accessor((row: any) => row, {
       size: 128,
-      id: "department",
+      id: 'department',
       cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
-      header: () => "Department",
+      header: () => 'Department',
     }),
-    columnHelper.accessor("wholesalePrice", {
+    columnHelper.accessor('wholesalePrice', {
       size: 153,
-      id: "wholesalePrice",
+      id: 'wholesalePrice',
       cell: (info: any) => (
         <div
           className={clsx(
-            "text-shades-black tracking-[0.06em] text-center",
+            'text-shades-black tracking-[0.06em] text-center',
             fonts.text.xl
           )}
         >
           {info.getValue()}
         </div>
       ),
-      header: () => "Wholesale Price",
+      header: () => 'Wholesale Price',
     }),
-    columnHelper.accessor("quantity", {
+    columnHelper.accessor('quantity', {
       size: 95,
-      id: "quantites",
+      id: 'quantites',
       cell: (info: any) => (
         <div
           className={clsx(
-            "text-shades-black tracking-[0.06em] text-center",
+            'text-shades-black tracking-[0.06em] text-center',
             fonts.text.xl
           )}
         >
           {info.getValue()}
         </div>
       ),
-      header: () => "Quantities",
+      header: () => 'Quantities',
     }),
-    columnHelper.accessor("totalWholesalePrice", {
+    columnHelper.accessor('totalWholesalePrice', {
       size: 180,
-      id: "totalWholesalePrice",
+      id: 'totalWholesalePrice',
       cell: (info: any) => (
         <div
           className={clsx(
-            "text-shades-black tracking-[0.06em] text-center",
+            'text-shades-black tracking-[0.06em] text-center',
             fonts.text.xl
           )}
         >
           {info.getValue()}
         </div>
       ),
-      header: () => "Total Wholesale price",
+      header: () => 'Total Wholesale price',
     }),
-    columnHelper.accessor("chat", {
+    columnHelper.accessor('chat', {
       size: 124,
-      id: "chat",
+      id: 'chat',
       cell: () => (
         <Icon
           onClick={() => setOpen(true)}
@@ -128,7 +128,7 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
           className="text-center cursor-pointer text-shades-black"
         />
       ),
-      header: () => "",
+      header: () => '',
     }),
   ];
 

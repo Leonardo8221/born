@@ -32,7 +32,7 @@ const Collections: FC<CollectionsProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const { data, loading, error } = useQuery(COLLECTIONS_QUERY, {
+  const { data, loading, error, refetch } = useQuery(COLLECTIONS_QUERY, {
     variables: { organizationId },
   });
 
@@ -56,7 +56,11 @@ const Collections: FC<CollectionsProps> = ({
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      await api.apiCollectionCreateNewCollectionPost(organizationId, newCollection);
+      await api.apiCollectionCreateNewCollectionPost(
+        organizationId,
+        newCollection
+      );
+      refetch();
       setIsCreateModal(false);
       toggleCollectionsModal?.(false);
       handleSuccessMesssage('New collection added successfully!');
@@ -64,7 +68,7 @@ const Collections: FC<CollectionsProps> = ({
       handleErrorMesssage('Faild to add new collection!');
       console.error(error);
     }
-  }
+  };
 
   if (error) {
     return <ErrorMessage errorMessage={error?.message} />;
@@ -83,8 +87,8 @@ const Collections: FC<CollectionsProps> = ({
               <Link href={`/organization/1/discover/collections/${item.id}`}>
                 <CollectionCard
                   backgroundImageSrc={backgroundImageSrc}
-                  label={item.name || 'SS23'}
-                  author={'by Irene Lance'}
+                  label={item.name || ''}
+                  author={''}
                   imageSrc={imageSrc}
                 />
               </Link>
@@ -105,7 +109,11 @@ const Collections: FC<CollectionsProps> = ({
         className="!max-h-[417px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
       >
         {isCreateModal ? (
-          <CreateCollection handleSubmit={(newCollection) => handleCreateCollection(newCollection)} />
+          <CreateCollection
+            handleSubmit={(newCollection) =>
+              handleCreateCollection(newCollection)
+            }
+          />
         ) : (
           <AddCollections
             onSelect={() => {}}
@@ -113,7 +121,6 @@ const Collections: FC<CollectionsProps> = ({
           />
         )}
       </Modal>
-
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>
   );

@@ -1,8 +1,8 @@
-import { FC, useMemo, useState } from "react";
-import clsx from "clsx";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { TableHead } from "@/components/molecules/TableHead";
-import { TableBody } from "@/components/molecules/TableBody";
+import { FC, useMemo, useState } from 'react';
+import clsx from 'clsx';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { TableHead } from '@/components/molecules/TableHead';
+import { TableBody } from '@/components/molecules/TableBody';
 // import { CollectionGraphqlDto, OrderGraphqlDto, ProductGraphqlDto } from "@/generated/types";
 
 export interface TableProps {
@@ -14,7 +14,7 @@ export interface TableProps {
 export const Table: FC<TableProps> = ({
   tableData,
   columns,
-  className = "",
+  className = '',
 }) => {
   const [data, setData] = useState(tableData);
   const table = useReactTable({
@@ -39,8 +39,8 @@ export const Table: FC<TableProps> = ({
   return (
     <div>
       <table
-        className={clsx("border-collapse", className)}
-        style={{ gridTemplateColumns: colWidthStyle.join(" ") }}
+        className={clsx('border-collapse', className)}
+        style={{ gridTemplateColumns: colWidthStyle.join(' ') }}
       >
         <TableHead table={table} />
         <TableBody table={table} />

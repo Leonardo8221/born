@@ -4,7 +4,7 @@ import { Button } from '@/components/molecules/Button';
 import Toast from '../Toast';
 
 interface CreateCollectionProps {
-  handleSubmit?: (e: any) => void;
+  handleSubmit?: (collectionName: { name: string; description: string; }) => void;
 }
 
 const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
@@ -23,7 +23,7 @@ const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
         size="lg"
         className="max-w-[124px] mt-8"
         onClick={() => {
-          if(!collectionName) {
+          if (!collectionName) {
             setErrorMessage('Collection name is required!');
             setTimeout(() => {
               setErrorMessage('');
@@ -31,7 +31,8 @@ const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
             return;
           }
 
-          handleSubmit && handleSubmit({ name: collectionName, description: '' })
+          handleSubmit &&
+            handleSubmit({ name: collectionName, description: '' });
         }}
       >
         Save
