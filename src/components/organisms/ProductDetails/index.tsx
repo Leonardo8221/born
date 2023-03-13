@@ -94,11 +94,11 @@ const ProductDetails: FC<ProductDetailsProps> = ({
         >
           {description}
         </p>
-        <div className="mt-6">
+        <div className="mt-6 flex">
           {colors?.map((color, index) => (
             <div
               key={`${color} + ${index}`}
-              className="h-8 w-8 rounded border-2 border-shades-white"
+              className="h-8 mr-2 w-8 rounded border-2 border-neutral-100"
               style={color ? { backgroundColor: color } : {}}
             />
           ))}
