@@ -60,6 +60,7 @@ const Collections: FC<CollectionsProps> = ({
         organizationId,
         newCollection
       );
+      refetch();
       setIsCreateModal(false);
       toggleCollectionsModal?.(false);
       handleSuccessMesssage('New collection added successfully!');
@@ -86,8 +87,8 @@ const Collections: FC<CollectionsProps> = ({
               <Link href={`/organization/1/discover/collections/${item.id}`}>
                 <CollectionCard
                   backgroundImageSrc={backgroundImageSrc}
-                  label={item.name || 'SS23'}
-                  author={'by Irene Lance'}
+                  label={item.name || ''}
+                  author={''}
                   imageSrc={imageSrc}
                 />
               </Link>

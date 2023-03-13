@@ -4,7 +4,7 @@ import { Button } from '@/components/molecules/Button';
 import Toast from '../Toast';
 
 interface CreateCollectionProps {
-  handleSubmit?: (collectionName: string) => void;
+  handleSubmit?: (collectionName: { name: string; description: string; }) => void;
 }
 
 const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
