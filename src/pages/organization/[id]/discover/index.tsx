@@ -11,7 +11,9 @@ import { Icon } from '@/components/molecules/Icon';
 
 const StoryPage = () => {
   const [activeTab, setActiveTab] = useState<string | number>('story');
+  const [isAddCollections, setIsAddCollections] = useState(false);
   const router = useRouter();
+  const tab = router?.query?.tab;
 
   const tabs = [
     {
@@ -29,7 +31,12 @@ const StoryPage = () => {
     {
       id: 'collections',
       label: 'Collections',
-      content: <Collections />,
+      content: (
+        <Collections
+          addCollectionsModal={isAddCollections}
+          toggleCollectionsModal={setIsAddCollections}
+        />
+      ),
     },
   ];
 
@@ -55,18 +62,23 @@ const StoryPage = () => {
             <ShowcaseLogo />
           </div>
           <div className="flex-1">
-            {router?.query?.tab !== 'story' && (
+            {tab !== 'story' && (
               <div className="mt-8">
                 <Button
-                  as="a"
+                  as={tab === 'products' ? 'a' : 'button'}
                   variant="link"
-                  href={`/organization/${router?.query?.id}/discover/product-ingestion`}
+                  onClick={() =>
+                    tab === 'collections' && setIsAddCollections(true)
+                  }
+                  href={
+                    tab === 'products'
+                      ? `/organization/${router?.query?.id}/discover/product-ingestion`
+                      : undefined
+                  }
                   className="!max-w-[205px] !ml-auto !mr-0"
                 >
                   <Icon name="icon-add" />{' '}
-                  {router?.query?.tab === 'collections'
-                    ? 'Add Collections'
-                    : 'Add Products'}
+                  {tab === 'collections' ? 'Add Collections' : 'Add Products'}
                 </Button>
               </div>
             )}

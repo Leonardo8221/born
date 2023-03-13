@@ -1,11 +1,13 @@
-import { FC, Fragment, ReactNode } from "react";
-import { Transition } from "@headlessui/react";
-import Header from "./Header";
+import { FC, Fragment, ReactNode } from 'react';
+import { Transition } from '@headlessui/react';
+import clsx from 'clsx';
+import Header from './Header';
 export interface ModalProps {
   title: string;
   isOpen: boolean;
   onClose?: (event: MouseEvent) => void;
   children: ReactNode;
+  className?: string;
 }
 
 const Modal: FC<ModalProps> = ({
@@ -13,6 +15,7 @@ const Modal: FC<ModalProps> = ({
   isOpen,
   onClose = () => {},
   children,
+  className,
 }) => {
   return (
     <Transition
@@ -30,7 +33,12 @@ const Modal: FC<ModalProps> = ({
           className="fixed inset-0 bg-[rgba(0,0,0,0.8)] z-40"
           aria-hidden="true"
         />
-        <div className="relative z-50 w-full max-w-auto mx-auto bg-shades-white rounded-lg shadow-small">
+        <div
+          className={clsx(
+            'relative z-50 w-full max-w-auto mx-auto bg-shades-white rounded-lg shadow-small',
+            className
+          )}
+        >
           <Header title={title} onClose={onClose} />
           <div className="px-8 pt-6 pb-8">{children}</div>
         </div>

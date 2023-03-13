@@ -3,10 +3,10 @@ import clsx from "clsx";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { TableHead } from "@/components/molecules/TableHead";
 import { TableBody } from "@/components/molecules/TableBody";
-import { OrderGraphqlDto } from "@/generated/types";
+// import { CollectionGraphqlDto, OrderGraphqlDto, ProductGraphqlDto } from "@/generated/types";
 
 export interface TableProps {
-  tableData: OrderGraphqlDto[];
+  tableData: any[];
   columns: any[];
   className?: string;
 }
