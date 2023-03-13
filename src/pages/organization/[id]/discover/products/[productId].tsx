@@ -215,19 +215,22 @@ const ProductPage = () => {
         />
         <div className="flex justify-between mt-[70px] mb-[40px]">
           <h2 className="text-[32px]">From this collection</h2>
-          <Link href={`/organization/1/discover/collections/${collectionId}`} className="flex align-center">
+          <Link
+            href={`/organization/1/discover/collections/${collectionId}`}
+            className="flex align-center"
+          >
             View More <Icon className="ml-[6px]" name="icon-arrow-right" />
           </Link>
         </div>
         {collectionProductsLoading && <Loading message="Loading collecitons" />}
         {!collectionProductsLoading && (
-          <ProductList
-            gridType={"grid"}
-            products={currentCollectionProducts}
-            selectable={false}
-            onSelect={() => {}}
-            selectedProducts={[]}
-          />
+            <ProductList
+              gridType={"grid"}
+              products={currentCollectionProducts}
+              selectable={false}
+              onSelect={() => {}}
+              selectedProducts={[]}
+            />
         )}
       </div>
       <Footer />
