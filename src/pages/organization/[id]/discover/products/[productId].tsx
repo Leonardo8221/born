@@ -66,7 +66,7 @@ const ProductPage = () => {
         onEdit={() => {}}
         onAddToCollection={() => {}}
         onDraftOrder={() => {}}
-        onBack={router.back}
+        hrefBack={`/organization/${router.query.id}/discover?tab=products`}
         containerClassName="mt-[42px] mb-[64px]"
       />
       <div className="max-w-[1200px] mx-auto">
