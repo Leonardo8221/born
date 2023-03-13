@@ -2,6 +2,7 @@ import ProductImage from '@/assets/images/products/product.png';
 
 const product = {
   product_id: '01234567',
+  id: '01234567',
   name: 'UMI',
   title: 'VEWSDE',
   imageUrl: ProductImage,

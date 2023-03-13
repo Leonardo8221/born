@@ -10,9 +10,78 @@ import { Icon } from "@/components/molecules/Icon";
 import Link from "next/link";
 import Footer from "@/components/layouts/Footer";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import {
+  GET_PRODUCTS_BY_COLLECTION_ID,
+  GET_PRODUCT_BY_ID,
+} from "@/queries/products";
+import { ProductGraphqlDto } from "@/generated/types";
+import ErrorMessage from "@/components/page-components/Error/ErrorMessage";
+import Loading from "@/components/page-components/Loading";
 
 const ProductPage = () => {
   const router = useRouter();
+
+  const [currentProduct, setCurrentProduct] =
+    useState<ProductGraphqlDto | null>(null);
+  const [currentCollectionProducts, setCurrentCollectionProducts] = useState<
+    ProductGraphqlDto[]
+  >([]);
+  const productIdQuery = router?.query?.id || "";
+  const collectionId = currentProduct?.collections?.[0]?.id || "";
+
+  const {
+    data: product,
+    loading: productLoading,
+    error: productError,
+    refetch: productRefectch,
+  } = useQuery(GET_PRODUCT_BY_ID, {
+    variables: {
+      productId: productIdQuery,
+    },
+  });
+
+  const {
+    data: collectionProducts,
+    loading: collectionProductsLoading,
+    error: collectionProductsError,
+    refetch: collectionProductsRefectch,
+  } = useQuery(GET_PRODUCTS_BY_COLLECTION_ID, {
+    variables: { collectionId: Number(collectionId), start: 0, rows: 3 },
+  });
+
+  // if (productError) {
+  //   return (
+  //     <ErrorMessage
+  //       errorMessage={productError?.message}
+  //       refetch={productRefectch}
+  //     />
+  //   );
+  // }
+
+  // if (collectionProductsError) {
+  //   return (
+  //     <ErrorMessage
+  //       errorMessage={collectionProductsError?.message}
+  //       refetch={collectionProductsRefectch}
+  //     />
+  //   );
+  // }
+
+  // useEffect(() => {
+  //   // const product = data?.userOrganizationByOrganizationId?.organization;
+  //   // if (organization) {
+  //   //   setCurrentOrganization(organization);
+  //   // }
+  // }, [product]);
+
+  useEffect(() => {
+    const products = collectionProducts?.productsBySearchAndCollectionId?.content;
+    if (products) {
+      setCurrentCollectionProducts(products);
+    }
+  }, [collectionProducts]);
 
   return (
     <>
@@ -90,7 +159,7 @@ const ProductPage = () => {
               list: ["SS23"],
             },
             {
-              title: "Collections",
+              title: "collectionProducts",
               list: ["Spring Summer 23", "Core"],
             },
           ]}
@@ -146,17 +215,20 @@ const ProductPage = () => {
         />
         <div className="flex justify-between mt-[70px] mb-[40px]">
           <h2 className="text-[32px]">From this collection</h2>
-          <Link href="/" className="flex align-center">
+          <Link href={`/organization/1/discover/collections/${collectionId}`} className="flex align-center">
             View More <Icon className="ml-[6px]" name="icon-arrow-right" />
           </Link>
         </div>
-        <ProductList
-          gridType={"grid"}
-          products={products.slice(0, 3)}
-          selectable={false}
-          onSelect={() => {}}
-          selectedProducts={[]}
-        />
+        {collectionProductsLoading && <Loading message="Loading collecitons" />}
+        {!collectionProductsLoading && (
+          <ProductList
+            gridType={"grid"}
+            products={currentCollectionProducts}
+            selectable={false}
+            onSelect={() => {}}
+            selectedProducts={[]}
+          />
+        )}
       </div>
       <Footer />
     </>

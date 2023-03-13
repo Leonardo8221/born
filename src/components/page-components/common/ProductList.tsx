@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import clsx from 'clsx';
+import { FC } from "react";
+import clsx from "clsx";
 import {
   ProductCard,
   ProductCardProps,
-} from '@/components/molecules/Cards/Product';
-import { GridType } from '@/components/molecules/IconButtonGroup';
-import ListTable from '@/components/organisms/Tables/Product/ListTable';
-import { ProductGraphqlDto } from '@/generated/types';
-import productPlaceholderImage from '@/assets/images/product-image.png';
-import { Icon } from '@/components/molecules/Icon';
+} from "@/components/molecules/Cards/Product";
+import { GridType } from "@/components/molecules/IconButtonGroup";
+import ListTable from "@/components/organisms/Tables/Product/ListTable";
+import { ProductGraphqlDto } from "@/generated/types";
+import productPlaceholderImage from "@/assets/images/product-image.png";
+import { Icon } from "@/components/molecules/Icon";
 
 interface ProductListProps {
   products: ProductCardProps[];
@@ -20,7 +20,7 @@ interface ProductListProps {
 
 const ProductList: FC<ProductListProps> = ({
   products,
-  gridType = 'grid',
+  gridType = "grid",
   selectable,
   selectedProducts,
   onSelect,
@@ -41,7 +41,7 @@ const ProductList: FC<ProductListProps> = ({
     );
   }
 
-  if (gridType === 'list') {
+  if (gridType === "list") {
     return (
       <div className="mb-8 mt-8">
         <ListTable products={products} />
@@ -52,14 +52,14 @@ const ProductList: FC<ProductListProps> = ({
   return (
     <div
       className={clsx(
-        'grid mb-8 mt-8 gap-4',
-        gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
+        "grid mb-8 mt-8 gap-4",
+        gridType === "smallGrid" ? "grid-cols-6" : "grid-cols-3"
       )}
     >
       {products?.map((item: ProductGraphqlDto, index: number) => (
         <ProductCard
-          key={index + item?.id}
-          size={gridType === 'smallGrid' ? 'sm' : 'lg'}
+          key={`${index} ${item?.id}`}
+          size={gridType === "smallGrid" ? "sm" : "lg"}
           isSelectable={selectable}
           isSelected={!!selectedProducts?.includes(item.id)}
           onSelect={() => onSelect(item.id)}
