@@ -1,10 +1,10 @@
-import { FC } from 'react';
-import clsx from 'clsx';
-import Image, { StaticImageData } from 'next/image';
-import { Badge } from '../../Badge';
-import { Checkbox } from '../../Checkbox';
-import styles from './product.module.css';
-import { ProductGraphqlDto } from '@/generated/types';
+import { FC } from "react";
+import clsx from "clsx";
+import Image, { StaticImageData } from "next/image";
+import { Badge } from "../../Badge";
+import { Checkbox } from "../../Checkbox";
+import styles from "./product.module.css";
+import { ProductGraphqlDto } from "@/generated/types";
 import {
   clsProductCard,
   clsProductCardColor,
@@ -15,10 +15,10 @@ import {
   clsProductCardTags,
   clsProductCardTitle,
   currencies,
-} from './utils';
+} from "./utils";
 
 export interface ProductCardProps extends ProductGraphqlDto {
-  size?: 'lg' | 'sm';
+  size?: "lg" | "sm";
   imageUrl?: StaticImageData | string;
   isSelectable?: boolean;
   isSelected?: boolean;
@@ -26,7 +26,7 @@ export interface ProductCardProps extends ProductGraphqlDto {
 }
 
 export const ProductCard: FC<ProductCardProps> = ({
-  size = 'lg',
+  size = "lg",
   product_id,
   style_name,
   imageUrl,
@@ -35,7 +35,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   onSelect = () => {},
   associated_prices,
   colour_families,
-  collections
+  collections,
 }) => {
   const renderCheckbox = isSelectable && (
     <div className={styles.productCardCheckbox}>
@@ -48,7 +48,7 @@ export const ProductCard: FC<ProductCardProps> = ({
       <div
         className={clsx(
           clsProductCardId(size),
-          'whitespace-nowrap text-ellipsis overflow-hidden'
+          "whitespace-nowrap text-ellipsis overflow-hidden"
         )}
       >
         {product_id}
@@ -58,8 +58,8 @@ export const ProductCard: FC<ProductCardProps> = ({
           {imageUrl && (
             <Image
               src={imageUrl}
-              alt={style_name + 'image'}
-              className={clsx(styles.productCardImage, 'rounded-lg')}
+              alt={style_name + "image"}
+              className={clsx(styles.productCardImage, "rounded-lg")}
             />
           )}
           {renderCheckbox}
@@ -74,11 +74,11 @@ export const ProductCard: FC<ProductCardProps> = ({
             />
           ))}
         </div>
-        <div className={clsProductCardTags(size)}>
+        <div className={clsx(clsProductCardTags(size), "flex-wrap")}>
           {collections?.map((collection) => (
-            <Badge key={collection?.id} size={size}>
-              {collection?.name}
-            </Badge>
+            <div key={collection?.id} className="mb-1">
+              <Badge size={size}>{collection?.name}</Badge>
+            </div>
           ))}
         </div>
         {associated_prices?.map(

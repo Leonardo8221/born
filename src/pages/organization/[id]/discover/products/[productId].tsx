@@ -22,14 +22,7 @@ import Loading from "@/components/page-components/Loading";
 
 const ProductPage = () => {
   const router = useRouter();
-
-  const [currentProduct, setCurrentProduct] =
-    useState<ProductGraphqlDto | null>(null);
-  const [currentCollectionProducts, setCurrentCollectionProducts] = useState<
-    ProductGraphqlDto[]
-  >([]);
-  const productIdQuery = router?.query?.id || "";
-  const collectionId = currentProduct?.collections?.[0]?.id || "";
+  const productIdQuery = router?.query?.productId || "";
 
   const {
     data: product,
@@ -38,9 +31,13 @@ const ProductPage = () => {
     refetch: productRefectch,
   } = useQuery(GET_PRODUCT_BY_ID, {
     variables: {
-      productId: productIdQuery,
+      productId: Number(productIdQuery),
     },
   });
+
+  const currentProduct = product?.productByProductId;
+
+  const collectionId = product?.productByProductId?.collections?.[0]?.id || "";
 
   const {
     data: collectionProducts,
@@ -51,37 +48,16 @@ const ProductPage = () => {
     variables: { collectionId: Number(collectionId), start: 0, rows: 3 },
   });
 
-  // if (productError) {
-  //   return (
-  //     <ErrorMessage
-  //       errorMessage={productError?.message}
-  //       refetch={productRefectch}
-  //     />
-  //   );
-  // }
+  const content = collectionProducts?.productsBySearchAndCollectionId?.content;
 
-  // if (collectionProductsError) {
-  //   return (
-  //     <ErrorMessage
-  //       errorMessage={collectionProductsError?.message}
-  //       refetch={collectionProductsRefectch}
-  //     />
-  //   );
-  // }
-
-  // useEffect(() => {
-  //   // const product = data?.userOrganizationByOrganizationId?.organization;
-  //   // if (organization) {
-  //   //   setCurrentOrganization(organization);
-  //   // }
-  // }, [product]);
-
-  useEffect(() => {
-    const products = collectionProducts?.productsBySearchAndCollectionId?.content;
-    if (products) {
-      setCurrentCollectionProducts(products);
-    }
-  }, [collectionProducts]);
+  if (productError) {
+    return (
+      <ErrorMessage
+        errorMessage={productError?.message}
+        refetch={productRefectch}
+      />
+    );
+  }
 
   return (
     <>
@@ -115,101 +91,66 @@ const ProductPage = () => {
               blurDataURL: Product2.src,
             },
           ]}
-          priceList={[
-            {
-              currency: "USD",
-              list: [
-                {
-                  label: "Landed",
-                  price: "3,345.00",
-                },
-                {
-                  label: "Exworks",
-                  price: "2,876.00",
-                },
-                {
-                  label: "MSRP",
-                  price: "5,456.00",
-                },
-              ],
-            },
-            {
-              currency: "GBP",
-              list: [
-                {
-                  label: "Landed",
-                  price: "3,345.00",
-                },
-                {
-                  label: "Exworks",
-                  price: "2,876.00",
-                },
-                {
-                  label: "MSRP",
-                  price: "5,456.00",
-                },
-              ],
-            },
-          ]}
-          description="The cimento vases exude the natural look of cement. Their refined shape presents a different perspective on a material known for its stiffness and inflexibility. Available in two sizes, narrow and wide."
-          colors={["#77502A"]}
+          associated_prices={currentProduct?.associated_prices}
+          description={currentProduct?.description}
+          colors={currentProduct?.colour_families}
           tags={[
             {
               title: "Season",
-              list: ["SS23"],
+              list: [currentProduct?.season],
             },
             {
-              title: "collectionProducts",
-              list: ["Spring Summer 23", "Core"],
+              title: "Collections",
+              list:
+                currentProduct?.collections?.map(
+                  (collection: any) => collection.name
+                ) || [],
+            },
+            {
+              title: "Keywords",
+              list: currentProduct?.keywords || [],
             },
           ]}
           specifications={[
             {
               label: "Made in",
-              value: "Italy",
+              value: currentProduct?.country_of_origin,
             },
             {
               label: "Style",
-              value: "ERO21103",
+              value: currentProduct?.style_number,
             },
             {
               label: "Composition",
-              value: "Cotton",
+              value: currentProduct?.compositions?.join(", "),
             },
             {
               label: "Material",
-              value: "80% cotton, 20% polyester",
-            },
-            {
-              label: "Composition",
-              value: "100% Acetate",
+              value: currentProduct?.materials?.join(", "),
             },
             {
               label: "Measurements",
-              value: "26 - 32 inch",
+              value: currentProduct?.measurements?.join(", "),
             },
             {
               label: "Colors",
-              value:
-                "black, white, Grey, red, orange, yellow, blue, Green, Purple, pink",
+              value: currentProduct?.colour_name,
             },
             {
               label: "Color Code",
-              value:
-                "BLCK, WHTE, GREY, REDD, ORNG, YLLW, BLUE, GREN, PRPL, PINK",
+              value: currentProduct?.colour_code,
             },
             {
               label: "Color Family",
-              value:
-                "Black, Blue, Green, Grey, Orange, Pink, Purple, Red, Yellow, White",
+              value: currentProduct?.colour_families?.join(", "),
             },
             {
               label: "Delivery start",
-              value: "03/09/23",
+              value: currentProduct?.delivery_window_start_date,
             },
             {
               label: "Delivery end",
-              value: "03/12/23",
+              value: currentProduct?.delivery_window_start_date,
             },
           ]}
         />
@@ -224,13 +165,13 @@ const ProductPage = () => {
         </div>
         {collectionProductsLoading && <Loading message="Loading collecitons" />}
         {!collectionProductsLoading && (
-            <ProductList
-              gridType={"grid"}
-              products={currentCollectionProducts}
-              selectable={false}
-              onSelect={() => {}}
-              selectedProducts={[]}
-            />
+          <ProductList
+            gridType={"grid"}
+            products={content || []}
+            selectable={false}
+            onSelect={() => {}}
+            selectedProducts={[]}
+          />
         )}
       </div>
       <Footer />

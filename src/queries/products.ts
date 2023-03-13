@@ -33,9 +33,7 @@ export const GET_PRODUCT_BY_ID = gql`
     productByProductId(
       productId: $productId
      ) {
-      product {
-        ...ProductGraphqlDTO
-      }
+      ...ProductGraphqlDTO
     }
   }
   ${PRODUCT_FRAGMENT}
