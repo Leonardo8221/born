@@ -46,7 +46,7 @@ const YourCollections: FC<YourCollectionProps> = ({ onViewCollections }) => {
             <CollectionCard
               backgroundImageSrc={bgImage1}
               imageSrc={InnerCardImage}
-              label="SS23"
+              label={item?.name || undefined}
               hasOverlay={index === 1}
               cardClasses="!h-[272px] !max-w-auto min-w-[736px]"
             />
