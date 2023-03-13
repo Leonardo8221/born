@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { COLLECTION_FRAGMENT } from './fragments/collection';
 import { PRODUCT_FRAGMENT } from './fragments/product';
 
 export const COLLECTIONS_QUERY = gql`
@@ -8,14 +9,19 @@ export const COLLECTIONS_QUERY = gql`
       start: $start
       rows: $rows
     ) {
-      id
-      description
-      name
-      banner_guid
-      linesheet_guid
-      lookbook_guid
+      ...CollectionGraphqlDTO
     }
   }
+  ${COLLECTION_FRAGMENT}
+`;
+
+export const COLLECTION_QUERY = gql`
+  query getColleton($collectionId: BigInteger!) {
+    collectionByCollectionId(collectionId: $collectionId) {
+      ...CollectionGraphqlDTO
+    }
+  }
+  ${COLLECTION_FRAGMENT}
 `;
 
 export const PRODUCTS_BY_COLLECTION_ID_QUERY = gql`

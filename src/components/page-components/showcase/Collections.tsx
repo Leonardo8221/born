@@ -29,37 +29,42 @@ const Collections: FC<CollectionsProps> = ({
   const id = router?.query?.id || '';
   const organizationId: number = +id;
   const [isCreateModal, setIsCreateModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const { data, loading, error, refetch } = useQuery(COLLECTIONS_QUERY, {
     variables: { organizationId },
   });
 
-  const handleAddCollection = async (val: string) => {
-    setIsLoading(true);
+  const handleErrorMesssage = (message: string) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  };
+
+  const handleSuccessMesssage = (message: string) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 3000);
+  };
+
+  const handleCreateCollection = async (newCollection: any) => {
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      await api.apiCollectionCreateNewCollectionPost(organizationId, {
-        name: val,
-      });
-      setIsLoading(false);
-      toggleCollectionsModal?.(false);
-      setSuccessMessage(`Collection added sucessfully!!`);
-      refetch();
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
-    } catch (error: any) {
-      setIsLoading(false);
-      setErrorMessage(
-        error?.message || 'Something went wrong, please try again!'
+      await api.apiCollectionCreateNewCollectionPost(
+        organizationId,
+        newCollection
       );
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 3000);
+      setIsCreateModal(false);
+      toggleCollectionsModal?.(false);
+      handleSuccessMesssage('New collection added successfully!');
+    } catch (error) {
+      handleErrorMesssage('Faild to add new collection!');
       console.error(error);
     }
   };
@@ -104,9 +109,9 @@ const Collections: FC<CollectionsProps> = ({
       >
         {isCreateModal ? (
           <CreateCollection
-            handleSubmit={(collection) => {
-              handleAddCollection(collection);
-            }}
+            handleSubmit={(newCollection) =>
+              handleCreateCollection(newCollection)
+            }
           />
         ) : (
           <AddCollections

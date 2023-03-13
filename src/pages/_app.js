@@ -19,8 +19,8 @@ const httpLink = new HttpLink({
 // create error link to handle errors
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError?.statusCode === 401) {
-    signOut({ redirect: false, callbackUrl: process.env.NEXTAUTH_URL }); // sign out the user when the token is expired!
-    location?.replace('/');
+    signOut({ redirect: false }); // sign out the user when the token is expired!
+    location.pathname !== '/' && location?.replace('/');
   }
 
   if (graphQLErrors) {

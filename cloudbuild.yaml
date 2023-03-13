@@ -1,0 +1,31 @@
+steps:
+  - name: gcr.io/cloud-builders/gcloud
+    script: |
+      gcloud app versions list --format="value(version.id)" --sort-by="~version.createTime" | tail -n +2 | xargs -r gcloud app versions delete --service=default --quiet
+  - name: node
+    args:
+      - install
+    entrypoint: npm
+  - name: node
+    env:
+      - NEXT_PUBLIC_CLIENT_ID=${_NEXT_PUBLIC_CLIENT_ID}
+      - NEXT_PUBLIC_CLIENT_SECRET=${_NEXT_PUBLIC_CLIENT_SECRET}
+      - NEXT_PUBLIC_CLIENT_ISSUER=${_NEXT_PUBLIC_CLIENT_ISSUER}
+      - NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT=${_NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT}
+      - NEXT_OPENAPI_BASE_PATH=${_NEXT_OPENAPI_BASE_PATH}
+      - NEXTAUTH_SECRET=${_NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${_NEXTAUTH_URL}
+    args:
+      - run
+      - create-env
+    entrypoint: npm
+  - name: node
+    args:
+      - run
+      - build
+    entrypoint: npm
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - app
+      - deploy
+timeout: 1600s
