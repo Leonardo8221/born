@@ -8,24 +8,41 @@ import ListPrices from '../../../ProductDetails/ListPrices';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
 import { fonts } from '@/config/fonts';
+import productPlaceholderImage from '@/assets/images/product-image.png';
+import { PriceGraphqlDto, ProductGraphqlDto } from '@/generated/types';
 
 export interface ListTableProps {
-  products: any[];
+  products: ProductGraphqlDto[];
 }
 
 const ListTable: FC<ListTableProps> = ({ products }) => {
   const columnHelper: any = createColumnHelper();
 
+  // const getPriceList = (prices?: PriceGraphqlDto[]) => {
+  //   const items = prices?.map((item: any) => {
+  //     const keys = Object.keys(item || {});
+  //     return {
+  //       currency: item?.currency,
+  //       items: keys?.map((i: any) => ({
+  //         label: i,
+  //         value: item?.[i] || '',
+  //       }) || [])
+  //     }
+  //   })
+  //   console.log(items)
+  //   return items as any;
+  // }
+
   const options = [
     {
-      label: 'Manage role',
-      value: 'manage-role',
-      action: () => console.log('Manage role!'),
+      label: 'Add to draft order',
+      value: 'draft-order',
+      action: () => console.log('Added to draft order'),
     },
     {
-      label: 'Revoke access',
-      value: 'revoke-access',
-      action: () => console.log('Manage role!'),
+      label: 'Add to collections',
+      value: 'add-collection',
+      action: () => console.log('Added to collections!'),
     },
     {
       label: 'Delete',
@@ -41,30 +58,30 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
       cell: ({ row }: any) => (
         <div>
           <ImageText
-            title={row?.original?.name || ''}
-            subTitle={row?.original?.title || ''}
-            altText={row?.original?.title + 'logo'}
-            imgSrc={row?.original?.imageUrl}
+            title={row?.original?.style_name || ''}
+            subTitle={row?.original?.style_number || ''}
+            altText={row?.original?.style_name + 'logo'}
+            imgSrc={row?.original?.imageUrl || productPlaceholderImage}
             variant="product"
           />
         </div>
       ),
       header: () => "Product name",
     }),
-    columnHelper.accessor('colors', {
+    columnHelper.accessor('colour_families', {
       size: 122,
-      id: "colors",
+      id: "colour_families",
       cell: (info: any) => {
-        const colors = info.getValue();
+        const colour_families = info.getValue();
         return (
           <div className='flex flex-col gap-y-2'>
-            {colors.map((item: any) => (
-              <div key={item.value} className='flex items-center gap-x-2'>
+            {colour_families?.map((item: any, index: number) => index === 0 && (
+              <div key={item} className='flex items-center gap-x-2'>
                 <div
                   className="h-4 w-4 rounded border-2 border-shades-white"
-                  style={item.value && { backgroundColor: item.value }}
+                  style={item && { backgroundColor: item }}
                 />
-                <span>{item.label}</span>
+                <span>{item}</span>
               </div>
             ))}
           </div>
@@ -75,31 +92,31 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
     columnHelper.accessor('season', {
       size: 87,
       id: "season",
-      cell: (info: any) => <Badges items={info.getValue()} />,
+      cell: (info: any) => <Badges items={['SS23']} />,
       header: () => "Season",
     }),
-    columnHelper.accessor('collections', {
-      size: 190,
-      id: "collections",
-      cell: (info: any) => <Badges items={info.getValue()} />,
-      header: () => "Collections",
-    }),
-    columnHelper.accessor('currencies', {
+    // columnHelper.accessor('collections', {
+    //   size: 190,
+    //   id: "collections",
+    //   cell: (info: any) => <Badges items={info?.getValue()?.filter((item: any) => item?.name) || []} />,
+    //   header: () => "Collections",
+    // }),
+    columnHelper.accessor('associated_prices', {
       size: 83,
       id: "currencies",
       cell: (info: any) => (
         <div className={clsx('text-shades-black tracking-[0.06em]', fonts.text.sm)}>
-          {info.getValue()?.join(', ')}
+          {/* {info.getValue()?.filter?.((item: any) => item?.currency)?.join(', ')} */}
         </div>
       ),
       header: () => "Currency",
     }),
-    columnHelper.accessor('prices', {
+    columnHelper.accessor('associated_prices', {
       size: 271,
-      id: "prices",
+      id: "associated_prices",
       cell: (info: any) => (
         <div className='[&>div]:flex-wrap'>
-          <ListPrices items={info.getValue() || []} isSmall />
+          {/* <ListPrices items={getPriceList?.(info.getValue() || [])} isSmall /> */}
         </div>
       ),
       header: () => "Prices",
