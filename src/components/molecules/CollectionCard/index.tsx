@@ -25,17 +25,16 @@ const clsVariations = {
     clsLabel: clsx(
       fonts.text["2xl"],
       fonts.fontWeights.regular,
-      "text-shades-white max-w-[205px] text-center"
+      "text-shades-white text-center mx-auto"
     ),
     clsHeaderText: clsx(
       fonts.fontWeights.light,
-
-      "text-[18px] text-shades-black text-center leading-[32px] pt-8 max-w-[544px]"
+      "text-[18px] text-shades-black text-center leading-[32px] pt-8 max-w-[544px] mx-auto"
     ),
     clsAuthor: clsx(
       fonts.fontWeights.light,
       fonts.text.lg,
-      "text-shades-white text-center max-w-[215px]"
+      "text-shades-white text-center max-w-[215px] max-auto"
     ),
     clsOverlay: clsx("h-full w-full z-[2] absolute top-0", styles.overlay),
   },

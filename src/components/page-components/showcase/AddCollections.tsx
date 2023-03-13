@@ -13,11 +13,13 @@ import Loading from '../Loading';
 interface AddCollectionsProps {
   onAddCollection?: (e: any) => void;
   onSelect: (collectionId: any) => void;
+  isSelect?: boolean;
 }
 
 const AddCollections: FC<AddCollectionsProps> = ({
   onAddCollection = () => {},
   onSelect,
+  isSelect,
 }) => {
   const router = useRouter();
   const id = router?.query?.id || '';
@@ -29,7 +31,7 @@ const AddCollections: FC<AddCollectionsProps> = ({
 
   useEffect(() => {
     refetch();
-  }, [])
+  }, []);
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -53,7 +55,7 @@ const AddCollections: FC<AddCollectionsProps> = ({
           (collection: CollectionGraphqlDto) => (
             <div
               key={collection?.id}
-              className="cursor-pointer"
+              className={isSelect ? "cursor-pointer" : ''}
               onClick={() => onSelect(collection?.id)}
             >
               <ImageText
