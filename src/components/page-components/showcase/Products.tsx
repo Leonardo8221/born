@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import { OrderResourceApi } from 'client/command';
+import { CollectionResourceApi, OrderResourceApi } from 'client/command';
 import ProductList from '@/components/page-components/common/ProductList';
 import Filters from '@/components/page-components/common/Filters';
 import { GridType } from '@/components/molecules/IconButtonGroup';
@@ -11,18 +11,21 @@ import useDebounce from '@/utils/debounce';
 import ErrorMessage from '../Error/ErrorMessage';
 import Loading from '../Loading';
 import Toast from '../Toast';
+import Modal from '@/components/molecules/Modal';
+import CreateCollection from './CreateCollection';
+import AddCollections from './AddCollections';
 
-const Products = () => {
+const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState<
-    Array<string | number>
-  >([]);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const debouncedValue = useDebounce(searchKeyword, 600);
+  const [isAddCollections, setIsAddCollections] = useState(false);
+  const [isCreateModal, setIsCreateModal] = useState(false);
 
   const router = useRouter();
   const id = router?.query?.id || '';
@@ -49,6 +52,22 @@ const Products = () => {
       type: 'default',
     },
   ];
+
+  const handleErrorMesssage = (message: string) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  };
+
+  const handleSuccessMesssage = (message: string) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 3000);
+  };
 
   const handleAddProdutsToDraftOrder = async () => {
     setIsLoading(true);
@@ -79,26 +98,60 @@ const Products = () => {
         ],
       });
       setIsLoading(false);
-      setSuccessMessage(
+      handleSuccessMesssage(
         `Added ${selectedProducts.length} products to draft order sucessfully!!`
       );
       setSelectedProducts([]);
       setIsSelectable(false);
       refetch();
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
     } catch (error: any) {
       setIsLoading(false);
-      setErrorMessage(
+      handleErrorMesssage(
         error?.message || 'Something went wrong, please try again!'
       );
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 3000);
       console.error(error);
     }
   };
+
+  const handleAddToCollection = async (collectionId: any) => {
+    setIsLoading(true);
+    try {
+      const config: any = await apiConfig();
+      const api = new CollectionResourceApi(config);
+      await api.apiCollectionAssociateProductsPut(
+        collectionId,
+        selectedProducts
+      );
+      handleSuccessMesssage(
+        `Added ${selectedProducts.length} products to collections sucessfully!!`
+      );
+      setIsAddCollections(false);
+      setIsCreateModal(false);
+      setIsLoading(false);
+      setSelectedProducts([]);
+    } catch (error: any) {
+      setIsLoading(false);
+      handleErrorMesssage(
+        error?.message || 'Something went wrong, please try again!'
+      );
+      console.error(error);
+    }
+  };
+
+  const handleAddCollections = async (newCollection: any) => {
+    setIsLoading(true);
+    try {
+      const config: any = await apiConfig();
+      const api = new CollectionResourceApi(config);
+      await api.apiCollectionCreateNewCollectionPost(organizationId, newCollection);
+      setIsLoading(false);
+      setIsCreateModal(false);
+      handleSuccessMesssage('New collection added successfully!');
+    } catch (error) {
+      handleErrorMesssage('Faild to add new collection!');
+      console.error(error);
+    }
+  }
 
   const actions = [
     {
@@ -108,7 +161,7 @@ const Products = () => {
     },
     {
       name: 'Add to collection',
-      action: () => 'Added to collection!',
+      action: () => setIsAddCollections(true),
       disabled: isLoading || selectedProducts.length === 0,
     },
     {
@@ -118,7 +171,7 @@ const Products = () => {
     },
   ];
 
-  const handleSelectedProducts = (id: string | number) => {
+  const handleSelectedProducts = (id: number) => {
     if (selectedProducts.includes(id)) {
       const newProducts = [...selectedProducts];
       setSelectedProducts(newProducts.filter((item) => item !== id));
@@ -159,6 +212,31 @@ const Products = () => {
           />
         )}
       </div>
+
+      <Modal
+        isOpen={isAddCollections}
+        onClose={() => {
+          setIsAddCollections(false);
+          setIsCreateModal(false);
+        }}
+        title={isCreateModal ? 'Name this collection' : 'Choose collections'}
+        className="!max-h-[417px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
+      >
+        {isCreateModal ? (
+          <CreateCollection
+            handleSubmit={(newCollection) => {
+              handleAddCollections(newCollection);
+            }}
+          />
+        ) : (
+          <AddCollections
+            onAddCollection={() => {
+              setIsCreateModal(true);
+            }}
+            onSelect={(id) => handleAddToCollection(id)}
+          />
+        )}
+      </Modal>
 
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>

@@ -11,12 +11,12 @@ const Toast: FC<ToastProps> = ({ successMessage, errorMessage }) => {
     return (
       <div
         className={clsx(
-          'absolute max-w-[500px] mx-auto text-center bottom-4 left-0 right-0 rounded px-4 py-1 text-shades-white',
+          'fixed max-w-[500px] z-[1000] mx-auto text-center bottom-4 left-0 right-0 rounded px-4 py-1 text-shades-white',
           errorMessage && 'bg-error-100',
           successMessage && 'bg-success-200',
         )}
       >
-        {successMessage}
+        {successMessage || errorMessage}
       </div>
     );
   }

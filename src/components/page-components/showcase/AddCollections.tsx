@@ -1,20 +1,36 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import clsx from 'clsx';
 import { CollectionGraphqlDto } from '@/generated/types';
 import PlusIcon from '@/assets/svgs/plus.svg';
 import ImageText from '@/components/molecules/ImageText';
 import ProductImage from '@/assets/images/product-image.png';
 import { fonts } from '@/config/fonts';
+import { COLLECTIONS_QUERY } from '@/queries/collecitons';
+import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import Loading from '../Loading';
 
 interface AddCollectionsProps {
-  collections: CollectionGraphqlDto[];
   onAddCollection?: (e: any) => void;
+  onSelect: (collectionId: any) => void;
 }
 
 const AddCollections: FC<AddCollectionsProps> = ({
-  collections,
   onAddCollection = () => {},
+  onSelect,
 }) => {
+  const router = useRouter();
+  const id = router?.query?.id || '';
+  const organizationId: number = +id;
+
+  const { data, loading, refetch } = useQuery(COLLECTIONS_QUERY, {
+    variables: { organizationId },
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [])
+
   return (
     <div className="flex flex-col gap-y-6">
       <div className="flex items-center gap-x-4">
@@ -30,15 +46,27 @@ const AddCollections: FC<AddCollectionsProps> = ({
         </h3>
       </div>
 
-      {collections.map((collection, index) => (
-        <ImageText
-          key={index}
-          title={collection?.name || ''}
-          imgSrc={collection?.banner_guid || ProductImage}
-          altText={`${collection.name} logo`}
-          variant="product"
-        />
-      ))}
+      {loading ? (
+        <Loading message="Loading collections" />
+      ) : (
+        data?.collectionsByOrganizationId?.map(
+          (collection: CollectionGraphqlDto) => (
+            <div
+              key={collection?.id}
+              className="cursor-pointer"
+              onClick={() => onSelect(collection?.id)}
+            >
+              <ImageText
+                key={collection?.id}
+                title={collection?.name || ''}
+                imgSrc={collection?.banner_guid || ProductImage}
+                altText={`${collection.name} logo`}
+                variant="product"
+              />
+            </div>
+          )
+        )
+      )}
     </div>
   );
 };

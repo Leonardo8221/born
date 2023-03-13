@@ -8,37 +8,29 @@ interface ListProps {
   isSmall?: boolean;
 }
 
-const List: FC<ListProps> = ({
-  label,
-  value,
-  isSmall,
-}) => {
+const List: FC<ListProps> = ({ label, value, isSmall }) => {
   return (
-    <div className={isSmall ? 'mb-0' : "mb-3"}>
+    <div className={isSmall ? 'mb-0' : 'mb-3'}>
       <h4
-        className={
-          clsx(
-            'text-neutral-800 tracking-[0.06em] font-light',
-            fonts.text[isSmall ? 'sm' :'base']
-          )
-        }
+        className={clsx(
+          'text-neutral-800 tracking-[0.06em] font-light',
+          fonts.text[isSmall ? 'sm' : 'base']
+        )}
       >
         {label}
       </h4>
       <p
-        className={
-          clsx(
-            'text-neutral-600 tracking-[0.06em] font-light',
-            fonts.text[isSmall ? 'xs' : 'sm'],
-            !isSmall && 'mt-1'
-          )
-        }
+        className={clsx(
+          'text-neutral-600 tracking-[0.06em] font-light',
+          fonts.text[isSmall ? 'xs' : 'sm'],
+          !isSmall && 'mt-1'
+        )}
       >
         {value}
       </p>
     </div>
-  )
-}
+  );
+};
 
 interface ListPricesProps {
   currency?: string;
@@ -56,17 +48,26 @@ const ListPrices: FC<ListPricesProps> = ({
 }) => {
   console.log(items);
   return (
-    <div className={clsx('flex justify-center', isSmall ? 'gap-x-3' : 'gap-x-[25px]')}>
-      {currency && (
-        <List label={currency} value="currency" isSmall={isSmall} />
+    <div
+      className={clsx(
+        'flex justify-center',
+        isSmall ? 'gap-x-3' : 'gap-x-[25px]'
       )}
-      {
-        items?.map((item, index) => item?.price && (
-          <List key={index} label={item.price} value={item.label} isSmall={isSmall} />
-        ))
-      }
+    >
+      {currency && <List label={currency} value="currency" isSmall={isSmall} />}
+      {items?.map(
+        (item, index) =>
+          item?.price && (
+            <List
+              key={index}
+              label={item.price}
+              value={item.label}
+              isSmall={isSmall}
+            />
+          )
+      )}
     </div>
   );
-}
+};
 
 export default ListPrices;
