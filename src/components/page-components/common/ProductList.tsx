@@ -15,7 +15,7 @@ interface ProductListProps {
   gridType?: GridType;
   selectable: boolean;
   selectedProducts: Array<number | string>;
-  onSelect: (value: string | number) => void;
+  onSelect: (value: number) => void;
 }
 
 const ProductList: FC<ProductListProps> = ({
@@ -56,7 +56,7 @@ const ProductList: FC<ProductListProps> = ({
         gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
       )}
     >
-      {products?.map((item: ProductGraphqlDto, index: number) => (
+      {products?.map((item: ProductGraphqlDto) => (
         <ProductCard
           key={item?.id}
           size={gridType === 'smallGrid' ? 'sm' : 'lg'}

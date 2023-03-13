@@ -110,7 +110,7 @@ const Collections: FC<CollectionsProps> = ({
           />
         ) : (
           <AddCollections
-            collections={data?.collectionsByOrganizationId}
+            onSelect={() => {}}
             onAddCollection={() => setIsCreateModal(true)}
           />
         )}

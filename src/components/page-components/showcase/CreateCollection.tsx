@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, useState } from 'react';
 import Input from '@/components/molecules/Inputs';
 import { Button } from '@/components/molecules/Button';
+import Toast from '../Toast';
 
 interface CreateCollectionProps {
   handleSubmit?: (collectionName: string) => void;
@@ -8,13 +9,7 @@ interface CreateCollectionProps {
 
 const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
   const [collectionName, setCollectionName] = useState('');
-
-  const handleClick = () => {
-    if (collectionName && handleSubmit) {
-      handleSubmit(collectionName);
-    }
-  };
-
+  const [errorMessage, setErrorMessage] = useState('');
   return (
     <div>
       <Input
@@ -24,9 +19,25 @@ const CreateCollection: FC<CreateCollectionProps> = ({ handleSubmit }) => {
         }
         label="Collection name"
       />
-      <Button size="lg" className="max-w-[124px] mt-8" onClick={handleClick}>
+      <Button
+        size="lg"
+        className="max-w-[124px] mt-8"
+        onClick={() => {
+          if (!collectionName) {
+            setErrorMessage('Collection name is required!');
+            setTimeout(() => {
+              setErrorMessage('');
+            }, 3000);
+            return;
+          }
+
+          handleSubmit &&
+            handleSubmit({ name: collectionName, description: '' });
+        }}
+      >
         Save
       </Button>
+      {errorMessage && <Toast errorMessage={errorMessage} />}
     </div>
   );
 };
