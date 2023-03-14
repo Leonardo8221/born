@@ -14,22 +14,34 @@ import {
 } from '@/queries/collecitons';
 import Loading from '@/components/page-components/Loading';
 import { useRouter } from 'next/router';
+import useDebounce from '@/utils/debounce';
+import { apiConfig } from '@/utils/apiConfig';
+import { CollectionResourceApi, ProductResourceApi } from 'client/command';
+import Toast from '@/components/page-components/Toast';
 
 const CollectionPage = () => {
   const router = useRouter();
   const collectionId = Number(router?.query?.collectionId);
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState<
-    Array<string | number>
-  >([]);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const debouncedValue = useDebounce(searchKeyword, 600);
 
   const { data: colleciton, loading } = useQuery(COLLECTION_QUERY, {
     variables: { collectionId },
   });
 
-  const { data: productsCollection, loading: productsCollectionLoading } =
-    useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, { variables: { collectionId } });
+  const {
+    data: productsCollection,
+    loading: productsCollectionLoading,
+    refetch,
+  } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
+    variables: { collectionId, search: debouncedValue },
+  });
 
   const filterTags = [
     {
@@ -44,14 +56,85 @@ const CollectionPage = () => {
     },
   ];
 
+  const handleErrorMesssage = (message: string) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  };
+
+  const handleSuccessMesssage = (message: string) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 3000);
+  };
+
+  const handleRemoveProducts = async () => {
+    setIsLoading(true);
+    try {
+      const config: any = await apiConfig();
+      const api = new CollectionResourceApi(config);
+      await api.apiCollectionDisassociateProductsPut(
+        collectionId,
+        selectedProducts
+      );
+      refetch();
+      handleSuccessMesssage(
+        `Removed ${selectedProducts.length} products from collections sucessfully!!`
+      );
+      setIsLoading(false);
+      setSelectedProducts([]);
+    } catch (error: any) {
+      setIsLoading(false);
+      handleErrorMesssage(
+        error?.message || 'Failed to removed products, please try again!'
+      );
+      console.error(error);
+    }
+  };
+
+  const handleDeleteProducts = async () => {
+    setIsLoading(true);
+    try {
+      const config: any = await apiConfig();
+      const api = new ProductResourceApi(config);
+      await api.apiProductDeleteProductsDelete(selectedProducts);
+      refetch();
+      setIsLoading(false);
+      handleSuccessMesssage(
+        `Deleted ${selectedProducts.length} products successfully!`
+      );
+      setSelectedProducts([]);
+    } catch (error: any) {
+      setIsLoading(false);
+      handleErrorMesssage(
+        error?.message || 'Failed to delete produts, please try again!'
+      );
+    }
+  };
+
   const actions = [
     {
+      name: 'Add to draft order',
+      action: () => console.log('added to draft order'),
+      disabled: isLoading || !selectedProducts.length,
+    },
+    {
+      name: 'Remove from collection',
+      action: () => handleRemoveProducts(),
+      disabled: isLoading || !selectedProducts.length,
+    },
+    {
       name: 'Delete',
-      action: () => 'Deleted!',
+      action: () => handleDeleteProducts(),
+      disabled: isLoading || !selectedProducts.length,
     },
   ];
 
-  const handleSelectedProducts = (id: string | number) => {
+  const handleSelectedProducts = (id: number) => {
     if (selectedProducts.includes(id)) {
       const newProducts = [...selectedProducts];
       setSelectedProducts(newProducts.filter((item) => item !== id));
@@ -60,41 +143,46 @@ const CollectionPage = () => {
     }
   };
 
+  if (loading) {
+    return <Loading message="Loading collections" />;
+  }
+
   return (
     <div>
       <Header />
       <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">
         <div className="mb-[64px]">
-          {loading ? (
-            <Loading message="Loading collections" />
-          ) : (
-            <>
-              <CollectionCard
-                backgroundImageSrc={backgroundImageSrc}
-                label={colleciton?.name}
-                editBanner
-                onEdit={(e) => e.preventDefault()}
-              />
-              <Description />
-            </>
-          )}
+          <CollectionCard
+            backgroundImageSrc={backgroundImageSrc}
+            label={colleciton?.collectionByCollectionId?.name}
+            editBanner
+            onEdit={(e) => e.preventDefault()}
+          />
+          <Description />
         </div>
+        <Filters
+          onGridChange={setGrid}
+          gridType={gridType}
+          onSelect={() => setIsSelectable(!isSelectable)}
+          filterTags={filterTags}
+          actions={actions}
+          isSelectable={isSelectable}
+          selectedItems={selectedProducts}
+          searchKeyword={searchKeyword}
+          onSearch={setSearchKeyword}
+        />
         {productsCollectionLoading ? (
-          <Loading message="Loading collecton products" />
+          <div className="my-10 min-h-[400px]">
+            <Loading message="Loading collecton products" />
+          </div>
         ) : (
           <>
-            <Filters
-              onGridChange={setGrid}
-              gridType={gridType}
-              onSelect={() => setIsSelectable(!isSelectable)}
-              filterTags={filterTags}
-              actions={actions}
-              isSelectable={isSelectable}
-              selectedItems={selectedProducts}
-            />
             <ProductList
               gridType={gridType}
-              products={productsCollection?.collectionByCollectionId || []}
+              products={
+                productsCollection?.productsBySearchAndCollectionId?.content ||
+                []
+              }
               selectable={isSelectable}
               selectedProducts={selectedProducts}
               onSelect={handleSelectedProducts}
@@ -102,6 +190,7 @@ const CollectionPage = () => {
           </>
         )}
       </div>
+      <Toast successMessage={successMessage} errorMessage={errorMessage} />
       <Footer />
     </div>
   );

@@ -1,149 +1,116 @@
-import { FC } from "react";
-import { createColumnHelper } from "@tanstack/react-table";
-import clsx from "clsx";
-import { Table } from "../../Table";
-import { DropdownMenu } from "@/components/molecules/DropdownMenu";
-import { fonts } from "@/config/fonts";
-import { Button } from "@/components/molecules/Button";
-import Link from "next/link";
-import { OrderGraphqlDto } from "@/generated/types";
+import { FC } from 'react';
+import { createColumnHelper } from '@tanstack/react-table';
+import clsx from 'clsx';
+import { Table } from '../../Table';
+import { fonts } from '@/config/fonts';
+import { Button } from '@/components/molecules/Button';
+import Link from 'next/link';
+import { OrderGraphqlDto } from '@/generated/types';
+import { formatDate } from '@/utils';
 export interface OrderListTableProps {
   orders: OrderGraphqlDto[];
+  orderType: string;
 }
 
-const OrderListTable: FC<OrderListTableProps> = ({ orders }) => {
+const OrderListTable: FC<OrderListTableProps> = ({ orders, orderType }) => {
   const columnHelper: any = createColumnHelper();
 
-  const options = [
-    {
-      label: "Manage role",
-      value: "manage-role",
-      action: () => console.log("Manage role!"),
-    },
-    {
-      label: "Revoke access",
-      value: "revoke-access",
-      action: () => console.log("Manage role!"),
-    },
-    {
-      label: "Delete",
-      value: "delete",
-      action: () => console.log("Deleted!"),
-    },
-  ];
-
   const columns = [
-    columnHelper.accessor("name", {
+    columnHelper.accessor('name', {
       size: 341,
-      id: "name",
+      id: 'name',
       cell: (info: any) => (
         <Link href={`${location.pathname}/${info.row.original.id}`}>
-          <div
-            className={clsx(
-              "text-shades-black tracking-[0.06em] pl-4",
-              fonts.text.lg
-            )}
-          >
+          <div className={clsx('text-[#333333] pl-4', fonts.text.lg)}>
             {info.getValue()}
           </div>
         </Link>
       ),
-      header: () => "Order name",
+      header: () => 'Order name',
     }),
-    columnHelper.accessor("retailer", {
+    columnHelper.accessor('retailer', {
       size: 120,
-      id: "retailerName",
+      id: 'retailerName',
       cell: (info: any) => (
-        <div
-          className={clsx(
-            "text-shades-black font-light tracking-[0.06em] text-center",
-            fonts.text.sm
-          )}
-        >
+        <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
           {info.getValue()}
         </div>
       ),
-      header: () => "Retailer name",
+      header: () => 'Retailer name',
     }),
-    columnHelper.accessor("buyer_name", {
+    columnHelper.accessor('buyer_name', {
       size: 120,
-      id: "buyerName",
+      id: 'buyerName',
       cell: (info: any) => (
-        <div
-          className={clsx(
-            "text-shades-black font-light tracking-[0.06em] text-center",
-            fonts.text.sm
-          )}
-        >
+        <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
           {info.getValue()}
         </div>
       ),
-      header: () => "Buyer name",
+      header: () => 'Buyer name',
     }),
-    columnHelper.accessor("total", {
+    columnHelper.accessor('total', {
       size: 120,
-      id: "total",
+      id: 'total',
       cell: (info: any) => (
-        <div
-          className={clsx(
-            "text-shades-black font-light tracking-[0.06em] text-center",
-            fonts.text.sm
-          )}
-        >
+        <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
           {info.getValue()}
         </div>
       ),
-      header: () => "Total",
+      header: () => 'Total',
     }),
-    columnHelper.accessor("season", {
+    columnHelper.accessor('season', {
       size: 120,
-      id: "season",
+      id: 'season',
       cell: (info: any) => (
-        <div
-          className={clsx(
-            "text-shades-black font-light tracking-[0.06em] text-center",
-            fonts.text.sm
-          )}
-        >
+        <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
           {info.getValue()}
         </div>
       ),
-      header: () => "Season",
+      header: () => 'Season',
     }),
-    columnHelper.accessor("created_date", {
+    columnHelper.accessor('created_date', {
       size: 120,
-      id: "orderDate",
+      id: 'orderDate',
       cell: (info: any) => (
-        <div
-          className={clsx(
-            "text-shades-black font-light tracking-[0.06em] text-center",
-            fonts.text.sm
-          )}
-        >
-          {info.getValue()}
+        <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
+          {formatDate(info.getValue())}
         </div>
       ),
-      header: () => "Order date",
+      header: () => 'Order date',
     }),
-    columnHelper.accessor("approve", {
+    columnHelper.accessor('confirm', {
       size: 120,
-      id: "approve",
+      id: 'confirm',
       cell: () => (
-        <div>
-          <Button variant="outlined">Approve</Button>
-        </div>
+        <>
+          {orderType === 'confirmed' ? (
+            <div className="flex items-center">
+              <Button
+                variant="outlined"
+                className="h-8 text-[12px] text-[#333333] border-[#999999] mr-2"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="outlined"
+                className="h-8 text-[12px] text-[#333333] border-[#999999]"
+              >
+                Approve
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button
+                variant="outlined"
+                className="h-8 text-[12px] text-[#333333] border-[#999999]"
+              >
+                Confirm
+              </Button>
+            </div>
+          )}
+        </>
       ),
-      header: () => "",
-    }),
-    columnHelper.accessor("actions", {
-      size: 60,
-      id: "actions",
-      cell: () => (
-        <div>
-          <DropdownMenu options={options} variant="dots" />
-        </div>
-      ),
-      header: () => "",
+      header: () => '',
     }),
   ];
 

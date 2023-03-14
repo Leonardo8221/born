@@ -97,12 +97,6 @@ export interface OrderDetailRestDTO {
     'note'?: string;
     /**
      * 
-     * @type {number}
-     * @memberof OrderDetailRestDTO
-     */
-    'product_id': number;
-    /**
-     * 
      * @type {Array<OrderDetailSizeRestDTO>}
      * @memberof OrderDetailRestDTO
      */
@@ -120,12 +114,6 @@ export interface OrderDetailSizeRestDTO {
      * @memberof OrderDetailSizeRestDTO
      */
     'order_detail_size_id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderDetailSizeRestDTO
-     */
-    'size'?: string;
     /**
      * 
      * @type {number}

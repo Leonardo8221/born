@@ -1,44 +1,15 @@
-import React from "react";
-import OrderListTable from "../../organisms/Tables/OrderList";
+import React, { FC } from 'react';
+import OrderListTable from '../../organisms/Tables/OrderList';
+import { OrderGraphqlDto } from '@/generated/types';
 
-export const Confirmed = () => {
-  const orders = [
-    {
-      buyerName: "Julie McKenzie",
-      name: "Missoma X Selfridges - AW 23",
-      orderDate: "02/09/23",
-      retailerName: "Selfridges",
-      season: "Spring 23",
-      total: "33,034.00",
-    },
-    {
-      buyerName: "Julie McKenzie",
-      name: "Missoma X Selfridges - AW 23",
-      orderDate: "02/09/23",
-      retailerName: "Selfridges",
-      season: "Spring 23",
-      total: "33,034.00",
-    },
-    {
-      buyerName: "Julie McKenzie",
-      name: "Missoma X Selfridges - AW 23",
-      orderDate: "02/09/23",
-      retailerName: "Selfridges",
-      season: "Spring 23",
-      total: "33,034.00",
-    },
-    {
-      buyerName: "Julie McKenzie",
-      name: "Missoma X Selfridges - AW 23",
-      orderDate: "02/09/23",
-      retailerName: "Selfridges",
-      season: "Spring 23",
-      total: "33,034.00",
-    },
-  ];
+interface DraftTableProps {
+  content: OrderGraphqlDto[];
+}
+
+export const Confirmed = ({ content }: DraftTableProps) => {
   return (
     <div>
-      <OrderListTable orders={[]} />
+      <OrderListTable orderType="confirmed" orders={content} />
     </div>
   );
 };
