@@ -56,7 +56,7 @@ const MarketingPage = () => {
     {
       id: 2,
       label: 'Marketing',
-      content: <Marketing />,
+      content: <Marketing organization={currentOrganization} />,
     },
   ];
 	const orderingTabs = [

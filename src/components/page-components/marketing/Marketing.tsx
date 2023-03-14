@@ -1,9 +1,10 @@
 import { Pill } from '@/components/atoms/Pill';
 import { Button } from "@/components/molecules/Button";
 import { FileUpload } from '@/components/molecules/FileUpload';
-import React, { useState } from 'react';
+import { OrganizationProps } from '@/pages/organization/[id]/manage/marketing';
+import React, { FC, useState } from 'react';
 
-const Marketing = () => {
+const Marketing: FC<OrganizationProps> = ({organization}) => {
   const [activeCollectionId, setActiveCollectionId] = useState<null | number>(
     null
   );
@@ -15,10 +16,8 @@ const Marketing = () => {
     }
   };
 
-  const collections = [
-    { label: 'SS23', id: 1 },
-    { label: 'Pre-spring 2023', id: 2 },
-  ];
+  const collections = organization?.collections
+
   return (
     <>
       <p className="text-shades-black leading-8 text-[18px] mb-4">
@@ -36,32 +35,31 @@ const Marketing = () => {
         Choose a collection, and upload the desired content.
       </p>
       <div className="mb-6">
-        {collections?.length > 0 &&
+        {collections && collections?.length > 0 &&
           collections.map((collection, index) => {
+            if(!collection?.name || !collection?.id ){
+              return null;
+            }
             return (
               <Pill
-                label={collection.label}
+                label={collection?.name || ''}
                 key={`${index} collection`}
                 isSelectable={false}
                 type={
                   activeCollectionId === collection?.id ? 'active' : 'inactive'
                 }
                 onClick={changeActiveCollectionId(collection.id)}
-                className="mr-4"
+                className="mr-4 mb-4"
               />
             );
           })}
       </div>
       <FileUpload
+        disabled={!activeCollectionId}
         acceptedFileTypes={['application/pdf']}
         labelText="Lookbook | PDF only (25 MB max)"
         className="mb-8"
       />
-      <Button
-        className="ml-0 w-auto mt-[20px]"
-      >
-        Save
-      </Button>
     </>
   );
 };

@@ -17,6 +17,7 @@ export interface FileUploadProps {
   handleFilePreviewClick?: (event: any) => void;
   icon?: ReactNode;
   className?: string;
+  disabled?: boolean;
 }
 
 export const FileUpload: FC<FileUploadProps> = ({
@@ -34,6 +35,7 @@ export const FileUpload: FC<FileUploadProps> = ({
   handleFilePreviewClick = () => {},
   handleUpload = () => { },
   className,
+  disabled,
 }) => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -76,7 +78,7 @@ export const FileUpload: FC<FileUploadProps> = ({
   });
 
   return (
-    <div className={clsx(clsVariants[variant].clsContainer, className)}>
+    <div className={clsx(clsVariants[variant].clsContainer, disabled && 'opacity-40 pointer-events-none' ,className)}>
       {!!labelText && (
         <p
           className={clsx(
