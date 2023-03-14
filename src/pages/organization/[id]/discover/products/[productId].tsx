@@ -10,13 +10,11 @@ import { Icon } from "@/components/molecules/Icon";
 import Link from "next/link";
 import Footer from "@/components/layouts/Footer";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import {
   GET_PRODUCTS_BY_COLLECTION_ID,
   GET_PRODUCT_BY_ID,
 } from "@/queries/products";
-import { ProductGraphqlDto } from "@/generated/types";
 import ErrorMessage from "@/components/page-components/Error/ErrorMessage";
 import Loading from "@/components/page-components/Loading";
 
@@ -26,7 +24,6 @@ const ProductPage = () => {
 
   const {
     data: product,
-    loading: productLoading,
     error: productError,
     refetch: productRefectch,
   } = useQuery(GET_PRODUCT_BY_ID, {
@@ -39,14 +36,10 @@ const ProductPage = () => {
 
   const collectionId = product?.productByProductId?.collections?.[0]?.id || "";
 
-  const {
-    data: collectionProducts,
-    loading: collectionProductsLoading,
-    error: collectionProductsError,
-    refetch: collectionProductsRefectch,
-  } = useQuery(GET_PRODUCTS_BY_COLLECTION_ID, {
-    variables: { collectionId: Number(collectionId), start: 0, rows: 3 },
-  });
+  const { data: collectionProducts, loading: collectionProductsLoading } =
+    useQuery(GET_PRODUCTS_BY_COLLECTION_ID, {
+      variables: { collectionId: Number(collectionId), start: 0, rows: 3 },
+    });
 
   const content = collectionProducts?.productsBySearchAndCollectionId?.content;
 
@@ -62,7 +55,7 @@ const ProductPage = () => {
   return (
     <>
       <ProductHeader
-        title="Medium pave star hoop hearing"
+        title={currentProduct?.style_name}
         onEdit={() => {}}
         onAddToCollection={() => {}}
         onDraftOrder={() => {}}

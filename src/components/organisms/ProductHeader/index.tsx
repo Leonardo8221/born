@@ -37,7 +37,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
         <div className="mr-auto">
           <ImageText
             title={title || ""}
-            titleClassName="text-[32px]"
+            titleClassName="text-[32px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[700px]"
             imgSrc={{
               src: srcLogo || LogoImage.src,
               height: 56,
