@@ -1,15 +1,15 @@
-import { FC } from 'react';
-import clsx from 'clsx';
-import Image, { StaticImageData } from 'next/image';
+import { FC } from "react";
+import clsx from "clsx";
+import Image, { StaticImageData } from "next/image";
 import {
   variantClasses,
   variantImageClasses,
   variantSubTitleClasses,
   variantTitleClasses,
-} from './utils';
+} from "./utils";
 
 export interface ImageTextProps {
-  variant?: 'brand' | 'product' | 'brand-two';
+  variant?: "brand" | "product" | "brand-two";
   title: string;
   subTitle?: string;
   imgSrc: StaticImageData | string;
@@ -18,7 +18,7 @@ export interface ImageTextProps {
 }
 
 const ImageText: FC<ImageTextProps> = ({
-  variant = 'brand',
+  variant = "brand",
   title,
   subTitle,
   imgSrc,
@@ -26,18 +26,19 @@ const ImageText: FC<ImageTextProps> = ({
   titleClassName,
 }) => {
   return (
-    <div className={clsx(variantClasses[variant], 'items-center')}>
+    <div className={clsx(variantClasses[variant], "items-center")}>
       <Image
         src={imgSrc}
         alt={altText}
-        className={clsx('object-cover', variantImageClasses[variant])}
+        className={clsx("object-cover", variantImageClasses[variant])}
       />
       <div>
         <h3
+          title={title}
           className={clsx(
             variantTitleClasses[variant],
             titleClassName,
-            'text-shades-black tracking-[0.06em]'
+            "text-shades-black tracking-[0.06em]"
           )}
         >
           {title}
@@ -46,7 +47,7 @@ const ImageText: FC<ImageTextProps> = ({
           <h4
             className={clsx(
               variantSubTitleClasses[variant],
-              'text-neutral-700 font-light tracking-[0.06em]'
+              "text-neutral-700 font-light tracking-[0.06em]"
             )}
           >
             {subTitle}

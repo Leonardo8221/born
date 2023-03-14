@@ -27,12 +27,13 @@ export interface ProductCardProps extends ProductGraphqlDto {
   onSelect?: () => void;
 }
 
-const ProductCardWrapper: FC<{ id: unknown; children: JSX.Element }> = ({
-  id,
-  children,
-}) => {
+const ProductCardWrapper: FC<{
+  id: unknown;
+  children: JSX.Element;
+  isSelectable?: boolean;
+}> = ({ id, isSelectable, children }) => {
   const router = useRouter();
-  if (typeof id === "number" || typeof id === "string") {
+  if (!isSelectable && (typeof id === "number" || typeof id === "string")) {
     return (
       <Link
         href={`/organization/${router.query.id || "1"}/discover/products/${id}`}
@@ -64,7 +65,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   );
 
   return (
-    <ProductCardWrapper id={id}>
+    <ProductCardWrapper isSelectable={isSelectable} id={id}>
       <div className={clsProductCard(size)}>
         <div
           className={clsx(
