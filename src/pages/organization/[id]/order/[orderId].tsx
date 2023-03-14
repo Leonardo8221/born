@@ -22,7 +22,6 @@ function OrderPreview() {
   const handleEditInputs = (key: any, val: string) => {
     console.log(val, key);
   };
-  console.log(data, 'data');
 
   const columnData = {
     column1: [

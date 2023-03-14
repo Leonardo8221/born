@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { TableHead } from '@/components/molecules/TableHead';
@@ -8,14 +8,23 @@ export interface TableProps {
   tableData: any[];
   columns: any[];
   className?: string;
+  loading?: boolean;
 }
 
 export const Table: FC<TableProps> = ({
   tableData,
   columns,
   className = '',
+  loading = false,
 }) => {
-  const [data, setData] = useState(tableData);
+  const [data, setData] = useState([...tableData]);
+
+  useEffect(() => {
+    if (Array.isArray(tableData) && tableData.length) {
+      setData(tableData);
+    }
+  }, [tableData]);
+
   const table = useReactTable({
     data,
     columns,
@@ -42,7 +51,7 @@ export const Table: FC<TableProps> = ({
         style={{ gridTemplateColumns: colWidthStyle.join(' ') }}
       >
         <TableHead table={table} />
-        <TableBody table={table} />
+        <TableBody loading={loading} table={table} />
       </table>
       <div className="h-4" />
     </div>

@@ -1,17 +1,42 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { flexRender } from '@tanstack/react-table';
 import { fonts } from '@/config/fonts';
+import Loading from '@/components/page-components/Loading';
 
 interface TableBodyProps {
   table: {
     getRowModel: any;
   };
   className?: string;
+  loading?: boolean;
 }
 
-export const TableBody: FC<TableBodyProps> = ({ table, className = '' }) => {
+export const TableBody: FC<TableBodyProps> = ({
+  table,
+  className = '',
+  loading,
+}) => {
   const { getRowModel } = table;
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+    } else setIsLoading(false);
+  }, [loading]);
+
+  if (isLoading) {
+    return (
+      <tr>
+        <td className="text-center align-middle !w-full" colSpan={12}>
+          <div className="py-16">
+            <Loading />
+          </div>
+        </td>
+      </tr>
+    );
+  }
 
   return (
     <tbody>

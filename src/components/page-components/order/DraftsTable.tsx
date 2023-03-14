@@ -7,9 +7,19 @@ import { OrderGraphqlDto } from '@/generated/types';
 
 export interface DraftTableProps {
   content: OrderGraphqlDto[];
+  type: string;
+  loading: boolean;
+  handleActions: (action: string, id: number) => void;
+  actionsLoading?: boolean;
 }
 
-export const Draft: FC<DraftTableProps> = ({ content }) => {
+export const DraftTable: FC<DraftTableProps> = ({
+  content,
+  type,
+  loading,
+  handleActions,
+  actionsLoading,
+}) => {
   return (
     <div>
       <div id="header" className="flex justify-between">
@@ -61,7 +71,13 @@ export const Draft: FC<DraftTableProps> = ({ content }) => {
           </Button>
         </div>
       </div>
-      <OrderListTable orderType="draft" orders={content} />
+      <OrderListTable
+        handleActions={handleActions}
+        actionsLoading={actionsLoading}
+        loading={loading}
+        orderType={type}
+        orders={content}
+      />
     </div>
   );
 };
