@@ -17,6 +17,5 @@ Default.args = {
 	containerClassName: " ",
     srcBlurDataURL:  LogoImage.src,
 	onEdit: () => {},
-	onAddToCollection: () => {},
 	onDraftOrder: () => {},
 };
