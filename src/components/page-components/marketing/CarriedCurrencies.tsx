@@ -1,3 +1,4 @@
+import { Button } from "@/components/molecules/Button";
 import Switch from "@/components/molecules/Switch";
 import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
 import React, { FC } from "react";
@@ -23,6 +24,7 @@ const CarriedCurrencies: FC<OrganizationProps> = ({ organization }) => {
           })}
         </div>
       )}
+      <Button className="ml-0 w-auto mt-[40px]">Save</Button>
     </>
   );
 };

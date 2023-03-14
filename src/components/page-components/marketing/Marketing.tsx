@@ -19,7 +19,7 @@ const Marketing: FC<OrganizationProps> = ({organization}) => {
   const collections = organization?.collections
 
   return (
-    <>
+    <div className='max-w-[800px]'>
       <p className="text-shades-black leading-8 text-[18px] mb-4">
         Add your brand&#8217;s linesheet and lookbook to your profile, or add
         them to a <br></br> specific collection.
@@ -60,7 +60,7 @@ const Marketing: FC<OrganizationProps> = ({organization}) => {
         labelText="Lookbook | PDF only (25 MB max)"
         className="mb-8"
       />
-    </>
+    </div>
   );
 };
 
