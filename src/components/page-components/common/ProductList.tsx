@@ -58,7 +58,7 @@ const ProductList: FC<ProductListProps> = ({
     >
       {products?.map((item: ProductGraphqlDto) => (
         <ProductCard
-          key={`${index} ${item?.id}`}
+          key={`${item?.id}`}
           size={gridType === "smallGrid" ? "sm" : "lg"}
           isSelectable={selectable}
           isSelected={!!selectedProducts?.includes(item.id)}
