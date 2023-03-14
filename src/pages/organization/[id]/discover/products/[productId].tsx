@@ -55,9 +55,10 @@ const ProductPage = () => {
   return (
     <>
       <ProductHeader
+        productRefectch={productRefectch}
+        currentProduct={currentProduct}
         title={currentProduct?.style_name}
         onEdit={() => {}}
-        onAddToCollection={() => {}}
         onDraftOrder={() => {}}
         hrefBack={`/organization/${router.query.id}/discover?tab=products`}
         containerClassName="mt-[42px] mb-[64px]"
