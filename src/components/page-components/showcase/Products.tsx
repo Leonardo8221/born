@@ -1,6 +1,10 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import { CollectionResourceApi, OrderResourceApi } from 'client/command';
+import {
+  CollectionResourceApi,
+  OrderResourceApi,
+  ProductResourceApi,
+} from 'client/command';
 import ProductList from '@/components/page-components/common/ProductList';
 import Filters from '@/components/page-components/common/Filters';
 import { GridType } from '@/components/molecules/IconButtonGroup';
@@ -137,7 +141,10 @@ const Products: FC = () => {
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      await api.apiCollectionCreateNewCollectionPost(organizationId, newCollection);
+      await api.apiCollectionCreateNewCollectionPost(
+        organizationId,
+        newCollection
+      );
       setIsLoading(false);
       setIsCreateModal(false);
       handleSuccessMesssage('New collection added successfully!');
@@ -145,7 +152,25 @@ const Products: FC = () => {
       handleErrorMesssage('Faild to add new collection!');
       console.error(error);
     }
-  }
+  };
+
+  const handleDeleteProducts = async () => {
+    setIsLoading(true);
+    try {
+      const config: any = await apiConfig();
+      const api = new ProductResourceApi(config);
+      await api.apiProductDeleteProductsDelete(selectedProducts);
+      refetch();
+      setIsLoading(false);
+      handleSuccessMesssage(`Deleted ${selectedProducts.length} products successfully!`);
+      setSelectedProducts([]);
+    } catch (error: any) {
+      setIsLoading(false);
+      handleErrorMesssage(
+        error?.message || 'Failed to delete produts, please try again!'
+      );
+    }
+  };
 
   const actions = [
     {
@@ -160,7 +185,7 @@ const Products: FC = () => {
     },
     {
       name: 'Delete',
-      action: () => 'Deleted!',
+      action: () => handleDeleteProducts(),
       disabled: isLoading || selectedProducts.length === 0,
     },
   ];
