@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_ORDER_BY_ID = gql`
   query GetOrderByID($orderId: BigInteger!) {
@@ -24,7 +24,6 @@ export const GET_ORDER_BY_ID = gql`
       retailer
       order_details {
         note
-        quantity
         product {
           id
           description

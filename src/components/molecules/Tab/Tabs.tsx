@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import clsx from "clsx";
+import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 export interface Tab {
   id: number | string;
@@ -35,10 +35,10 @@ function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
             <div key={index} className="cursor-pointer">
               <span
                 onClick={() => handleTabClick(tab.id)}
-                className={`inline-flex justify-center w-atuo py-4 px-2 mr-2 text-base tracking-[.08em] h-[56px] ${
+                className={`inline-flex justify-center font-light py-4 px-2 mr-2 text-base tracking-[.08em] h-[56px] ${
                   tab.id === activeTab
-                    ? 'border-b-2 text-shades-black'
-                    : 'text-neutral-700'
+                    ? 'border-b-2 text-[#333333]'
+                    : 'text-[#666666]'
                 }`}
               >
                 {tab.label}
