@@ -68,7 +68,7 @@ const MarketingPage = () => {
 		{
 			id: 2,
 			label: "Carried currencies",
-			content: <CarriedCurrencies />,
+			content: <CarriedCurrencies organization={currentOrganization} />,
 		},
 	];
 
