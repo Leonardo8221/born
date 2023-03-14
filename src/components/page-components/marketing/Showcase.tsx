@@ -144,13 +144,11 @@ const Showcase: FC<OrganizationProps> = ({organization, handleUpdateOrganization
         <Button
           onClick={() => {
             if (handleUpdateOrganizationDetails) {
-              const currency_types = new Set(
+              const currency_types = 
                 queryInputs.currency_types.split(", ")
-              );
               handleUpdateOrganizationDetails({
                 ...queryInputs,
-                //TODO: fix on Set
-                currency_types: undefined,
+                currency_types: currency_types as any,
               });
             }
           }}

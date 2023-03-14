@@ -3,24 +3,26 @@ import DescriptionField from "@/components/molecules/DescriptionField/Descriptio
 import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
 import React, { FC, useEffect, useState } from "react";
 
-const TermsAndConditions: FC<OrganizationProps> = ({organization}) => {
-	const [queryDescription, setQueryDescription] = useState("");
-	const [errorDescription, setErrorDescription] = useState("");
-	const onErrorDescription = (message: string) => {
-		if (message !== errorDescription) setErrorDescription(message);
-	};
+const TermsAndConditions: FC<OrganizationProps> = ({
+  organization,
+  handleUpdateOrganizationDetails,
+}) => {
+  const [queryDescription, setQueryDescription] = useState("");
+  const [errorDescription, setErrorDescription] = useState("");
+  const onErrorDescription = (message: string) => {
+    if (message !== errorDescription) setErrorDescription(message);
+  };
 
   useEffect(() => {
-   if(organization?.terms_and_conditions ){
-    setQueryDescription(organization.terms_and_conditions)
-   }
-  }, [organization])
-  
+    if (organization?.terms_and_conditions) {
+      setQueryDescription(organization.terms_and_conditions);
+    }
+  }, [organization]);
 
-	return (
+  return (
     <>
       <p className="text-shades-black leading-8 text-[18px] mb-2">
-        Let buyer know how you typically transact by providing your ordering{' '}
+        Let buyer know how you typically transact by providing your ordering{" "}
         <br /> terms and conditions.
       </p>
       <DescriptionField
@@ -33,6 +35,13 @@ const TermsAndConditions: FC<OrganizationProps> = ({organization}) => {
         className="mr-auto"
       />
       <Button
+        onClick={() => {
+          if (handleUpdateOrganizationDetails) {
+            handleUpdateOrganizationDetails({
+              terms_and_conditions: queryDescription,
+            });
+          }
+        }}
         disabled={errorDescription.length > 0}
         className="ml-0 w-auto mt-[20px]"
       >
