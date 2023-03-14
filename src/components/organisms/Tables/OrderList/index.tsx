@@ -11,12 +11,16 @@ export interface OrderListTableProps {
   orders: OrderGraphqlDto[];
   orderType: string;
   loading: boolean;
+  handleActions: (action: string, id: number) => void;
+  actionsLoading?: boolean;
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({
   orders,
   orderType,
   loading,
+  handleActions,
+  actionsLoading,
 }) => {
   const columnHelper: any = createColumnHelper();
 
@@ -83,20 +87,22 @@ const OrderListTable: FC<OrderListTableProps> = ({
       ),
       header: () => 'Order date',
     }),
-    columnHelper.accessor('confirm', {
+    columnHelper.accessor((row: any) => row, {
       size: 120,
       id: 'confirm',
-      cell: () => (
+      cell: ({ row }: any) => (
         <>
           {orderType === 'confirmed' ? (
             <div className="flex items-center">
               <Button
+                onClick={() => handleActions('cancel', row.original.id)}
                 variant="outlined"
                 className="h-8 text-[12px] text-[#333333] border-[#999999] mr-2"
               >
                 Cancel
               </Button>
               <Button
+                onClick={() => handleActions('approve', row.original.id)}
                 variant="outlined"
                 className="h-8 text-[12px] text-[#333333] border-[#999999]"
               >
@@ -106,6 +112,7 @@ const OrderListTable: FC<OrderListTableProps> = ({
           ) : (
             <div>
               <Button
+                onClick={() => handleActions('confirm', row.original.id)}
                 variant="outlined"
                 className="h-8 text-[12px] text-[#333333] border-[#999999]"
               >
@@ -115,6 +122,7 @@ const OrderListTable: FC<OrderListTableProps> = ({
           )}
         </>
       ),
+      onclick: () => console.log('click'),
       header: () => '',
     }),
   ];

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { flexRender } from '@tanstack/react-table';
 import { fonts } from '@/config/fonts';
@@ -15,20 +15,32 @@ interface TableBodyProps {
 export const TableBody: FC<TableBodyProps> = ({
   table,
   className = '',
-  loading = false,
+  loading,
 }) => {
   const { getRowModel } = table;
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+    } else setIsLoading(false);
+  }, [loading]);
+
+  if (isLoading) {
+    return (
+      <tr>
+        <td className="text-center align-middle !w-full" colSpan={12}>
+          <div className="py-16">
+            <Loading />
+          </div>
+        </td>
+      </tr>
+    );
+  }
 
   return (
     <tbody>
-      {loading ? (
-        <div className="absolute top-[480px] right-[720px]">
-          <div className="mt-[56px]">
-            <Loading message="Loading organizations" />
-          </div>
-        </div>
-      ) : (
-        getRowModel()?.rows &&
+      {getRowModel()?.rows &&
         getRowModel().rows.map((row: any) => (
           <tr key={row.id}>
             {row.getVisibleCells().map((cell: any) => (
@@ -47,8 +59,7 @@ export const TableBody: FC<TableBodyProps> = ({
               </td>
             ))}
           </tr>
-        ))
-      )}
+        ))}
     </tbody>
   );
 };

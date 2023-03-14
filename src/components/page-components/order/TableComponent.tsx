@@ -19,11 +19,13 @@ const TableComponent: React.FC<Props> = ({ data, columns }) => {
           return (
             <tr
               {...row.getRowProps()}
+              key={row.id}
               className="table-row text-#66666 w-[100px] border p-3"
             >
-              {row.cells.map((cell) => (
+              {row.cells.map((cell, index) => (
                 <td
                   {...cell.getCellProps()}
+                  key={index}
                   className={'table-cell w-[144px] text-#66666 border p-3'}
                 >
                   {cell.render('Cell')}

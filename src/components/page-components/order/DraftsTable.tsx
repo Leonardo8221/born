@@ -9,9 +9,17 @@ export interface DraftTableProps {
   content: OrderGraphqlDto[];
   type: string;
   loading: boolean;
+  handleActions: (action: string, id: number) => void;
+  actionsLoading?: boolean;
 }
 
-export const DraftTable: FC<DraftTableProps> = ({ content, type, loading }) => {
+export const DraftTable: FC<DraftTableProps> = ({
+  content,
+  type,
+  loading,
+  handleActions,
+  actionsLoading,
+}) => {
   return (
     <div>
       <div id="header" className="flex justify-between">
@@ -63,7 +71,13 @@ export const DraftTable: FC<DraftTableProps> = ({ content, type, loading }) => {
           </Button>
         </div>
       </div>
-      <OrderListTable loading={loading} orderType={type} orders={content} />
+      <OrderListTable
+        handleActions={handleActions}
+        actionsLoading={actionsLoading}
+        loading={loading}
+        orderType={type}
+        orders={content}
+      />
     </div>
   );
 };
