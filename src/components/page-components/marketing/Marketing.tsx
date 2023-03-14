@@ -6,6 +6,8 @@ import React, { FC, useState } from 'react';
 
 const Marketing: FC<OrganizationProps> = ({
   organization,
+  handleUploadOrganizationAttachment,
+  handleUploadCollectionAttachment
 }) => {
   const [activeCollectionId, setActiveCollectionId] = useState<null | number>(
     null
@@ -28,6 +30,12 @@ const Marketing: FC<OrganizationProps> = ({
       </p>
       <h2 className="mb-6 text-[24px] leading-10 font-light">Brand Profile</h2>
       <FileUpload
+        idInput="uploadOrganizationAttachment"
+        handleUpload={(file) => {
+          if (handleUploadOrganizationAttachment) {
+            handleUploadOrganizationAttachment(file);
+          }
+        }}
         acceptedFileTypes={["application/pdf"]}
         labelText="Lookbook | PDF only (25 MB max)"
         className="mb-8"
@@ -58,6 +66,12 @@ const Marketing: FC<OrganizationProps> = ({
           })}
       </div>
       <FileUpload
+        idInput="uploadCollectionAttachment"
+        handleUpload={(file) => {
+          if (handleUploadCollectionAttachment && activeCollectionId) {
+            handleUploadCollectionAttachment(activeCollectionId, file);
+          }
+        }}
         disabled={!activeCollectionId}
         acceptedFileTypes={["application/pdf"]}
         labelText="Lookbook | PDF only (25 MB max)"

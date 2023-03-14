@@ -10,7 +10,7 @@ import ProductIcon from "./ProductIcon";
 export interface FileUploadProps {
   acceptedFileTypes?: string[];
   variant?: keyof typeof clsVariants;
-  labelText?: string
+  labelText?: string;
   handleUpload?: (file: any) => void;
   handleAcceptedFiles?: (acceptedFiles: any) => void;
   hasFilePreview?: boolean;
@@ -18,6 +18,7 @@ export interface FileUploadProps {
   icon?: ReactNode;
   className?: string;
   disabled?: boolean;
+  idInput?: string;
 }
 
 export const FileUpload: FC<FileUploadProps> = ({
@@ -36,6 +37,7 @@ export const FileUpload: FC<FileUploadProps> = ({
   handleUpload = () => { },
   className,
   disabled,
+  idInput,
 }) => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export const FileUpload: FC<FileUploadProps> = ({
             handleUpload(file);
           } else {
             // @ts-ignore
-            document?.querySelector?.('input[type="file"]')?.click?.();
+            document?.querySelector?.(`input${idInput ? '#' + idInput : ''}[type="file"]`)?.click?.();
           }
         }}
       >
@@ -93,7 +95,7 @@ export const FileUpload: FC<FileUploadProps> = ({
 
       <div className={clsVariants[variant].clsWrapper}>
         <div {...getRootProps()} className={clsVariants[variant].clsDropzone}>
-          <input {...getInputProps()} />
+          <input id={idInput} {...getInputProps()} />
 
           {!!hasFilePreview && previewUrl && (
             <>

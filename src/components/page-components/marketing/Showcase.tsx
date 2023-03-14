@@ -12,7 +12,6 @@ const Showcase: FC<OrganizationProps> = ({organization, handleUpdateOrganization
     year_of_inception: organization?.year_of_inception || "",
     description: organization?.description || "",
     address: organization?.address || "",
-    currency_types: organization?.currency_types?.join(", ") || "",
     website_link: organization?.website_link || "",
     instagram_link: organization?.instagram_link || "",
   };
@@ -31,7 +30,6 @@ const Showcase: FC<OrganizationProps> = ({organization, handleUpdateOrganization
 		if (message !== errorDescription) setErrorDescription(message);
 	};
 	const isValidAdress = queryInputs.address.length > 0;
-	const isValidCurrencies = queryInputs.currency_types.length > 0;
 	const isValidInstagramLink = queryInputs.instagram_link.length > 0;
 	const isValidWebsiteLink = queryInputs.website_link.length > 0;
 
@@ -104,13 +102,6 @@ const Showcase: FC<OrganizationProps> = ({organization, handleUpdateOrganization
               isValid={isValidAdress}
               className="w-full"
             />
-            <Input
-              label="Carried currencies"
-              value={queryInputs.currency_types}
-              onChange={changeQueryInputs("currency_types")}
-              isValid={isValidCurrencies}
-              className="w-full"
-            />
           </div>
           <div className="w-[352px]">
             <FileUpload
@@ -144,12 +135,7 @@ const Showcase: FC<OrganizationProps> = ({organization, handleUpdateOrganization
         <Button
           onClick={() => {
             if (handleUpdateOrganizationDetails) {
-              const currency_types = 
-                queryInputs.currency_types.split(", ")
-              handleUpdateOrganizationDetails({
-                ...queryInputs,
-                currency_types: currency_types as any,
-              });
+              handleUpdateOrganizationDetails(queryInputs);
             }
           }}
           disabled={!isValidCompanyName || errorDescription.length > 0}
