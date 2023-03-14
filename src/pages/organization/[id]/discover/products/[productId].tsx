@@ -9,16 +9,58 @@ import { Button } from "@/components/molecules/Button";
 import { Icon } from "@/components/molecules/Icon";
 import Link from "next/link";
 import Footer from "@/components/layouts/Footer";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import {
+  GET_PRODUCTS_BY_COLLECTION_ID,
+  GET_PRODUCT_BY_ID,
+} from "@/queries/products";
+import ErrorMessage from "@/components/page-components/Error/ErrorMessage";
+import Loading from "@/components/page-components/Loading";
 
 const ProductPage = () => {
+  const router = useRouter();
+  const productIdQuery = router?.query?.productId || "";
+
+  const {
+    data: product,
+    error: productError,
+    refetch: productRefectch,
+  } = useQuery(GET_PRODUCT_BY_ID, {
+    variables: {
+      productId: Number(productIdQuery),
+    },
+  });
+
+  const currentProduct = product?.productByProductId;
+
+  const collectionId = product?.productByProductId?.collections?.[0]?.id || "";
+
+  const { data: collectionProducts, loading: collectionProductsLoading } =
+    useQuery(GET_PRODUCTS_BY_COLLECTION_ID, {
+      variables: { collectionId: Number(collectionId), start: 0, rows: 3 },
+    });
+
+  const content = collectionProducts?.productsBySearchAndCollectionId?.content;
+
+  if (productError) {
+    return (
+      <ErrorMessage
+        errorMessage={productError?.message}
+        refetch={productRefectch}
+      />
+    );
+  }
+
   return (
     <>
       <ProductHeader
-        title="Medium pave star hoop hearing"
+        productRefectch={productRefectch}
+        currentProduct={currentProduct}
+        title={currentProduct?.style_name}
         onEdit={() => {}}
-        onAddToCollection={() => {}}
         onDraftOrder={() => {}}
-        onBack={() => {}}
+        hrefBack={`/organization/${router.query.id}/discover?tab=products`}
         containerClassName="mt-[42px] mb-[64px]"
       />
       <div className="max-w-[1200px] mx-auto">
@@ -43,117 +85,88 @@ const ProductPage = () => {
               blurDataURL: Product2.src,
             },
           ]}
-          priceList={[
-            {
-              currency: "USD",
-              list: [
-                {
-                  label: "Landed",
-                  price: "3,345.00",
-                },
-                {
-                  label: "Exworks",
-                  price: "2,876.00",
-                },
-                {
-                  label: "MSRP",
-                  price: "5,456.00",
-                },
-              ],
-            },
-            {
-              currency: "GBP",
-              list: [
-                {
-                  label: "Landed",
-                  price: "3,345.00",
-                },
-                {
-                  label: "Exworks",
-                  price: "2,876.00",
-                },
-                {
-                  label: "MSRP",
-                  price: "5,456.00",
-                },
-              ],
-            },
-          ]}
-          description="The cimento vases exude the natural look of cement. Their refined shape presents a different perspective on a material known for its stiffness and inflexibility. Available in two sizes, narrow and wide."
-          colors={["#77502A"]}
+          associated_prices={currentProduct?.associated_prices}
+          description={currentProduct?.description}
+          colors={currentProduct?.colour_families}
           tags={[
             {
               title: "Season",
-              list: ["SS23"],
+              list: [currentProduct?.season],
             },
             {
               title: "Collections",
-              list: ["Spring Summer 23", "Core"],
+              list:
+                currentProduct?.collections?.map(
+                  (collection: any) => collection.name
+                ) || [],
+            },
+            {
+              title: "Keywords",
+              list: currentProduct?.keywords || [],
             },
           ]}
           specifications={[
             {
               label: "Made in",
-              value: "Italy",
+              value: currentProduct?.country_of_origin,
             },
             {
               label: "Style",
-              value: "ERO21103",
+              value: currentProduct?.style_number,
             },
             {
               label: "Composition",
-              value: "Cotton",
+              value: currentProduct?.compositions?.join(", "),
             },
             {
               label: "Material",
-              value: "80% cotton, 20% polyester",
-            },
-            {
-              label: "Composition",
-              value: "100% Acetate",
+              value: currentProduct?.materials?.join(", "),
             },
             {
               label: "Measurements",
-              value: "26 - 32 inch",
+              value: currentProduct?.measurements?.join(", "),
             },
             {
               label: "Colors",
-              value:
-                "black, white, Grey, red, orange, yellow, blue, Green, Purple, pink",
+              value: currentProduct?.colour_name,
             },
             {
               label: "Color Code",
-              value:
-                "BLCK, WHTE, GREY, REDD, ORNG, YLLW, BLUE, GREN, PRPL, PINK",
+              value: currentProduct?.colour_code,
             },
             {
               label: "Color Family",
-              value:
-                "Black, Blue, Green, Grey, Orange, Pink, Purple, Red, Yellow, White",
+              value: currentProduct?.colour_families?.join(", "),
             },
             {
               label: "Delivery start",
-              value: "03/09/23",
+              value: currentProduct?.delivery_window_start_date,
             },
             {
               label: "Delivery end",
-              value: "03/12/23",
+              value: currentProduct?.delivery_window_start_date,
             },
           ]}
         />
         <div className="flex justify-between mt-[70px] mb-[40px]">
           <h2 className="text-[32px]">From this collection</h2>
-          <Link href="/" className="flex align-center">
+          <Link
+            href={`/organization/1/discover/collections/${collectionId}`}
+            className="flex align-center"
+          >
             View More <Icon className="ml-[6px]" name="icon-arrow-right" />
           </Link>
         </div>
-        <ProductList
-          gridType={"grid"}
-          products={products.slice(0, 3)}
-          selectable={false}
-          onSelect={() => {}}
-          selectedProducts={[]}
-        />
+        {collectionProductsLoading && <Loading message="Loading collecitons" />}
+        {!collectionProductsLoading && (
+          <ProductList
+            gridType={"grid"}
+            products={content || []}
+            selectable={false}
+            onSelect={() => {}}
+            selectedProducts={[]}
+          />
+        )}
       </div>
       <Footer />
     </>
