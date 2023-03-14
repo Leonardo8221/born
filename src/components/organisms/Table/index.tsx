@@ -8,12 +8,14 @@ export interface TableProps {
   tableData: any[];
   columns: any[];
   className?: string;
+  loading?: boolean;
 }
 
 export const Table: FC<TableProps> = ({
   tableData,
   columns,
   className = '',
+  loading = false,
 }) => {
   const [data, setData] = useState(tableData);
   const table = useReactTable({
@@ -42,7 +44,7 @@ export const Table: FC<TableProps> = ({
         style={{ gridTemplateColumns: colWidthStyle.join(' ') }}
       >
         <TableHead table={table} />
-        <TableBody table={table} />
+        <TableBody loading={loading} table={table} />
       </table>
       <div className="h-4" />
     </div>

@@ -10,9 +10,14 @@ import { formatDate } from '@/utils';
 export interface OrderListTableProps {
   orders: OrderGraphqlDto[];
   orderType: string;
+  loading: boolean;
 }
 
-const OrderListTable: FC<OrderListTableProps> = ({ orders, orderType }) => {
+const OrderListTable: FC<OrderListTableProps> = ({
+  orders,
+  orderType,
+  loading,
+}) => {
   const columnHelper: any = createColumnHelper();
 
   const columns = [
@@ -118,6 +123,7 @@ const OrderListTable: FC<OrderListTableProps> = ({ orders, orderType }) => {
     <Table
       tableData={orders}
       columns={columns}
+      loading={loading}
       className="w-full max-w-[1120px] [&>tbody>tr>td]:pt-4"
     />
   );
