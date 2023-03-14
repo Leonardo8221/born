@@ -5,14 +5,21 @@ import { useQuery } from '@apollo/client';
 import { GET_ORGANIZATION_BY_ID } from "@/queries/organizations";
 import { useRouter } from "next/router";
 import { OrganizationGraphqlDto } from "@/generated/types";
+import { apiConfig } from "@/utils/apiConfig";
+import { CollectionResourceApi, OrganizationResourceApi, OrganizationRestDTO } from "client/command";
+import { useState } from "react";
+import Toast from "@/components/page-components/Toast";
 
 export interface OrganizationProps {
-	organization: OrganizationGraphqlDto | null
+  organization: OrganizationGraphqlDto | null;
+  handleUpdateOrganizationDetails?: (
+    organizationRestDTO: OrganizationRestDTO
+  ) => Promise<void>;
 }
 
 const MarketingPage = () => {
 	const router = useRouter();
-  const { data, loading } = useQuery(GET_ORGANIZATION_BY_ID, {
+  const { data, loading, refetch } = useQuery(GET_ORGANIZATION_BY_ID, {
     variables: { id: Number(router.query.id) },
   });
 
@@ -33,10 +40,14 @@ const MarketingPage = () => {
   ];
 
 	return (
-    <WrapperManage currentTab={"profile"} organization={currentOrganization}>
-      <Tabs active={2} tabs={tabs} />
-      <Marketing organization={currentOrganization} />
-    </WrapperManage>
+    <>
+      <WrapperManage currentTab={"profile"} organization={currentOrganization}>
+        <Tabs active={2} tabs={tabs} />
+        <Marketing
+          organization={currentOrganization}
+        />
+      </WrapperManage>
+    </>
   );
 };
 

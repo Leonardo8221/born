@@ -1,10 +1,12 @@
 import { Pill } from '@/components/atoms/Pill';
-import { Button } from "@/components/molecules/Button";
 import { FileUpload } from '@/components/molecules/FileUpload';
 import { OrganizationProps } from '@/pages/organization/[id]/manage/marketing';
+import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 
-const Marketing: FC<OrganizationProps> = ({organization}) => {
+const Marketing: FC<OrganizationProps> = ({
+  organization,
+}) => {
   const [activeCollectionId, setActiveCollectionId] = useState<null | number>(
     null
   );
@@ -16,17 +18,17 @@ const Marketing: FC<OrganizationProps> = ({organization}) => {
     }
   };
 
-  const collections = organization?.collections
+  const collections = organization?.collections;
 
   return (
-    <div className='max-w-[800px]'>
+    <div className="max-w-[800px]">
       <p className="text-shades-black leading-8 text-[18px] mb-4">
         Add your brand&#8217;s linesheet and lookbook to your profile, or add
         them to a <br></br> specific collection.
       </p>
       <h2 className="mb-6 text-[24px] leading-10 font-light">Brand Profile</h2>
       <FileUpload
-        acceptedFileTypes={['application/pdf']}
+        acceptedFileTypes={["application/pdf"]}
         labelText="Lookbook | PDF only (25 MB max)"
         className="mb-8"
       />
@@ -35,18 +37,19 @@ const Marketing: FC<OrganizationProps> = ({organization}) => {
         Choose a collection, and upload the desired content.
       </p>
       <div className="mb-6">
-        {collections && collections?.length > 0 &&
+        {collections &&
+          collections?.length > 0 &&
           collections.map((collection, index) => {
-            if(!collection?.name || !collection?.id ){
+            if (!collection?.name || !collection?.id) {
               return null;
             }
             return (
               <Pill
-                label={collection?.name || ''}
+                label={collection?.name || ""}
                 key={`${index} collection`}
                 isSelectable={false}
                 type={
-                  activeCollectionId === collection?.id ? 'active' : 'inactive'
+                  activeCollectionId === collection?.id ? "active" : "inactive"
                 }
                 onClick={changeActiveCollectionId(collection.id)}
                 className="mr-4 mb-4"
@@ -56,7 +59,7 @@ const Marketing: FC<OrganizationProps> = ({organization}) => {
       </div>
       <FileUpload
         disabled={!activeCollectionId}
-        acceptedFileTypes={['application/pdf']}
+        acceptedFileTypes={["application/pdf"]}
         labelText="Lookbook | PDF only (25 MB max)"
         className="mb-8"
       />
