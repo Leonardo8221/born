@@ -27,7 +27,7 @@ const ProductList: FC<ProductListProps> = ({
 }) => {
   if (!products?.length) {
     return (
-      <div className="mt-20 mb-8 text-center">
+      <div className="min-h-[300px] mt-20 mb-8 text-center">
         <Icon
           name="icon-info-circle"
           className="mx-auto text-shades-black"
