@@ -15,5 +15,9 @@ export const ORGANIZATION_FRAGMENT = gql`
     year_of_inception
     logo_guid
     banner_guid
+    collections{
+      name
+      id
+    }
   }
 `;

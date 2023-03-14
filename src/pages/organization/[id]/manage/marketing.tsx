@@ -1,89 +1,128 @@
 import Tabs from "@/components/molecules/Tab/Tabs";
-import CarriedCurrencies from "@/components/page-components/marketing/CarriedCurrencies";
 import Marketing from "@/components/page-components/marketing/Marketing";
-import Showcase from "@/components/page-components/marketing/Showcase";
-import TermsAndConditions from "@/components/page-components/marketing/TermsAndConditions";
-import WrapperMarketing from "@/components/page-components/marketing/WrapperMarketing";
-import { useEffect, useState } from "react";
+import WrapperManage from "@/components/page-components/marketing/WrapperManage";
 import { useQuery } from '@apollo/client';
 import { GET_ORGANIZATION_BY_ID } from "@/queries/organizations";
 import { useRouter } from "next/router";
 import { OrganizationGraphqlDto } from "@/generated/types";
+import { apiConfig } from "@/utils/apiConfig";
+import { AttachmentResourceApi, CollectionResourceApi, OrganizationResourceApi, OrganizationRestDTO } from "client/command";
+import { useState } from "react";
+import Toast from "@/components/page-components/Toast";
 
 export interface OrganizationProps {
-	organization: OrganizationGraphqlDto | null
+  organization: OrganizationGraphqlDto | null;
+  handleUpdateOrganizationDetails?: (
+    organizationRestDTO: OrganizationRestDTO
+  ) => Promise<void>;
+  handleUploadOrganizationAttachment?: (file: File) => Promise<void>;
+  handleUploadCollectionAttachment?: (
+    collectionId: number,
+    file: File
+  ) => Promise<void>;
 }
 
 const MarketingPage = () => {
-	const [currentOrganization, setCurrentOrganization] =
-    useState<OrganizationGraphqlDto | null>(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleErrorMesssage = (message: string) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 3000);
+  };
+
+  const handleSuccessMesssage = (message: string) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+  };
 	const router = useRouter();
-  const { data, loading } = useQuery(GET_ORGANIZATION_BY_ID, {
+  const id = router?.query?.id || "";
+  const organizationId: number = +id;
+  const { data, loading, refetch } = useQuery(GET_ORGANIZATION_BY_ID, {
     variables: { id: Number(router.query.id) },
   });
 
-	useEffect(() => {
-    const organization = data?.userOrganizationByOrganizationId?.organization;
-    if (organization) {
-     setCurrentOrganization(organization);
+	const currentOrganization = data?.userOrganizationByOrganizationId?.organization;
+  
+  const handleUploadOrganizationAttachment = async (
+    file: File
+  ) => {
+    try {
+      const config: any = await apiConfig();
+      const api = new AttachmentResourceApi(config);
+      await api.apiAttachmentUploadOrganizationAttachmentPost(
+        "LOOKBOOK",
+        organizationId,
+        file,
+        file.name
+      );
+      refetch();
+      handleSuccessMesssage(`Saved data sucessfully!!`);
+    } catch (error: any) {
+      handleErrorMesssage(
+        error?.message || "Something went wrong, please try again!"
+      );
+      console.error(error);
     }
-  }, [data, loading]);
+  };
 
-	// if (!data && !loading) {
-  //   //redirect or show message
-  // }
+  const handleUploadCollectionAttachment = async (
+    collectionId: number,
+    file: File
+  ) => {
+    try {
+      const config: any = await apiConfig();
+      const api = new AttachmentResourceApi(config);
+      await api.apiAttachmentUploadCollectionAttachmentPost(
+        collectionId,
+        "LOOKBOOK",
+        file,
+        file.name
+      );
+      refetch();
+      handleSuccessMesssage(`Saved data sucessfully!!`);
+    } catch (error: any) {
+      handleErrorMesssage(
+        error?.message || "Something went wrong, please try again!"
+      );
+      console.error(error);
+    }
+  };
 
-	const [activeTab, setActiveTab] = useState<string | number>("profile");
-
-	const handleTabChange = (id: string | number) => {
-		router.push(`/organization/${router.query.id}/manage/marketing?tab=${id}`);
-		setActiveTab(id);
-	};
-	
-	useEffect(() => {
-		if(router.isReady){
-			const activeTab = (router.query?.tab || "profile") as string | number;
-			handleTabChange(activeTab);
-		}
-	}, [router.isReady]);
-
-	const profileTabs = [
+	const tabs = [
     {
       id: 1,
-      label: 'Showcase',
-      content: <Showcase organization={currentOrganization} />,
+      label: "Showcase",
+      content: <></>,
+      link: `/organization/${router.query.id}/manage/showcase`,
     },
     {
       id: 2,
-      label: 'Marketing',
-      content: <Marketing />,
+      label: "Marketing",
+      content: <></>,
     },
   ];
-	const orderingTabs = [
-		{
-			id: 1,
-			label: "Terms and conditions",
-			content: <TermsAndConditions organization={currentOrganization} />,
-		},
-		{
-			id: 2,
-			label: "Carried currencies",
-			content: <CarriedCurrencies />,
-		},
-	];
 
 	return (
-		<WrapperMarketing
-			currentTab={activeTab}
-			onTabChange={handleTabChange}
-			hrefBack="/"
-			hrefClose="/"
-			organization={currentOrganization}
-		>
-			{activeTab === 'profile' && <Tabs tabs={profileTabs} />}
-			{activeTab === 'ordering' && <Tabs tabs={orderingTabs} />}
-		</WrapperMarketing>
-	);
+    <>
+      <WrapperManage currentTab={"profile"} organization={currentOrganization}>
+        <Tabs active={2} tabs={tabs} />
+        <Marketing
+          handleUploadOrganizationAttachment={
+            handleUploadOrganizationAttachment
+          }
+          handleUploadCollectionAttachment={handleUploadCollectionAttachment}
+          organization={currentOrganization}
+        />
+      </WrapperManage>
+      <Toast successMessage={successMessage} errorMessage={errorMessage} />
+    </>
+  );
 };
 
 export default MarketingPage;

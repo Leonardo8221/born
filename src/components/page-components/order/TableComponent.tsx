@@ -14,7 +14,7 @@ const TableComponent: React.FC<Props> = ({ data, columns }) => {
   return (
     <table {...getTableProps()} className="table w-full text-center">
       <tbody {...getTableBodyProps()} className="table-body ">
-        {rows.map((row) => {
+        {rows.map((row: any, index: number) => {
           prepareRow(row);
           return (
             <tr
@@ -22,10 +22,10 @@ const TableComponent: React.FC<Props> = ({ data, columns }) => {
               key={row.id}
               className="table-row text-#66666 w-[100px] border p-3"
             >
-              {row.cells.map((cell, index) => (
+              {row.cells.map((cell: any, i: number) => (
                 <td
+                  key={`${i} ${index} td table`}
                   {...cell.getCellProps()}
-                  key={index}
                   className={'table-cell w-[144px] text-#66666 border p-3'}
                 >
                   {cell.render('Cell')}

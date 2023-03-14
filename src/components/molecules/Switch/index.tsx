@@ -1,18 +1,18 @@
-import { FC, useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { fonts } from '@/config/fonts';
+import { FC, useEffect, useState } from "react";
+import clsx from "clsx";
+import { fonts } from "@/config/fonts";
 import {
   defaultSwitchButtonClasses,
   defaultSwitchClasses,
   toggledButtonClasses,
   toggleSwitchClasses,
-} from './utils';
+} from "./utils";
 
 export interface SwitchProps {
   label?: string;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
-  position?: 'start' | 'end';
+  position?: "start" | "end";
   classNameLabel?: string;
 }
 
@@ -20,7 +20,7 @@ const Switch: FC<SwitchProps> = ({
   label,
   checked,
   onChange,
-  position = 'end',
+  position = "end",
   classNameLabel,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -37,14 +37,14 @@ const Switch: FC<SwitchProps> = ({
   return (
     <div
       className={clsx(
-        'inline-flex gap-x-3 items-center',
-        position === 'start' && 'flex-row-reverse'
+        "inline-flex gap-x-3 items-center",
+        position === "start" && "flex-row-reverse"
       )}
     >
       {label && (
         <label
           className={clsx(
-            'inline-block min-w-[275px] mt-px text-shades-black',
+            "inline-block mt-px text-shades-black",
             fonts.text.lg,
             classNameLabel
           )}
@@ -61,7 +61,7 @@ const Switch: FC<SwitchProps> = ({
             defaultSwitchButtonClasses,
             isChecked && toggledButtonClasses
           )}
-          style={{ boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}
+          style={{ boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)" }}
         />
       </div>
     </div>
