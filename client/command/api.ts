@@ -45,6 +45,31 @@ export interface CollectionRestDTO {
 /**
  * 
  * @export
+ * @interface CollectionWithProductsRestDTO
+ */
+export interface CollectionWithProductsRestDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionWithProductsRestDTO
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionWithProductsRestDTO
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CollectionWithProductsRestDTO
+     */
+    'product_ids'?: Array<number>;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -75,13 +100,38 @@ export interface OrderDetailRestDTO {
      * @type {number}
      * @memberof OrderDetailRestDTO
      */
-    'quantity'?: number;
+    'product_id': number;
+    /**
+     * 
+     * @type {Array<OrderDetailSizeRestDTO>}
+     * @memberof OrderDetailRestDTO
+     */
+    'order_detail_sizes'?: Array<OrderDetailSizeRestDTO>;
+}
+/**
+ * 
+ * @export
+ * @interface OrderDetailSizeRestDTO
+ */
+export interface OrderDetailSizeRestDTO {
     /**
      * 
      * @type {number}
-     * @memberof OrderDetailRestDTO
+     * @memberof OrderDetailSizeRestDTO
      */
-    'product_id': number;
+    'order_detail_size_id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderDetailSizeRestDTO
+     */
+    'size'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderDetailSizeRestDTO
+     */
+    'quantity'?: number;
 }
 /**
  * 
@@ -173,12 +223,103 @@ export interface OrderRestDTO {
      * @memberof OrderRestDTO
      */
     'size'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface OrderWithProductsRestDTO
+ */
+export interface OrderWithProductsRestDTO {
     /**
      * 
-     * @type {Array<OrderDetailRestDTO>}
-     * @memberof OrderRestDTO
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
      */
-    'order_details': Array<OrderDetailRestDTO>;
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'note'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'purchase_order'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'retailer'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'season'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'buyer_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'email_address'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'billing_address'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'delivery_address'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'payment_terms'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'discount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'surcharge'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'pricing_condition'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'size'?: string;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof OrderWithProductsRestDTO
+     */
+    'productIds'?: Array<number>;
 }
 /**
  * 
@@ -1011,11 +1152,11 @@ export const CollectionResourceApiAxiosParamCreator = function (configuration?: 
         /**
          * 
          * @param {number} organizationId 
-         * @param {CollectionRestDTO} [collectionRestDTO] 
+         * @param {CollectionWithProductsRestDTO} [collectionWithProductsRestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiCollectionCreateNewCollectionPost: async (organizationId: number, collectionRestDTO?: CollectionRestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiCollectionCreateNewCollectionPost: async (organizationId: number, collectionWithProductsRestDTO?: CollectionWithProductsRestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationId' is not null or undefined
             assertParamExists('apiCollectionCreateNewCollectionPost', 'organizationId', organizationId)
             const localVarPath = `/api/collection/create-new-collection`;
@@ -1045,7 +1186,7 @@ export const CollectionResourceApiAxiosParamCreator = function (configuration?: 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(collectionRestDTO, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(collectionWithProductsRestDTO, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1164,12 +1305,12 @@ export const CollectionResourceApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {number} organizationId 
-         * @param {CollectionRestDTO} [collectionRestDTO] 
+         * @param {CollectionWithProductsRestDTO} [collectionWithProductsRestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiCollectionCreateNewCollectionPost(organizationId: number, collectionRestDTO?: CollectionRestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiCollectionCreateNewCollectionPost(organizationId, collectionRestDTO, options);
+        async apiCollectionCreateNewCollectionPost(organizationId: number, collectionWithProductsRestDTO?: CollectionWithProductsRestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiCollectionCreateNewCollectionPost(organizationId, collectionWithProductsRestDTO, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1217,12 +1358,12 @@ export const CollectionResourceApiFactory = function (configuration?: Configurat
         /**
          * 
          * @param {number} organizationId 
-         * @param {CollectionRestDTO} [collectionRestDTO] 
+         * @param {CollectionWithProductsRestDTO} [collectionWithProductsRestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiCollectionCreateNewCollectionPost(organizationId: number, collectionRestDTO?: CollectionRestDTO, options?: any): AxiosPromise<void> {
-            return localVarFp.apiCollectionCreateNewCollectionPost(organizationId, collectionRestDTO, options).then((request) => request(axios, basePath));
+        apiCollectionCreateNewCollectionPost(organizationId: number, collectionWithProductsRestDTO?: CollectionWithProductsRestDTO, options?: any): AxiosPromise<void> {
+            return localVarFp.apiCollectionCreateNewCollectionPost(organizationId, collectionWithProductsRestDTO, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1269,13 +1410,13 @@ export class CollectionResourceApi extends BaseAPI {
     /**
      * 
      * @param {number} organizationId 
-     * @param {CollectionRestDTO} [collectionRestDTO] 
+     * @param {CollectionWithProductsRestDTO} [collectionWithProductsRestDTO] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CollectionResourceApi
      */
-    public apiCollectionCreateNewCollectionPost(organizationId: number, collectionRestDTO?: CollectionRestDTO, options?: AxiosRequestConfig) {
-        return CollectionResourceApiFp(this.configuration).apiCollectionCreateNewCollectionPost(organizationId, collectionRestDTO, options).then((request) => request(this.axios, this.basePath));
+    public apiCollectionCreateNewCollectionPost(organizationId: number, collectionWithProductsRestDTO?: CollectionWithProductsRestDTO, options?: AxiosRequestConfig) {
+        return CollectionResourceApiFp(this.configuration).apiCollectionCreateNewCollectionPost(organizationId, collectionWithProductsRestDTO, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1503,6 +1644,131 @@ export class FileIngestionResourceApi extends BaseAPI {
 
 
 /**
+ * OrderDetailResourceApi - axios parameter creator
+ * @export
+ */
+export const OrderDetailResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} orderDetailId 
+         * @param {number} orderId 
+         * @param {OrderDetailRestDTO} [orderDetailRestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderUpdateDraftOrderDetailPut: async (orderDetailId: number, orderId: number, orderDetailRestDTO?: OrderDetailRestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderDetailId' is not null or undefined
+            assertParamExists('apiOrderUpdateDraftOrderDetailPut', 'orderDetailId', orderDetailId)
+            // verify required parameter 'orderId' is not null or undefined
+            assertParamExists('apiOrderUpdateDraftOrderDetailPut', 'orderId', orderId)
+            const localVarPath = `/api/order/update-draft-order-detail`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (orderDetailId !== undefined) {
+                localVarQueryParameter['order_detail_id'] = orderDetailId;
+            }
+
+            if (orderId !== undefined) {
+                localVarQueryParameter['order_id'] = orderId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(orderDetailRestDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * OrderDetailResourceApi - functional programming interface
+ * @export
+ */
+export const OrderDetailResourceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OrderDetailResourceApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} orderDetailId 
+         * @param {number} orderId 
+         * @param {OrderDetailRestDTO} [orderDetailRestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiOrderUpdateDraftOrderDetailPut(orderDetailId: number, orderId: number, orderDetailRestDTO?: OrderDetailRestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, orderDetailRestDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * OrderDetailResourceApi - factory interface
+ * @export
+ */
+export const OrderDetailResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OrderDetailResourceApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} orderDetailId 
+         * @param {number} orderId 
+         * @param {OrderDetailRestDTO} [orderDetailRestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderUpdateDraftOrderDetailPut(orderDetailId: number, orderId: number, orderDetailRestDTO?: OrderDetailRestDTO, options?: any): AxiosPromise<void> {
+            return localVarFp.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, orderDetailRestDTO, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * OrderDetailResourceApi - object-oriented interface
+ * @export
+ * @class OrderDetailResourceApi
+ * @extends {BaseAPI}
+ */
+export class OrderDetailResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} orderDetailId 
+     * @param {number} orderId 
+     * @param {OrderDetailRestDTO} [orderDetailRestDTO] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrderDetailResourceApi
+     */
+    public apiOrderUpdateDraftOrderDetailPut(orderDetailId: number, orderId: number, orderDetailRestDTO?: OrderDetailRestDTO, options?: AxiosRequestConfig) {
+        return OrderDetailResourceApiFp(this.configuration).apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, orderDetailRestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
  * OrderReportResourceApi - axios parameter creator
  * @export
  */
@@ -1689,6 +1955,50 @@ export const OrderResourceApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @param {number} orderId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderAddProductsToDraftOrderPut: async (orderId: number, requestBody?: Array<number>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderId' is not null or undefined
+            assertParamExists('apiOrderAddProductsToDraftOrderPut', 'orderId', orderId)
+            const localVarPath = `/api/order/add-products-to-draft-order`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (orderId !== undefined) {
+                localVarQueryParameter['order_id'] = orderId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} orderId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1809,11 +2119,11 @@ export const OrderResourceApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @param {number} organizationId 
-         * @param {OrderRestDTO} [orderRestDTO] 
+         * @param {OrderWithProductsRestDTO} [orderWithProductsRestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiOrderCreateNewDraftOrderPost: async (organizationId: number, orderRestDTO?: OrderRestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiOrderCreateNewDraftOrderPost: async (organizationId: number, orderWithProductsRestDTO?: OrderWithProductsRestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationId' is not null or undefined
             assertParamExists('apiOrderCreateNewDraftOrderPost', 'organizationId', organizationId)
             const localVarPath = `/api/order/create-new-draft-order`;
@@ -1843,7 +2153,51 @@ export const OrderResourceApiAxiosParamCreator = function (configuration?: Confi
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orderRestDTO, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(orderWithProductsRestDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} orderId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderRemoveProductsFromDraftOrderPut: async (orderId: number, requestBody?: Array<number>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderId' is not null or undefined
+            assertParamExists('apiOrderRemoveProductsFromDraftOrderPut', 'orderId', orderId)
+            const localVarPath = `/api/order/remove-products-from-draft-order`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (orderId !== undefined) {
+                localVarQueryParameter['order_id'] = orderId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1907,6 +2261,17 @@ export const OrderResourceApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {number} orderId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiOrderAddProductsToDraftOrderPut(orderId: number, requestBody?: Array<number>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderAddProductsToDraftOrderPut(orderId, requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} orderId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -1937,12 +2302,23 @@ export const OrderResourceApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {number} organizationId 
-         * @param {OrderRestDTO} [orderRestDTO] 
+         * @param {OrderWithProductsRestDTO} [orderWithProductsRestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiOrderCreateNewDraftOrderPost(organizationId: number, orderRestDTO?: OrderRestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderCreateNewDraftOrderPost(organizationId, orderRestDTO, options);
+        async apiOrderCreateNewDraftOrderPost(organizationId: number, orderWithProductsRestDTO?: OrderWithProductsRestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderCreateNewDraftOrderPost(organizationId, orderWithProductsRestDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} orderId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiOrderRemoveProductsFromDraftOrderPut(orderId: number, requestBody?: Array<number>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderRemoveProductsFromDraftOrderPut(orderId, requestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1966,6 +2342,16 @@ export const OrderResourceApiFp = function(configuration?: Configuration) {
 export const OrderResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = OrderResourceApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {number} orderId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderAddProductsToDraftOrderPut(orderId: number, requestBody?: Array<number>, options?: any): AxiosPromise<void> {
+            return localVarFp.apiOrderAddProductsToDraftOrderPut(orderId, requestBody, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {number} orderId 
@@ -1996,12 +2382,22 @@ export const OrderResourceApiFactory = function (configuration?: Configuration, 
         /**
          * 
          * @param {number} organizationId 
-         * @param {OrderRestDTO} [orderRestDTO] 
+         * @param {OrderWithProductsRestDTO} [orderWithProductsRestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiOrderCreateNewDraftOrderPost(organizationId: number, orderRestDTO?: OrderRestDTO, options?: any): AxiosPromise<void> {
-            return localVarFp.apiOrderCreateNewDraftOrderPost(organizationId, orderRestDTO, options).then((request) => request(axios, basePath));
+        apiOrderCreateNewDraftOrderPost(organizationId: number, orderWithProductsRestDTO?: OrderWithProductsRestDTO, options?: any): AxiosPromise<void> {
+            return localVarFp.apiOrderCreateNewDraftOrderPost(organizationId, orderWithProductsRestDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} orderId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderRemoveProductsFromDraftOrderPut(orderId: number, requestBody?: Array<number>, options?: any): AxiosPromise<void> {
+            return localVarFp.apiOrderRemoveProductsFromDraftOrderPut(orderId, requestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2023,6 +2419,18 @@ export const OrderResourceApiFactory = function (configuration?: Configuration, 
  * @extends {BaseAPI}
  */
 export class OrderResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} orderId 
+     * @param {Array<number>} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrderResourceApi
+     */
+    public apiOrderAddProductsToDraftOrderPut(orderId: number, requestBody?: Array<number>, options?: AxiosRequestConfig) {
+        return OrderResourceApiFp(this.configuration).apiOrderAddProductsToDraftOrderPut(orderId, requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {number} orderId 
@@ -2059,13 +2467,25 @@ export class OrderResourceApi extends BaseAPI {
     /**
      * 
      * @param {number} organizationId 
-     * @param {OrderRestDTO} [orderRestDTO] 
+     * @param {OrderWithProductsRestDTO} [orderWithProductsRestDTO] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof OrderResourceApi
      */
-    public apiOrderCreateNewDraftOrderPost(organizationId: number, orderRestDTO?: OrderRestDTO, options?: AxiosRequestConfig) {
-        return OrderResourceApiFp(this.configuration).apiOrderCreateNewDraftOrderPost(organizationId, orderRestDTO, options).then((request) => request(this.axios, this.basePath));
+    public apiOrderCreateNewDraftOrderPost(organizationId: number, orderWithProductsRestDTO?: OrderWithProductsRestDTO, options?: AxiosRequestConfig) {
+        return OrderResourceApiFp(this.configuration).apiOrderCreateNewDraftOrderPost(organizationId, orderWithProductsRestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} orderId 
+     * @param {Array<number>} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrderResourceApi
+     */
+    public apiOrderRemoveProductsFromDraftOrderPut(orderId: number, requestBody?: Array<number>, options?: AxiosRequestConfig) {
+        return OrderResourceApiFp(this.configuration).apiOrderRemoveProductsFromDraftOrderPut(orderId, requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

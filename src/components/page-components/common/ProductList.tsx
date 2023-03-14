@@ -34,7 +34,7 @@ const ProductList: FC<ProductListProps> = ({
           height={32}
           width={32}
         />
-        <p className="mt-2 text-center text-shades-black text-[24px]">
+        <p className="mt-2 mb-8 text-center text-shades-black text-[24px]">
           No products founds!!
         </p>
       </div>

@@ -89,13 +89,7 @@ const Products: FC = () => {
         surcharge: 0,
         pricing_condition: '',
         size: '',
-        order_details: [
-          ...selectedProducts.map((item) => ({
-            product_id: Number(item),
-            note: '',
-            quantity: 0,
-          })),
-        ],
+        productIds: selectedProducts,
       });
       setIsLoading(false);
       handleSuccessMesssage(
@@ -230,6 +224,7 @@ const Products: FC = () => {
           />
         ) : (
           <AddCollections
+            isSelect
             onAddCollection={() => {
               setIsCreateModal(true);
             }}

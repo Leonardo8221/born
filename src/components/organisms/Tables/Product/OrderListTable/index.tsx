@@ -11,6 +11,7 @@ import DescriptionField from '@/components/molecules/DescriptionField/Descriptio
 import { Button } from '@/components/molecules/Button';
 import ProductImage from '@/assets/images/products/product.png';
 import { OrderDetailGraphqlDto } from '@/generated/types';
+import TableComponent from '@/components/page-components/order/TableComponent';
 
 export interface OrderDetails {
   products: any[];
@@ -18,6 +19,40 @@ export interface OrderDetails {
 
 const OrderListTable: FC<OrderDetails> = ({ products }) => {
   console.log(products, 'orderByOrderId');
+
+  const column = [
+    {
+      Header: 'ColHeader',
+      accessor: 'colheader',
+    },
+    {
+      Header: 'S',
+      accessor: 'small',
+    },
+    {
+      Header: 'M',
+      accessor: 'medium',
+    },
+    {
+      Header: 'L',
+      accessor: 'large',
+    },
+  ];
+
+  const data = [
+    {
+      colheader: 'Size',
+      large: 'L',
+      small: 'S',
+      medium: 'M',
+    },
+    {
+      colheader: 'Quantities',
+      large: '0',
+      small: '40',
+      medium: '30',
+    },
+  ];
 
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
@@ -139,6 +174,7 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
         columns={columns}
         className="w-full [&>tbody>tr>td]:pt-4"
       />
+      <TableComponent data={data} columns={column} />
 
       {/* modal here */}
       <Modal
