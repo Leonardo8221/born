@@ -60,24 +60,24 @@ const CollectionPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <Loading message="Loading collections" />
+    )
+  }
+
   return (
     <div>
       <Header />
       <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">
-        <div className="mb-[64px]">
-          {loading ? (
-            <Loading message="Loading collections" />
-          ) : (
-            <>
-              <CollectionCard
-                backgroundImageSrc={backgroundImageSrc}
-                label={colleciton?.name}
-                editBanner
-                onEdit={(e) => e.preventDefault()}
-              />
-              <Description />
-            </>
-          )}
+        <div className="mb-[64px]">   
+          <CollectionCard
+            backgroundImageSrc={backgroundImageSrc}
+            label={colleciton?.name}
+            editBanner
+            onEdit={(e) => e.preventDefault()}
+          />
+          <Description />
         </div>
         {productsCollectionLoading ? (
           <Loading message="Loading collecton products" />
