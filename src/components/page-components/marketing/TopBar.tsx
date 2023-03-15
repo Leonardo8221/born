@@ -1,19 +1,27 @@
-import { Icon } from "@/components/molecules/Icon";
-import Link from "next/link";
-import React, { FC } from "react";
+import { FC } from 'react';
+import { Icon } from '@/components/molecules/Icon';
+import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
+import { useRouter } from 'next/router';
 
-export interface TopBarProps {
-	onBack: () => void;
-	onClose: () => void;
-}
+const TopBar: FC = () => {
+  const router = useRouter();
 
-const TopBar: FC<TopBarProps> = ({ onBack, onClose }) => {
-	return (
-		<div className="flex justify-between items-center bg-white w-[100%] px-[39px] py-[26px]">
-				<Icon onClick={onBack} className="mt-[12px]" name="icon-arrow-left" />
-				<Icon onClick={onClose} name="icon-close" />
-		</div>
-	);
+  return (
+    <div className="flex h-[72px] justify-between items-center bg-white w-full px-[32px] shadow-medium">
+      <div
+        className="flex h-10 w-10 cursor-pointer items-center justify-center"
+        onClick={router.back}
+      >
+        <ArrowIconLeft height={40} width={40} />
+      </div>
+      <div
+        className="flex h-10 w-10 cursor-pointer items-center justify-center"
+        onClick={() => router.push('/')}
+      >
+        <Icon name="icon-close" height={20} width={20} />
+      </div>
+    </div>
+  );
 };
 
 export default TopBar;

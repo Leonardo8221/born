@@ -21,3 +21,8 @@
 .errorInputFieldCard {
   border: 1px solid #c55757;
 }
+
+.resetOutline:focus-visible {
+	outline: none !important;
+	box-shadow: none !important;
+}

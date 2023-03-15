@@ -39,7 +39,7 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams }) => {
           <h3 className={clsx('text-shades-blak tracking-[0.06em]', fonts.text.lg)}>
             {row?.original?.name}
           </h3>
-          <p className={clsx('text-neutral-700 font-light tracking-[0.06em]', fonts.text.sm)}>
+          <p className={clsx('text-neutral-700 font-light tracking-[0.06em]', fonts.text.md)}>
             {row?.original?.brandLocation}
           </p>
         </div>
@@ -50,7 +50,7 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams }) => {
       size: 185,
       id: "lastLoggedIn",
       cell: (info: any) => (
-        <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
+        <div className={clsx('text-shades-black font-normal tracking-[0.06em] text-center', fonts.text.md)}>
           {info.getValue()}
         </div>
       ),
@@ -60,7 +60,7 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams }) => {
       size: 97,
       id: "permission",
       cell: (info: any) => (
-        <div className={clsx('text-shades-black font-light tracking-[0.06em] text-center', fonts.text.sm)}>
+        <div className={clsx('text-shades-black font-normal tracking-[0.06em] text-center', fonts.text.md)}>
           {info.getValue()}
         </div>
       ),
