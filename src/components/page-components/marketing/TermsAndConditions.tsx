@@ -1,16 +1,62 @@
 import { Button } from "@/components/molecules/Button";
 import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
+import { apiConfig } from "@/utils/apiConfig";
+import { OrganizationResourceApi, OrganizationRestDTO } from "client/command";
+import { useRouter } from "next/router";
 // import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
 import React, { FC, useEffect, useState } from "react";
+import Toast from "../Toast";
 
 const TermsAndConditions: FC<any> = ({
   organization,
-  handleUpdateOrganizationDetails,
+  refetch
 }) => {
+  const router = useRouter();
+  const organizationId = Number(router?.query?.id);
+
+  //messages
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleErrorMesssage = (message: string) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 3000);
+  };
+
+  const handleSuccessMesssage = (message: string) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+  };
+
   const [queryDescription, setQueryDescription] = useState("");
   const [errorDescription, setErrorDescription] = useState("");
   const onErrorDescription = (message: string) => {
     if (message !== errorDescription) setErrorDescription(message);
+  };
+
+  const handleUpdateOrganizationDetails = async (
+    organizationRestDTO: OrganizationRestDTO
+  ) => {
+    try {
+      const config: any = await apiConfig();
+      const api = new OrganizationResourceApi(config);
+      await api.apiOrganizationUpdateOrganizationDetailsPut(
+        organizationId,
+        organizationRestDTO
+      );
+      refetch();
+      handleSuccessMesssage(`Saved data sucessfully!!`);
+    } catch (error: any) {
+      handleErrorMesssage(
+        error?.message || "Something went wrong, please try again!"
+      );
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -36,17 +82,16 @@ const TermsAndConditions: FC<any> = ({
       />
       <Button
         onClick={() => {
-          if (handleUpdateOrganizationDetails) {
-            handleUpdateOrganizationDetails({
-              terms_and_conditions: queryDescription,
-            });
-          }
+          handleUpdateOrganizationDetails({
+            terms_and_conditions: queryDescription,
+          });
         }}
         disabled={errorDescription.length > 0}
         className="ml-0 w-auto mt-[20px]"
       >
         Save
       </Button>
+      <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </>
   );
 };
