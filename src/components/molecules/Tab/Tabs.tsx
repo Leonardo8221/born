@@ -35,7 +35,7 @@ function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
             <div key={index} className="cursor-pointer">
               <span
                 onClick={() => handleTabClick(tab.id)}
-                className={`inline-flex justify-center w-atuo py-4 px-2 mr-2 text-base tracking-[.08em] h-[56px] ${
+                className={`w-full inline-flex justify-center w-atuo py-4 px-2 mr-2 text-base tracking-[.08em] h-[56px] ${
                   tab.id === activeTab
                     ? 'border-b-2 text-shades-black'
                     : 'text-neutral-700'

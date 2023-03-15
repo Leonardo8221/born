@@ -49,7 +49,7 @@ const ListPrices: FC<ListPricesProps> = ({
   return (
     <div
       className={clsx(
-        "flex justify-center",
+        "flex justify-start",
         isSmall ? "gap-x-3" : "gap-x-[25px]"
       )}
     >

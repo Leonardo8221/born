@@ -62,23 +62,23 @@ const StoryPage = () => {
             <ShowcaseLogo />
           </div>
           <div className="flex-1">
-            {tab && tab !== 'story' && (
+            {tab && tab !== "story" && (
               <div className="mt-8">
                 <Button
-                  as={tab === 'products' ? 'a' : 'button'}
+                  as={tab === "products" ? "a" : "button"}
                   variant="link"
                   onClick={() =>
-                    tab === 'collections' && setIsAddCollections(true)
+                    tab === "collections" && setIsAddCollections(true)
                   }
                   href={
-                    tab === 'products'
+                    tab === "products"
                       ? `/organization/${router?.query?.id}/discover/product-ingestion`
                       : undefined
                   }
                   className="!max-w-[205px] !ml-auto !mr-0"
                 >
-                  <Icon name="icon-add" />{' '}
-                  {tab === 'collections' ? 'Add Collections' : 'Add Products'}
+                  <Icon name="icon-add" />{" "}
+                  {tab === "collections" ? "Add Collections" : "Add Products"}
                 </Button>
               </div>
             )}
@@ -87,7 +87,7 @@ const StoryPage = () => {
         <Tabs
           tabs={tabs}
           active={activeTab}
-          className="justify-center"
+          className="justify-center w-fit mx-auto [&>div]:w-[124px] [&>div:nth-child(2)]:mx-2"
           onTabChange={handleTabChange}
         />
       </div>

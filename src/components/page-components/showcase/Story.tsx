@@ -17,6 +17,22 @@ const Story: FC<StoryProps> = ({ onViewCollections }) => {
 
   return (
     <div>
+      <div className="mx-auto w-fit flex align-center mt-[7px] mb-[5px] text-[12px]">
+        <div className="mr-16">
+          <span className="text-neutral-600 mr-[32px]">Founded in</span>
+          <span className="text-shades-black">2011</span>
+        </div>
+        <div className="mr-16">
+          <span className="text-neutral-600 mr-[32px]">Origin</span>
+          <span className="text-shades-black">Greece</span>
+        </div>
+        <div>
+          <span className="text-neutral-600 mr-[32px]">
+            Currencies
+          </span>
+          <span className="text-shades-black">USD, GBP</span>
+        </div>
+      </div>
       <CollectionCard
         backgroundImageSrc={backgroundImageSrc}
         editBanner
@@ -26,9 +42,10 @@ const Story: FC<StoryProps> = ({ onViewCollections }) => {
       <YourCollections onViewCollections={onViewCollections} />
       <SocialLinks />
       <Modal
+        className="max-w-[736px] overflow-hidden"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="choose a file type"
+        title="Choose a file type"
       >
         <FileType onClick={setType} />
       </Modal>
