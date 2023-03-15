@@ -84,7 +84,9 @@ const Collections: FC<CollectionsProps> = ({
         {data?.collectionsByOrganizationId?.map(
           (item: CollectionGraphqlDto) => (
             <div key={item.id} className="mb-[96px]">
-              <Link href={`/organization/1/discover/collections/${item.id}`}>
+              <Link
+                href={`/organization/${organizationId}/discover/collections/${item.id}`}
+              >
                 <CollectionCard
                   backgroundImageSrc={backgroundImageSrc}
                   label={item.name || ''}

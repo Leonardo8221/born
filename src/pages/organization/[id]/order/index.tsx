@@ -26,9 +26,9 @@ export default function OrderManagement() {
     variables: {
       key: queryKey,
       organizationId: organizationId,
-      confirmed: tabState === 'confirmed',
-      cancelled: tabState === 'cancelled',
-      approved: tabState === 'approved',
+      confirmed: tabState === 'confirmed' ? true : null,
+      cancelled: tabState === 'cancelled' ? true : null,
+      approved: tabState === 'approved' ? true : null,
       start: 0,
       rows: 10,
     },
