@@ -99,6 +99,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
           />
           <Dropdown
             label="Country of origin"
+            className="mt-6 w-full !mx-0"
             isValid={false}
             selectedOption={{
               value: organization?.country_of_origin || '',
@@ -112,7 +113,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
           />
           <Dropdown
             label="City"
-            className="mt-6 w-full !my-0"
+            className="mt-6 w-full !mx-0"
             isValid={false}
             selectedOption={{
               value: organization?.city || '',
@@ -120,7 +121,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             }}
             options={[
               { value: 'hieros', name: 'Hieros' },
-              { value: 'test', name: 'Test' },
+              { value: 'string', name: 'String' },
             ]}
             onChange={() => {}}
           />
