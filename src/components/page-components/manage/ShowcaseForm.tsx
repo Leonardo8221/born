@@ -97,6 +97,8 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             onChange={changeQueryInputs('description')}
             isError={errorDescription.length > 0}
             onError={onErrorDescription}
+            inputClasses="!w-full"
+            className='!w-full'
           />
           <Dropdown
             label="Country of origin"
@@ -109,11 +111,13 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
               { value: 'string', name: 'String' },
               { value: 'hieros', name: 'Hieros' },
             ]}
+            width={352}
+            className="!mx-0 !h-[56px] !w-[352px] [&>div]:!w-full"
             onChange={() => {}}
           />
           <Dropdown
             label="City"
-            className="mt-6"
+            className="mt-6 !mx-0 !h-[56px] !w-[352px] [&>div]:!w-full"
             isValid={false}
             selectedOption={{
               value: organization?.city || '',
@@ -123,6 +127,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
               { value: 'hieros', name: 'Hieros' },
               { value: 'test', name: 'Test' },
             ]}
+            width={352}
             onChange={() => {}}
           />
           <Input

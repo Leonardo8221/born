@@ -42,6 +42,7 @@ const Teams = () => {
               isValid
               onChange={() => {}}
               className="!h-[48px] !w-[185px] [&>div]:!w-full"
+              width={185}
             />
             <Icon
               name="icon-close"

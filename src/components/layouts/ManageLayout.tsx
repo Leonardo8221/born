@@ -42,7 +42,7 @@ const ManageLayout: FC<ManageLayoutProps> = ({ children }) => {
       icon: 'icon-settings',
     },
     {
-      url: `#`,
+      url: '/',
       name: 'Switch Account',
       icon: 'icon-swap',
     },
@@ -56,7 +56,7 @@ const ManageLayout: FC<ManageLayoutProps> = ({ children }) => {
       <div className='min-h-[calc(100vh-144px)]'>
         <div className="flex">
           <div className="w-[320px] min-h-full bg-neutral-100">
-            <div className='fixed top-[72px] h-full h-[calc(100vh-125px)]'>
+            <div className='fixed top-[72px] h-[calc(100vh-144px)]'>
               <Sidebar title="Missoma" menuItems={menuItems} logo={<BrandLogo />} />
             </div>
           </div>
