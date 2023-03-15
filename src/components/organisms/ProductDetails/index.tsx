@@ -75,7 +75,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                         price: item.exworks,
                       },
                       {
-                        label: "Retail",
+                        label: "MSRP",
                         price: item.retail,
                       },
                     ] || []

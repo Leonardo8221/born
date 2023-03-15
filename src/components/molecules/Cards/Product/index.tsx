@@ -140,7 +140,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                           {item?.currency && currencies[item.currency]}
                           {item.retail}
                         </h5>
-                        <p className={styles.priceLabel}>Retail</p>
+                        <p className={styles.priceLabel}>MSRP</p>
                       </div>
                     </>
                   )}
