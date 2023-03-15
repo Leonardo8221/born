@@ -75,7 +75,7 @@ const Dropdown: FC<DropdownProps> = ({
           className
         )}
       >
-        <div onClick={handleClick}>
+        <div className='w-full' onClick={handleClick}>
           <Listbox value={selected} onChange={handleChange}>
             <div className={styles.container}>
               <Listbox.Button
@@ -97,7 +97,7 @@ const Dropdown: FC<DropdownProps> = ({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="!w-[185px] rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white">
+                <Listbox.Options className="w-[inherit] absolute rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white">
                   {options
                     .filter((option) => option.value !== selected?.value)
                     .map((option, personIdx) => (

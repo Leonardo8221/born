@@ -11,6 +11,7 @@ const Template = (args: DropdownProps) => <Dropdown {...args} />;
 
 export const Default: StoryFn<DropdownProps> = Template.bind ({});
 Default.args = {
+  className: 'w-[300px]',
   label: 'Select Category',
   isValid: false,
   options: [
