@@ -68,7 +68,7 @@ const Teams = () => {
         </Button>
       </div>
       <div className="mt-4">
-        <Button className="!h-[32px] !w-[132px] mx-0 !text-[12px]">Upload</Button>
+        <Button className="!h-[32px] !w-[132px] !mx-0 !text-[12px]">Upload</Button>
       </div>
       <div>
         <Paragraph
