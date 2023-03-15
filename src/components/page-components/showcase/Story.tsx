@@ -42,9 +42,10 @@ const Story: FC<StoryProps> = ({ onViewCollections }) => {
       <YourCollections onViewCollections={onViewCollections} />
       <SocialLinks />
       <Modal
+        className="max-w-[736px] overflow-hidden"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title="choose a file type"
+        title="Choose a file type"
       >
         <FileType onClick={setType} />
       </Modal>
