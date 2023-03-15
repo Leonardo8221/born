@@ -1,15 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
-import TopBar, { TopBarProps } from "./TopBar";
-import Sidebar, { TabMenu } from "@/components/molecules/Sidebar";
+// import TopBar, { TopBarProps } from "./TopBar";
+// import Sidebar, { TabMenu } from "@/components/molecules/Sidebar";
 import LogoImage from "@/assets/images/logo-image.png";
 import Footer from "@/components/layouts/Footer";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
+import { OrganizationGraphqlDto } from "@/generated/types";
 
-interface WrapperManageProps extends OrganizationProps {
+interface WrapperManageProps {
   children: React.ReactNode | React.ReactNode[];
   currentTab: string;
+  organization: OrganizationGraphqlDto,
 }
 
 const WrapperManage: FC<WrapperManageProps> = ({
@@ -25,7 +26,7 @@ const WrapperManage: FC<WrapperManageProps> = ({
 
   return (
     <>
-      <TopBar onClose={router.back} onBack={router.back} />
+      {/* <TopBar onClose={router.back} onBack={router.back} />
       <div className="flex">
         <Sidebar
           onSignOut={handleSignOut}
@@ -73,7 +74,8 @@ const WrapperManage: FC<WrapperManageProps> = ({
         />
         <div className="px-[32px] py-[24px]">{children}</div>
       </div>
-      <Footer />
+      <Footer /> */}
+      <div>Work in progress</div>
     </>
   );
 };

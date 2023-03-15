@@ -1,9 +1,9 @@
 import { Button } from "@/components/molecules/Button";
 import Switch from "@/components/molecules/Switch";
-import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
+// import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
 import React, { FC } from "react";
 
-const CarriedCurrencies: FC<OrganizationProps> = ({ organization }) => {
+const CarriedCurrencies: FC<any> = ({ organization }) => {
   const currencies = organization?.currency_types;
   return (
     <>
@@ -12,7 +12,7 @@ const CarriedCurrencies: FC<OrganizationProps> = ({ organization }) => {
       </p>
       {currencies && currencies?.length > 0 && (
         <div className="flex">
-          {currencies.map((currency, index) => {
+          {currencies.map((currency: any, index: any) => {
             if (!currency) {
               return null;
             }
