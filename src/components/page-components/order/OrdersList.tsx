@@ -20,7 +20,7 @@ export const OrderList: FC<OrderListProps> = ({
       title={'Choose order'}
       className="!max-h-[417px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
     >
-      <AddOrders onSelect={() => console.log('jo be ayega dekha jayega')} />
+      <AddOrders />
     </Modal>
   );
 };

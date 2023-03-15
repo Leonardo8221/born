@@ -56,6 +56,7 @@ const AddOrders = () => {
       ) : (
         content?.map((order: OrderGraphqlDto) => (
           <HorizontaOrderLists
+            key={order?.id}
             onSelect={(id) => setActiveId(id)}
             isActive={order.id === activeId}
             approved={true}
