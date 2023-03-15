@@ -26,7 +26,7 @@ const Story: FC<StoryProps> = ({ onViewCollections }) => {
           <span className="text-neutral-600 mr-[32px]">Origin</span>
           <span className="text-shades-black">Greece</span>
         </div>
-        <div className="mr-16">
+        <div>
           <span className="text-neutral-600 mr-[32px]">
             Currencies
           </span>
