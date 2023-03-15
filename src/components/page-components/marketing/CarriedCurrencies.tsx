@@ -1,9 +1,14 @@
 import { Button } from "@/components/molecules/Button";
 import Switch from "@/components/molecules/Switch";
-// import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
+import { OrganizationGraphqlDto } from "@/generated/types";
 import React, { FC } from "react";
 
-const CarriedCurrencies: FC<any> = ({ organization }) => {
+interface CarriedCurrenciesProps {
+  organization: OrganizationGraphqlDto;
+}
+
+
+const CarriedCurrencies: FC<CarriedCurrenciesProps> = ({ organization }) => {
   const currencies = organization?.currency_types;
   return (
     <>

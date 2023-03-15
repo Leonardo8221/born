@@ -17,6 +17,7 @@
   @apply text-shades-black;
 }
 .container {
+  position: relative;
   width: 100%;
   height: auto;
 }

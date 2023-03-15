@@ -37,12 +37,12 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
       label: "Ordering",
       value: "ordering",
       action: () =>
-        router.push(returnRedirectManageLink("terms-and-condition")),
+        router.push(returnRedirectManageLink("order")),
     },
     {
       label: "Teams",
       value: "teams",
-      action: () => router.push(returnRedirectManageLink("team")),
+      action: () => router.push(returnRedirectManageLink("teams")),
     },
     {
       label: "Settings",

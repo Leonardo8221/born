@@ -39,7 +39,6 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
     address: organization?.address || '',
     website_link: organization?.website_link || '',
     instagram_link: organization?.instagram_link || '',
-    currency_types: organization?.currency_types?.join(', ') || '',
   };
 
   useEffect(() => {
@@ -102,6 +101,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
           />
           <Dropdown
             label="Country of origin"
+            className="mt-6 w-full !mx-0 !mx-0 !h-[56px] [&>div]:!w-full"
             isValid={false}
             selectedOption={{
               value: organization?.country_of_origin || '',
@@ -112,12 +112,11 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
               { value: 'hieros', name: 'Hieros' },
             ]}
             width={352}
-            className="!mx-0 !h-[56px] !w-[352px] [&>div]:!w-full"
             onChange={() => {}}
           />
           <Dropdown
             label="City"
-            className="mt-6 !mx-0 !h-[56px] !w-[352px] [&>div]:!w-full"
+            className="mt-6 w-full !mx-0"
             isValid={false}
             selectedOption={{
               value: organization?.city || '',
@@ -125,7 +124,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             }}
             options={[
               { value: 'hieros', name: 'Hieros' },
-              { value: 'test', name: 'Test' },
+              { value: 'string', name: 'String' },
             ]}
             width={352}
             onChange={() => {}}
@@ -134,13 +133,6 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             label="Address"
             value={queryInputs.address}
             onChange={changeQueryInputs('address')}
-            isValid={isValidAdress}
-            className="w-full"
-          />
-          <Input
-            label="Carried currency"
-            value={queryInputs?.currency_types}
-            onChange={changeQueryInputs('currency_types')}
             isValid={isValidAdress}
             className="w-full"
           />
@@ -186,12 +178,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
       <Button
         onClick={() => {
           if (handleUpdateOrganizationDetails) {
-            handleUpdateOrganizationDetails({
-              ...queryInputs,
-              currency_types: new Set(
-                queryInputs?.currency_types?.split(', ')
-              ) as Set<string>,
-            });
+            handleUpdateOrganizationDetails(queryInputs);
           }
         }}
         disabled={
