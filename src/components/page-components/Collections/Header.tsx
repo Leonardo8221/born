@@ -1,10 +1,15 @@
+import { FC } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/molecules/Button';
 import { DropdownMenu } from '@/components/molecules/DropdownMenu';
 import { Icon } from '@/components/molecules/Icon';
 import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
 
-const Header = () => {
+interface HeaderProps {
+  handleCreateOrder: () => void;
+}
+
+const Header: FC<HeaderProps> = ({ handleCreateOrder }) => {
   const router = useRouter();
   const items = [
     {
@@ -40,7 +45,10 @@ const Header = () => {
           />
         </div>
         <div>
-          <Button className="!w-[172px] !px-[28px] text-[14px] leading-6">
+          <Button
+            onClick={handleCreateOrder}
+            className="!w-[172px] !px-[28px] text-[14px] leading-6"
+          >
             <Icon name="icon-add" /> Create order
           </Button>
         </div>

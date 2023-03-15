@@ -18,6 +18,7 @@ import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
 import { CollectionResourceApi, ProductResourceApi } from 'client/command';
 import Toast from '@/components/page-components/Toast';
+import { OrderList } from '@/components/page-components/order/OrdersList';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -26,6 +27,7 @@ const CollectionPage = () => {
   const [isSelectable, setIsSelectable] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -149,7 +151,7 @@ const CollectionPage = () => {
 
   return (
     <div>
-      <Header />
+      <Header handleCreateOrder={() => setIsModalVisible(!isModalVisible)} />
       <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">
         <div className="mb-[64px]">
           <CollectionCard
@@ -190,6 +192,10 @@ const CollectionPage = () => {
           </>
         )}
       </div>
+      <OrderList
+        setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
+        isModalVisible={isModalVisible}
+      />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
       <Footer />
     </div>
