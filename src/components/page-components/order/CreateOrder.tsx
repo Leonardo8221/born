@@ -2,6 +2,10 @@ import React, { useState, FC } from 'react';
 import Modal from '@/components/molecules/Modal';
 import { Button } from '@/components/molecules/Button';
 import Input from '@/components/molecules/Inputs/Input';
+import { OrderResourceApi } from 'client/command';
+import { apiConfig } from '@/utils/apiConfig';
+import Toast from '../Toast';
+import { useRouter } from 'next/router';
 
 interface CreatOrderProps {
   showModal: boolean;
@@ -18,22 +22,52 @@ interface OrderDetails {
 type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer';
 
 export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [details, setDetails] = useState<OrderDetails>({
     name: '',
     purchase_order: '',
     retailer: '',
     buyer_name: '',
   });
+  const id = router?.query?.id || '';
+  const organizationId: number = +id;
   const handleChange = (key: StateKeys, value: string) => {
     setDetails((prevState) => ({
       ...prevState,
       [key]: value,
     }));
   };
-  console.log(details);
 
-  const handleSave = () => {
-    console.log('akhon');
+  const handleSave = async () => {
+    try {
+      const hasEmptyObject = Object.values(details).some(
+        (val) => val === '' || val === null
+      );
+      if (hasEmptyObject) {
+        setErrorMessage('Please fill all the required fields');
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 3000);
+        return;
+      }
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      api.apiOrderCreateNewDraftOrderPost(organizationId, details);
+      setSuccessMessage('Order details added successfully');
+      closeModal();
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (error: any) {
+      setErrorMessage(error?.response?.message || 'Order failed to add');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      closeModal();
+      console.log(error);
+    }
   };
 
   return (
@@ -47,7 +81,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
         <div>
           <div className="flex w-full">
             <Input
-              value="Xotil X Selfridges - SS23"
+              value={details.name}
               label="Draft order name"
               type="text"
               onChange={(val) => handleChange('name', val)}
@@ -55,7 +89,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
               className="m-2 text-[14px] w-[324px]"
             />
             <Input
-              value=""
+              value={details.purchase_order}
               label="Purchase order number"
               type="number"
               onChange={(val) => handleChange('purchase_order', val)}
@@ -65,7 +99,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
           </div>
           <div className="flex w-full">
             <Input
-              value="Selfridges"
+              value={details.retailer}
               label="Retailer name"
               type="text"
               name="retailer"
@@ -73,7 +107,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
               className="m-2 text-[14px] w-[324px]"
             />
             <Input
-              value="Julie McKenzie"
+              value={details.buyer_name}
               label="Client name"
               type="text"
               name="buyer_name"
@@ -88,6 +122,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
           />
         </div>
       </Modal>
+      <Toast errorMessage={errorMessage} successMessage={successMessage} />
     </div>
   );
 };
