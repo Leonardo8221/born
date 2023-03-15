@@ -16,7 +16,7 @@ type Option = {
 export interface DropdownProps {
   label: string;
   isValid: boolean;
-  onChange: (value: Option) => void;
+  onChange: (value?: Option) => void;
   options: Option[];
   className?: string;
   selectedOption?: Option;
@@ -30,7 +30,7 @@ const Dropdown: FC<DropdownProps> = ({
   className,
   selectedOption,
 }) => {
-  const [selected, setSelected] = useState(selectedOption || options[0]);
+  const [selected, setSelected] = useState(selectedOption);
   const [isExpand, setIsExpand] = useState(false);
 
   const clsDropDownCard = clsx({
@@ -38,6 +38,7 @@ const Dropdown: FC<DropdownProps> = ({
     [styles.expandedDropDownCard]: isExpand === true,
     [styles.validDropDownCard]: !isExpand && isValid,
   });
+
   const handleChange = (event: Option) => {
     setSelected(event);
     if (onChange) {
@@ -79,14 +80,14 @@ const Dropdown: FC<DropdownProps> = ({
             <div className={styles.container}>
               <Listbox.Button
                 className={
-                  `mu-input relative w-full rounded-t text-left focus:outline-none focus-visible:border-shades-black px-4 pt-4  text-shades-black flex justify-between ` +
+                  `mu-input h-full relative w-full rounded-t text-left focus:outline-none focus-visible:border-shades-black px-4 pt-4  text-shades-black flex justify-between ` +
                   clsDropDownCard
                 }
               >
                 <span className={styles.label}>{label}</span>
-                <span className={styles.name}>{selected.name}</span>
+                <span className={styles.name}>{selected?.name || ''}</span>
                 <span className="flex items-center">
-                  {isValid ? <CheckIcon className="mx-3" alt="check" /> : null}
+                  {selected?.value && isValid ? <CheckIcon className="mx-3" alt="check" /> : null}
                   {isExpand ? <DropDownUpIcon /> : <DropDownDownIcon />}
                 </span>
               </Listbox.Button>
@@ -96,9 +97,9 @@ const Dropdown: FC<DropdownProps> = ({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="w-[inherit] rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white">
+                <Listbox.Options className="!w-[185px] rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white">
                   {options
-                    .filter((option) => option.value !== selected.value)
+                    .filter((option) => option.value !== selected?.value)
                     .map((option, personIdx) => (
                       <Listbox.Option
                         key={personIdx}

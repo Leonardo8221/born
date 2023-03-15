@@ -1,6 +1,7 @@
+import ManageLayout from "@/components/layouts/ManageLayout";
 import Tabs from "@/components/molecules/Tab/Tabs";
 import CarriedCurrencies from "@/components/page-components/marketing/CarriedCurrencies";
-import WrapperManage from "@/components/page-components/marketing/WrapperManage";
+// import WrapperManage from "@/components/page-components/marketing/WrapperManage";
 import { GET_ORGANIZATION_BY_ID } from "@/queries/organizations";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -28,10 +29,10 @@ const TermsAndConditionPage = () => {
     },
   ];
   return (
-    <WrapperManage currentTab={"ordering"} organization={currentOrganization}>
+    <ManageLayout>
       <Tabs active={2} tabs={tabs} />
       <CarriedCurrencies organization={currentOrganization} />
-    </WrapperManage>
+    </ManageLayout>
   );
 };
 

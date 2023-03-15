@@ -17,8 +17,16 @@
   @apply text-shades-black;
 }
 .container {
-  width: 356px;
-  height: 56px;
+  width: 100%;
+  height: auto;
+}
+
+.container > button {
+  height: 48px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  display: flex;
+  align-items: center;
 }
 .my-input:focus-visible {
   outline: 1px dashed transparent;

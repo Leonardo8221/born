@@ -16,6 +16,7 @@ export interface InputProps {
   isEditMode?: boolean;
   onChange: (value: string) => void;
   onError?: (message: string) => void;
+  inputWrapperClasses?: string;
 }
 
 const Input: FC<InputProps> = ({
@@ -31,6 +32,7 @@ const Input: FC<InputProps> = ({
   placeholder,
   onChange,
   onError,
+  inputWrapperClasses,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -59,14 +61,21 @@ const Input: FC<InputProps> = ({
           </label>
           {isEditMode ? null : (
             <div
-              className={`border rounded flex h-[56px] ` + clsInputFieldCard}
+              className={clsx(
+                `border rounded flex h-[56px] `,
+                clsInputFieldCard,
+                inputWrapperClasses
+              )}
             >
               <input
                 defaultValue={value}
                 placeholder={placeholder}
                 type={type}
                 name={name}
-                className="my-input w-full flex p-4 rounded text-shades-black"
+                className={clsx(
+                  'my-input w-full flex p-4 rounded text-shades-black',
+                  styles.resetOutline
+                )}
                 onChange={handleChange}
               />
               <div className="flex items-center ml-3 mr-4 my-[15px] w-6 h-6">

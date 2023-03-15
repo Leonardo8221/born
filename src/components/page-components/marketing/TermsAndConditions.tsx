@@ -1,9 +1,9 @@
 import { Button } from "@/components/molecules/Button";
 import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
-import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
+// import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
 import React, { FC, useEffect, useState } from "react";
 
-const TermsAndConditions: FC<OrganizationProps> = ({
+const TermsAndConditions: FC<any> = ({
   organization,
   handleUpdateOrganizationDetails,
 }) => {

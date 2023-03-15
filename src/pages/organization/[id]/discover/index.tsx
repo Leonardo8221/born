@@ -62,7 +62,7 @@ const StoryPage = () => {
             <ShowcaseLogo />
           </div>
           <div className="flex-1">
-            {tab !== 'story' && (
+            {tab && tab !== 'story' && (
               <div className="mt-8">
                 <Button
                   as={tab === 'products' ? 'a' : 'button'}

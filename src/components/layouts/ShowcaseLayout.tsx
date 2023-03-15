@@ -31,7 +31,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
     {
       label: "Profile",
       value: "profile",
-      action: () => router.push(returnRedirectManageLink("showcase")),
+      action: () => router.push(returnRedirectManageLink("profile")),
     },
     {
       label: "Ordering",
