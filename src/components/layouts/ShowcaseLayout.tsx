@@ -15,7 +15,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
   const items = [
     {
       label: "Retailers",
-      href: "#",
+      href: "/retailer",
     },
   ];
 
