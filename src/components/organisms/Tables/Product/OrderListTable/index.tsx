@@ -2,7 +2,6 @@ import { FC, Fragment, useState } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import ImageText from '@/components/molecules/ImageText';
-import { Icon } from '@/components/molecules/Icon';
 import { fonts } from '@/config/fonts';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
@@ -10,14 +9,13 @@ import Modal from '@/components/molecules/Modal';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { Button } from '@/components/molecules/Button';
 import ProductImage from '@/assets/images/products/product.png';
-import TableComponent from '@/components/page-components/order/TableComponent';
+import { products } from './data';
 export interface OrderDetails {
   products: any[];
 }
+console.log(products);
 
 const OrderListTable: FC<OrderDetails> = ({ products }) => {
-  const size = [{ small: 'S' }, { medium: 'M' }, { large: 'L' }];
-  const quantity = [{ small: '20' }, { medium: '30' }, { large: '0' }];
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
   const columns = [
@@ -116,31 +114,22 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
       ),
       header: () => 'Total Wholesale price',
     }),
-    columnHelper.accessor('chat', {
-      id: 'chat',
-      cell: () => (
-        <Icon
-          onClick={() => setOpen(true)}
-          name="icon-message-square"
-          className="text-center cursor-pointer text-shades-black"
-        />
-      ),
-      header: () => '',
-    }),
   ];
 
   return (
     <Fragment>
-      <Table
-        tableData={products}
-        columns={columns}
-        className="w-full [&>tbody>tr>td]:pt-4"
-      />
-      <TableComponent size={size} quantity={quantity} />
+      <>
+        <Table
+          tableData={products}
+          columns={columns}
+          className="w-full [&>tbody>tr>td]:pt-4"
+        />
+      </>
       <Modal
         title="Add a Product Note"
         isOpen={open}
         onClose={() => setOpen(false)}
+        className="w-1/2"
       >
         <DescriptionField
           className="mb-8"

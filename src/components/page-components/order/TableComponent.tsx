@@ -1,9 +1,18 @@
+import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
+
 interface Props {
   size: Record<string, any>[];
   quantity: Record<string, any>[];
+  description?: string;
+  handleDescription: (val: string) => void;
 }
 
-const TableComponent: React.FC<Props> = ({ size, quantity }) => {
+const TableComponent: React.FC<Props> = ({
+  size,
+  quantity,
+  description,
+  handleDescription,
+}) => {
   return (
     <table className="table w-full text-[12px] !border-none">
       <tbody className="!border-none">
@@ -28,6 +37,17 @@ const TableComponent: React.FC<Props> = ({ size, quantity }) => {
               {item.value}
             </td>
           ))}
+        </tr>
+        <tr>
+          <td colSpan={2}>
+            <DescriptionField
+              onChange={handleDescription}
+              value={description}
+              className="mt-4 w-full"
+              label="Product Note"
+              placeholder="This Product...."
+            />
+          </td>
         </tr>
       </tbody>
     </table>

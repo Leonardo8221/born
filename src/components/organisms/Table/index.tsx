@@ -50,6 +50,7 @@ export const Table: FC<TableProps> = ({
         className={clsx('border-collapse', className)}
         style={{ gridTemplateColumns: colWidthStyle.join(' ') }}
       >
+        {JSON.stringify(data)}
         <TableHead table={table} />
         <TableBody loading={loading} table={table} />
       </table>

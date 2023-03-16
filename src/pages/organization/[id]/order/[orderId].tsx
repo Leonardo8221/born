@@ -13,6 +13,7 @@ import { Button } from '@/components/molecules/Button';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
+import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 
 function OrderPreview() {
   const router = useRouter();
@@ -194,13 +195,20 @@ function OrderPreview() {
               )}
             </div>
           </div>
-          <div>
+          <div className="flex flex-col">
             <OrderDetails
               editMode={editMode}
               handleEditInputs={handleEditInputs}
               column1={columnData.column1}
               column2={columnData.column2}
               column3={columnData.column3}
+            />
+            <DescriptionField
+              onChange={(val) => setDetails({ ...orderDetails, note: val })}
+              value={orderDetails.note}
+              className="w-1/2 mt-2"
+              label="Product Note"
+              placeholder="This Product...."
             />
           </div>
           <div className="flex py-10 shadow-sm rounded-md">
