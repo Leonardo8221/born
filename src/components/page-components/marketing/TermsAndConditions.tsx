@@ -1,27 +1,28 @@
-import { Button } from "@/components/molecules/Button";
-import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
-import { apiConfig } from "@/utils/apiConfig";
-import { OrganizationResourceApi, OrganizationRestDTO } from "client/command";
-import { useRouter } from "next/router";
+import { Button } from '@/components/molecules/Button';
+import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
+import { apiConfig } from '@/utils/apiConfig';
+import { OrganizationResourceApi, OrganizationRestDTO } from 'client/command';
+import { useRouter } from 'next/router';
 // import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
-import React, { FC, useEffect, useState } from "react";
-import Toast from "../Toast";
+import React, { FC, useEffect, useState } from 'react';
+import Toast from '../Toast';
 
-const TermsAndConditions: FC<any> = ({
-  organization,
-  refetch
-}) => {
+const TermsAndConditions: FC<any> = ({ organization, refetch }) => {
   const router = useRouter();
   const organizationId = Number(router?.query?.id);
 
   //messages
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [queryDescription, setQueryDescription] = useState('');
+  const [errorDescription, setErrorDescription] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleErrorMesssage = (message: string) => {
     setErrorMessage(message);
 
     setTimeout(() => {
-      setErrorMessage("");
+      setErrorMessage('');
     }, 3000);
   };
 
@@ -29,12 +30,10 @@ const TermsAndConditions: FC<any> = ({
     setSuccessMessage(message);
 
     setTimeout(() => {
-      setSuccessMessage("");
+      setSuccessMessage('');
     }, 3000);
   };
 
-  const [queryDescription, setQueryDescription] = useState("");
-  const [errorDescription, setErrorDescription] = useState("");
   const onErrorDescription = (message: string) => {
     if (message !== errorDescription) setErrorDescription(message);
   };
@@ -42,6 +41,7 @@ const TermsAndConditions: FC<any> = ({
   const handleUpdateOrganizationDetails = async (
     organizationRestDTO: OrganizationRestDTO
   ) => {
+    setIsLoading(true);
     try {
       const config: any = await apiConfig();
       const api = new OrganizationResourceApi(config);
@@ -51,10 +51,12 @@ const TermsAndConditions: FC<any> = ({
       );
       refetch();
       handleSuccessMesssage(`Saved data sucessfully!!`);
+      setIsLoading(false);
     } catch (error: any) {
       handleErrorMesssage(
-        error?.message || "Something went wrong, please try again!"
+        error?.message || 'Something went wrong, please try again!'
       );
+      setIsLoading(false);
       console.error(error);
     }
   };
@@ -67,9 +69,8 @@ const TermsAndConditions: FC<any> = ({
 
   return (
     <>
-      <p className="text-shades-black leading-8 text-[18px] mb-2">
-        Let buyer know how you typically transact by providing your ordering{" "}
-        <br /> terms and conditions.
+      <p className="max-w-[672px] text-shades-black font-light leading-8 text-[18px] mb-2">
+        Let buyer know how you typically transact by providing your ordering terms and conditions.
       </p>
       <DescriptionField
         label="Description"
@@ -86,7 +87,7 @@ const TermsAndConditions: FC<any> = ({
             terms_and_conditions: queryDescription,
           });
         }}
-        disabled={errorDescription.length > 0}
+        disabled={errorDescription.length > 0 || isLoading}
         className="ml-0 w-auto mt-[20px]"
       >
         Save

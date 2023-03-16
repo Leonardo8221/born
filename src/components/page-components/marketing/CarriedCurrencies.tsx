@@ -12,7 +12,7 @@ const CarriedCurrencies: FC<CarriedCurrenciesProps> = ({ organization }) => {
   const currencies = organization?.currency_types;
   return (
     <>
-      <p className="text-shades-black leading-8 text-[18px] mb-8">
+      <p className="text-shades-black font-light leading-8 text-[18px] mb-8">
         Indicate what are the currencies you typically transact in
       </p>
       {currencies && currencies?.length > 0 && (

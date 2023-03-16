@@ -1,7 +1,7 @@
-import { ChangeEvent, FC, useState } from "react";
-import clsx from "clsx";
-import { theme } from "@/config/theme";
-import styles from "./DescriptionField.module.css";
+import { ChangeEvent, FC, useState } from 'react';
+import clsx from 'clsx';
+import { theme } from '@/config/theme';
+import styles from './DescriptionField.module.css';
 
 export interface DescriptionFieldProps {
   onError?: (message: string) => void;
@@ -11,6 +11,7 @@ export interface DescriptionFieldProps {
   placeholder?: string;
   isError?: boolean;
   className?: string;
+  inputClasses?: string;
 }
 
 const DescriptionField: FC<DescriptionFieldProps> = ({
@@ -21,6 +22,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   placeholder,
   isError,
   className,
+  inputClasses,
 }) => {
   // const [inputValue, setInputValue] = useState("");
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -43,7 +45,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
         <div className="relative">
           <label className={styles.label}>{label}</label>
           <div
-            className={clsx('border border-neutral-500 rounded h-[190px]', {
+            className={clsx('border border-neutral-600 rounded h-[190px]', {
               [styles.errorTextarea]: isError === true,
             })}
           >
@@ -54,7 +56,8 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
               className={clsx(
                 styles.textarea,
                 `h-[188px] w-[356px] p-4 'text-shades-black' rounded focus:outline-none`,
-                theme.fonts.text['base']
+                theme.fonts.text['base'],
+                inputClasses
               )}
             />
           </div>

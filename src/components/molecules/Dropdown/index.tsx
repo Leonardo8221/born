@@ -20,6 +20,7 @@ export interface DropdownProps {
   options: Option[];
   className?: string;
   selectedOption?: Option;
+  width?: number;
 }
 
 const Dropdown: FC<DropdownProps> = ({
@@ -29,6 +30,7 @@ const Dropdown: FC<DropdownProps> = ({
   isValid,
   className,
   selectedOption,
+  width,
 }) => {
   const [selected, setSelected] = useState(selectedOption);
   const [isExpand, setIsExpand] = useState(false);
@@ -87,7 +89,9 @@ const Dropdown: FC<DropdownProps> = ({
                 <span className={styles.label}>{label}</span>
                 <span className={styles.name}>{selected?.name || ''}</span>
                 <span className="flex items-center">
-                  {selected?.value && isValid ? <CheckIcon className="mx-3" alt="check" /> : null}
+                  {selected?.value && isValid ? (
+                    <CheckIcon className="mx-3" alt="check" />
+                  ) : null}
                   {isExpand ? <DropDownUpIcon /> : <DropDownDownIcon />}
                 </span>
               </Listbox.Button>
@@ -97,7 +101,12 @@ const Dropdown: FC<DropdownProps> = ({
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="w-[inherit] absolute rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white">
+                <Listbox.Options
+                  className={clsx(
+                    'rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white',
+                    width && `!w-[${width}px]`
+                  )}
+                >
                   {options
                     .filter((option) => option.value !== selected?.value)
                     .map((option, personIdx) => (

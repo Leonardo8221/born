@@ -24,6 +24,7 @@ import IconMessageSqure from '@/assets/svgs/dark/message-square.svg';
 import IconLogout from '@/assets/svgs/dark/logout.svg';
 import IconInfoCircle from '@/assets/svgs/dark/info-circle.svg';
 import IconChevronDown from '@/assets/svgs/dark/chevron-down.svg';
+import IconTrash from '@/assets/svgs/dark/trash.svg';
 
 export const icons = {
   "icon-arrow-left": IconArrowLeft,
@@ -52,6 +53,7 @@ export const icons = {
   'icon-logout': IconLogout,
   'icon-info-circle': IconInfoCircle,
   'icon-chevron-down': IconChevronDown,
+  'icon-trash': IconTrash,
 };
 
 export type Icons = keyof typeof icons;
