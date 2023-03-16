@@ -10,7 +10,7 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/page-components/order/Header';
 import { GET_ORDER_BY_ID } from '../../../../queries/orders/details';
 import { Button } from '@/components/molecules/Button';
-
+import TableComponent from '@/components/page-components/order/TableComponent';
 function OrderPreview() {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
@@ -109,6 +109,10 @@ function OrderPreview() {
     return <>Loading...</>;
   }
 
+  const size = [{ small: 'S' }, { medium: 'M' }, { large: 'L' }];
+
+  const quantity = [{ small: '20' }, { medium: '30' }, { large: '0' }];
+
   return (
     <div className="mx-auto overflow-x-hidden">
       <Header heading={'Missoma X Selfridges - AW23'} />
@@ -173,6 +177,7 @@ function OrderPreview() {
             <TotalQuantity title="Total Quantity" value={30} />
             <TotalQuantity title="Total price" value={3345.0} />
           </div>
+          <TableComponent size={size} quantity={quantity} />
         </div>
         <div className="py-6 !flex !justify-end">
           <div className="flex-1"></div>
