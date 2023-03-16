@@ -1,85 +1,86 @@
-import { Button } from '@/components/molecules/Button';
-import Dropdown from '@/components/molecules/Dropdown';
-import { Heading } from '@/components/molecules/Heading';
-import { Icon } from '@/components/molecules/Icon';
-import Input from '@/components/molecules/Inputs/Input';
+import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import TeamOverView from '@/components/organisms/Tables/TeamOverview';
-import { teams } from '@/components/organisms/Tables/TeamOverview/data';
+import { USERS_QUERY } from '@/queries/users';
+import Loading from '../Loading';
+import InviteUsers, { User } from './InviteUsers';
+import { apiConfig } from '@/utils/apiConfig';
+import { UserOrganizationResourceApi } from 'client/command';
 import { useState } from 'react';
+import Toast from '../Toast';
 
 const Teams = () => {
-  const [invites, setInvites] = useState([
-    {
-      id: Date.now(),
-      email: '',
-      role: '',
-    },
-  ]);
+  const router = useRouter();
+  const organizationId = Number(router?.query?.id);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const options = [
-    {
-      name: 'Owner',
-      value: 'owner',
-    },
-    {
-      name: 'Manager',
-      value: 'manager',
-    },
-  ];
+  const { data, loading } = useQuery(USERS_QUERY, {
+    variables: { organizationId },
+  });
+
+  const handleErrorMesssage = (message: string) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  };
+
+  const handleSuccessMesssage = (message: string) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 3000);
+  };
+
+  const handleRemoveUser = async (userId: number) => {
+    try {
+      const config = await apiConfig();
+      const api = new UserOrganizationResourceApi(config);
+      await api.apiUserOrganizationRemoveUserFromOrganizationPut(
+        organizationId,
+        userId
+      );
+      handleSuccessMesssage('User removed successfully!');
+    } catch (error: any) {
+      handleErrorMesssage(error?.message || 'Failed to remove user!');
+      console.error(error);
+    }
+  };
+
+  const handleUploadInviteUsers = (users: User[]) => {
+    console.log(users);
+  };
+
   return (
     <div>
-      <Paragraph size="xl" className="!text-shades-black !font-light">
+      <Paragraph
+        size="xl"
+        className="!text-shades-black !font-light tracking-[0.06em] !leading-[32px]"
+      >
         Invite co-workers to join your company account.
       </Paragraph>
-      <div className="mt-4">
-        {invites.map((item) => (
-          <div key={item.id} className="flex items-center gap-x-4">
-            <Input value={item.email} label="Email" onChange={() => {}} inputWrapperClasses="!h-[48px] w-[279px]" />
-            <Dropdown
-              label="Role"
-              options={options}
-              isValid
-              onChange={() => {}}
-              className="!h-[48px] !w-[185px] [&>div]:!w-full"
-              width={185}
-            />
-            <Icon
-              name="icon-close"
-              className="text-shades-black cursor-pointer"
-              height={16}
-              width={16}
-              onClick={(e) => {
-                e.preventDefault();
-                const newInvites = [...invites];
-                setInvites(newInvites.filter((i) => i.id !== item.id));
-              }}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="mt-2">
-        <Button
-          className="inline-flex cursor-pointer !bg-shades-white !text-shades-black !px-2 !h-8 !w-[108px] !text-[12px] tracking-[0.06em]"
-          onClick={() =>
-            setInvites([...invites, { email: '', role: '', id: Date.now() }])
-          }
-        >
-          <Icon name="icon-add" className="cursor-pointer" height={16} width={16} /> Add more
-        </Button>
-      </div>
-      <div className="mt-4">
-        <Button className="!h-[32px] !w-[132px] !mx-0 !text-[12px]">Upload</Button>
-      </div>
+      <InviteUsers handleInviteUsers={handleUploadInviteUsers} />
       <div>
         <Paragraph
           size="xl"
-          className="mb-4 mt-8 !text-shades-black !font-light"
+          className="mb-4 mt-8 !text-shades-black !font-light tracking-[0.06em] !leading-[32px]"
         >
           Team Overview
         </Paragraph>
-        <TeamOverView teams={teams} />
+        {loading ? (
+          <Loading message="Loading users..." />
+        ) : (
+          <TeamOverView
+            teams={data?.usersByOrganizationId || []}
+            handleRemoveUser={handleRemoveUser}
+          />
+        )}
       </div>
+      <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>
   );
 };

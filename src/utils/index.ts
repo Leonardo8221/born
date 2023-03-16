@@ -23,5 +23,5 @@ export const formatDate = (date: Date) => {
   const year = formatedDate.getFullYear().toString().substr(-2);
 
   // Return the formatted date string
-  return `${month}/${day}/${year}`;
+  return `${day}/${month}/${year}`;
 };

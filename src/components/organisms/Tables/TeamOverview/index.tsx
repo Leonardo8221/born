@@ -1,90 +1,121 @@
 import React, { FC } from 'react';
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { DropdownMenu } from '@/components/molecules/DropdownMenu';
 import { fonts } from '@/config/fonts';
 import { Table } from '../../Table';
+import { formatDate } from '@/utils';
+import { UserGraphqlDto } from '@/generated/types';
+import { Paragraph } from '@/components/molecules/Paragraph';
 
 export interface TeamOverViewProps {
-  teams: any[];
+  teams: UserGraphqlDto[];
+  handleRemoveUser?: (userId: number) => void;
 }
 
-const TeamOverView: FC<TeamOverViewProps> = ({ teams }) => {
+const TeamOverView: FC<TeamOverViewProps> = ({ teams, handleRemoveUser }) => {
   const columnHelper: any = createColumnHelper();
-
-  const options = [
-    {
-      label: 'Manage role',
-      value: 'manage-role',
-      action: () => console.log('Manage role!'),
-    },
-    {
-      label: 'Revoke access',
-      value: 'revoke-access',
-      action: () => console.log('Manage role!'),
-    },
-    {
-      label: 'Delete',
-      value: 'delete',
-      action: () => console.log('Deleted!'),
-    },
-  ]
 
   const columns = [
     columnHelper.accessor((row: any) => row, {
       size: 209,
-      id: "teamMemberName",
+      id: 'teamMemberName',
       cell: ({ row }: any) => (
-        <div className='pl-4'>
-          <h3 className={clsx('text-shades-blak tracking-[0.06em]', fonts.text.lg)}>
-            {row?.original?.name}
+        <div className="pl-4">
+          <h3
+            className={clsx(
+              'text-shades-blak tracking-[0.06em]',
+              fonts.text.lg
+            )}
+          >
+            {row?.original?.keycloak_first_name}{' '}
+            {row?.orignal?.keycloak_last_name}
           </h3>
-          <p className={clsx('text-neutral-700 font-light tracking-[0.06em]', fonts.text.md)}>
-            {row?.original?.brandLocation}
+          <p
+            className={clsx(
+              'text-neutral-700 font-light tracking-[0.06em]',
+              fonts.text.md
+            )}
+          >
+            {row?.original?.keycloak_email}
           </p>
         </div>
       ),
-      header: () => "Team Member Name",
+      header: () => 'Team Member Name',
     }),
-    columnHelper.accessor('lastLoggedIn', {
+    columnHelper.accessor('last_logged_in', {
       size: 185,
-      id: "lastLoggedIn",
+      id: 'last_logged_in',
       cell: (info: any) => (
-        <div className={clsx('text-shades-black font-normal tracking-[0.06em] text-center', fonts.text.md)}>
-          {info.getValue()}
+        <div
+          className={clsx(
+            'text-shades-black font-normal tracking-[0.06em] text-center',
+            fonts.text.md
+          )}
+        >
+          {info?.getValue() && formatDate(info?.getValue())}
         </div>
       ),
-      header: () => "Last logged in",
+      header: () => 'Last logged in',
     }),
     columnHelper.accessor('permission', {
       size: 97,
-      id: "permission",
+      id: 'permission',
       cell: (info: any) => (
-        <div className={clsx('text-shades-black font-normal tracking-[0.06em] text-center', fonts.text.md)}>
-          {info.getValue()}
+        <div
+          className={clsx(
+            'text-shades-black font-normal tracking-[0.06em] text-center',
+            fonts.text.md
+          )}
+        >
+          {info?.getValue() || 'Manager'}
         </div>
       ),
-      header: () => "Permission",
+      header: () => 'Permission',
     }),
-    columnHelper.accessor('actions', {
+    columnHelper.accessor((row: any) => row, {
       size: 60,
       id: 'actions',
-      cell: () => (
-        <div>
-          <DropdownMenu options={options} variant="dots" />
-        </div>
-      ),
-      header: () => "",
+      cell: (info: any) => {
+        const options = [
+          {
+            label: 'Manage role',
+            value: 'manage-role',
+            action: () => console.log('Manage role!'),
+          },
+          {
+            label: 'Revoke access',
+            value: 'revoke-access',
+            action: () =>
+              handleRemoveUser && handleRemoveUser(info?.row?.original?.id),
+          },
+        ];
+        return (
+          <div>
+            <DropdownMenu options={options} variant="dots" />
+          </div>
+        );
+      },
+      header: () => '',
     }),
   ];
 
   return (
-    <Table
-      tableData={teams}
-      columns={columns}
-      className="w-full max-w-[563px] [&>tbody>tr>td]:pt-4"
-    />
-  )
-}
+    <div>
+      <Table
+        tableData={teams}
+        columns={columns}
+        className="w-full max-w-[563px] [&>tbody>tr>td]:pt-4"
+      />
+      {!teams?.length && (
+        <div className="max-w-[563] text-center">
+          <Paragraph size="base" className="!text-shades-black !font-light">
+            No data found!
+          </Paragraph>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default TeamOverView;

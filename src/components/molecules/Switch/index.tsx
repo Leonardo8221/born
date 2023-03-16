@@ -27,7 +27,7 @@ const Switch: FC<SwitchProps> = ({
 
   useEffect(() => {
     setIsChecked(!!checked);
-  }, []);
+  }, [checked]);
 
   const handleToggle = () => {
     onChange && onChange(!isChecked);
