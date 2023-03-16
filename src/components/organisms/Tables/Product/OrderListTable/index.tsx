@@ -20,39 +20,9 @@ export interface OrderDetails {
 const OrderListTable: FC<OrderDetails> = ({ products }) => {
   console.log(products, 'orderByOrderId');
 
-  const column = [
-    {
-      Header: 'ColHeader',
-      accessor: 'colheader',
-    },
-    {
-      Header: 'S',
-      accessor: 'small',
-    },
-    {
-      Header: 'M',
-      accessor: 'medium',
-    },
-    {
-      Header: 'L',
-      accessor: 'large',
-    },
-  ];
+  const size = [{ small: 'S' }, { medium: 'M' }, { large: 'L' }];
 
-  const data = [
-    {
-      colheader: 'Size',
-      large: 'L',
-      small: 'S',
-      medium: 'M',
-    },
-    {
-      colheader: 'Quantities',
-      large: '0',
-      small: '40',
-      medium: '30',
-    },
-  ];
+  const quantity = [{ small: '20' }, { medium: '30' }, { large: '0' }];
 
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
@@ -174,7 +144,7 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
         columns={columns}
         className="w-full [&>tbody>tr>td]:pt-4"
       />
-      <TableComponent data={data} columns={column} />
+      <TableComponent size={size} quantity={quantity} />
 
       {/* modal here */}
       <Modal

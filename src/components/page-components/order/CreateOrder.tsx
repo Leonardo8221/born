@@ -6,6 +6,8 @@ import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '../Toast';
 import { useRouter } from 'next/router';
+import { useApolloClient } from '@apollo/client';
+import { ORDER_LIST } from '@/utils/constants';
 
 interface CreatOrderProps {
   showModal: boolean;
@@ -23,6 +25,7 @@ type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer';
 
 export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
   const router = useRouter();
+  const client = useApolloClient();
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [details, setDetails] = useState<OrderDetails>({
@@ -57,6 +60,15 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
       api.apiOrderCreateNewDraftOrderPost(organizationId, details);
       setSuccessMessage('Order details added successfully');
       closeModal();
+      setDetails({
+        name: '',
+        purchase_order: '',
+        retailer: '',
+        buyer_name: '',
+      });
+      await client.refetchQueries({
+        include: [ORDER_LIST],
+      });
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
@@ -66,6 +78,12 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
         setErrorMessage('');
       }, 3000);
       closeModal();
+      setDetails({
+        name: '',
+        purchase_order: '',
+        retailer: '',
+        buyer_name: '',
+      });
       console.log(error);
     }
   };

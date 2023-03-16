@@ -18,6 +18,7 @@ import Toast from '../Toast';
 import Modal from '@/components/molecules/Modal';
 import CreateCollection from './CreateCollection';
 import AddCollections from './AddCollections';
+import { OrderList } from '@/components/page-components/order/OrdersList';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -30,6 +31,7 @@ const Products: FC = () => {
   const debouncedValue = useDebounce(searchKeyword, 600);
   const [isAddCollections, setIsAddCollections] = useState(false);
   const [isCreateModal, setIsCreateModal] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const router = useRouter();
   const id = router?.query?.id || '';
@@ -96,9 +98,7 @@ const Products: FC = () => {
         productIds: selectedProducts,
       });
       setIsLoading(false);
-      handleSuccessMesssage(
-        `Added ${selectedProducts.length} products to draft order sucessfully!!`
-      );
+      setIsModalVisible(true);
       setSelectedProducts([]);
       setIsSelectable(false);
       refetch();
@@ -162,7 +162,9 @@ const Products: FC = () => {
       await api.apiProductDeleteProductsDelete(selectedProducts);
       refetch();
       setIsLoading(false);
-      handleSuccessMesssage(`Deleted ${selectedProducts.length} products successfully!`);
+      handleSuccessMesssage(
+        `Deleted ${selectedProducts.length} products successfully!`
+      );
       setSelectedProducts([]);
     } catch (error: any) {
       setIsLoading(false);
@@ -257,7 +259,10 @@ const Products: FC = () => {
           />
         )}
       </Modal>
-
+      <OrderList
+        setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
+        isModalVisible={isModalVisible}
+      />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>
   );
