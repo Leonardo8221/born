@@ -12,7 +12,7 @@ export interface TableProps {
 }
 
 export const Table: FC<TableProps> = ({
-  tableData,
+  tableData = [],
   columns,
   className = '',
   loading = false,
@@ -20,7 +20,7 @@ export const Table: FC<TableProps> = ({
   const [data, setData] = useState([...tableData]);
 
   useEffect(() => {
-    if (Array.isArray(tableData) && tableData.length) {
+    if (tableData && Array.isArray(tableData) && tableData.length) {
       setData(tableData);
     }
   }, [tableData]);

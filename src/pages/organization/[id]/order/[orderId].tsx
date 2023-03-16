@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderListTable from '../../../../components/organisms/Tables/Product/OrderListTable';
 import OrderDetails from '../../../../components/molecules/OrderDetails/OrderDetails';
 import Dropdown from '../../../../components/molecules/Dropdown';
@@ -10,17 +10,44 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/page-components/order/Header';
 import { GET_ORDER_BY_ID } from '../../../../queries/orders/details';
 import { Button } from '@/components/molecules/Button';
-import TableComponent from '@/components/page-components/order/TableComponent';
+import { OrderResourceApi } from 'client/command';
+import { apiConfig } from '@/utils/apiConfig';
+import Toast from '@/components/page-components/Toast';
+
 function OrderPreview() {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
   const [editMode, setEditMode] = useState(false);
-  const { loading, error, data } = useQuery(GET_ORDER_BY_ID, {
+  const [orderDetails, setDetails] = useState<any>({
+    surcharge: null,
+    discount: null,
+    category: {},
+  });
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { loading, error, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
   });
   const details = data?.orderByOrderId || {};
-  const handleEditInputs = (key: any, val: string) => {
-    console.log(val, key);
+
+  useEffect(() => {
+    if (data && details) {
+      setDetails((prev: any) => {
+        if (JSON.stringify(prev) !== JSON.stringify(details)) {
+          return details;
+        }
+        return prev;
+      });
+    }
+
+    return () => setDetails({});
+  }, [data]);
+
+  const handleEditInputs = (key: any, val: any) => {
+    let payload = { ...orderDetails };
+    payload[key] = val;
+    setDetails(payload);
   };
 
   const columnData = {
@@ -95,28 +122,47 @@ function OrderPreview() {
     },
   ];
 
-  const handleDropdownChange = () => {
-    console.log('DropDown Changed');
+  const handleSave = async () => {
+    try {
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
+      refetch();
+      setIsLoading(false);
+      setEditMode(false);
+      setSuccessMessage('Order modified successfully');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (error: any) {
+      setErrorMessage(error?.response?.message || 'Order update failed');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      console.log(error);
+    }
   };
+
+  const handleDropdownChange = (val: any) => {
+    setDetails({ ...orderDetails, category: val });
+  };
+
   const handleError = () => {
     console.log('Error Handled');
   };
-  const handleChange = () => {
-    console.log('Input Changes Handled');
+
+  const handleChange = (key: any, val: any) => {
+    setDetails({ ...orderDetails, [key]: val });
   };
 
   if (loading) {
     return <>Loading...</>;
   }
 
-  const size = [{ small: 'S' }, { medium: 'M' }, { large: 'L' }];
-
-  const quantity = [{ small: '20' }, { medium: '30' }, { large: '0' }];
-
   return (
     <div className="mx-auto overflow-x-hidden">
       <Header heading={'Missoma X Selfridges - AW23'} />
-      <div className="mx-auto w-full max-w-[1440px] px-16 py-16">
+      <div className="mx-auto w-full max-w-[1440px] overflow-hidden px-16 py-16">
         <div className="bg-[#fff]]">
           <div className="flex flex-1 justify-end mb-6">
             <div className="flex items-center">
@@ -127,12 +173,14 @@ function OrderPreview() {
               >
                 Edit Details
               </Button>
-              <Button
-                onClick={() => setEditMode(false)}
-                className="!text-[12px] !font-normal"
-              >
-                Save
-              </Button>
+              {editMode && (
+                <Button
+                  onClick={handleSave}
+                  className="!text-[12px] !font-normal"
+                >
+                  Save
+                </Button>
+              )}
             </div>
           </div>
           <div>
@@ -144,40 +192,47 @@ function OrderPreview() {
               column3={columnData.column3}
             />
           </div>
-          <div className="flex px-9 py-10 shadow-sm rounded-md">
+          <div className="flex py-10 shadow-sm rounded-md">
             <Dropdown
               options={dropdownmenu}
               isValid={false}
               label="Select Category"
-              onChange={handleDropdownChange}
-              className="mr-8"
+              onChange={(val) => handleDropdownChange(val)}
+              className="mr-8 w-[278px] h-14"
+              selectedOption={orderDetails?.category}
+              width={278}
             />
             <Input
-              value="90%"
+              value={orderDetails?.discount}
               label="Discount"
-              type="text"
-              name="Brand"
+              type="number"
+              name="discount"
               isError={false}
               isValid={false}
               onError={handleError}
-              onChange={handleChange}
-              className="mr-8"
+              onChange={(val) => handleChange('discount', val)}
+              className="mr-8 !p-0 !max-h-[1px]"
             />
             <Input
-              value="100"
+              value={orderDetails?.surcharge}
               label="Surcharge"
-              type="text"
-              name="Brand"
+              type="number"
+              name="number"
               isError={false}
               isValid={false}
               onError={handleError}
-              onChange={handleChange}
+              onChange={(val) => handleChange('surcharge', val)}
               className="mr-8"
             />
-            <TotalQuantity title="Total Quantity" value={30} />
-            <TotalQuantity title="Total price" value={3345.0} />
+            <TotalQuantity
+              title="Total Quantity"
+              value={orderDetails?.totalQuantity}
+            />
+            <TotalQuantity
+              title="Total price"
+              value={orderDetails?.orderPrice}
+            />
           </div>
-          <TableComponent size={size} quantity={quantity} />
         </div>
         <div className="py-6 !flex !justify-end">
           <div className="flex-1"></div>
@@ -190,6 +245,7 @@ function OrderPreview() {
         </div>
         <OrderListTable products={details.order_details} />
       </div>
+      <Toast errorMessage={errorMessage} successMessage={successMessage} />
       <Footer />
     </div>
   );

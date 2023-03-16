@@ -24,11 +24,8 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   className,
   inputClasses,
 }) => {
-  // const [inputValue, setInputValue] = useState("");
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value;
-
-    // setInputValue(newValue);
     if (onChange) {
       onChange(newValue);
     }
@@ -40,14 +37,17 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   };
 
   return (
-    <div className={clsx('flex justify-center', styles.container)}>
-      <div className={clsx('my-3', className)}>
-        <div className="relative">
+    <div className={clsx('flex justify-center')}>
+      <div className={clsx('flex-1', className)}>
+        <div>
           <label className={styles.label}>{label}</label>
           <div
-            className={clsx('border border-neutral-600 rounded h-[190px]', {
-              [styles.errorTextarea]: isError === true,
-            })}
+            className={clsx(
+              'border w-full border-neutral-600 rounded h-[190px]',
+              {
+                [styles.errorTextarea]: isError === true,
+              }
+            )}
           >
             <textarea
               defaultValue={value}
@@ -55,7 +55,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
               placeholder={placeholder}
               className={clsx(
                 styles.textarea,
-                `h-[188px] w-[356px] p-4 'text-shades-black' rounded focus:outline-none`,
+                `h-[188px] !w-full p-4 'text-shades-black' rounded focus:outline-none`,
                 theme.fonts.text['base'],
                 inputClasses
               )}

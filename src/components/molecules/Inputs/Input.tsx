@@ -4,7 +4,7 @@ import styles from './Input.module.css';
 import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
 
 export interface InputProps {
-  value: string;
+  value: string | number;
   label: string;
   type?: string;
   name?: string;
