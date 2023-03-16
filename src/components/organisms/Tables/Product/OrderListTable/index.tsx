@@ -16,15 +16,10 @@ export interface OrderDetails {
 }
 
 const OrderListTable: FC<OrderDetails> = ({ products }) => {
-  console.log(products, 'orderByOrderId');
-
   const size = [{ small: 'S' }, { medium: 'M' }, { large: 'L' }];
-
   const quantity = [{ small: '20' }, { medium: '30' }, { large: '0' }];
-
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
-
   const columns = [
     columnHelper.accessor((row: any) => row, {
       size: 180,
@@ -146,7 +141,6 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
         title="Add a Product Note"
         isOpen={open}
         onClose={() => setOpen(false)}
-        className="w-[50%]"
       >
         <DescriptionField
           className="mb-8"

@@ -58,6 +58,11 @@ export const GET_ORDER_BY_ID = gql`
           measurements
           materials
         }
+        order_detail_sizes {
+          id
+          quantity
+          size
+        }
       }
     }
   }

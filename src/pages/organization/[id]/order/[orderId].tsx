@@ -122,6 +122,16 @@ function OrderPreview() {
     },
   ];
 
+  const handleUpdateQunatities = async () => {
+    try {
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      api.apiOrderUpdateDraftOrderPut(orderId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSave = async () => {
     try {
       const config: any = await apiConfig();
@@ -158,6 +168,7 @@ function OrderPreview() {
   if (loading) {
     return <>Loading...</>;
   }
+  console.log(orderDetails);
 
   return (
     <div className="mx-auto overflow-x-hidden">
