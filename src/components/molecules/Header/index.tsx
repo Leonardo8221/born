@@ -1,8 +1,9 @@
 import clsx from "clsx";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FC, ReactNode } from "react";
 import { Logo } from "../../atoms/Logo";
-import { variations } from "./utils";
+import { activeClass, variations } from "./utils";
 
 type Item = {
   label: string;
@@ -23,8 +24,9 @@ export interface NavItemProps extends JSX.IntrinsicAttributes {
 }
 
 const NavItem: FC<NavItemProps> = ({ label, href, variant, ...props }) => {
+  const router = useRouter();
   return (
-    <Link className={variations[variant].clsNavItem} href={href} {...props}>
+    <Link className={clsx(variations[variant].clsNavItem, router.asPath === href && activeClass)} href={href} {...props}>
       {label}
     </Link>
   );
