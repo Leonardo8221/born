@@ -30,7 +30,7 @@ function OrderPreview() {
   const { loading, error, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
   });
-  const details = data?.orderByOrderId || {};
+  const details = data?.orderByOrderId;
 
   useEffect(() => {
     if (data && details) {
@@ -169,7 +169,7 @@ function OrderPreview() {
   if (loading) {
     return <>Loading...</>;
   }
-  console.log(orderDetails);
+  // console.log(orderDetails);
 
   return (
     <div className="mx-auto overflow-x-hidden">

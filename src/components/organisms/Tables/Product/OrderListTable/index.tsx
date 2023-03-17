@@ -9,11 +9,12 @@ import Modal from '@/components/molecules/Modal';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { Button } from '@/components/molecules/Button';
 import ProductImage from '@/assets/images/products/product.png';
-import { products } from './data';
+// import { products } from './data';
+import TableComponent from '@/components/page-components/order/TableComponent';
 export interface OrderDetails {
   products: any[];
 }
-console.log(products);
+// console.log(products);
 
 const OrderListTable: FC<OrderDetails> = ({ products }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -138,6 +139,11 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
         />
         <Button label="Save" />
       </Modal>
+      <TableComponent
+        sizeAndQuantity={products}
+        description={''}
+        handleDescription={() => {}}
+      />
     </Fragment>
   );
 };

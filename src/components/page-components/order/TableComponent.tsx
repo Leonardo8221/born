@@ -1,56 +1,54 @@
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 
 interface Props {
-  size: Record<string, any>[];
-  quantity: Record<string, any>[];
+  sizeAndQuantity: any;
   description?: string;
   handleDescription: (val: string) => void;
 }
 
 const TableComponent: React.FC<Props> = ({
-  size,
-  quantity,
+  sizeAndQuantity,
   description,
   handleDescription,
 }) => {
+  const quanityAndSize =
+    (sizeAndQuantity &&
+      sizeAndQuantity.map((item: any) => {
+        return item.order_detail_sizes;
+      })) ||
+    [];
+
   return (
-    <table className="table w-full text-[12px] !border-none">
-      <tbody className="!border-none">
-        <tr className="h-[39px] !border-none">
-          <td className="border border-[#D8D8D8] w-[144px] px-3">Size</td>
-          {size.map((item, index) => (
-            <td
-              key={index}
-              className={'border border-[#D8D8D8] p-3 text-center'}
+    <div className="text-[12px] text-[#333333]">
+      <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t">
+        <h2 className="border-r border-[#D8D8D8] px-[55px] py-[10px] pr-[173px] pl-3">
+          Size
+        </h2>
+        {quanityAndSize[0] &&
+          quanityAndSize[0].map((item: any) => (
+            <p
+              key={item.id}
+              className="border-r  border-[#D8D8D8] w-[110px] p-[10px] text-center"
             >
-              {item.value}
-            </td>
+              {item.size}
+            </p>
           ))}
-        </tr>
-        <tr className="h-[39px] !border-none">
-          <td className="border border-[#D8D8D8] w-[144px] px-3">Quantity</td>
-          {quantity.map((item, index) => (
-            <td
-              key={index}
-              className={'border border-[#D8D8D8] p-3 text-center'}
+      </div>
+      <div className="flex items-center border border-[#D8D8D8] border-t-0 h-[39px] rounded-b">
+        <h2 className="border-r border-[#D8D8D8] py-[10px] pr-[141px] pl-[10px]">
+          Quantities
+        </h2>
+        {quanityAndSize[0] &&
+          quanityAndSize[0].map((item: any) => (
+            <p
+              key={item.id}
+              className="border-r  border-[#D8D8D8] w-[110px] p-[10px] text-center"
             >
-              {item.value}
-            </td>
+              {item.quantity}
+            </p>
           ))}
-        </tr>
-        <tr>
-          <td colSpan={2}>
-            <DescriptionField
-              onChange={handleDescription}
-              value={description}
-              className="mt-4 w-full"
-              label="Product Note"
-              placeholder="This Product...."
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      </div>
+    </div>
   );
 };
 
