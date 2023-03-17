@@ -9,14 +9,13 @@ import Modal from '@/components/molecules/Modal';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { Button } from '@/components/molecules/Button';
 import ProductImage from '@/assets/images/products/product.png';
-// import { products } from './data';
-import TableComponent from '@/components/page-components/order/TableComponent';
+
 export interface OrderDetails {
   products: any[];
+  handleQuantities?: (val: string, id: number) => void;
 }
-// console.log(products);
 
-const OrderListTable: FC<OrderDetails> = ({ products }) => {
+const OrderListTable: FC<OrderDetails> = ({ products, handleQuantities }) => {
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
   const columns = [
@@ -122,8 +121,10 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
       <>
         <Table
           tableData={products}
+          handleQuantities={handleQuantities}
           columns={columns}
           className="w-full [&>tbody>tr>td]:pt-4"
+          size={true}
         />
       </>
       <Modal
@@ -139,11 +140,6 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
         />
         <Button label="Save" />
       </Modal>
-      <TableComponent
-        sizeAndQuantity={products}
-        description={''}
-        handleDescription={() => {}}
-      />
     </Fragment>
   );
 };

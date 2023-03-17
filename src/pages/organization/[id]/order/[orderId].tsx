@@ -162,6 +162,35 @@ function OrderPreview() {
     console.log('Error Handled');
   };
 
+  const debounce = (func: Function, delay: number) => {
+    let timerId: any;
+    return (...args: any[]) => {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        func.apply(null, args);
+      }, 600);
+    };
+  };
+
+  const handleQuantities = async (val: string, id: number) => {
+    try {
+      const payload = {
+        note: '',
+        order_detail_sizes: [
+          {
+            order_detail_size_id: id,
+            quantity: Number(val),
+          },
+        ],
+      };
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      api.apiOrderUpdateDraftOrderPut(orderId, payload);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const debouncedHandleQuantities = debounce(handleQuantities, 500);
   const handleChange = (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
   };
@@ -169,8 +198,6 @@ function OrderPreview() {
   if (loading) {
     return <>Loading...</>;
   }
-  // console.log(orderDetails);
-
   return (
     <div className="mx-auto overflow-x-hidden">
       <Header heading={'Missoma X Selfridges - AW23'} />
@@ -262,7 +289,10 @@ function OrderPreview() {
             Select
           </Button>
         </div>
-        <OrderListTable products={details.order_details} />
+        <OrderListTable
+          handleQuantities={debouncedHandleQuantities}
+          products={details.order_details}
+        />
       </div>
       <Toast errorMessage={errorMessage} successMessage={successMessage} />
       <Footer />

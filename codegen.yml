@@ -2,8 +2,8 @@ overwrite: true
 schema:
   - https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql:
       headers:
-        Authorization: "Bearer <Access Token Here>"
-documents: "src/queries/**/*.{ts,tsx,js,jsx}"
+        Authorization: 'Bearer <Access Token Here>'
+documents: 'src/queries/**/*.{ts,tsx,js,jsx}'
 generates:
   ./src/generated/types.ts:
     plugins:

@@ -32,7 +32,6 @@ const Products: FC = () => {
   const router = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = +id;
-
   const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
     variables: { organizationId, search: debouncedValue },
   });
@@ -222,6 +221,8 @@ const Products: FC = () => {
       <OrderList
         setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
         isModalVisible={isModalVisible}
+        productIds={selectedProducts}
+        resetProductIds={() => setSelectedProducts([])}
       />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>
