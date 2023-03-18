@@ -17,9 +17,8 @@ import { useRouter } from 'next/router';
 import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
 import { CollectionResourceApi, ProductResourceApi } from 'client/command';
-import Toast from '@/components/page-components/Toast';
-import { OrderList } from '@/components/page-components/order/OrdersList';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
+import Toast from '@/components/page-components/Toast';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -196,10 +195,6 @@ const CollectionPage = () => {
           </>
         )}
       </div>
-      <OrderList
-        setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
-        isModalVisible={isModalVisible}
-      />
       <EditCollection
         isOpen={isEditModal}
         title="Edit collection details"
