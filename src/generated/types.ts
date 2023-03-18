@@ -21,21 +21,37 @@ export type Scalars = {
   DateTime: any;
 };
 
+export enum AttachmentType {
+  Image = "IMAGE",
+  Video = "VIDEO",
+}
+
 export type CollectionGraphqlDto = {
   __typename?: "CollectionGraphqlDTO";
   banner_guid?: Maybe<Scalars["String"]>;
+  banner_url?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
   linesheet_guid?: Maybe<Scalars["String"]>;
+  linesheet_url?: Maybe<Scalars["String"]>;
   lookbook_guid?: Maybe<Scalars["String"]>;
+  lookbook_url?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
 };
 
 export type OrderDetailGraphqlDto = {
   __typename?: "OrderDetailGraphqlDTO";
+  id?: Maybe<Scalars["BigInteger"]>;
   note?: Maybe<Scalars["String"]>;
+  order_detail_sizes?: Maybe<Array<Maybe<OrderDetailSizeGraphqlDto>>>;
   product?: Maybe<ProductGraphqlDto>;
+};
+
+export type OrderDetailSizeGraphqlDto = {
+  __typename?: "OrderDetailSizeGraphqlDTO";
+  id?: Maybe<Scalars["BigInteger"]>;
   quantity?: Maybe<Scalars["Int"]>;
+  size?: Maybe<Scalars["String"]>;
 };
 
 export type OrderGraphqlDto = {
@@ -72,6 +88,7 @@ export type OrganizationGraphqlDto = {
   __typename?: "OrganizationGraphqlDTO";
   address?: Maybe<Scalars["String"]>;
   banner_guid?: Maybe<Scalars["String"]>;
+  banner_url?: Maybe<Scalars["String"]>;
   city?: Maybe<Scalars["String"]>;
   collections?: Maybe<Array<Maybe<CollectionGraphqlDto>>>;
   country_of_origin?: Maybe<Scalars["String"]>;
@@ -80,11 +97,15 @@ export type OrganizationGraphqlDto = {
   id?: Maybe<Scalars["BigInteger"]>;
   instagram_link?: Maybe<Scalars["String"]>;
   linesheet_guid?: Maybe<Scalars["String"]>;
+  linesheet_url?: Maybe<Scalars["String"]>;
   logo_guid?: Maybe<Scalars["String"]>;
+  logo_url?: Maybe<Scalars["String"]>;
   lookbook_guid?: Maybe<Scalars["String"]>;
+  lookbook_url?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
   organization_type?: Maybe<OrganizationType>;
   product_csv_guid?: Maybe<Scalars["String"]>;
+  product_csv_url?: Maybe<Scalars["String"]>;
   terms_and_conditions?: Maybe<Scalars["String"]>;
   website_link?: Maybe<Scalars["String"]>;
   year_of_inception?: Maybe<Scalars["String"]>;
@@ -124,9 +145,18 @@ export type PriceGraphqlDto = {
   retail?: Maybe<Scalars["BigDecimal"]>;
 };
 
+export type ProductAttachmentGraphqlDto = {
+  __typename?: "ProductAttachmentGraphqlDTO";
+  attachment_guid?: Maybe<Scalars["String"]>;
+  attachment_url?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["BigInteger"]>;
+  type?: Maybe<AttachmentType>;
+};
+
 export type ProductGraphqlDto = {
   __typename?: "ProductGraphqlDTO";
   associated_prices?: Maybe<Array<Maybe<PriceGraphqlDto>>>;
+  attachments?: Maybe<Array<Maybe<ProductAttachmentGraphqlDto>>>;
   collections?: Maybe<Array<Maybe<CollectionGraphqlDto>>>;
   colour_code?: Maybe<Scalars["String"]>;
   colour_families?: Maybe<Array<Maybe<Scalars["String"]>>>;
@@ -171,8 +201,10 @@ export type Query = {
   orderByOrderId?: Maybe<OrderGraphqlDto>;
   /** Return list of all filtered order's by retailers, buyerNames, confirmed, approved, cancelled,createdDate and createdBy */
   ordersBySearch?: Maybe<PageWrapper_OrderGraphqlDto>;
-  /** Return collection by collection id */
+  /** Return organization by organization id */
   organizationByOrganizationId?: Maybe<OrganizationGraphqlDto>;
+  /** Return user organizations by logged user keycloak id */
+  organizationsByLoggedUser?: Maybe<Array<Maybe<OrganizationGraphqlDto>>>;
   /** Return product by product id */
   productByProductId?: Maybe<ProductGraphqlDto>;
   /** Return list of product variant's by styleNumber */
@@ -187,8 +219,10 @@ export type Query = {
   userWithOrganizationsAndUpdateLastLoggedInDate?: Maybe<UserGraphqlDto>;
   /** Return users by keycloak email */
   usersByKeycloakEmail?: Maybe<Array<Maybe<UserGraphqlDto>>>;
-  /** Return users by organization id */
-  usersByOrganizationId?: Maybe<Array<Maybe<UserGraphqlDto>>>;
+  /** Return users with organizations by organization id */
+  usersOrganizationsByOrganizationId?: Maybe<
+    Array<Maybe<UserOrganizationGraphqlDto>>
+  >;
 };
 
 /** Query root */
@@ -241,7 +275,6 @@ export type QueryProductVariantsByStyleNumberArgs = {
 /** Query root */
 export type QueryProductsBySearchAndCollectionIdArgs = {
   collectionId: Scalars["BigInteger"];
-  collectionNames?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   colourNames?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   rows?: InputMaybe<Scalars["Int"]>;
   search?: InputMaybe<Scalars["String"]>;
@@ -271,7 +304,7 @@ export type QueryUsersByKeycloakEmailArgs = {
 };
 
 /** Query root */
-export type QueryUsersByOrganizationIdArgs = {
+export type QueryUsersOrganizationsByOrganizationIdArgs = {
   organizationId: Scalars["BigInteger"];
 };
 
@@ -325,9 +358,113 @@ export type GetCollectionsQuery = {
     description?: string | null;
     name?: string | null;
     banner_guid?: string | null;
+    banner_url?: string | null;
     linesheet_guid?: string | null;
+    linesheet_url?: string | null;
     lookbook_guid?: string | null;
+    lookbook_url?: string | null;
   } | null> | null;
+};
+
+export type GetColletonQueryVariables = Exact<{
+  collectionId: Scalars["BigInteger"];
+}>;
+
+export type GetColletonQuery = {
+  __typename?: "Query";
+  collectionByCollectionId?: {
+    __typename?: "CollectionGraphqlDTO";
+    id?: any | null;
+    description?: string | null;
+    name?: string | null;
+    banner_guid?: string | null;
+    banner_url?: string | null;
+    linesheet_guid?: string | null;
+    linesheet_url?: string | null;
+    lookbook_guid?: string | null;
+    lookbook_url?: string | null;
+  } | null;
+};
+
+export type GetProductsByCollectionIdQueryVariables = Exact<{
+  collectionId: Scalars["BigInteger"];
+  search?: InputMaybe<Scalars["String"]>;
+  start?: InputMaybe<Scalars["Int"]>;
+  rows?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetProductsByCollectionIdQuery = {
+  __typename?: "Query";
+  productsBySearchAndCollectionId?: {
+    __typename?: "PageWrapper_ProductGraphqlDTO";
+    total_pages: number;
+    total_elements: any;
+    number_of_elements: number;
+    size: number;
+    content?: Array<{
+      __typename?: "ProductGraphqlDTO";
+      id?: any | null;
+      product_id?: string | null;
+      description?: string | null;
+      colour_code?: string | null;
+      colour_name?: string | null;
+      colour_families?: Array<string | null> | null;
+      keywords?: Array<string | null> | null;
+      first_category?: string | null;
+      second_category?: string | null;
+      third_category?: string | null;
+      fourth_category?: string | null;
+      compositions?: Array<string | null> | null;
+      country_of_origin?: string | null;
+      delivery_lead_time?: number | null;
+      delivery_window_end_date?: any | null;
+      delivery_window_start_date?: any | null;
+      upc?: string | null;
+      style_name?: string | null;
+      style_number?: string | null;
+      style_id?: string | null;
+      size_type?: string | null;
+      size_options?: Array<string | null> | null;
+      size_category?: string | null;
+      season?: string | null;
+      min_order_value?: number | null;
+      min_order_quantity?: number | null;
+      measurements?: Array<string | null> | null;
+      materials?: Array<string | null> | null;
+      attachments?: Array<{
+        __typename?: "ProductAttachmentGraphqlDTO";
+        id?: any | null;
+        attachment_url?: string | null;
+        attachment_guid?: string | null;
+        type?: AttachmentType | null;
+      } | null> | null;
+      associated_prices?: Array<{
+        __typename?: "PriceGraphqlDTO";
+        currency?: string | null;
+        exworks?: any | null;
+        landed?: any | null;
+        retail?: any | null;
+      } | null> | null;
+      collections?: Array<{
+        __typename?: "CollectionGraphqlDTO";
+        id?: any | null;
+        name?: string | null;
+      } | null> | null;
+    } | null> | null;
+  } | null;
+};
+
+export type CollectionGraphqlDtoFragment = {
+  __typename?: "CollectionGraphqlDTO";
+  id?: any | null;
+  description?: string | null;
+  name?: string | null;
+  banner_guid?: string | null;
+  banner_url?: string | null;
+  linesheet_guid?: string | null;
+  linesheet_url?: string | null;
+  lookbook_guid?: string | null;
+  lookbook_url?: string | null;
 };
 
 export type OrganizationGraphqlDtoFragment = {
@@ -345,6 +482,15 @@ export type OrganizationGraphqlDtoFragment = {
   year_of_inception?: string | null;
   logo_guid?: string | null;
   banner_guid?: string | null;
+  banner_url?: string | null;
+  logo_url?: string | null;
+  linesheet_url?: string | null;
+  lookbook_url?: string | null;
+  collections?: Array<{
+    __typename?: "CollectionGraphqlDTO";
+    name?: string | null;
+    id?: any | null;
+  } | null> | null;
 };
 
 export type ProductGraphqlDtoFragment = {
@@ -377,6 +523,13 @@ export type ProductGraphqlDtoFragment = {
   min_order_quantity?: number | null;
   measurements?: Array<string | null> | null;
   materials?: Array<string | null> | null;
+  attachments?: Array<{
+    __typename?: "ProductAttachmentGraphqlDTO";
+    id?: any | null;
+    attachment_url?: string | null;
+    attachment_guid?: string | null;
+    type?: AttachmentType | null;
+  } | null> | null;
   associated_prices?: Array<{
     __typename?: "PriceGraphqlDTO";
     currency?: string | null;
@@ -389,6 +542,23 @@ export type ProductGraphqlDtoFragment = {
     id?: any | null;
     name?: string | null;
   } | null> | null;
+};
+
+export type UserGraphqlDtoFragment = {
+  __typename?: "UserGraphqlDTO";
+  id?: any | null;
+  birth_date?: any | null;
+  keycloak_email?: string | null;
+  keycloak_first_name?: string | null;
+  keycloak_id?: string | null;
+  keycloak_last_name?: string | null;
+  keycloak_username?: string | null;
+  last_logged_in?: any | null;
+  password?: string | null;
+  follow_notification_enabled: boolean;
+  message_notification_enabled: boolean;
+  order_notification_enabled: boolean;
+  product_notification_enabled: boolean;
 };
 
 export type GetOrderByIdQueryVariables = Exact<{
@@ -420,7 +590,6 @@ export type GetOrderByIdQuery = {
     order_details?: Array<{
       __typename?: "OrderDetailGraphqlDTO";
       note?: string | null;
-      quantity?: number | null;
       product?: {
         __typename?: "ProductGraphqlDTO";
         id?: any | null;
@@ -464,6 +633,9 @@ export type GetOrdersQueryVariables = Exact<{
   organizationId: Scalars["BigInteger"];
   start: Scalars["Int"];
   rows: Scalars["Int"];
+  confirmed: Scalars["Boolean"];
+  approved: Scalars["Boolean"];
+  cancelled: Scalars["Boolean"];
 }>;
 
 export type GetOrdersQuery = {
@@ -500,6 +672,33 @@ export type GetOrdersQuery = {
   } | null;
 };
 
+export type OrderBySearchQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+  start: Scalars["Int"];
+  rows: Scalars["Int"];
+  confirmed: Scalars["Boolean"];
+  cancelled: Scalars["Boolean"];
+}>;
+
+export type OrderBySearchQuery = {
+  __typename?: "Query";
+  ordersBySearch?: {
+    __typename?: "PageWrapper_OrderGraphqlDTO";
+    total_pages: number;
+    total_elements: any;
+    number_of_elements: number;
+    size: number;
+    content?: Array<{
+      __typename?: "OrderGraphqlDTO";
+      id?: any | null;
+      name?: string | null;
+      total?: any | null;
+      billing_address?: string | null;
+      buyer_name?: string | null;
+    } | null> | null;
+  } | null;
+};
+
 export type GetOrganizationsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetOrganizationsQuery = {
@@ -521,6 +720,15 @@ export type GetOrganizationsQuery = {
       year_of_inception?: string | null;
       logo_guid?: string | null;
       banner_guid?: string | null;
+      banner_url?: string | null;
+      logo_url?: string | null;
+      linesheet_url?: string | null;
+      lookbook_url?: string | null;
+      collections?: Array<{
+        __typename?: "CollectionGraphqlDTO";
+        name?: string | null;
+        id?: any | null;
+      } | null> | null;
     } | null> | null;
   } | null;
 };
@@ -549,12 +757,22 @@ export type GetOrganizationByIdQuery = {
       year_of_inception?: string | null;
       logo_guid?: string | null;
       banner_guid?: string | null;
+      banner_url?: string | null;
+      logo_url?: string | null;
+      linesheet_url?: string | null;
+      lookbook_url?: string | null;
+      collections?: Array<{
+        __typename?: "CollectionGraphqlDTO";
+        name?: string | null;
+        id?: any | null;
+      } | null> | null;
     };
   } | null;
 };
 
 export type GetProductsQueryVariables = Exact<{
   organizationId: Scalars["BigInteger"];
+  search?: InputMaybe<Scalars["String"]>;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
 }>;
@@ -597,6 +815,13 @@ export type GetProductsQuery = {
       min_order_quantity?: number | null;
       measurements?: Array<string | null> | null;
       materials?: Array<string | null> | null;
+      attachments?: Array<{
+        __typename?: "ProductAttachmentGraphqlDTO";
+        id?: any | null;
+        attachment_url?: string | null;
+        attachment_guid?: string | null;
+        type?: AttachmentType | null;
+      } | null> | null;
       associated_prices?: Array<{
         __typename?: "PriceGraphqlDTO";
         currency?: string | null;
@@ -610,5 +835,188 @@ export type GetProductsQuery = {
         name?: string | null;
       } | null> | null;
     } | null> | null;
+  } | null;
+};
+
+export type GetProductByIdQueryVariables = Exact<{
+  productId: Scalars["BigInteger"];
+}>;
+
+export type GetProductByIdQuery = {
+  __typename?: "Query";
+  productByProductId?: {
+    __typename?: "ProductGraphqlDTO";
+    id?: any | null;
+    product_id?: string | null;
+    description?: string | null;
+    colour_code?: string | null;
+    colour_name?: string | null;
+    colour_families?: Array<string | null> | null;
+    keywords?: Array<string | null> | null;
+    first_category?: string | null;
+    second_category?: string | null;
+    third_category?: string | null;
+    fourth_category?: string | null;
+    compositions?: Array<string | null> | null;
+    country_of_origin?: string | null;
+    delivery_lead_time?: number | null;
+    delivery_window_end_date?: any | null;
+    delivery_window_start_date?: any | null;
+    upc?: string | null;
+    style_name?: string | null;
+    style_number?: string | null;
+    style_id?: string | null;
+    size_type?: string | null;
+    size_options?: Array<string | null> | null;
+    size_category?: string | null;
+    season?: string | null;
+    min_order_value?: number | null;
+    min_order_quantity?: number | null;
+    measurements?: Array<string | null> | null;
+    materials?: Array<string | null> | null;
+    attachments?: Array<{
+      __typename?: "ProductAttachmentGraphqlDTO";
+      id?: any | null;
+      attachment_url?: string | null;
+      attachment_guid?: string | null;
+      type?: AttachmentType | null;
+    } | null> | null;
+    associated_prices?: Array<{
+      __typename?: "PriceGraphqlDTO";
+      currency?: string | null;
+      exworks?: any | null;
+      landed?: any | null;
+      retail?: any | null;
+    } | null> | null;
+    collections?: Array<{
+      __typename?: "CollectionGraphqlDTO";
+      id?: any | null;
+      name?: string | null;
+    } | null> | null;
+  } | null;
+};
+
+export type GetProductsBySearchAndCollectionIdQueryVariables = Exact<{
+  collectionId: Scalars["BigInteger"];
+  search?: InputMaybe<Scalars["String"]>;
+  colourNames?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  season?: InputMaybe<Scalars["String"]>;
+  start?: InputMaybe<Scalars["Int"]>;
+  rows?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetProductsBySearchAndCollectionIdQuery = {
+  __typename?: "Query";
+  productsBySearchAndCollectionId?: {
+    __typename?: "PageWrapper_ProductGraphqlDTO";
+    total_pages: number;
+    total_elements: any;
+    number_of_elements: number;
+    size: number;
+    content?: Array<{
+      __typename?: "ProductGraphqlDTO";
+      id?: any | null;
+      product_id?: string | null;
+      description?: string | null;
+      colour_code?: string | null;
+      colour_name?: string | null;
+      colour_families?: Array<string | null> | null;
+      keywords?: Array<string | null> | null;
+      first_category?: string | null;
+      second_category?: string | null;
+      third_category?: string | null;
+      fourth_category?: string | null;
+      compositions?: Array<string | null> | null;
+      country_of_origin?: string | null;
+      delivery_lead_time?: number | null;
+      delivery_window_end_date?: any | null;
+      delivery_window_start_date?: any | null;
+      upc?: string | null;
+      style_name?: string | null;
+      style_number?: string | null;
+      style_id?: string | null;
+      size_type?: string | null;
+      size_options?: Array<string | null> | null;
+      size_category?: string | null;
+      season?: string | null;
+      min_order_value?: number | null;
+      min_order_quantity?: number | null;
+      measurements?: Array<string | null> | null;
+      materials?: Array<string | null> | null;
+      attachments?: Array<{
+        __typename?: "ProductAttachmentGraphqlDTO";
+        id?: any | null;
+        attachment_url?: string | null;
+        attachment_guid?: string | null;
+        type?: AttachmentType | null;
+      } | null> | null;
+      associated_prices?: Array<{
+        __typename?: "PriceGraphqlDTO";
+        currency?: string | null;
+        exworks?: any | null;
+        landed?: any | null;
+        retail?: any | null;
+      } | null> | null;
+      collections?: Array<{
+        __typename?: "CollectionGraphqlDTO";
+        id?: any | null;
+        name?: string | null;
+      } | null> | null;
+    } | null> | null;
+  } | null;
+};
+
+export type GetUsersQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type GetUsersQuery = {
+  __typename?: "Query";
+  usersOrganizationsByOrganizationId?: Array<{
+    __typename?: "UserOrganizationGraphqlDTO";
+    id?: any | null;
+    role_type: RoleType;
+    user_entity: {
+      __typename?: "UserGraphqlDTO";
+      id?: any | null;
+      birth_date?: any | null;
+      keycloak_email?: string | null;
+      keycloak_first_name?: string | null;
+      keycloak_id?: string | null;
+      keycloak_last_name?: string | null;
+      keycloak_username?: string | null;
+      last_logged_in?: any | null;
+      password?: string | null;
+      follow_notification_enabled: boolean;
+      message_notification_enabled: boolean;
+      order_notification_enabled: boolean;
+      product_notification_enabled: boolean;
+    };
+  } | null> | null;
+};
+
+export type GetUserwithOraganizationQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetUserwithOraganizationQuery = {
+  __typename?: "Query";
+  userWithOrganizationsAndUpdateLastLoggedInDate?: {
+    __typename?: "UserGraphqlDTO";
+    id?: any | null;
+    birth_date?: any | null;
+    keycloak_email?: string | null;
+    keycloak_first_name?: string | null;
+    keycloak_id?: string | null;
+    keycloak_last_name?: string | null;
+    keycloak_username?: string | null;
+    last_logged_in?: any | null;
+    password?: string | null;
+    follow_notification_enabled: boolean;
+    message_notification_enabled: boolean;
+    order_notification_enabled: boolean;
+    product_notification_enabled: boolean;
   } | null;
 };

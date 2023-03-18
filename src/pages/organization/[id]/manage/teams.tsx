@@ -10,11 +10,11 @@ const TeamsPage = () => {
       label: 'Team Management',
       content: <Teams />
     },
-    {
-      id: 'Affliation',
-      label: 'Affliations',
-      content: <Affliations />
-    },
+    // {
+    //   id: 'Affliation',
+    //   label: 'Affliations',
+    //   content: <Affliations />
+    // },
   ]
   return (
     <ManageLayout>

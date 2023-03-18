@@ -28,8 +28,8 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams, handleRemoveUser }) => {
               fonts.text.lg
             )}
           >
-            {row?.original?.keycloak_first_name}{' '}
-            {row?.orignal?.keycloak_last_name}
+            {row?.original?.user_entity?.keycloak_first_name}{' '}
+            {row?.orignal?.user_entity?.keycloak_last_name}
           </h3>
           <p
             className={clsx(
@@ -37,13 +37,13 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams, handleRemoveUser }) => {
               fonts.text.md
             )}
           >
-            {row?.original?.keycloak_email}
+            {row?.original?.user_entity?.keycloak_email}
           </p>
         </div>
       ),
       header: () => 'Team Member Name',
     }),
-    columnHelper.accessor('last_logged_in', {
+    columnHelper.accessor((row: any) => row, {
       size: 185,
       id: 'last_logged_in',
       cell: (info: any) => (
@@ -53,22 +53,23 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams, handleRemoveUser }) => {
             fonts.text.md
           )}
         >
-          {info?.getValue() && formatDate(info?.getValue())}
+          {info?.getValue() &&
+            formatDate(info?.getValue?.()?.user_entity?.last_logged_in)}
         </div>
       ),
       header: () => 'Last logged in',
     }),
-    columnHelper.accessor('permission', {
+    columnHelper.accessor('role_type', {
       size: 97,
-      id: 'permission',
+      id: 'role_type',
       cell: (info: any) => (
         <div
           className={clsx(
-            'text-shades-black font-normal tracking-[0.06em] text-center',
+            'text-shades-black capitalize font-normal tracking-[0.06em] text-center',
             fonts.text.md
           )}
         >
-          {info?.getValue() || 'Manager'}
+          {info?.getValue()?.toLowerCase() || 'Owner'}
         </div>
       ),
       header: () => 'Permission',
@@ -78,11 +79,11 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams, handleRemoveUser }) => {
       id: 'actions',
       cell: (info: any) => {
         const options = [
-          {
-            label: 'Manage role',
-            value: 'manage-role',
-            action: () => console.log('Manage role!'),
-          },
+          // {
+          //   label: 'Manage role',
+          //   value: 'manage-role',
+          //   action: () => console.log('Manage role!'),
+          // },
           {
             label: 'Revoke access',
             value: 'revoke-access',

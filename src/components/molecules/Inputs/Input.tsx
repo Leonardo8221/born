@@ -51,7 +51,7 @@ const Input: FC<InputProps> = ({
 
   return (
     <div className="flex justify-center">
-      <div className={clsx('my-3', className)}>
+      <div className={clsx('my-3 w-full', className)}>
         <div className="relative">
           <label className={styles.label}>
             {label}

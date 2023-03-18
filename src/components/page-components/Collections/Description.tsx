@@ -7,11 +7,14 @@ import DocumentIcon from "@/assets/svgs/collection/document.svg";
 
 interface DescriptionProps {
   onUpload?: (e: any) => void;
+  description?: string;
 }
 
 const Description: FC<DescriptionProps> = ({
   onUpload = () => {},
+  description,
 }) => {
+
   return (
     <div>
       <div className="flex mt-8 items-center justify-center gap-6">
@@ -59,16 +62,18 @@ const Description: FC<DescriptionProps> = ({
           <LogoutIcon width={60} height={54} onClick={onUpload} />
         </div>
       </div>
-      <p
-        className={clsx(
-          "max-w-[662px] mt-8 mx-auto text-shades-black text-center font-light tracking-[0.06em]",
-          fonts.text["2xl"]
-        )}
-      >
-        Since 2013, Emporio Sirenuse has distilled the values and verve of
-        inimitable Amalfi Coast hotel Le Sirenuse into a small, carefully
-        curated collection of beachwear, resortwear, design and lifestyle items.
-      </p>
+      {
+        description && (
+          <p
+            className={clsx(
+              "max-w-[662px] mt-8 mx-auto text-shades-black text-center font-light tracking-[0.06em]",
+              fonts.text["2xl"]
+            )}
+          >
+            {description}
+          </p>
+        )
+      }
     </div>
   );
 };

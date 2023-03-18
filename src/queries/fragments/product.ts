@@ -8,6 +8,12 @@ export const PRODUCT_FRAGMENT = gql`
     colour_code
     colour_name
     colour_families
+    attachments {
+      id
+      attachment_url
+      attachment_guid
+      type
+    }
     associated_prices {
       currency
       exworks

@@ -44,7 +44,7 @@ const Dropdown: FC<DropdownProps> = ({
   const handleChange = (event: Option) => {
     setSelected(event);
     if (onChange) {
-      onChange(selected);
+      onChange(event);
     }
   };
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -72,7 +72,7 @@ const Dropdown: FC<DropdownProps> = ({
     <div ref={dropdownRef}>
       <div
         className={clsx(
-          `flex justify-center my-3 mx-2`,
+          `relative flex justify-center my-3 mx-2`,
           theme.fonts.text['base'],
           className
         )}
@@ -103,8 +103,8 @@ const Dropdown: FC<DropdownProps> = ({
               >
                 <Listbox.Options
                   className={clsx(
-                    'rounded-b border-r border-l border-b border-shades-black absolute z-10 bg-shades-white',
-                    width && `!w-[${width}px]`
+                    'rounded-b  border-r border-l border-b border-shades-black absolute z-10 bg-shades-white',
+                    width ? `!w-[${width}px]` : '!w-full'
                   )}
                 >
                   {options

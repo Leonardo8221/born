@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode, FC } from "react";
+import { useState, useCallback, ReactNode, FC, useEffect } from "react";
 import clsx from "clsx";
 import { useDropzone } from "react-dropzone";
 import { FileCard } from "../FileCard";
@@ -19,6 +19,7 @@ export interface FileUploadProps {
   className?: string;
   disabled?: boolean;
   idInput?: string;
+  imageUrl?: string;
 }
 
 export const FileUpload: FC<FileUploadProps> = ({
@@ -38,9 +39,16 @@ export const FileUpload: FC<FileUploadProps> = ({
   className,
   disabled,
   idInput,
+  imageUrl,
 }) => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if(imageUrl) {
+      setPreviewUrl(imageUrl);
+    }
+  }, [])
 
   const renderButton = () => {
     return (

@@ -20,7 +20,7 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
   return (
     <div className="p-4">
       <div
-        className="relative overflow-hidden flex h-[172px] w-full max-w-[320] item-center justify-center bg-cover bg-no-repeat bg-center rounded-lg"
+        className="relative overflow-hidden flex h-[172px] w-full max-w-[320px] item-center justify-center bg-cover bg-no-repeat bg-center rounded-lg"
         style={{
           backgroundImage: `url(${
             typeof imgSrc !== "string" ? imgSrc?.src : imgSrc
@@ -38,7 +38,9 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
           <Image
             src={logoUrl}
             alt={name + "logo"}
-            className="h-10 w-10 bg-shades-white rounded-full p-[3.33px] mx-auto"
+            className="bg-shades-white rounded-full p-[3.33px] mx-auto"
+            height={40}
+            width={40}
           />
           <h3
             className={clsx(

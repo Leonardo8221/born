@@ -32,7 +32,7 @@ const SelectOrganization = () => {
       <div className="mt-[60px]">
         <ErrorMessage errorMessage={error?.message} refetch={refetch} />
       </div>
-    )
+    );
   }
 
   return (

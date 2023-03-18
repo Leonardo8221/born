@@ -18,6 +18,8 @@ import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
 import { CollectionResourceApi, ProductResourceApi } from 'client/command';
 import Toast from '@/components/page-components/Toast';
+import { OrderList } from '@/components/page-components/order/OrdersList';
+import EditCollection from '@/components/page-components/Collections/EditCollection';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -30,10 +32,13 @@ const CollectionPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const debouncedValue = useDebounce(searchKeyword, 600);
+  const [isEditModal, setIsEditModal] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const { data: colleciton, loading } = useQuery(COLLECTION_QUERY, {
+  const { data: collecitonData, loading } = useQuery(COLLECTION_QUERY, {
     variables: { collectionId },
   });
+  const collection = collecitonData?.collectionByCollectionId;
 
   const {
     data: productsCollection,
@@ -65,8 +70,8 @@ const CollectionPage = () => {
   };
 
   const handleSuccessMesssage = (message: string) => {
+    refetch();
     setSuccessMessage(message);
-
     setTimeout(() => {
       setSuccessMessage('');
     }, 3000);
@@ -81,7 +86,6 @@ const CollectionPage = () => {
         collectionId,
         selectedProducts
       );
-      refetch();
       handleSuccessMesssage(
         `Removed ${selectedProducts.length} products from collections sucessfully!!`
       );
@@ -102,7 +106,6 @@ const CollectionPage = () => {
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductDeleteProductsDelete(selectedProducts);
-      refetch();
       setIsLoading(false);
       handleSuccessMesssage(
         `Deleted ${selectedProducts.length} products successfully!`
@@ -149,16 +152,19 @@ const CollectionPage = () => {
 
   return (
     <div>
-      <Header handleCreateOrder={() => console.log('create order')} />
+      <Header
+        handleCreateOrder={() => setIsModalVisible(!isModalVisible)}
+        onEdit={() => setIsEditModal(true)}
+      />
       <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">
         <div className="mb-[64px]">
           <CollectionCard
-            backgroundImageSrc={backgroundImageSrc}
-            label={colleciton?.collectionByCollectionId?.name}
+            backgroundImageSrc={collection?.banner_url || backgroundImageSrc}
+            label={collection?.name}
             editBanner
             onEdit={(e) => e.preventDefault()}
           />
-          <Description />
+          <Description description={collection?.description} />
         </div>
         <Filters
           onGridChange={setGrid}
@@ -190,6 +196,18 @@ const CollectionPage = () => {
           </>
         )}
       </div>
+      <OrderList
+        setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
+        isModalVisible={isModalVisible}
+      />
+      <EditCollection
+        isOpen={isEditModal}
+        title="Edit collection details"
+        collection={collection}
+        toggleModal={setIsEditModal}
+        handleSuccessMessage={handleSuccessMesssage}
+        handleErrorMessage={handleErrorMesssage}
+      />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
       <Footer />
     </div>

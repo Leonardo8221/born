@@ -39,6 +39,8 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
     address: organization?.address || '',
     website_link: organization?.website_link || '',
     instagram_link: organization?.instagram_link || '',
+    city: organization?.city || '',
+    country_of_origin: organization?.country_of_origin || '',
   };
 
   useEffect(() => {
@@ -105,14 +107,13 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             isValid={false}
             selectedOption={{
               value: organization?.country_of_origin || '',
-              name: 'String',
+              name: organization?.country_of_origin || '',
             }}
             options={[
-              { value: 'string', name: 'String' },
               { value: 'hieros', name: 'Hieros' },
+              { value: 'Origin 1', name: 'Origin 1' },
             ]}
-            width={352}
-            onChange={() => {}}
+            onChange={(option) => changeQueryInputs('country_of_origin')(option?.value || '')}
           />
           <Dropdown
             label="City"
@@ -120,14 +121,14 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             isValid={false}
             selectedOption={{
               value: organization?.city || '',
-              name: 'String',
+              name: organization?.city || '',
             }}
             options={[
               { value: 'hieros', name: 'Hieros' },
-              { value: 'string', name: 'String' },
+              { value: 'Bristol', name: 'Bristol' },
+              { value: 'Liverpool', name: 'Liverpool' }
             ]}
-            width={352}
-            onChange={() => {}}
+            onChange={(option) => changeQueryInputs('city')(option?.value || '')}
           />
           <Input
             label="Address"
@@ -148,6 +149,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             className="mt-3"
             idInput='company_logo'
             disabled={isLogoUpload}
+            imageUrl={organization?.logo_url || ''}
           />
           <FileUpload
             handleUpload={(e) =>
@@ -158,6 +160,7 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             className="mt-[29px] mb-3"
             idInput='banner_image'
             disabled={isBannerUpload}
+            imageUrl={organization?.banner_url || ''}
           />
           <Input
             className="mr-auto"
