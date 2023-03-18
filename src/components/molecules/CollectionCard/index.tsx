@@ -6,7 +6,7 @@ import styles from "./CollectionCard.module.css";
 import { Button } from "../Button";
 
 export interface CollectionCardProps {
-  backgroundImageSrc: StaticImageData;
+  backgroundImageSrc: string | StaticImageData;
   imageSrc?: StaticImageData;
   label?: string;
   author?: string;
@@ -95,6 +95,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
           src={backgroundImageSrc}
           alt="Collection Card Background"
           className="absolute w-full h-full object-cover z-[0] rounded"
+          fill
         />
         <div className={styles.cardBackground}></div>
         <div className="relative m-auto">

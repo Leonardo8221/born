@@ -49,6 +49,7 @@ const Collections: FC<CollectionsProps> = ({
 
     setTimeout(() => {
       setSuccessMessage('');
+      setIsCreateModal(false);
     }, 3000);
   };
 
@@ -61,7 +62,6 @@ const Collections: FC<CollectionsProps> = ({
         newCollection
       );
       refetch();
-      setIsCreateModal(false);
       toggleCollectionsModal?.(false);
       handleSuccessMesssage('New collection added successfully!');
     } catch (error) {
@@ -88,7 +88,7 @@ const Collections: FC<CollectionsProps> = ({
                 href={`/organization/${organizationId}/discover/collections/${item.id}`}
               >
                 <CollectionCard
-                  backgroundImageSrc={backgroundImageSrc}
+                  backgroundImageSrc={item?.banner_url || backgroundImageSrc}
                   label={item.name || ''}
                   author={''}
                   imageSrc={imageSrc}

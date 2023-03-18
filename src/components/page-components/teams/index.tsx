@@ -75,7 +75,7 @@ const Teams = () => {
           <Loading message="Loading users..." />
         ) : (
           <TeamOverView
-            teams={data?.usersByOrganizationId || []}
+            teams={data?.usersOrganizationsByOrganizationId || []}
             handleRemoveUser={handleRemoveUser}
           />
         )}

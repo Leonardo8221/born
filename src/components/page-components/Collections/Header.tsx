@@ -7,9 +7,10 @@ import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
 
 interface HeaderProps {
   handleCreateOrder: () => void;
+  onEdit: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ handleCreateOrder }) => {
+const Header: FC<HeaderProps> = ({ handleCreateOrder, onEdit }) => {
   const router = useRouter();
   const items = [
     {
@@ -32,7 +33,9 @@ const Header: FC<HeaderProps> = ({ handleCreateOrder }) => {
       </div>
       <div className="flex items-center gap-x-4">
         <div>
-          <Button variant="outlined">Edit</Button>
+          <Button variant="outlined" onClick={onEdit}>
+            Edit
+          </Button>
         </div>
         <div>
           <DropdownMenu

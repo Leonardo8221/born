@@ -1,11 +1,14 @@
 import { gql } from '@apollo/client';
-import { ORGANIZATION_FRAGMENT } from './fragments/organzation';
 import { USERS_FRAMGMENT } from './fragments/users';
 
 export const USERS_QUERY = gql`
   query getUsers($organizationId: BigInteger!) {
-    usersByOrganizationId(organizationId: $organizationId) {
-      ...UserGraphqlDTO
+    usersOrganizationsByOrganizationId(organizationId: $organizationId) {
+      id
+      role_type
+      user_entity {
+        ...UserGraphqlDTO
+      }
     }
   }
   ${USERS_FRAMGMENT}
