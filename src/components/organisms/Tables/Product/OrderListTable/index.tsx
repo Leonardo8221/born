@@ -2,7 +2,6 @@ import { FC, Fragment, useState } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import ImageText from '@/components/molecules/ImageText';
-import { Icon } from '@/components/molecules/Icon';
 import { fonts } from '@/config/fonts';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
@@ -10,26 +9,18 @@ import Modal from '@/components/molecules/Modal';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { Button } from '@/components/molecules/Button';
 import ProductImage from '@/assets/images/products/product.png';
-import { OrderDetailGraphqlDto } from '@/generated/types';
-import TableComponent from '@/components/page-components/order/TableComponent';
 
 export interface OrderDetails {
   products: any[];
+  handleQuantities?: (val: string, id: number) => void;
 }
 
-const OrderListTable: FC<OrderDetails> = ({ products }) => {
-  console.log(products, 'orderByOrderId');
-
-  const size = [{ small: 'S' }, { medium: 'M' }, { large: 'L' }];
-
-  const quantity = [{ small: '20' }, { medium: '30' }, { large: '0' }];
-
+const OrderListTable: FC<OrderDetails> = ({ products, handleQuantities }) => {
   const [open, setOpen] = useState<boolean>(false);
   const columnHelper: any = createColumnHelper();
-
   const columns = [
     columnHelper.accessor((row: any) => row, {
-      size: 221,
+      size: 180,
       id: 'name',
       cell: ({ row }: any) => (
         <div>
@@ -45,7 +36,7 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
       header: () => 'Product name',
     }),
     columnHelper.accessor((row: any) => row, {
-      size: 122,
+      size: 110,
       id: 'colors',
       cell: ({ row }: any) => {
         const colors = row?.original?.product?.colour_families || [];
@@ -73,13 +64,13 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
       header: () => 'Season',
     }),
     columnHelper.accessor((row: any) => row, {
-      size: 128,
+      size: 120,
       id: 'department',
       cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
       header: () => 'Department',
     }),
     columnHelper.accessor('wholesalePrice', {
-      size: 153,
+      size: 130,
       id: 'wholesalePrice',
       cell: (info: any) => (
         <div
@@ -109,7 +100,7 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
       header: () => 'Quantities',
     }),
     columnHelper.accessor('totalWholesalePrice', {
-      size: 180,
+      size: 160,
       id: 'totalWholesalePrice',
       cell: (info: any) => (
         <div
@@ -123,36 +114,30 @@ const OrderListTable: FC<OrderDetails> = ({ products }) => {
       ),
       header: () => 'Total Wholesale price',
     }),
-    columnHelper.accessor('chat', {
-      size: 124,
-      id: 'chat',
-      cell: () => (
-        <Icon
-          onClick={() => setOpen(true)}
-          name="icon-message-square"
-          className="text-center cursor-pointer text-shades-black"
-        />
-      ),
-      header: () => '',
-    }),
   ];
 
   return (
     <Fragment>
-      <Table
-        tableData={products}
-        columns={columns}
-        className="w-full [&>tbody>tr>td]:pt-4"
-      />
-      <TableComponent size={size} quantity={quantity} />
-
-      {/* modal here */}
+      <>
+        <Table
+          tableData={products}
+          handleQuantities={handleQuantities}
+          columns={columns}
+          className="w-full [&>tbody>tr>td]:pt-4"
+          size={true}
+        />
+      </>
       <Modal
         title="Add a Product Note"
         isOpen={open}
         onClose={() => setOpen(false)}
+        className="w-1/2"
       >
-        <DescriptionField label="Product Note" placeholder="This Product...." />
+        <DescriptionField
+          className="mb-8"
+          label="Product Note"
+          placeholder="This Product...."
+        />
         <Button label="Save" />
       </Modal>
     </Fragment>

@@ -1,10 +1,6 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  CollectionResourceApi,
-  OrderResourceApi,
-  ProductResourceApi,
-} from 'client/command';
+import { CollectionResourceApi, ProductResourceApi } from 'client/command';
 import ProductList from '@/components/page-components/common/ProductList';
 import Filters from '@/components/page-components/common/Filters';
 import { GridType } from '@/components/molecules/IconButtonGroup';
@@ -36,7 +32,6 @@ const Products: FC = () => {
   const router = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = +id;
-
   const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
     variables: { organizationId, search: debouncedValue },
   });
@@ -73,42 +68,6 @@ const Products: FC = () => {
     setTimeout(() => {
       setSuccessMessage('');
     }, 3000);
-  };
-
-  const handleAddProdutsToDraftOrder = async () => {
-    setIsLoading(true);
-    try {
-      const config: any = await apiConfig();
-      const api = new OrderResourceApi(config);
-      await api.apiOrderCreateNewDraftOrderPost(organizationId, {
-        name: '',
-        note: '',
-        purchase_order: '',
-        retailer: '',
-        season: '',
-        buyer_name: '',
-        email_address: '',
-        billing_address: '',
-        delivery_address: '',
-        payment_terms: '',
-        discount: 0,
-        surcharge: 0,
-        pricing_condition: '',
-        size: '',
-        productIds: selectedProducts,
-      });
-      setIsLoading(false);
-      setIsModalVisible(true);
-      setSelectedProducts([]);
-      setIsSelectable(false);
-      refetch();
-    } catch (error: any) {
-      setIsLoading(false);
-      handleErrorMesssage(
-        error?.message || 'Something went wrong, please try again!'
-      );
-      console.error(error);
-    }
   };
 
   const handleAddToCollection = async (collectionId: any) => {
@@ -177,7 +136,7 @@ const Products: FC = () => {
   const actions = [
     {
       name: 'Add to draft order',
-      action: () => handleAddProdutsToDraftOrder(),
+      action: () => setIsModalVisible(true),
       disabled: isLoading || selectedProducts.length === 0,
     },
     {
@@ -262,6 +221,8 @@ const Products: FC = () => {
       <OrderList
         setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
         isModalVisible={isModalVisible}
+        productIds={selectedProducts}
+        resetProductIds={() => setSelectedProducts([])}
       />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>

@@ -5,11 +5,15 @@ import AddOrders from '@/components/page-components/order/AddOrders';
 interface OrderListProps {
   isModalVisible: boolean;
   setModalIsVisible: (visible: boolean) => void;
+  resetProductIds: () => void;
+  productIds: number[];
 }
 
 export const OrderList: FC<OrderListProps> = ({
   isModalVisible,
   setModalIsVisible,
+  resetProductIds,
+  productIds,
 }) => {
   return (
     <Modal
@@ -20,7 +24,11 @@ export const OrderList: FC<OrderListProps> = ({
       title={'Choose order'}
       className="!max-h-[417px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
     >
-      <AddOrders />
+      <AddOrders
+        handleCloseModal={() => setModalIsVisible(!isModalVisible)}
+        productIds={productIds}
+        resetProductIds={resetProductIds}
+      />
     </Modal>
   );
 };

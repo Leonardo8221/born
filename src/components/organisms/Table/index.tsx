@@ -9,18 +9,22 @@ export interface TableProps {
   columns: any[];
   className?: string;
   loading?: boolean;
+  size?: boolean;
+  handleQuantities?: (val: string, id: number) => void;
 }
 
 export const Table: FC<TableProps> = ({
-  tableData,
+  tableData = [],
   columns,
   className = '',
   loading = false,
+  size,
+  handleQuantities,
 }) => {
   const [data, setData] = useState([...tableData]);
 
   useEffect(() => {
-    if (Array.isArray(tableData) && tableData.length) {
+    if (tableData && Array.isArray(tableData) && tableData.length) {
       setData(tableData);
     }
   }, [tableData]);
@@ -51,7 +55,12 @@ export const Table: FC<TableProps> = ({
         style={{ gridTemplateColumns: colWidthStyle.join(' ') }}
       >
         <TableHead table={table} />
-        <TableBody loading={loading} table={table} />
+        <TableBody
+          handleQuantities={handleQuantities}
+          size={size}
+          loading={loading}
+          table={table}
+        />
       </table>
       <div className="h-4" />
     </div>

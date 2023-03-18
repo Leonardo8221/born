@@ -40,13 +40,14 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                 editMode={editMode}
                 label={item.key}
                 value={item.value}
+                className="mb-2"
               />
             ) : (
               <>
-                <div className="text-neutral-600 w-[132px] mx-2 my-1.5">
+                <div className="text-neutral-600 w-[132px] mx-2 my-2">
                   {item.key}
                 </div>
-                <div className="text-shades-black w-[300px] mx-2 my-1.5">
+                <div className="text-shades-black w-[300px] mx-2 my-2">
                   {item.value}
                 </div>
               </>
@@ -66,13 +67,14 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                 onChange={(event: any) =>
                   handleEditInputs(item.key, event.target.value)
                 }
+                className="mb-2"
               />
             ) : (
               <>
-                <div className="text-neutral-600 w-[132px] mx-2 my-1.5">
+                <div className="text-neutral-600 w-[132px] mx-2 my-2">
                   {item.key}
                 </div>
-                <div className="text-shades-black w-[300px] mx-2 my-1.5">
+                <div className="text-shades-black w-[300px] mx-2 my-2">
                   {item.value}
                 </div>
               </>
@@ -84,13 +86,18 @@ const OrderDetails: FC<OrderDetailsProps> = ({
         {column3.map((item, index) => (
           <div key={index} className="flex">
             {editMode ? (
-              <Input editMode={editMode} label={item.key} value={item.value} />
+              <Input
+                editMode={editMode}
+                label={item.key}
+                value={item.value}
+                className="mb-2"
+              />
             ) : (
               <>
-                <div className="text-neutral-600 w-[132px] mx-2 my-1.5">
+                <div className="text-neutral-600 w-[132px] mx-2 my-2">
                   {item.key}
                 </div>
-                <div className="text-shades-black w-[300px] mx-2 my-1.5">
+                <div className="text-shades-black w-[300px] mx-2 my-2">
                   {item.value}
                 </div>
               </>

@@ -8,6 +8,7 @@ interface InputProps extends HTMLProps<HTMLInputElement> {
   value: string;
   editMode?: boolean;
   inputType?: string;
+  className?: string;
 }
 
 const Input: FC<InputProps> = ({
@@ -15,10 +16,11 @@ const Input: FC<InputProps> = ({
   label,
   editMode = false,
   inputType,
+  className,
   ...props
 }) => {
   return (
-    <div className="flex-1">
+    <div className={clsx('flex-1', className)}>
       {editMode ? (
         <>
           <div

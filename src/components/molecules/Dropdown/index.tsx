@@ -77,7 +77,7 @@ const Dropdown: FC<DropdownProps> = ({
           className
         )}
       >
-        <div className='w-full' onClick={handleClick}>
+        <div className="w-full" onClick={handleClick}>
           <Listbox value={selected} onChange={handleChange}>
             <div className={styles.container}>
               <Listbox.Button
