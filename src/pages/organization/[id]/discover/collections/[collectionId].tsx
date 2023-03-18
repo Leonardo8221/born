@@ -17,9 +17,9 @@ import { useRouter } from 'next/router';
 import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
 import { CollectionResourceApi, ProductResourceApi } from 'client/command';
+import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
-import EditCollection from '@/components/page-components/Collections/EditCollection';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -34,6 +34,7 @@ const CollectionPage = () => {
   const debouncedValue = useDebounce(searchKeyword, 600);
   const [isEditModal, setIsEditModal] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAddToDraft, setIsAddToDraft] = useState(false);
 
   const { data: collecitonData, loading } = useQuery(COLLECTION_QUERY, {
     variables: { collectionId },
@@ -122,7 +123,7 @@ const CollectionPage = () => {
   const actions = [
     {
       name: 'Add to draft order',
-      action: () => console.log('added to draft order'),
+      action: () => setIsAddToDraft(true),
       disabled: isLoading || !selectedProducts.length,
     },
     {
@@ -196,10 +197,6 @@ const CollectionPage = () => {
           </>
         )}
       </div>
-      <OrderList
-        setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
-        isModalVisible={isModalVisible}
-      />
       <EditCollection
         isOpen={isEditModal}
         title="Edit collection details"
@@ -207,6 +204,12 @@ const CollectionPage = () => {
         toggleModal={setIsEditModal}
         handleSuccessMessage={handleSuccessMesssage}
         handleErrorMessage={handleErrorMesssage}
+      />
+      <OrderList
+        setModalIsVisible={() => setIsAddToDraft(!isAddToDraft)}
+        isModalVisible={isAddToDraft}
+        productIds={selectedProducts}
+        resetProductIds={() => setSelectedProducts([])}
       />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
       <Footer />
