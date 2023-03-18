@@ -1,39 +1,34 @@
-import { useTable, Column } from 'react-table';
+import { log } from 'console';
 
 interface Props {
-  data: Record<string, any>[];
-  columns: Column<Record<string, any>>[];
+  size: Record<string, any>[];
+  quantity: Record<string, any>[];
 }
 
-const TableComponent: React.FC<Props> = ({ data, columns }) => {
-  const { getTableProps, getTableBodyProps, rows, prepareRow } = useTable({
-    columns,
-    data,
+const TableComponent: React.FC<Props> = ({ size, quantity }) => {
+  size.map((item) => {
+    console.log(item.value);
   });
 
   return (
-    <table {...getTableProps()} className="table w-full text-center">
-      <tbody {...getTableBodyProps()} className="table-body ">
-        {rows.map((row: any, index: number) => {
-          prepareRow(row);
-          return (
-            <tr
-              {...row.getRowProps()}
-              key={row.id}
-              className="table-row text-#66666 w-[100px]  border p-3"
-            >
-              {row.cells.map((cell: any, i: number) => (
-                <td
-                  key={`${i} ${index} td table`}
-                  {...cell.getCellProps()}
-                  className={'table-cell w-[144px] border p-3'}
-                >
-                  {cell.render('Cell')}
-                </td>
-              ))}
-            </tr>
-          );
-        })}
+    <table className="table w-full text-[12px]">
+      <tbody className=" ">
+        <tr className="h-[39px]">
+          <td className="border w-[144px] px-3">Size</td>
+          {size.map((item, index) => (
+            <td key={index} className={' border p-3 text-center'}>
+              {item.value}
+            </td>
+          ))}
+        </tr>
+        <tr className="h-[39px]">
+          <td className="border w-[144px] px-3">Quantity</td>
+          {quantity.map((item, index) => (
+            <td key={index} className={'border p-3 text-center'}>
+              {item.value}
+            </td>
+          ))}
+        </tr>
       </tbody>
     </table>
   );

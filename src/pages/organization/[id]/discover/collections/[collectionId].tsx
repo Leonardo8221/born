@@ -28,12 +28,12 @@ const CollectionPage = () => {
   const [isSelectable, setIsSelectable] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const debouncedValue = useDebounce(searchKeyword, 600);
   const [isEditModal, setIsEditModal] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const { data: collecitonData, loading } = useQuery(COLLECTION_QUERY, {
     variables: { collectionId },

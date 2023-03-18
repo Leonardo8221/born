@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import Loading from '../Loading';
 import HorizontaOrderLists from './HorizontalOrderLists';
 import { CreateOrder } from './CreateOrder';
+import { ORDER_LIST } from '@/utils/constants';
 
 const AddOrders = () => {
   const router = useRouter();
@@ -18,12 +19,15 @@ const AddOrders = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const { data, loading, refetch } = useQuery(ORDER_BY_SEARCH, {
     variables: {
+      key: ORDER_LIST,
       organizationId,
       start: 0,
       rows: 10,
       confirmed: false,
       cancelled: false,
     },
+    fetchPolicy: 'no-cache',
+    nextFetchPolicy: 'no-cache',
   });
   const content = data?.ordersBySearch?.content || [];
 
@@ -72,7 +76,10 @@ const AddOrders = () => {
       )}
       <CreateOrder
         showModal={showModal}
-        closeModal={() => setShowModal(false)}
+        closeModal={() => {
+          refetch();
+          setShowModal(false);
+        }}
       />
     </div>
   );
