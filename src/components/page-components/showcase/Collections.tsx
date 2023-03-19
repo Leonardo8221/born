@@ -97,7 +97,7 @@ const Collections: FC<CollectionsProps> = ({
               <div className="mt-8">
                 <p className="max-w-[544px] mx-auto text-shades-black text-center text-[18px] tracking-[0.06em] leading-[32px]">
                   {item.description ||
-                    'For the past 40 years Ballot-Flurin has been leading the industry and provide wellness solutions.'}
+                    ''}
                 </p>
               </div>
             </div>
