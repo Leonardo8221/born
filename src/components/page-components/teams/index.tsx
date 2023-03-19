@@ -56,7 +56,7 @@ const Teams = () => {
   };
 
   return (
-    <div>
+    <div className='mb-8'>
       <Paragraph
         size="xl"
         className="!text-shades-black !font-light tracking-[0.06em] !leading-[32px]"

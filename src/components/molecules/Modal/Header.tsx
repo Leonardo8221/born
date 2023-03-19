@@ -12,7 +12,7 @@ const Header: FC<HeaderProps> = ({
   title,
   onClose,
 }) => (
-  <div className="sticky top-0 flex items-center justify-between px-9 py-4 border-b border-b-neutral-400">
+  <div className="sticky top-0 flex items-center bg-shades-white justify-between px-9 py-4 border-b border-b-neutral-400">
     <h3 className={clsx(fonts.text['2xl'], 'text-shades-black tracking-[0.06em]')}>
       {title}
     </h3>

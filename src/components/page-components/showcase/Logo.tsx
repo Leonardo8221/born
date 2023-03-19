@@ -1,17 +1,21 @@
-import { FC, useState } from "react";
-import Image from "next/image";
-import LogoImage from "@/assets/images/logo-image.png";
-import { Heading } from "@/components/molecules/Heading";
+import { FC, useState } from 'react';
+import Image from 'next/image';
+import LogoImage from '@/assets/images/logo-image.png';
+import { Heading } from '@/components/molecules/Heading';
 
-const ShowcaseLogo: FC = () => {
+interface ShowcaseLogoProps {
+  logoUrl?: string;
+}
+
+const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl }) => {
   return (
     <div className="mt-8 text-center">
       <div className="relative mx-auto h-[88px] w-[88px] rounded-full p-[7.33px] border border-neutral-200">
         <Image
-          src={LogoImage}
+          src={logoUrl || LogoImage}
           alt="Bornwave logo"
           fill
-          className="!h-[73.33px] !w-[73.33px] !m-auto"
+          className="!h-[73.33px] !w-[73.33px] !m-auto rounded-full"
         />
       </div>
       <Heading

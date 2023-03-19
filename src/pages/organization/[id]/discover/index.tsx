@@ -8,6 +8,9 @@ import Products from '@/components/page-components/showcase/Products';
 import Story from '@/components/page-components/showcase/Story';
 import { Button } from '@/components/molecules/Button';
 import { Icon } from '@/components/molecules/Icon';
+import { useQuery } from '@apollo/client';
+import { ORGANIZATION_QUERY } from '@/queries/organizations';
+import Loading from '@/components/page-components/Loading';
 
 const StoryPage = () => {
   const [activeTab, setActiveTab] = useState<string | number>('story');
@@ -15,12 +18,22 @@ const StoryPage = () => {
   const router = useRouter();
   const tab = router?.query?.tab;
 
+  const { data, loading } = useQuery(ORGANIZATION_QUERY, {
+    variables: { organizationId: Number(router?.query?.id) },
+  });
+  const organization = data?.organizationByOrganizationId || {};
+
   const tabs = [
     {
       id: 'story',
       label: 'Story',
-      content: (
-        <Story onViewCollections={() => handleTabChange('collections')} />
+      content: loading ? (
+        <Loading message="Fetching data..." />
+      ) : (
+        <Story
+          onViewCollections={() => handleTabChange('collections')}
+          organization={organization}
+        />
       ),
     },
     {
@@ -59,26 +72,26 @@ const StoryPage = () => {
         <div className="mx-auto w-full max-w-[1440px] flex justify-between px-[64px]">
           <div className="flex-1"></div>
           <div className="flex-1">
-            <ShowcaseLogo />
+            <ShowcaseLogo logoUrl={organization?.logo_url} />
           </div>
           <div className="flex-1">
-            {tab && tab !== "story" && (
+            {tab && tab !== 'story' && (
               <div className="mt-8">
                 <Button
-                  as={tab === "products" ? "a" : "button"}
+                  as={tab === 'products' ? 'a' : 'button'}
                   variant="link"
                   onClick={() =>
-                    tab === "collections" && setIsAddCollections(true)
+                    tab === 'collections' && setIsAddCollections(true)
                   }
                   href={
-                    tab === "products"
+                    tab === 'products'
                       ? `/organization/${router?.query?.id}/discover/product-ingestion`
                       : undefined
                   }
                   className="!max-w-[205px] !ml-auto !mr-0"
                 >
-                  <Icon name="icon-add" />{" "}
-                  {tab === "collections" ? "Add Collections" : "Add Products"}
+                  <Icon name="icon-add" />{' '}
+                  {tab === 'collections' ? 'Add Collections' : 'Add Products'}
                 </Button>
               </div>
             )}

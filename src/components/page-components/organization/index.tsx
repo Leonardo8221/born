@@ -7,7 +7,7 @@ import { OrganizationGraphqlDto } from "@/generated/types";
 
 export interface OrganizationCardProps extends OrganizationGraphqlDto {
   imgSrc: string | StaticImageData;
-  logoUrl: string | StaticImageData;
+  logoUrl?: string | StaticImageData;
 }
 
 const OrganizationCard: FC<OrganizationCardProps> = ({
@@ -35,13 +35,15 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
           }}
         />
         <div className="relative z-[2] m-auto text-center">
-          <Image
-            src={logoUrl}
-            alt={name + "logo"}
-            className="bg-shades-white rounded-full p-[3.33px] mx-auto"
-            height={40}
-            width={40}
-          />
+          {logoUrl && (
+            <Image
+              src={logoUrl}
+              alt={name + "logo"}
+              className="bg-shades-white rounded-full p-[3.33px] mx-auto"
+              height={40}
+              width={40}
+            />
+          )}
           <h3
             className={clsx(
               "text-shades-white mt-2 tracking-[0.06em]",

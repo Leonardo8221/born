@@ -10,7 +10,7 @@ export default function HorizontaOrderLists({
   name,
   id,
   billing_address,
-  total,
+  total_price,
   buyer_name,
   isActive,
   onSelect,
@@ -25,7 +25,7 @@ export default function HorizontaOrderLists({
         <h5>{name}</h5>
         <p>{buyer_name}</p>
         <p>{billing_address}</p>
-        <p>{total}</p>
+        <p>{total_price}</p>
       </div>
       <Button
         onClick={() => onSelect(id)}

@@ -119,7 +119,7 @@ const AddOrders = ({
             name={order.name}
             id={order.id}
             billing_address={order.billing_address}
-            total={order.total}
+            total_price={order.total_price}
             buyer_name={order.buyer_name}
           />
         ))

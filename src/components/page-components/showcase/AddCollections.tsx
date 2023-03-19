@@ -61,7 +61,7 @@ const AddCollections: FC<AddCollectionsProps> = ({
               <ImageText
                 key={collection?.id}
                 title={collection?.name || ''}
-                imgSrc={collection?.banner_guid || ProductImage}
+                imgSrc={collection?.banner_url || ProductImage}
                 altText={`${collection.name} logo`}
                 variant="product"
               />

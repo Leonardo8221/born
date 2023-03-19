@@ -20,7 +20,7 @@ export const GET_ORDERS = gql`
       content {
         id
         name
-        total
+        total_price
         billing_address
         buyer_name
         created_date

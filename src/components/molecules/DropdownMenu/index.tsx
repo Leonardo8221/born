@@ -84,7 +84,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
       >
         <div
           className={clsx(
-            "absolute z-10 w-[141px] ring-1 rounded-[4px] ring-shades-black ring-opacity-5 shadow-extra",
+            "absolute z-10 w-[141px] ring-1 rounded-[4px] ring-shades-black ring-opacity-5 !shadow-extra",
             styles.dropdown,
             styles.dropdownTriangle,
             dropdownVariants[variant]

@@ -31,6 +31,8 @@ const ImageText: FC<ImageTextProps> = ({
         src={imgSrc}
         alt={altText}
         className={clsx("object-cover", variantImageClasses[variant])}
+        height={320}
+        width={320}
       />
       <div>
         <h3

@@ -18,7 +18,7 @@ export const ORDER_BY_SEARCH = gql`
       content {
         id
         name
-        total
+        total_price
         billing_address
         buyer_name
       }
