@@ -23,3 +23,12 @@ export const GET_ORGANIZATION_BY_ID = gql`
   }
   ${ORGANIZATION_FRAGMENT}
 `;
+
+export const ORGANIZATION_QUERY = gql`
+  query getOrganization($organizationId: BigInteger!) {
+    organizationByOrganizationId(organizationId: $organizationId) {
+      ...OrganizationGraphqlDTO
+    }
+  }
+  ${ORGANIZATION_FRAGMENT}
+`;

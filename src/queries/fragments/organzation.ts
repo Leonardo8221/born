@@ -22,6 +22,7 @@ export const ORGANIZATION_FRAGMENT = gql`
     collections{
       name
       id
+      banner_url
     }
   }
 `;

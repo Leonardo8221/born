@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
 import Header from '@/components/page-components/Collections/Header';
 import ProductList from '@/components/page-components/common/ProductList';
-import backgroundImageSrc from '@/assets/images/collection-card/collection-card-background-image.png';
+import placeholderImage from '@/assets/images/placeholders/collection-preview.png';
 import Description from '@/components/page-components/Collections/Description';
 import Filters from '@/components/page-components/common/Filters';
 import { GridType } from '@/components/molecules/IconButtonGroup';
@@ -156,11 +156,12 @@ const CollectionPage = () => {
       <Header
         handleCreateOrder={() => setIsModalVisible(!isModalVisible)}
         onEdit={() => setIsEditModal(true)}
+        handleErrorMessage={handleErrorMesssage}
       />
       <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">
         <div className="mb-[64px]">
           <CollectionCard
-            backgroundImageSrc={collection?.banner_url || backgroundImageSrc}
+            backgroundImageSrc={collection?.banner_url || placeholderImage}
             label={collection?.name}
             editBanner
             onEdit={(e) => e.preventDefault()}

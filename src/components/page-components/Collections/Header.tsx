@@ -4,26 +4,64 @@ import { Button } from '@/components/molecules/Button';
 import { DropdownMenu } from '@/components/molecules/DropdownMenu';
 import { Icon } from '@/components/molecules/Icon';
 import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
+import { apiConfig } from '@/utils/apiConfig';
+import { CollectionReportResourceApi } from 'client/command';
+import { downloadFile } from '@/utils/downloadFile';
 
 interface HeaderProps {
   handleCreateOrder: () => void;
   onEdit: () => void;
+  handleErrorMessage?: (message: string) => void;
 }
 
-const Header: FC<HeaderProps> = ({ handleCreateOrder, onEdit }) => {
+const Header: FC<HeaderProps> = ({
+  handleCreateOrder,
+  onEdit,
+  handleErrorMessage,
+}) => {
   const router = useRouter();
+  const collectionId = Number(router?.query?.collectionId);
+
+  const handleDownloadCollection = async (downloadAs: 'pdf' | 'xlsx') => {
+    try {
+      const config = await apiConfig();
+      const api = new CollectionReportResourceApi(config);
+      let file: BlobPart;
+      if (downloadAs === 'pdf') {
+        const response =
+          await api.apiCollectionDownloadCollectionReportAsPdfGet(
+            collectionId,
+            { responseType: 'blob' }
+          );
+        file = response.data as any;
+      } else {
+        const response =
+          await api.apiCollectionDownloadCollectionReportAsExcelGet(
+            collectionId,
+            { responseType: 'blob' }
+          );
+        file = response?.data as any;
+      }
+      downloadFile(file, downloadAs);
+    } catch (error) {
+      console.log(error);
+      handleErrorMessage?.('Failed to download colletion');
+    }
+  };
+
   const items = [
     {
       label: 'PDF',
       value: 'pdf',
-      action: () => console.log('PDF downloaded!'),
+      action: () => handleDownloadCollection('pdf'),
     },
     {
       label: 'Excel',
       value: 'excel',
-      action: () => console.log('Excel downloaded!'),
+      action: () => handleDownloadCollection('xlsx'),
     },
   ];
+
   return (
     <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
       <div>

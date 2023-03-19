@@ -110,6 +110,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
                   src={imageSrc}
                   alt="Collection Card"
                   className="absolute w-full h-full object-contain p-1"
+                  fill
                 />
             </div>
           )}

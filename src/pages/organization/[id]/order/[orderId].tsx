@@ -122,13 +122,20 @@ function OrderPreview() {
       isDisabled: false,
     },
   ];
+  const handleErrorMessage = (message: string) => {
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  };
 
   const handleUpdateQunatities = async () => {
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       api.apiOrderUpdateDraftOrderPut(orderId);
-    } catch (error) {
+    } catch (error: any) {
+      handleErrorMessage(error?.message || 'Failed to download file!');
       console.log(error);
     }
   };
@@ -146,10 +153,7 @@ function OrderPreview() {
         setSuccessMessage('');
       }, 3000);
     } catch (error: any) {
-      setErrorMessage(error?.response?.message || 'Order update failed');
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 3000);
+      handleErrorMessage(error?.response?.message || 'Order update failed');
       console.log(error);
     }
   };
@@ -200,7 +204,10 @@ function OrderPreview() {
   }
   return (
     <div className="mx-auto overflow-x-hidden">
-      <Header heading={'Missoma X Selfridges - AW23'} />
+      <Header
+        heading={'Missoma X Selfridges - AW23'}
+        handleErrorMessage={handleErrorMessage}
+      />
       <div className="mx-auto w-full max-w-[1440px] overflow-hidden px-16 py-16">
         <div className="bg-[#fff]]">
           <div className="flex flex-1 justify-end mb-6">
@@ -244,9 +251,8 @@ function OrderPreview() {
               isValid={false}
               label="Select Category"
               onChange={(val) => handleDropdownChange(val)}
-              className="mr-8 w-[278px] h-14"
+              className="mr-8 w-[278px] h-[56px]"
               selectedOption={orderDetails?.category}
-              width={278}
             />
             <Input
               value={orderDetails?.discount}

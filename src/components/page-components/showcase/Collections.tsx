@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
-import backgroundImageSrc from '@/assets/images/collection-card/collection-card-background-image.png';
+import placeholderImage from '@/assets/images/placeholders/collection-preview.png';
 import imageSrc from '@/assets/images/collection-card/inner-collection-card-image.png';
 import { COLLECTIONS_QUERY } from '@/queries/collecitons';
 import { CollectionGraphqlDto } from '@/generated/types';
@@ -88,7 +88,7 @@ const Collections: FC<CollectionsProps> = ({
                 href={`/organization/${organizationId}/discover/collections/${item.id}`}
               >
                 <CollectionCard
-                  backgroundImageSrc={item?.banner_url || backgroundImageSrc}
+                  backgroundImageSrc={item?.banner_url || placeholderImage}
                   label={item.name || ''}
                   author={''}
                   imageSrc={imageSrc}

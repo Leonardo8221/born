@@ -1,43 +1,24 @@
 import { FC } from 'react';
 import Link from 'next/link';
-import { useQuery } from '@apollo/client';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
 import { Heading } from '@/components/molecules/Heading';
 import { Button } from '@/components/molecules/Button';
 import { Icon } from '@/components/molecules/Icon';
-import { COLLECTIONS_QUERY } from '@/queries/collecitons';
-import { CollectionGraphqlDto } from '@/generated/types';
-import bgImage1 from '@/assets/images/collection-card/collection-card-background-image.png';
+import bgImage1 from '@/assets/images/placeholders/collection-preview.png';
 import InnerCardImage from '@/assets/images/collection-card/inner-collection-card-image.png';
-import { useRouter } from 'next/router';
-import ErrorMessage from '../Error/ErrorMessage';
 
 interface YourCollectionProps {
+  collections?: any;
   onViewCollections: (e: any) => void;
 }
 
-const YourCollections: FC<YourCollectionProps> = ({ onViewCollections }) => {
-  const router = useRouter();
-  const id = router?.query?.id || '';
-  const organizationId: number = +id;
-
-  const { data, loading, error, refetch } = useQuery(COLLECTIONS_QUERY, {
-    variables: { organizationId },
-  });
-
+const YourCollections: FC<YourCollectionProps> = ({
+  onViewCollections,
+  collections,
+}) => {
   const renderCollections = () => {
-    if (loading) {
-      <div className="w-full text-center text-shades-black">
-        Loading collections...
-      </div>;
-    }
-
-    if (error) {
-      return <ErrorMessage errorMessage={error?.message} refetch={refetch} />;
-    }
-
-    return data?.collectionsByOrganizationId?.map(
-      (item: CollectionGraphqlDto, index: number) =>
+    return collections?.map(
+      (item: any, index: number) =>
         item.id && (
           <Link
             key={item.id}
@@ -45,7 +26,7 @@ const YourCollections: FC<YourCollectionProps> = ({ onViewCollections }) => {
           >
             <CollectionCard
               backgroundImageSrc={bgImage1}
-              imageSrc={InnerCardImage}
+              imageSrc={item?.banner_url || InnerCardImage}
               label={item?.name || undefined}
               hasOverlay={index === 1}
               cardClasses="!h-[272px] !max-w-auto min-w-[736px]"
@@ -65,17 +46,15 @@ const YourCollections: FC<YourCollectionProps> = ({ onViewCollections }) => {
         Your Collections
       </Heading>
       <div className="flex mt-10">{renderCollections()}</div>
-      {!loading && !error && (
-        <div className="mt-48px">
-          <Button
-            onClick={onViewCollections}
-            variant="link"
-            className="!bg-shades-white !text-shades-black"
-          >
-            View all collections <Icon name="icon-arrow-right" />
-          </Button>
-        </div>
-      )}
+      <div className="mt-48px">
+        <Button
+          onClick={onViewCollections}
+          variant="link"
+          className="!bg-shades-white !text-shades-black"
+        >
+          View all collections <Icon name="icon-arrow-right" />
+        </Button>
+      </div>
     </div>
   );
 };

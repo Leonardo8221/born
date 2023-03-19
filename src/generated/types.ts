@@ -75,13 +75,14 @@ export type OrderGraphqlDto = {
   note?: Maybe<Scalars["String"]>;
   order_details?: Maybe<Array<Maybe<OrderDetailGraphqlDto>>>;
   payment_terms?: Maybe<Scalars["String"]>;
-  pricing_condition?: Maybe<Scalars["String"]>;
+  pricing_condition?: Maybe<PricingCondition>;
   purchase_order?: Maybe<Scalars["String"]>;
   retailer?: Maybe<Scalars["String"]>;
   season?: Maybe<Scalars["String"]>;
   size?: Maybe<Scalars["String"]>;
   surcharge?: Maybe<Scalars["BigDecimal"]>;
-  total?: Maybe<Scalars["BigDecimal"]>;
+  total_price?: Maybe<Scalars["BigDecimal"]>;
+  total_quantity?: Maybe<Scalars["Int"]>;
 };
 
 export type OrganizationGraphqlDto = {
@@ -144,6 +145,18 @@ export type PriceGraphqlDto = {
   landed?: Maybe<Scalars["BigDecimal"]>;
   retail?: Maybe<Scalars["BigDecimal"]>;
 };
+
+export enum PricingCondition {
+  EurExworks = "EUR_EXWORKS",
+  EurLanded = "EUR_LANDED",
+  EurRetail = "EUR_RETAIL",
+  GbpExworks = "GBP_EXWORKS",
+  GbpLanded = "GBP_LANDED",
+  GbpRetail = "GBP_RETAIL",
+  UsdExworks = "USD_EXWORKS",
+  UsdLanded = "USD_LANDED",
+  UsdRetail = "USD_RETAIL",
+}
 
 export type ProductAttachmentGraphqlDto = {
   __typename?: "ProductAttachmentGraphqlDTO";
@@ -580,7 +593,7 @@ export type GetOrderByIdQuery = {
     last_updated?: any | null;
     note?: string | null;
     payment_terms?: string | null;
-    pricing_condition?: string | null;
+    pricing_condition?: PricingCondition | null;
     purchase_order?: string | null;
     retailer?: string | null;
     approved: boolean;
@@ -625,6 +638,12 @@ export type GetOrderByIdQuery = {
           retail?: any | null;
         } | null> | null;
       } | null;
+      order_detail_sizes?: Array<{
+        __typename?: "OrderDetailSizeGraphqlDTO";
+        id?: any | null;
+        quantity?: number | null;
+        size?: string | null;
+      } | null> | null;
     } | null> | null;
   } | null;
 };
@@ -650,7 +669,7 @@ export type GetOrdersQuery = {
       __typename?: "OrderGraphqlDTO";
       id?: any | null;
       name?: string | null;
-      total?: any | null;
+      total_price?: any | null;
       billing_address?: string | null;
       buyer_name?: string | null;
       created_date?: any | null;
@@ -661,7 +680,7 @@ export type GetOrdersQuery = {
       last_updated?: any | null;
       note?: string | null;
       payment_terms?: string | null;
-      pricing_condition?: string | null;
+      pricing_condition?: PricingCondition | null;
       purchase_order?: string | null;
       retailer?: string | null;
       approved: boolean;
@@ -692,7 +711,7 @@ export type OrderBySearchQuery = {
       __typename?: "OrderGraphqlDTO";
       id?: any | null;
       name?: string | null;
-      total?: any | null;
+      total_price?: any | null;
       billing_address?: string | null;
       buyer_name?: string | null;
     } | null> | null;
@@ -767,6 +786,39 @@ export type GetOrganizationByIdQuery = {
         id?: any | null;
       } | null> | null;
     };
+  } | null;
+};
+
+export type GetOrganizationQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type GetOrganizationQuery = {
+  __typename?: "Query";
+  organizationByOrganizationId?: {
+    __typename?: "OrganizationGraphqlDTO";
+    id?: any | null;
+    name?: string | null;
+    address?: string | null;
+    description?: string | null;
+    city?: string | null;
+    country_of_origin?: string | null;
+    instagram_link?: string | null;
+    organization_type?: OrganizationType | null;
+    terms_and_conditions?: string | null;
+    website_link?: string | null;
+    year_of_inception?: string | null;
+    logo_guid?: string | null;
+    banner_guid?: string | null;
+    banner_url?: string | null;
+    logo_url?: string | null;
+    linesheet_url?: string | null;
+    lookbook_url?: string | null;
+    collections?: Array<{
+      __typename?: "CollectionGraphqlDTO";
+      name?: string | null;
+      id?: any | null;
+    } | null> | null;
   } | null;
 };
 

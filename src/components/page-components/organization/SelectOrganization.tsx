@@ -5,7 +5,7 @@ import OrganizationCard, {
 } from '@/components/page-components/organization';
 import Header from '@/components/page-components/organization/Header';
 import { ORGANIZATIONS_QUERY } from '@/queries/organizations';
-import OrgBgImg1 from '@/assets/images/organization/organization-1.png';
+import placeholderBgImage from '@/assets/images/placeholders/banner.png';
 import OrgLogoImg1 from '@/assets/images/logo-image.png';
 import ErrorMessage from '../Error/ErrorMessage';
 import Loading from '../Loading';
@@ -20,8 +20,8 @@ const SelectOrganization = () => {
           key={index}
           {...org}
           id={org.id}
-          logoUrl={OrgLogoImg1}
-          imgSrc={OrgBgImg1}
+          logoUrl={org?.logo_url || OrgLogoImg1}
+          imgSrc={org?.banner_url || placeholderBgImage}
         />
       )
     );

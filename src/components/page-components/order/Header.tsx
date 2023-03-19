@@ -1,29 +1,58 @@
 import { FC } from 'react';
 import { Button } from '@/components/molecules/Button';
 import { DropdownMenu } from '@/components/molecules/DropdownMenu';
-import { Icon } from '@/components/molecules/Icon';
 import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
 import { Heading } from '@/components/molecules/Heading';
-import Link from 'next/link';
 import { Pill } from '@/components/atoms/Pill';
 import { useRouter } from 'next/router';
+import { apiConfig } from '@/utils/apiConfig';
+import { OrderReportResourceApi } from 'client/command';
+import { downloadFile } from '@/utils/downloadFile';
 
 interface HeaderProps {
   heading: string;
+  handleErrorMessage?: (error: string) => void;
 }
 
-const Header: FC<HeaderProps> = ({ heading }) => {
+const Header: FC<HeaderProps> = ({ heading, handleErrorMessage }) => {
   const router = useRouter();
+  const orderId = Number(router?.query?.orderId);
+
+  const handleDownloadCollection = async (downloadAs: 'pdf' | 'xlsx') => {
+    try {
+      const config = await apiConfig();
+      const api = new OrderReportResourceApi(config);
+      let file: BlobPart;
+      if (downloadAs === 'pdf') {
+        const response = await api.apiOrderDownloadOrderReportAsPdfGet(
+          orderId,
+          { responseType: 'blob' }
+        );
+        file = response.data as any;
+      } else {
+        const response = await api.apiOrderDownloadOrderReportAsExcelGet(
+          orderId,
+          { responseType: 'blob' }
+        );
+        file = response?.data as any;
+      }
+      downloadFile(file, downloadAs);
+    } catch (error) {
+      console.log(error);
+      handleErrorMessage?.('Failed to download file!');
+    }
+  };
+
   const items = [
     {
       label: 'PDF',
       value: 'pdf',
-      action: () => console.log('PDF downloaded!'),
+      action: () => handleDownloadCollection('pdf'),
     },
     {
       label: 'Excel',
       value: 'excel',
-      action: () => console.log('Excel downloaded!'),
+      action: () => handleDownloadCollection('xlsx'),
     },
   ];
   return (
