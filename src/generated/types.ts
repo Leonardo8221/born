@@ -503,6 +503,7 @@ export type OrganizationGraphqlDtoFragment = {
     __typename?: "CollectionGraphqlDTO";
     name?: string | null;
     id?: any | null;
+    banner_url?: string | null;
   } | null> | null;
 };
 
@@ -747,6 +748,7 @@ export type GetOrganizationsQuery = {
         __typename?: "CollectionGraphqlDTO";
         name?: string | null;
         id?: any | null;
+        banner_url?: string | null;
       } | null> | null;
     } | null> | null;
   } | null;
@@ -784,6 +786,7 @@ export type GetOrganizationByIdQuery = {
         __typename?: "CollectionGraphqlDTO";
         name?: string | null;
         id?: any | null;
+        banner_url?: string | null;
       } | null> | null;
     };
   } | null;
@@ -818,6 +821,7 @@ export type GetOrganizationQuery = {
       __typename?: "CollectionGraphqlDTO";
       name?: string | null;
       id?: any | null;
+      banner_url?: string | null;
     } | null> | null;
   } | null;
 };
