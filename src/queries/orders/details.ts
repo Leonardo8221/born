@@ -4,6 +4,7 @@ export const GET_ORDER_BY_ID = gql`
   query GetOrderByID($orderId: BigInteger!) {
     orderByOrderId(orderId: $orderId) {
       id
+      name
       billing_address
       buyer_name
       created_date
@@ -23,6 +24,7 @@ export const GET_ORDER_BY_ID = gql`
       size
       retailer
       order_details {
+        id
         note
         product {
           id

@@ -8,12 +8,14 @@ import Badges from '../Badges';
 import ProductImage from '@/assets/images/products/product.png';
 export interface OrderDetails {
   products: any[];
+  editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
-  handleOrderNote?: (val: string, details: any) => void;
+  handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 
 const OrderListTable: FC<OrderDetails> = ({
   products,
+  editMode,
   handleQuantities,
   handleOrderNote,
 }) => {
@@ -126,6 +128,7 @@ const OrderListTable: FC<OrderDetails> = ({
           columns={columns}
           className="w-full [&>tbody>tr>td]:pt-4"
           size={true}
+          editMode={editMode}
         />
       </>
     </Fragment>

@@ -10,8 +10,9 @@ export interface TableProps {
   className?: string;
   loading?: boolean;
   size?: boolean;
+  editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
-  handleOrderNote?: (val: string, details: any) => void;
+  handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 
 export const Table: FC<TableProps> = ({
@@ -19,6 +20,7 @@ export const Table: FC<TableProps> = ({
   columns,
   className = '',
   loading = false,
+  editMode = false,
   size,
   handleQuantities,
   handleOrderNote,
@@ -63,6 +65,7 @@ export const Table: FC<TableProps> = ({
           size={size}
           loading={loading}
           table={table}
+          editMode={editMode}
         />
       </table>
       <div className="h-4" />

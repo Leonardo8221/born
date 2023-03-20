@@ -10,7 +10,7 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/page-components/order/Header';
 import { GET_ORDER_BY_ID } from '../../../../queries/orders/details';
 import { Button } from '@/components/molecules/Button';
-import { OrderResourceApi } from 'client/command';
+import { OrderDetailResourceApi, OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
@@ -210,7 +210,11 @@ function OrderPreview() {
     }
   };
 
-  const handleDebouncedOrderNote = async (note: string, details: any) => {
+  const handleDebouncedOrderNote = async (
+    note: string,
+    id: number,
+    details: any
+  ) => {
     try {
       const orderDetailSizes = details.map((item: any) => ({
         order_detail_size_id: item.id,
@@ -220,10 +224,9 @@ function OrderPreview() {
         note,
         order_detail_sizes: [...orderDetailSizes],
       };
-      console.log(payload);
       const config: any = await apiConfig();
-      const api = new OrderResourceApi(config);
-      api.apiOrderUpdateDraftOrderPut(orderId, payload);
+      const api = new OrderDetailResourceApi(config);
+      api.apiOrderUpdateDraftOrderDetailPut(id, orderId, payload);
     } catch (error) {
       console.log(error);
     }
@@ -243,7 +246,7 @@ function OrderPreview() {
   return (
     <div className="mx-auto overflow-x-hidden">
       <Header
-        heading={'Missoma X Selfridges - AW23'}
+        heading={orderDetails?.name}
         handleErrorMessage={handleErrorMessage}
         addNote={() => setIsAddNoteOpen(!isAddNoteOpen)}
       />
@@ -321,6 +324,7 @@ function OrderPreview() {
         <div className="py-6 !flex !justify-end">
           <div className="flex-1"></div>
           <Button
+            disabled={editMode}
             variant="outlined"
             className="!max-w-[74px] !text-[12px] !font-normal"
           >
@@ -330,7 +334,8 @@ function OrderPreview() {
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={debouncedOrderNote}
-          products={details.order_details}
+          products={details?.order_details}
+          editMode={editMode}
         />
       </div>
       <AddNote

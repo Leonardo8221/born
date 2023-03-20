@@ -11,9 +11,10 @@ interface TableBodyProps {
   };
   className?: string;
   loading?: boolean;
+  editMode?: boolean;
   size?: boolean;
   handleQuantities?: (val: string, id: number) => void;
-  handleOrderNote?: (val: string, details: any) => void;
+  handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 
 export const TableBody: FC<TableBodyProps> = ({
@@ -21,6 +22,7 @@ export const TableBody: FC<TableBodyProps> = ({
   className = '',
   loading,
   size = false,
+  editMode = false,
   handleQuantities,
   handleOrderNote = () => {},
 }) => {
@@ -71,15 +73,18 @@ export const TableBody: FC<TableBodyProps> = ({
               <tr>
                 <td colSpan={row.getVisibleCells().length}>
                   <TableComponent
+                    editMode={editMode}
                     handleQuantities={handleQuantities}
                     orderDetailSizes={
                       row.getVisibleCells()[0].row.original.order_detail_sizes
                     }
                   />
                   <DescriptionField
+                    disabled={!editMode}
                     onChange={(val) =>
                       handleOrderNote(
                         val,
+                        row.getVisibleCells()[0].row.original.id,
                         row.getVisibleCells()[0].row.original.order_detail_sizes
                       )
                     }

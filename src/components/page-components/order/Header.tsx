@@ -59,7 +59,7 @@ const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote }) => {
   ];
   return (
     <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[64px]">
-      <div className="flex w-[620px] justify-between items-center">
+      <div className="flex w-[620px] gap-4 items-center">
         <ArrowIconLeft
           height={40}
           width={40}
