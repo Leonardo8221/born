@@ -15,7 +15,8 @@ export const flattenObject = (obj: any, prefix = '') => {
   return result;
 };
 
-export const formatDate = (date: Date) => {
+export const formatDate = (date?: Date) => {
+  if (!date) return;
   const formatedDate = new Date(date);
   // // Get the day, month, and year from the date object
   const day = formatedDate.getDate().toString().padStart(2, '0');
