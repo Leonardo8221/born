@@ -7,6 +7,7 @@ import { Button } from '@/components/molecules/Button';
 import Link from 'next/link';
 import { OrderGraphqlDto } from '@/generated/types';
 import { formatDate } from '@/utils';
+import { Paragraph } from '@/components/molecules/Paragraph';
 export interface OrderListTableProps {
   orders: OrderGraphqlDto[];
   orderType: string;
@@ -20,7 +21,6 @@ const OrderListTable: FC<OrderListTableProps> = ({
   orderType,
   loading,
   handleActions,
-  actionsLoading,
 }) => {
   const columnHelper: any = createColumnHelper();
 
@@ -109,6 +109,26 @@ const OrderListTable: FC<OrderListTableProps> = ({
                 Approve
               </Button>
             </div>
+          ) : orderType === 'approved' ? (
+            <div>
+              <Button
+                onClick={() => handleActions('cancel', row.original.id)}
+                variant="outlined"
+                className="h-8 text-[12px] text-[#333333] border-[#999999]"
+              >
+                Cancel
+              </Button>
+            </div>
+          ) : orderType === 'cancelled' ? (
+            <div>
+              <Button
+                onClick={() => handleActions('approve', row.original.id)}
+                variant="outlined"
+                className="h-8 text-[12px] text-[#333333] border-[#999999]"
+              >
+                Approve
+              </Button>
+            </div>
           ) : (
             <div>
               <Button
@@ -128,12 +148,21 @@ const OrderListTable: FC<OrderListTableProps> = ({
   ];
 
   return (
-    <Table
-      tableData={orders}
-      columns={columns}
-      loading={loading}
-      className="w-full max-w-[1120px] [&>tbody>tr>td]:pt-4"
-    />
+    <>
+      <Table
+        tableData={orders?.length ? orders : []}
+        columns={columns}
+        loading={loading}
+        className="w-full max-w-[1120px] [&>tbody>tr>td]:pt-4"
+      />
+      {!orders?.length && !loading && (
+        <div className="max-w-[563] text-center">
+          <Paragraph size="base" className="!text-shades-black !font-light">
+            No data found!
+          </Paragraph>
+        </div>
+      )}
+    </>
   );
 };
 

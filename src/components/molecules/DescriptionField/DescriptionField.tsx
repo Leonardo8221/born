@@ -10,6 +10,7 @@ export interface DescriptionFieldProps {
   value?: string;
   placeholder?: string;
   isError?: boolean;
+  disabled?: boolean;
   className?: string;
   inputClasses?: string;
 }
@@ -23,6 +24,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   isError,
   className,
   inputClasses,
+  disabled = false,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
@@ -47,6 +49,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
           })}
         >
           <textarea
+            disabled={disabled}
             defaultValue={value}
             onChange={handleChange}
             placeholder={placeholder}

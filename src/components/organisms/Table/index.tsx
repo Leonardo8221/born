@@ -10,7 +10,9 @@ export interface TableProps {
   className?: string;
   loading?: boolean;
   size?: boolean;
+  editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
+  handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 
 export const Table: FC<TableProps> = ({
@@ -18,8 +20,10 @@ export const Table: FC<TableProps> = ({
   columns,
   className = '',
   loading = false,
+  editMode = false,
   size,
   handleQuantities,
+  handleOrderNote,
 }) => {
   const [data, setData] = useState([...tableData]);
 
@@ -57,9 +61,11 @@ export const Table: FC<TableProps> = ({
         <TableHead table={table} />
         <TableBody
           handleQuantities={handleQuantities}
+          handleOrderNote={handleOrderNote}
           size={size}
           loading={loading}
           table={table}
+          editMode={editMode}
         />
       </table>
       <div className="h-4" />

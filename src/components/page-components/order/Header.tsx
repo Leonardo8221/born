@@ -8,13 +8,15 @@ import { useRouter } from 'next/router';
 import { apiConfig } from '@/utils/apiConfig';
 import { OrderReportResourceApi } from 'client/command';
 import { downloadFile } from '@/utils/downloadFile';
+import { Icon } from '@/components/molecules/Icon';
 
 interface HeaderProps {
   heading: string;
   handleErrorMessage?: (error: string) => void;
+  addNote?: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ heading, handleErrorMessage }) => {
+const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote }) => {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
 
@@ -57,7 +59,7 @@ const Header: FC<HeaderProps> = ({ heading, handleErrorMessage }) => {
   ];
   return (
     <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[64px]">
-      <div className="flex w-[620px] justify-between items-center">
+      <div className="flex w-[620px] gap-4 items-center">
         <ArrowIconLeft
           height={40}
           width={40}
@@ -71,12 +73,13 @@ const Header: FC<HeaderProps> = ({ heading, handleErrorMessage }) => {
       </div>
       <div className="flex items-center gap-x-4">
         <div>
-          <Button variant="outlined">
-            Add Note
-            {/* <Icon
-              name="icon-message-square"
-              className="text-center cursor-pointer text-shades-black"
-            /> */}
+          <Button
+            label={'Add Note'}
+            {...{ variant: 'outlined' }}
+            className="relative"
+            onClick={addNote}
+          >
+            <Icon name="icon-message-square" />
           </Button>
         </div>
         <div>

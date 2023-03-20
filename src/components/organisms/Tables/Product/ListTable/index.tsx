@@ -35,7 +35,6 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
         ),
       };
     });
-    console.log(items);
     return items as any;
   };
 

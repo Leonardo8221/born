@@ -1,11 +1,13 @@
 interface Props {
   orderDetailSizes: any;
+  editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
 }
 
 const TableComponent: React.FC<Props> = ({
   orderDetailSizes,
   handleQuantities,
+  editMode,
 }) => {
   return (
     <div className="text-[12px] text-[#333333]">
@@ -33,6 +35,7 @@ const TableComponent: React.FC<Props> = ({
           >
             <input
               type="number"
+              disabled={!editMode}
               onChange={(e: any) =>
                 handleQuantities && handleQuantities(e.target.value, item.id)
               }

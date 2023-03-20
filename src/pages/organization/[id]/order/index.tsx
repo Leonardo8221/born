@@ -10,6 +10,7 @@ import { OrderGraphqlDto } from '@/generated/types';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
+import { GET_ORDERS_LIST } from '@/utils/constants';
 
 export default function OrderManagement() {
   const router = useRouter();
@@ -17,14 +18,13 @@ export default function OrderManagement() {
   const organizationId: number = +id;
   const tabState = router.query.tab;
   const [activeTab, setActiveTab] = useState<string | number>('draft');
-  const queryKey = `GET_ORDERS_${activeTab}`;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const { data, error, refetch, loading } = useQuery(GET_ORDERS, {
     variables: {
-      key: queryKey,
+      key: GET_ORDERS_LIST,
       organizationId: organizationId,
       confirmed: tabState === 'confirmed',
       cancelled: tabState === 'cancelled',
@@ -32,8 +32,7 @@ export default function OrderManagement() {
       start: 0,
       rows: 10,
     },
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
+    fetchPolicy: 'no-cache',
   });
 
   const handleTabChange = (id: string | number) => {
@@ -55,6 +54,7 @@ export default function OrderManagement() {
   );
 
   const handleActions = async (action: string, id: number) => {
+    console.log(action, id);
     const config: any = await apiConfig();
     const api = new OrderResourceApi(config);
     try {
