@@ -5,18 +5,18 @@ import ImageText from '@/components/molecules/ImageText';
 import { fonts } from '@/config/fonts';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
-import Modal from '@/components/molecules/Modal';
-import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
-import { Button } from '@/components/molecules/Button';
 import ProductImage from '@/assets/images/products/product.png';
-
 export interface OrderDetails {
   products: any[];
   handleQuantities?: (val: string, id: number) => void;
+  handleOrderNote?: (val: string, details: any) => void;
 }
 
-const OrderListTable: FC<OrderDetails> = ({ products, handleQuantities }) => {
-  const [open, setOpen] = useState<boolean>(false);
+const OrderListTable: FC<OrderDetails> = ({
+  products,
+  handleQuantities,
+  handleOrderNote,
+}) => {
   const columnHelper: any = createColumnHelper();
   const columns = [
     columnHelper.accessor((row: any) => row, {
@@ -122,24 +122,12 @@ const OrderListTable: FC<OrderDetails> = ({ products, handleQuantities }) => {
         <Table
           tableData={products}
           handleQuantities={handleQuantities}
+          handleOrderNote={handleOrderNote}
           columns={columns}
           className="w-full [&>tbody>tr>td]:pt-4"
           size={true}
         />
       </>
-      <Modal
-        title="Add a Product Note"
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        className="w-1/2"
-      >
-        <DescriptionField
-          className="mb-8"
-          label="Product Note"
-          placeholder="This Product...."
-        />
-        <Button label="Save" />
-      </Modal>
     </Fragment>
   );
 };

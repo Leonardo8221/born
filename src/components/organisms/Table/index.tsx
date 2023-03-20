@@ -11,6 +11,7 @@ export interface TableProps {
   loading?: boolean;
   size?: boolean;
   handleQuantities?: (val: string, id: number) => void;
+  handleOrderNote?: (val: string, details: any) => void;
 }
 
 export const Table: FC<TableProps> = ({
@@ -20,6 +21,7 @@ export const Table: FC<TableProps> = ({
   loading = false,
   size,
   handleQuantities,
+  handleOrderNote,
 }) => {
   const [data, setData] = useState([...tableData]);
 
@@ -57,6 +59,7 @@ export const Table: FC<TableProps> = ({
         <TableHead table={table} />
         <TableBody
           handleQuantities={handleQuantities}
+          handleOrderNote={handleOrderNote}
           size={size}
           loading={loading}
           table={table}

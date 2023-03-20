@@ -8,13 +8,15 @@ import { useRouter } from 'next/router';
 import { apiConfig } from '@/utils/apiConfig';
 import { OrderReportResourceApi } from 'client/command';
 import { downloadFile } from '@/utils/downloadFile';
+import { Icon } from '@/components/molecules/Icon';
 
 interface HeaderProps {
   heading: string;
   handleErrorMessage?: (error: string) => void;
+  addNote?: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ heading, handleErrorMessage }) => {
+const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote }) => {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
 
@@ -71,12 +73,13 @@ const Header: FC<HeaderProps> = ({ heading, handleErrorMessage }) => {
       </div>
       <div className="flex items-center gap-x-4">
         <div>
-          <Button variant="outlined">
-            Add Note
-            {/* <Icon
-              name="icon-message-square"
-              className="text-center cursor-pointer text-shades-black"
-            /> */}
+          <Button
+            label={'Add Note'}
+            {...{ variant: 'outlined' }}
+            className="relative"
+            onClick={addNote}
+          >
+            <Icon name="icon-message-square" />
           </Button>
         </div>
         <div>

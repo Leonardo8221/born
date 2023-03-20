@@ -13,19 +13,22 @@ import { Button } from '@/components/molecules/Button';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
-import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
+import AddNote from '@/components/page-components/order/AddNote';
 
 function OrderPreview() {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
   const [editMode, setEditMode] = useState(false);
+  const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
   const [orderDetails, setDetails] = useState<any>({
     surcharge: null,
     discount: null,
     category: {},
+    note: '',
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [orderNote, setOrderNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { loading, error, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
@@ -100,6 +103,7 @@ function OrderPreview() {
       },
     ],
   };
+
   const dropdownmenu = [
     {
       value: '0',
@@ -122,22 +126,12 @@ function OrderPreview() {
       isDisabled: false,
     },
   ];
+
   const handleErrorMessage = (message: string) => {
     setErrorMessage(message);
     setTimeout(() => {
       setErrorMessage('');
     }, 3000);
-  };
-
-  const handleUpdateQunatities = async () => {
-    try {
-      const config: any = await apiConfig();
-      const api = new OrderResourceApi(config);
-      api.apiOrderUpdateDraftOrderPut(orderId);
-    } catch (error: any) {
-      handleErrorMessage(error?.message || 'Failed to download file!');
-      console.log(error);
-    }
   };
 
   const handleSave = async () => {
@@ -154,6 +148,27 @@ function OrderPreview() {
       }, 3000);
     } catch (error: any) {
       handleErrorMessage(error?.response?.message || 'Order update failed');
+      console.log(error);
+    }
+  };
+
+  const handleSaveNote = async () => {
+    try {
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      if (!orderNote && !orderNote.length) return;
+      api.apiOrderUpdateDraftOrderPut(orderId, {
+        ...orderDetails,
+        note: orderNote,
+      });
+      setIsAddNoteOpen(!isAddNoteOpen);
+      refetch();
+      setSuccessMessage('Order note added successfully');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (error: any) {
+      handleErrorMessage(error?.response?.message || 'Order note failed');
       console.log(error);
     }
   };
@@ -194,7 +209,29 @@ function OrderPreview() {
       console.log(error);
     }
   };
-  const debouncedHandleQuantities = debounce(handleQuantities, 500);
+
+  const handleDebouncedOrderNote = async (note: string, details: any) => {
+    try {
+      const orderDetailSizes = details.map((item: any) => ({
+        order_detail_size_id: item.id,
+        quantity: item.quantity,
+      }));
+      const payload = {
+        note,
+        order_detail_sizes: [...orderDetailSizes],
+      };
+      console.log(payload);
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      api.apiOrderUpdateDraftOrderPut(orderId, payload);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const debouncedHandleQuantities = debounce(handleQuantities, 600);
+  const debouncedOrderNote = debounce(handleDebouncedOrderNote, 600);
+
   const handleChange = (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
   };
@@ -202,11 +239,13 @@ function OrderPreview() {
   if (loading) {
     return <>Loading...</>;
   }
+
   return (
     <div className="mx-auto overflow-x-hidden">
       <Header
         heading={'Missoma X Selfridges - AW23'}
         handleErrorMessage={handleErrorMessage}
+        addNote={() => setIsAddNoteOpen(!isAddNoteOpen)}
       />
       <div className="mx-auto w-full max-w-[1440px] overflow-hidden px-16 py-16">
         <div className="bg-[#fff]]">
@@ -236,13 +275,6 @@ function OrderPreview() {
               column1={columnData.column1}
               column2={columnData.column2}
               column3={columnData.column3}
-            />
-            <DescriptionField
-              onChange={(val) => setDetails({ ...orderDetails, note: val })}
-              value={orderDetails.note}
-              className="w-1/2 mt-2"
-              label="Product Note"
-              placeholder="This Product...."
             />
           </div>
           <div className="flex py-10 shadow-sm rounded-md">
@@ -297,9 +329,17 @@ function OrderPreview() {
         </div>
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
+          handleOrderNote={debouncedOrderNote}
           products={details.order_details}
         />
       </div>
+      <AddNote
+        note={orderNote || orderDetails.note}
+        handleSaveNote={handleSaveNote}
+        isOpen={isAddNoteOpen}
+        onClose={() => setIsAddNoteOpen(!isAddNoteOpen)}
+        handleChange={setOrderNote}
+      />
       <Toast errorMessage={errorMessage} successMessage={successMessage} />
       <Footer />
     </div>

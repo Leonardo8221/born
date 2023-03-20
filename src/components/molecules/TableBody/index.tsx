@@ -4,7 +4,7 @@ import { flexRender } from '@tanstack/react-table';
 import { fonts } from '@/config/fonts';
 import Loading from '@/components/page-components/Loading';
 import TableComponent from '@/components/page-components/order/TableComponent';
-
+import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 interface TableBodyProps {
   table: {
     getRowModel: any;
@@ -13,6 +13,7 @@ interface TableBodyProps {
   loading?: boolean;
   size?: boolean;
   handleQuantities?: (val: string, id: number) => void;
+  handleOrderNote?: (val: string, details: any) => void;
 }
 
 export const TableBody: FC<TableBodyProps> = ({
@@ -21,6 +22,7 @@ export const TableBody: FC<TableBodyProps> = ({
   loading,
   size = false,
   handleQuantities,
+  handleOrderNote = () => {},
 }) => {
   const { getRowModel } = table;
   const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +75,18 @@ export const TableBody: FC<TableBodyProps> = ({
                     orderDetailSizes={
                       row.getVisibleCells()[0].row.original.order_detail_sizes
                     }
+                  />
+                  <DescriptionField
+                    onChange={(val) =>
+                      handleOrderNote(
+                        val,
+                        row.getVisibleCells()[0].row.original.order_detail_sizes
+                      )
+                    }
+                    value={row.getVisibleCells()[0].row.original.note}
+                    className="mb-8 mt-4 w-2/3"
+                    label="Order Note"
+                    placeholder="This Order...."
                   />
                 </td>
               </tr>
