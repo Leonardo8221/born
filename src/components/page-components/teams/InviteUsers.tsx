@@ -3,17 +3,25 @@ import { Button } from '@/components/molecules/Button';
 import Dropdown from '@/components/molecules/Dropdown';
 import { Icon } from '@/components/molecules/Icon';
 import Input from '@/components/molecules/Inputs/Input';
+import TriangleDecorator from '@/components/molecules/DropdownMenu/TriangleDecorator';
+import clsx from 'clsx';
+import { fonts } from '@/config/fonts';
+import { Transition } from '@headlessui/react';
+import useDebounce from '@/utils/debounce';
+import { useQuery } from '@apollo/client';
+import { USER_BY_KEYCLOAK_EMAIL } from '@/queries/users';
+import Loading from '../Loading';
+import { Paragraph } from '@/components/molecules/Paragraph';
 
 export type User = {
   id: number;
   email: string;
-  role: string;
-}
+  role: 'MANAGER' | 'OWNER';
+  user_id: string;
+};
 
 interface InviteUsersProps {
-  handleInviteUsers: (
-    users: User[]
-  ) => void;
+  handleInviteUsers: (users: any[]) => void;
 }
 
 const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
@@ -21,18 +29,28 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
     {
       id: Date.now(),
       email: '',
-      role: '',
+      role: 'MANAGER',
+      user_id: '',
     },
   ]);
+
+  const [isOpen, setIsOpen] = useState<number | null>(null);
+  const [keyword, setKeyword] = useState('');
+  const debouncedValue = useDebounce(keyword, 1000);
+
+  const { data, loading } = useQuery(USER_BY_KEYCLOAK_EMAIL, {
+    variables: { keycloakEmail: debouncedValue },
+  });
+  const emails = data?.usersByKeycloakEmail;
 
   const options = [
     {
       name: 'Owner',
-      value: 'owner',
+      value: 'OWNER',
     },
     {
       name: 'Manager',
-      value: 'manager',
+      value: 'MANAGER',
     },
   ];
 
@@ -42,8 +60,8 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
     value,
   }: {
     id: number;
-    name: 'email' | 'role';
-    value: string;
+    name: 'email' | 'role' | 'user_id';
+    value: any;
   }) => {
     const items = [...inviteUsers];
     const selectedItem = items.filter((item) => item.id === id)[0];
@@ -58,24 +76,95 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
       <div className="mt-4">
         {inviteUsers.map((item) => (
           <div key={item.id} className="flex items-center gap-x-4">
-            <Input
-              value={item.email}
-              label="Email"
-              onChange={(value: string) =>
-                handleChange({ id: item.id, name: 'email', value })
-              }
-              inputWrapperClasses="!h-[48px] w-[279px]"
-              isValid={!!item.email}
-            />
+            <div className="relative w-[279px]">
+              <Input
+                value={item.email}
+                label="Email"
+                onChange={(value: string) => {
+                  setKeyword(value);
+                  handleChange({ id: item.id, name: 'email', value });
+                  setIsOpen(item.id);
+                }}
+                inputWrapperClasses="!h-[48px] w-[279px]"
+                isValid={!!item.email}
+              />
+              <Transition
+                show={isOpen === item.id}
+                enter="transition ease-out duration-100 transform"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="transition ease-in duration-75 transform"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+                className="z-10"
+              >
+                <div className="absolute top-[5px] left-0 right-0 w-full bg-shades-white rounded shadow-extra">
+                  <div className="absolute right-1 -top-2">
+                    <TriangleDecorator />
+                  </div>
+                  {!loading && !emails?.length && (
+                    <Paragraph
+                      size="base"
+                      className="!text-shades-black !font-light !px-4 py-2"
+                    >
+                      No data found!
+                    </Paragraph>
+                  )}
+                  {loading ? (
+                    <div className="flex px-4 py-2 items-center [&>div]:!mt-0">
+                      <Loading message="Loading..." />
+                    </div>
+                  ) : (
+                    emails?.map((option: any) => (
+                      <>
+                        <button
+                          key={option?.keycloak_email}
+                          className="w-[calc(100%-16px)] text-left mx-2 py-2 my-1 rounded-[4px] text-shades-black hover:bg-neutral-200 focus:outline-none focus:bg-neutral-200"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleChange({
+                              id: item.id,
+                              name: 'email',
+                              value: option?.keycloak_email,
+                            });
+                            handleChange({
+                              id: item.id,
+                              name: 'user_id',
+                              value: option?.id,
+                            });
+                            setIsOpen(null);
+                          }}
+                          role="menuitem"
+                        >
+                          <div
+                            className={clsx(
+                              'px-2',
+                              fonts.text.md,
+                              fonts.fontWeights.regular
+                            )}
+                          >
+                            {option?.keycloak_email}
+                          </div>
+                        </button>
+                      </>
+                    ))
+                  )}
+                </div>
+              </Transition>
+            </div>
             <Dropdown
               label="Role"
               options={options}
               isValid
+              selectedOption={{
+                name: item?.role,
+                value: item?.role?.toUpperCase(),
+              }}
               onChange={(option) =>
                 handleChange({
                   id: item.id,
                   name: 'role',
-                  value: option?.value || '',
+                  value: option?.value || 'MANAGER',
                 })
               }
               className="!h-[48px] !w-[185px] [&>div]:!w-full"
@@ -105,7 +194,7 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
           onClick={() =>
             setInviteUsers([
               ...inviteUsers,
-              { email: '', role: '', id: Date.now() },
+              { email: '', role: 'MANAGER', id: Date.now(), user_id: '' },
             ])
           }
         >
@@ -121,7 +210,7 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
       <div className="mt-4">
         <Button
           className="!h-[32px] !w-[132px] !mx-0 !text-[12px]"
-          onClick={handleInviteUsers}
+          onClick={() => handleInviteUsers(inviteUsers)}
         >
           Upload
         </Button>

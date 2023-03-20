@@ -4,7 +4,7 @@ import { Paragraph } from '@/components/molecules/Paragraph';
 import TeamOverView from '@/components/organisms/Tables/TeamOverview';
 import { USERS_QUERY } from '@/queries/users';
 import Loading from '../Loading';
-import InviteUsers, { User } from './InviteUsers';
+import InviteUsers from './InviteUsers';
 import { apiConfig } from '@/utils/apiConfig';
 import { UserOrganizationResourceApi } from 'client/command';
 import { useState } from 'react';
@@ -16,8 +16,10 @@ const Teams = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const { data, loading } = useQuery(USERS_QUERY, {
+  const { data, loading, refetch } = useQuery(USERS_QUERY, {
     variables: { organizationId },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   const handleErrorMesssage = (message: string) => {
@@ -44,6 +46,7 @@ const Teams = () => {
         organizationId,
         userId
       );
+      refetch();
       handleSuccessMesssage('User removed successfully!');
     } catch (error: any) {
       handleErrorMesssage(error?.message || 'Failed to remove user!');
@@ -51,12 +54,26 @@ const Teams = () => {
     }
   };
 
-  const handleUploadInviteUsers = (users: User[]) => {
-    console.log(users);
+  const handleUploadInviteUsers = async (users: any[]) => {
+    try {
+      const config = await apiConfig();
+      const api = new UserOrganizationResourceApi(config);
+      const arr = users?.map((user) =>
+        api.apiUserOrganizationAddUserToOrganizationPut(
+          organizationId,
+          user.role,
+          Number(user.user_id)
+        )
+      );
+      await Promise.all([arr]);
+      handleSuccessMesssage(`Invited ${users?.length} users successfully!`);
+    } catch (error) {
+      handleErrorMesssage('Failed to invite users!');
+    }
   };
 
   return (
-    <div className='mb-8'>
+    <div className="mb-8">
       <Paragraph
         size="xl"
         className="!text-shades-black !font-light tracking-[0.06em] !leading-[32px]"
