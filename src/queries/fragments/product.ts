@@ -10,9 +10,9 @@ export const PRODUCT_FRAGMENT = gql`
     colour_families
     attachments {
       id
-      attachment_url
-      attachment_guid
-      type
+      small_image_url
+      medium_image_url
+      large_image_url
     }
     associated_prices {
       currency

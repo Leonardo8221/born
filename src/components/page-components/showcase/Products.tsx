@@ -34,6 +34,8 @@ const Products: FC = () => {
   const organizationId: number = +id;
   const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
     variables: { organizationId, search: debouncedValue },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   const filterTags = [
