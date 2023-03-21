@@ -5,9 +5,10 @@ import { Heading } from '@/components/molecules/Heading';
 
 interface ShowcaseLogoProps {
   logoUrl?: string;
+  name: string;
 }
 
-const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl }) => {
+const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl, name }) => {
   return (
     <div className="mt-8 text-center">
       <div className="relative mx-auto h-[88px] w-[88px] rounded-full p-[7.33px] border border-neutral-200">
@@ -23,7 +24,7 @@ const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl }) => {
         as="h2"
         className="mt-4 mb-4 text-shades-black tracking-[0.06em]"
       >
-        Missoma
+        {name}
       </Heading>
     </div>
   );

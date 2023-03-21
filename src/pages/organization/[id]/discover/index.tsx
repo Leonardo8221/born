@@ -72,7 +72,7 @@ const StoryPage = () => {
         <div className="mx-auto w-full max-w-[1440px] flex justify-between px-[64px]">
           <div className="flex-1"></div>
           <div className="flex-1">
-            <ShowcaseLogo logoUrl={organization?.logo_url} />
+            <ShowcaseLogo logoUrl={organization?.logo_url} name={organization?.name || ''} />
           </div>
           <div className="flex-1">
             {tab && tab !== 'story' && (
