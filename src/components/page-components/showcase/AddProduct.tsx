@@ -4,28 +4,64 @@ import { Button } from '@/components/molecules/Button';
 import { Icon } from '@/components/molecules/Icon';
 import ProgressBar from '@/components/molecules/ProgressBar';
 import SuccessMessageBox from '@/components/molecules/SuccessBox';
+import { apiConfig } from '@/utils/apiConfig';
+import { FileIngestionResourceApi } from 'client/command';
+import { useRouter } from 'next/router';
+import Toast from '../Toast';
 
 export interface AddProductProps {}
 
 const AddProduct: FC<AddProductProps> = () => {
   const [showProgress, setShowProgress] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [organizationId, setOrganiationId] = useState<null | number>(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const onDrop = useCallback((acceptedFiles: any) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    setOrganiationId(Number(router?.query?.id));
+  }, [router?.isReady])
+
+  const handleErrorMesssage = (message: string) => {
+    setErrorMessage(message);
+
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  };
+
+  const handleSuccessMesssage = (message: string) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 3000);
+  };
+
+  const onDrop = async (files: any) => {
+    const acceptedFiles = files?.[0] || {};
     setShowProgress(true);
-
-    if (typeof acceptedFiles === 'object') {
-      console.log('files', acceptedFiles);
+    try {
+      const config = await apiConfig();
+      const api = new FileIngestionResourceApi(config);
+      if(organizationId) {
+        await api.apiIngestionUploadAndImportProductXlsPost(organizationId, acceptedFiles, acceptedFiles?.name, {
+          onUploadProgress: ({ loaded, total }) => {
+            setProgress(Math.round((loaded * 100) / (total || 0)));
+            setShowProgress(false);
+            setSuccess(true);
+          }
+        });
+        handleSuccessMesssage('File uploaded successfully!');
+      }
+    } catch (error) {
+      handleErrorMesssage('Failed to upload file!');
+     console.log(error); 
     }
-
-    // Code to execute after a delay of 3 seconds
-    const delayedCode = () => {
-      setShowProgress(false);
-      setSuccess(true);
-    };
-
-    setTimeout(delayedCode, 3000);
-  }, []);
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   return (
@@ -36,7 +72,7 @@ const AddProduct: FC<AddProductProps> = () => {
         }`}
       >
         {showProgress ? (
-          <ProgressBar percentage={50} />
+          <ProgressBar percentage={progress} />
         ) : !showProgress && success ? (
           <SuccessMessageBox
             placeholder="Your file ‘filename.excel’ has been uploaded successfully"
@@ -99,6 +135,7 @@ const AddProduct: FC<AddProductProps> = () => {
           <Icon name="icon-document" /> Download product inventory CSV
         </Button>
       </div>
+      <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>
   );
 };

@@ -1076,3 +1076,25 @@ export type GetUserwithOraganizationQuery = {
     product_notification_enabled: boolean;
   } | null;
 };
+
+export type GetUserByKeycloakEmailQueryVariables = Exact<{
+  keycloakEmail: Scalars["String"];
+}>;
+
+export type GetUserByKeycloakEmailQuery = {
+  __typename?: "Query";
+  usersByKeycloakEmail?: Array<{
+    __typename?: "UserGraphqlDTO";
+    id?: any | null;
+    keycloak_first_name?: string | null;
+    keycloak_last_name?: string | null;
+    keycloak_email?: string | null;
+    birth_date?: any | null;
+    keycloak_username?: string | null;
+    last_logged_in?: any | null;
+    follow_notification_enabled: boolean;
+    message_notification_enabled: boolean;
+    order_notification_enabled: boolean;
+    product_notification_enabled: boolean;
+  } | null> | null;
+};
