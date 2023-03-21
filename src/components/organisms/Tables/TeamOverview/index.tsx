@@ -78,7 +78,6 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams, handleRemoveUser }) => {
       size: 60,
       id: 'actions',
       cell: (info: any) => {
-        console.log(info)
         const options = [
           // {
           //   label: 'Manage role',
