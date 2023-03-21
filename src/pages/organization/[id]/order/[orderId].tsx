@@ -106,25 +106,35 @@ function OrderPreview() {
 
   const dropdownmenu = [
     {
-      value: '0',
-      name: 'USD -Landed',
+      value: 'USD_LANDED',
+      name: 'USD - Landed',
       isDisabled: false,
     },
     {
-      value: '1',
-      name: 'Option A',
+      value: 'USD_EXWORKS',
+      name: 'USD - ExWork',
       isDisabled: false,
     },
     {
-      value: '2',
-      name: 'Option B',
+      value: 'GBP_LANDED',
+      name: 'GBP - Landed',
       isDisabled: true,
     },
     {
-      value: '3',
-      name: 'Option C',
+      value: 'GBP_EXWORKS',
+      name: 'GBP - ExWork',
       isDisabled: false,
     },
+    {
+      value: 'EUR_LANDED',
+      name: 'EUR - Landed',
+      isDisabled: false,
+    },
+    {
+      value: 'EUR_EXWORKS',
+      name: 'EUR - ExWork',
+      isDisabled: false,
+    }
   ];
 
   const handleErrorMessage = (message: string) => {
