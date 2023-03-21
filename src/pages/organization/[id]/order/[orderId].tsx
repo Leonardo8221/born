@@ -194,7 +194,7 @@ function OrderPreview() {
   const handleQuantities = async (val: string, id: number) => {
     try {
       const payload = {
-        note: '',
+        note: val,
         order_detail_sizes: [
           {
             order_detail_size_id: id,
@@ -255,9 +255,10 @@ function OrderPreview() {
           <div className="flex flex-1 justify-end mb-6">
             <div className="flex items-center">
               <Button
+                size="sm"
                 onClick={() => setEditMode(true)}
                 variant="outlined"
-                className="bg-[#E8E8E8] text-[#333333] !text-[12px] !font-normal mr-[14px]"
+                className=" text-[#333333] !text-[12px] !font-normal mr-[14px] px-[18.5]"
               >
                 Edit Details
               </Button>
@@ -280,13 +281,13 @@ function OrderPreview() {
               column3={columnData.column3}
             />
           </div>
-          <div className="flex py-10 shadow-sm rounded-md">
+          <div className="flex px-9 py-10 mb-6 shadow-md rounded-md items-center">
             <Dropdown
               options={dropdownmenu}
               isValid={false}
               label="Select Category"
               onChange={(val) => handleDropdownChange(val)}
-              className="mr-8 w-[278px] h-[56px]"
+              className="mr-8 w-[278px]"
               selectedOption={orderDetails?.category}
             />
             <Input
@@ -298,7 +299,7 @@ function OrderPreview() {
               isValid={false}
               onError={handleError}
               onChange={(val) => handleChange('discount', val)}
-              className="mr-8 !p-0 !max-h-[1px]"
+              className="mr-8 w-[139px] h-[56px]"
             />
             <Input
               value={orderDetails?.surcharge}
@@ -309,7 +310,7 @@ function OrderPreview() {
               isValid={false}
               onError={handleError}
               onChange={(val) => handleChange('surcharge', val)}
-              className="mr-8"
+              className="mr-8 w-[139px] h-[56px]"
             />
             <TotalQuantity
               title="Total Quantity"
@@ -321,7 +322,7 @@ function OrderPreview() {
             />
           </div>
         </div>
-        <div className="py-6 !flex !justify-end">
+        {/* <div className="py-6 !flex !justify-end">
           <div className="flex-1"></div>
           <Button
             disabled={editMode}
@@ -330,7 +331,7 @@ function OrderPreview() {
           >
             Select
           </Button>
-        </div>
+        </div> */}
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={debouncedOrderNote}

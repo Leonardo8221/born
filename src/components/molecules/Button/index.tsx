@@ -32,12 +32,12 @@ export const Button: FC<ButtonProps> = ({
     as || 'button',
     {
       className: clsx(
-        "flex max-w-[352px] font-normal cursor-pointer items-center justify-center border-0 mx-auto my-0 gap-x-2",
-        variant !== "outlined"
-          ? buttonVariants[color || "black"]
-          : outlinedButtonVariants[color || "black"],
-        buttonSize[size || "lg"],
-        rounded ? "rounded-[3rem]" : "rounded",
+        'flex max-w-[352px] font-normal cursor-pointer items-center justify-center border-0 mx-auto my-0 gap-x-2',
+        variant !== 'outlined'
+          ? buttonVariants[color || 'black']
+          : outlinedButtonVariants[color || 'black'],
+        buttonSize[size || 'lg'],
+        rounded ? 'rounded-[3rem]' : 'rounded',
         disabled && 'opacity-40 cursor-not-allowed',
         className
       ),

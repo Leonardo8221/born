@@ -103,7 +103,7 @@ const Dropdown: FC<DropdownProps> = ({
               >
                 <Listbox.Options
                   className={clsx(
-                    'rounded-b  border-r border-l border-b border-shades-black absolute z-10 bg-shades-white',
+                    'rounded-b  border-r border-l border-b border-[#CCCCCC] absolute z-10 bg-shades-white',
                     width ? `!w-[${width}px]` : '!w-full'
                   )}
                 >
