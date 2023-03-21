@@ -37,7 +37,7 @@ const AddOrders = ({
       key: ORDER_LIST,
       organizationId,
       start: 0,
-      rows: 50,
+      rows: 10,
       confirmed: false,
       cancelled: false,
     },
