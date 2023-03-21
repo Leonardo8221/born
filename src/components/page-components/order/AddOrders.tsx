@@ -41,8 +41,7 @@ const AddOrders = ({
       confirmed: false,
       cancelled: false,
     },
-    fetchPolicy: 'no-cache',
-    nextFetchPolicy: 'no-cache',
+    notifyOnNetworkStatusChange: true,
   });
   const content = data?.ordersBySearch?.content || [];
 

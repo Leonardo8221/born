@@ -1,15 +1,21 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AttachmentResourceApi, FileType, OrganizationResourceApi, OrganizationRestDTO } from 'client/command';
+import {
+  AttachmentResourceApi,
+  FileType,
+  OrganizationResourceApi,
+  OrganizationRestDTO,
+} from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import ShowcaseForm from '../manage/ShowcaseForm';
 
 interface ShowcaseProps {
   organization: any;
+  refetch?: () => void;
 }
 
-const Showcase: FC<ShowcaseProps> = ({ organization }) => {
+const Showcase: FC<ShowcaseProps> = ({ organization, refetch }) => {
   const router = useRouter();
   const organizationId = Number(router?.query?.id);
   const [errorMessage, setErrorMessage] = useState('');
@@ -47,6 +53,7 @@ const Showcase: FC<ShowcaseProps> = ({ organization }) => {
       );
       handleSuccessMesssage(`Saved data sucessfully!!`);
       setIsSubmitting(false);
+      refetch?.();
     } catch (error: any) {
       setIsSubmitting(false);
       handleErrorMesssage(
@@ -56,7 +63,13 @@ const Showcase: FC<ShowcaseProps> = ({ organization }) => {
     }
   };
 
-  const handleUploadAttachment = async ({ type, file }: { type: FileType, file: File }) => {
+  const handleUploadAttachment = async ({
+    type,
+    file,
+  }: {
+    type: FileType;
+    file: File;
+  }) => {
     type === 'BANNER' ? setIsUploadingBanner(true) : setIsUploadingLogo(true);
     try {
       const config = await apiConfig();
@@ -66,14 +79,19 @@ const Showcase: FC<ShowcaseProps> = ({ organization }) => {
         organizationId,
         file,
         file.name
-      )
-      type === 'BANNER' ? setIsUploadingBanner(false) : setIsUploadingLogo(false);
+      );
+      type === 'BANNER'
+        ? setIsUploadingBanner(false)
+        : setIsUploadingLogo(false);
       handleSuccessMesssage('File uploaded successfully!');
+      refetch?.();
     } catch (error) {
-      type === 'BANNER' ? setIsUploadingBanner(false) : setIsUploadingLogo(false);
+      type === 'BANNER'
+        ? setIsUploadingBanner(false)
+        : setIsUploadingLogo(false);
       handleErrorMesssage('File failed to upload!');
     }
-  }
+  };
 
   return (
     <>

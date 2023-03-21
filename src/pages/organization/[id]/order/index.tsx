@@ -22,7 +22,7 @@ export default function OrderManagement() {
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const { data, error, refetch, loading } = useQuery(GET_ORDERS, {
+  const { data, refetch, loading } = useQuery(GET_ORDERS, {
     variables: {
       key: GET_ORDERS_LIST,
       organizationId: organizationId,
@@ -32,7 +32,7 @@ export default function OrderManagement() {
       start: 0,
       rows: 10,
     },
-    fetchPolicy: 'no-cache',
+    notifyOnNetworkStatusChange: true,
   });
 
   const handleTabChange = (id: string | number) => {

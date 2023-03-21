@@ -57,12 +57,12 @@ const Sidebar: FC<SidebarProps> = ({
       <div className="flex flex-col h-full">
         <div className="flex w-full flex-col items-center flex-1">
           <div className="[&>svg]:h-[80px] [&>svg]:w-[80px] [&>svg]:rounded-full">
-            {logo
-              ? logo
-              : logoUrl && (
-                  <div
-                    className={`w-[${widthLogo}px] h-[${heightLogo}px] rounded-full border-2 border-neutral-200 flex justify-center items-center`}
-                  >
+            <div
+              className={`w-[${widthLogo}px] h-[${heightLogo}px] rounded-full border-2 border-neutral-200 flex justify-center items-center`}
+            >
+              {logo
+                ? logo
+                : logoUrl && (
                     <Image
                       src={logoUrl}
                       alt={`${title} logo`}
@@ -70,8 +70,8 @@ const Sidebar: FC<SidebarProps> = ({
                       height={widthLogo - 12}
                       className={classNameLogo}
                     />
-                  </div>
-                )}
+                  )}
+            </div>
           </div>
           <h3 className={clsx(fonts.text.xl, 'text-shades-black mt-2')}>
             {title}

@@ -134,7 +134,7 @@ function OrderPreview() {
       value: 'EUR_EXWORKS',
       name: 'EUR - ExWork',
       isDisabled: false,
-    }
+    },
   ];
 
   const handleErrorMessage = (message: string) => {
@@ -264,18 +264,21 @@ function OrderPreview() {
         <div className="bg-[#fff]]">
           <div className="flex flex-1 justify-end mb-6">
             <div className="flex items-center">
-              <Button
-                size="sm"
-                onClick={() => setEditMode(true)}
-                variant="outlined"
-                className=" text-[#333333] !text-[12px] !font-normal mr-[14px] px-[18.5]"
-              >
-                Edit Details
-              </Button>
+              {!editMode && (
+                <Button
+                  size="sm"
+                  onClick={() => setEditMode(true)}
+                  variant="outlined"
+                  className="!text-[#333333] !text-[12px] !font-normal mr-[14px] !px-[18.5]"
+                >
+                  Edit Details
+                </Button>
+              )}
               {editMode && (
                 <Button
+                  size="sm"
                   onClick={handleSave}
-                  className="!text-[12px] !font-normal"
+                  className="!text-[12px] !font-normal mr-[14px] !px-[18.5] !py-0"
                 >
                   Save
                 </Button>

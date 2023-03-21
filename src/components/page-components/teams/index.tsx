@@ -19,7 +19,6 @@ const Teams = () => {
   const { data, loading, refetch } = useQuery(USERS_QUERY, {
     variables: { organizationId },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'network-only',
   });
 
   const handleErrorMesssage = (message: string) => {
