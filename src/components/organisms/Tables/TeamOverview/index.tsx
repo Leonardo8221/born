@@ -88,7 +88,7 @@ const TeamOverView: FC<TeamOverViewProps> = ({ teams, handleRemoveUser }) => {
             label: 'Revoke access',
             value: 'revoke-access',
             action: () =>
-              handleRemoveUser && handleRemoveUser(info?.row?.original?.id),
+              handleRemoveUser && handleRemoveUser(info?.row?.original?.user_entity?.id),
           },
         ];
         return (
