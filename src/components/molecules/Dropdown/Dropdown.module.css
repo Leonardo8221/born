@@ -9,7 +9,7 @@
   transform: translate(0px, -24px);
 }
 .name {
-  font-family: "Untitled Sans";
+  font-family: 'Untitled Sans';
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
@@ -28,6 +28,7 @@
   padding-bottom: 0 !important;
   display: flex;
   align-items: center;
+  border: 1px solid #cccccc;
 }
 .my-input:focus-visible {
   outline: 1px dashed transparent;
@@ -54,7 +55,7 @@
   padding-bottom: 1rem;
 }
 .option {
-  font-family: "Untitled Sans";
+  font-family: 'Untitled Sans';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

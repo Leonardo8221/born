@@ -52,7 +52,7 @@ const Input: FC<InputProps> = ({
   return (
     <div className="flex justify-center">
       <div className={clsx('my-3 w-full', className)}>
-        <div className="relative">
+        <div className="relative h-[56px]">
           <label className={styles.label}>
             {label}
             {isRequired && (
@@ -62,7 +62,7 @@ const Input: FC<InputProps> = ({
           {isEditMode ? null : (
             <div
               className={clsx(
-                `border rounded flex h-[56px] `,
+                `border rounded flex `,
                 clsInputFieldCard,
                 inputWrapperClasses
               )}
@@ -73,12 +73,12 @@ const Input: FC<InputProps> = ({
                 type={type}
                 name={name}
                 className={clsx(
-                  'my-input w-full flex p-4 rounded text-shades-black',
+                  'my-input w-full flex p-3 rounded text-shades-black',
                   styles.resetOutline
                 )}
                 onChange={handleChange}
               />
-              <div className="flex items-center ml-3 mr-4 my-[15px] w-6 h-6">
+              <div className="flex items-center ml-3 mr-4 my-[15px] w-6">
                 {!isError &&
                   (isValid ? <CheckIcon height={24} width={24} /> : null)}
               </div>
