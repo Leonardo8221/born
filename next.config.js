@@ -6,6 +6,7 @@ const {
   NEXTAUTH_SECRET,
   NEXTAUTH_URL,
   NEXT_OPENAPI_BASE_PATH,
+  NEXT_IMAGE_BASE_PATH,
 } = process.env;
 
 /** @type {import('next').NextConfig} */
@@ -18,14 +19,10 @@ const nextConfig = {
     NEXTAUTH_SECRET,
     NEXTAUTH_URL,
     NEXT_OPENAPI_BASE_PATH,
+    NEXT_IMAGE_BASE_PATH,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+    domains: [NEXT_IMAGE_BASE_PATH]
   },
   webpack(config) {
     config.module.rules.push({
