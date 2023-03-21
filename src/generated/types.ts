@@ -160,9 +160,10 @@ export enum PricingCondition {
 
 export type ProductAttachmentGraphqlDto = {
   __typename?: "ProductAttachmentGraphqlDTO";
-  attachment_guid?: Maybe<Scalars["String"]>;
-  attachment_url?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
+  large_image_url?: Maybe<Scalars["String"]>;
+  medium_image_url?: Maybe<Scalars["String"]>;
+  small_image_url?: Maybe<Scalars["String"]>;
   type?: Maybe<AttachmentType>;
 };
 
@@ -447,9 +448,9 @@ export type GetProductsByCollectionIdQuery = {
       attachments?: Array<{
         __typename?: "ProductAttachmentGraphqlDTO";
         id?: any | null;
-        attachment_url?: string | null;
-        attachment_guid?: string | null;
-        type?: AttachmentType | null;
+        small_image_url?: string | null;
+        medium_image_url?: string | null;
+        large_image_url?: string | null;
       } | null> | null;
       associated_prices?: Array<{
         __typename?: "PriceGraphqlDTO";
@@ -540,9 +541,9 @@ export type ProductGraphqlDtoFragment = {
   attachments?: Array<{
     __typename?: "ProductAttachmentGraphqlDTO";
     id?: any | null;
-    attachment_url?: string | null;
-    attachment_guid?: string | null;
-    type?: AttachmentType | null;
+    small_image_url?: string | null;
+    medium_image_url?: string | null;
+    large_image_url?: string | null;
   } | null> | null;
   associated_prices?: Array<{
     __typename?: "PriceGraphqlDTO";
@@ -584,6 +585,7 @@ export type GetOrderByIdQuery = {
   orderByOrderId?: {
     __typename?: "OrderGraphqlDTO";
     id?: any | null;
+    name?: string | null;
     billing_address?: string | null;
     buyer_name?: string | null;
     created_date?: any | null;
@@ -603,6 +605,7 @@ export type GetOrderByIdQuery = {
     size?: string | null;
     order_details?: Array<{
       __typename?: "OrderDetailGraphqlDTO";
+      id?: any | null;
       note?: string | null;
       product?: {
         __typename?: "ProductGraphqlDTO";
@@ -874,9 +877,9 @@ export type GetProductsQuery = {
       attachments?: Array<{
         __typename?: "ProductAttachmentGraphqlDTO";
         id?: any | null;
-        attachment_url?: string | null;
-        attachment_guid?: string | null;
-        type?: AttachmentType | null;
+        small_image_url?: string | null;
+        medium_image_url?: string | null;
+        large_image_url?: string | null;
       } | null> | null;
       associated_prices?: Array<{
         __typename?: "PriceGraphqlDTO";
@@ -933,9 +936,9 @@ export type GetProductByIdQuery = {
     attachments?: Array<{
       __typename?: "ProductAttachmentGraphqlDTO";
       id?: any | null;
-      attachment_url?: string | null;
-      attachment_guid?: string | null;
-      type?: AttachmentType | null;
+      small_image_url?: string | null;
+      medium_image_url?: string | null;
+      large_image_url?: string | null;
     } | null> | null;
     associated_prices?: Array<{
       __typename?: "PriceGraphqlDTO";
@@ -1004,9 +1007,9 @@ export type GetProductsBySearchAndCollectionIdQuery = {
       attachments?: Array<{
         __typename?: "ProductAttachmentGraphqlDTO";
         id?: any | null;
-        attachment_url?: string | null;
-        attachment_guid?: string | null;
-        type?: AttachmentType | null;
+        small_image_url?: string | null;
+        medium_image_url?: string | null;
+        large_image_url?: string | null;
       } | null> | null;
       associated_prices?: Array<{
         __typename?: "PriceGraphqlDTO";

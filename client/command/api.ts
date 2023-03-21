@@ -658,51 +658,6 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
-         * @param {number} organizationId 
-         * @param {string} [fileName] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiAttachmentDownloadProductImageGet: async (organizationId: number, fileName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'organizationId' is not null or undefined
-            assertParamExists('apiAttachmentDownloadProductImageGet', 'organizationId', organizationId)
-            const localVarPath = `/api/attachment/download-product-image`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication keycloak-swagger-oauth2 required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
-
-            if (fileName !== undefined) {
-                localVarQueryParameter['file_name'] = fileName;
-            }
-
-            if (organizationId !== undefined) {
-                localVarQueryParameter['organization_id'] = organizationId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {number} collectionId 
          * @param {FileType} fileType 
          * @param {File} [file] 
@@ -823,67 +778,6 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {number} organizationId 
-         * @param {number} productId 
-         * @param {File} [file] 
-         * @param {string} [fileName] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiAttachmentUploadProductImagePost: async (organizationId: number, productId: number, file?: File, fileName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'organizationId' is not null or undefined
-            assertParamExists('apiAttachmentUploadProductImagePost', 'organizationId', organizationId)
-            // verify required parameter 'productId' is not null or undefined
-            assertParamExists('apiAttachmentUploadProductImagePost', 'productId', productId)
-            const localVarPath = `/api/attachment/upload-product-image`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
-
-            // authentication keycloak-swagger-oauth2 required
-            // oauth required
-            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
-
-            if (organizationId !== undefined) {
-                localVarQueryParameter['organization_id'] = organizationId;
-            }
-
-            if (productId !== undefined) {
-                localVarQueryParameter['product_id'] = productId;
-            }
-
-
-            if (file !== undefined) { 
-                localVarFormParams.append('file', file as any);
-            }
-    
-            if (fileName !== undefined) { 
-                localVarFormParams.append('fileName', fileName as any);
-            }
-    
-    
-            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = localVarFormParams;
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -918,17 +812,6 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {number} organizationId 
-         * @param {string} [fileName] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiAttachmentDownloadProductImageGet(organizationId: number, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentDownloadProductImageGet(organizationId, fileName, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @param {number} collectionId 
          * @param {FileType} fileType 
          * @param {File} [file] 
@@ -951,19 +834,6 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
          */
         async apiAttachmentUploadOrganizationAttachmentPost(fileType: FileType, organizationId: number, file?: File, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadOrganizationAttachmentPost(fileType, organizationId, file, fileName, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} organizationId 
-         * @param {number} productId 
-         * @param {File} [file] 
-         * @param {string} [fileName] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -998,16 +868,6 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
         },
         /**
          * 
-         * @param {number} organizationId 
-         * @param {string} [fileName] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiAttachmentDownloadProductImageGet(organizationId: number, fileName?: string, options?: any): AxiosPromise<void> {
-            return localVarFp.apiAttachmentDownloadProductImageGet(organizationId, fileName, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {number} collectionId 
          * @param {FileType} fileType 
          * @param {File} [file] 
@@ -1029,18 +889,6 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
          */
         apiAttachmentUploadOrganizationAttachmentPost(fileType: FileType, organizationId: number, file?: File, fileName?: string, options?: any): AxiosPromise<void> {
             return localVarFp.apiAttachmentUploadOrganizationAttachmentPost(fileType, organizationId, file, fileName, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} organizationId 
-         * @param {number} productId 
-         * @param {File} [file] 
-         * @param {string} [fileName] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: any): AxiosPromise<void> {
-            return localVarFp.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1078,18 +926,6 @@ export class AttachmentResourceApi extends BaseAPI {
 
     /**
      * 
-     * @param {number} organizationId 
-     * @param {string} [fileName] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AttachmentResourceApi
-     */
-    public apiAttachmentDownloadProductImageGet(organizationId: number, fileName?: string, options?: AxiosRequestConfig) {
-        return AttachmentResourceApiFp(this.configuration).apiAttachmentDownloadProductImageGet(organizationId, fileName, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {number} collectionId 
      * @param {FileType} fileType 
      * @param {File} [file] 
@@ -1114,20 +950,6 @@ export class AttachmentResourceApi extends BaseAPI {
      */
     public apiAttachmentUploadOrganizationAttachmentPost(fileType: FileType, organizationId: number, file?: File, fileName?: string, options?: AxiosRequestConfig) {
         return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadOrganizationAttachmentPost(fileType, organizationId, file, fileName, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {number} organizationId 
-     * @param {number} productId 
-     * @param {File} [file] 
-     * @param {string} [fileName] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AttachmentResourceApi
-     */
-    public apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig) {
-        return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
