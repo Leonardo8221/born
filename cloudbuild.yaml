@@ -15,6 +15,7 @@ steps:
       - NEXT_OPENAPI_BASE_PATH=${_NEXT_OPENAPI_BASE_PATH}
       - NEXTAUTH_SECRET=${_NEXTAUTH_SECRET}
       - NEXTAUTH_URL=${_NEXTAUTH_URL}
+      - NEXT_PUBLIC_IMAGE_BASE_PATH=${_NEXT_PUBLIC_IMAGE_BASE_PATH}
     args:
       - run
       - create-env
