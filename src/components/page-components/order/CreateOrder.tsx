@@ -19,6 +19,8 @@ interface OrderDetails {
   purchase_order: string;
   retailer: string;
   buyer_name: string;
+  discount: number;
+  surcharge: number;
 }
 
 type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer';
@@ -33,6 +35,8 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
     purchase_order: '',
     retailer: '',
     buyer_name: '',
+    discount: 0,
+    surcharge: 0
   });
   const id = router?.query?.id || '';
   const organizationId: number = +id;
@@ -65,6 +69,8 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
         purchase_order: '',
         retailer: '',
         buyer_name: '',
+        discount: 0,
+        surcharge: 0
       });
       await client.refetchQueries({
         include: [ORDER_LIST],
@@ -83,6 +89,8 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
         purchase_order: '',
         retailer: '',
         buyer_name: '',
+        discount: 0,
+        surcharge: 0
       });
       console.log(error);
     }
