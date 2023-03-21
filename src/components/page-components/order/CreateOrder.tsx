@@ -49,16 +49,6 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
 
   const handleSave = async () => {
     try {
-      const hasEmptyObject = Object.values(details).some(
-        (val) => val === '' || val === null
-      );
-      if (hasEmptyObject) {
-        setErrorMessage('Please fill all the required fields');
-        setTimeout(() => {
-          setErrorMessage('');
-        }, 3000);
-        return;
-      }
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       api.apiOrderCreateNewDraftOrderPost(organizationId, details);
