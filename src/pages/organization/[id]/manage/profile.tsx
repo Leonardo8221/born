@@ -9,10 +9,10 @@ import { useRouter } from 'next/router';
 
 const ProfilePage = () => {
   const router = useRouter();
-  const { data, loading } = useQuery(GET_ORGANIZATION_BY_ID, {
+  const { data, loading, refetch } = useQuery(GET_ORGANIZATION_BY_ID, {
     variables: { id: Number(router.query.id) },
+    notifyOnNetworkStatusChange: true,
   });
-
   const currentOrganization =
     data?.userOrganizationByOrganizationId?.organization;
 
@@ -20,16 +20,16 @@ const ProfilePage = () => {
     {
       id: 1,
       label: 'Showcase',
-      content: loading ? (
+      content: !currentOrganization && loading ? (
         <Loading message="Loading showcase data..." />
       ) : (
-        <Showcase organization={currentOrganization} />
+        <Showcase organization={currentOrganization} refetch={refetch} />
       ),
     },
     {
       id: 2,
       label: 'Marketing',
-      content: loading ? (
+      content: !currentOrganization && loading ? (
         <Loading message="Loading marketing data..." />
       ) : (
         <>
@@ -40,7 +40,10 @@ const ProfilePage = () => {
   ];
 
   return (
-    <ManageLayout>
+    <ManageLayout
+      name={currentOrganization?.name}
+      logoUrl={currentOrganization?.logo_url}
+    >
       <Tabs active={1} tabs={tabs} />
     </ManageLayout>
   );

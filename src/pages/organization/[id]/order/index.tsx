@@ -22,7 +22,9 @@ export default function OrderManagement() {
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const { data, error, refetch, loading } = useQuery(GET_ORDERS, {
+  console.log('working')
+
+  const { data, refetch, loading } = useQuery(GET_ORDERS, {
     variables: {
       key: GET_ORDERS_LIST,
       organizationId: organizationId,
@@ -32,26 +34,17 @@ export default function OrderManagement() {
       start: 0,
       rows: 10,
     },
-    fetchPolicy: 'no-cache',
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   const handleTabChange = (id: string | number) => {
     if (!router?.query?.id) return;
     router.push(`/organization/${router?.query?.id}/order?tab=${id}`);
     setActiveTab(id);
-    refetch();
   };
 
-  useEffect(() => {
-    if (tabState) {
-      setActiveTab(String(tabState));
-    }
-  }, [tabState]);
-
   const ordersBySearch = data?.ordersBySearch?.content || [];
-  const confirmedOrders = ordersBySearch.filter(
-    (item: OrderGraphqlDto) => item.confirmed
-  );
 
   const handleActions = async (action: string, id: number) => {
     console.log(action, id);
@@ -107,7 +100,7 @@ export default function OrderManagement() {
           actionsLoading={isLoading}
           loading={loading}
           type="confirmed"
-          content={confirmedOrders}
+          content={ordersBySearch}
         />
       ),
     },

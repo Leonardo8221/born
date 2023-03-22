@@ -35,7 +35,6 @@ const Products: FC = () => {
   const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
     variables: { organizationId, search: debouncedValue },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'network-only',
   });
 
   const filterTags = [
@@ -180,7 +179,7 @@ const Products: FC = () => {
           actions={actions}
           selectedItems={selectedProducts}
         />
-        {loading ? (
+        {!data?.productsBySearchAndOrganizationId && loading ? (
           <div className="mt-6">
             <Loading message="Loading products" />
           </div>

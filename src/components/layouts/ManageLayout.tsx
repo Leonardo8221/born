@@ -6,6 +6,8 @@ import { icons } from '../atoms/Icons';
 import Sidebar from '../molecules/Sidebar';
 import TopBar from '../page-components/marketing/TopBar';
 import Footer from './Footer';
+import { useQuery } from '@apollo/client';
+import { ORGANIZATION_QUERY } from '@/queries/organizations';
 
 type MenuItem = {
   url: string;
@@ -15,11 +17,13 @@ type MenuItem = {
 
 interface ManageLayoutProps {
   children: any;
+  name: string;
+  logoUrl: string;
 }
 
-const ManageLayout: FC<ManageLayoutProps> = ({ children }) => {
+const ManageLayout: FC<ManageLayoutProps> = ({ children, name, logoUrl }) => {
   const router = useRouter();
-  const organizationId = router?.query?.id;
+  const organizationId = Number(router?.query?.id);
 
   const menuItems: MenuItem[] = [
     {
@@ -59,9 +63,9 @@ const ManageLayout: FC<ManageLayoutProps> = ({ children }) => {
           <div className="w-[320px] min-h-full bg-neutral-100">
             <div className="fixed top-[72px] h-[calc(100vh-144px)]">
               <Sidebar
-                title="Missoma"
+                title={name}
                 menuItems={menuItems}
-                logo={<BrandLogo />}
+                logoUrl={logoUrl}
                 onSignOut={signOut}
               />
             </div>

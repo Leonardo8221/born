@@ -1,26 +1,26 @@
-import ProductDetails from "@/components/organisms/ProductDetails";
-import ProductHeader from "@/components/organisms/ProductHeader";
-import Product1 from "@/assets/images/products/product-1.png";
-import Product2 from "@/assets/images/products/product-2.png";
-import Product3 from "@/assets/images/products/product-3.png";
-import { products } from "@/components/organisms/Tables/Product/ListTable/data";
-import ProductList from "@/components/page-components/common/ProductList";
-import { Button } from "@/components/molecules/Button";
-import { Icon } from "@/components/molecules/Icon";
-import Link from "next/link";
-import Footer from "@/components/layouts/Footer";
-import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import ProductDetails from '@/components/organisms/ProductDetails';
+import ProductHeader from '@/components/organisms/ProductHeader';
+import Product1 from '@/assets/images/products/product-1.png';
+import Product2 from '@/assets/images/products/product-2.png';
+import Product3 from '@/assets/images/products/product-3.png';
+import { products } from '@/components/organisms/Tables/Product/ListTable/data';
+import ProductList from '@/components/page-components/common/ProductList';
+import { Button } from '@/components/molecules/Button';
+import { Icon } from '@/components/molecules/Icon';
+import Link from 'next/link';
+import Footer from '@/components/layouts/Footer';
+import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/client';
 import {
   GET_PRODUCTS_BY_COLLECTION_ID,
   GET_PRODUCT_BY_ID,
-} from "@/queries/products";
-import ErrorMessage from "@/components/page-components/Error/ErrorMessage";
-import Loading from "@/components/page-components/Loading";
+} from '@/queries/products';
+import ErrorMessage from '@/components/page-components/Error/ErrorMessage';
+import Loading from '@/components/page-components/Loading';
 
 const ProductPage = () => {
   const router = useRouter();
-  const productIdQuery = router?.query?.productId || "";
+  const productIdQuery = router?.query?.productId || '';
 
   const {
     data: product,
@@ -34,7 +34,7 @@ const ProductPage = () => {
 
   const currentProduct = product?.productByProductId;
 
-  const collectionId = product?.productByProductId?.collections?.[0]?.id || "";
+  const collectionId = product?.productByProductId?.collections?.[0]?.id || '';
 
   const { data: collectionProducts, loading: collectionProductsLoading } =
     useQuery(GET_PRODUCTS_BY_COLLECTION_ID, {
@@ -90,60 +90,60 @@ const ProductPage = () => {
           colors={currentProduct?.colour_families}
           tags={[
             {
-              title: "Season",
+              title: 'Season',
               list: [currentProduct?.season],
             },
             {
-              title: "Collections",
+              title: 'Collections',
               list:
                 currentProduct?.collections?.map(
                   (collection: any) => collection.name
                 ) || [],
             },
             {
-              title: "Keywords",
+              title: 'Keywords',
               list: currentProduct?.keywords || [],
             },
           ]}
           specifications={[
             {
-              label: "Made in",
+              label: 'Made in',
               value: currentProduct?.country_of_origin,
             },
             {
-              label: "Style",
+              label: 'Style',
               value: currentProduct?.style_number,
             },
             {
-              label: "Composition",
-              value: currentProduct?.compositions?.join(", "),
+              label: 'Composition',
+              value: currentProduct?.compositions?.join(', '),
             },
             {
-              label: "Material",
-              value: currentProduct?.materials?.join(", "),
+              label: 'Material',
+              value: currentProduct?.materials?.join(', '),
             },
             {
-              label: "Measurements",
-              value: currentProduct?.measurements?.join(", "),
+              label: 'Measurements',
+              value: currentProduct?.measurements?.join(', '),
             },
             {
-              label: "Colors",
+              label: 'Colors',
               value: currentProduct?.colour_name,
             },
             {
-              label: "Color Code",
+              label: 'Color Code',
               value: currentProduct?.colour_code,
             },
             {
-              label: "Color Family",
-              value: currentProduct?.colour_families?.join(", "),
+              label: 'Color Family',
+              value: currentProduct?.colour_families?.join(', '),
             },
             {
-              label: "Delivery start",
+              label: 'Delivery start',
               value: currentProduct?.delivery_window_start_date,
             },
             {
-              label: "Delivery end",
+              label: 'Delivery end',
               value: currentProduct?.delivery_window_start_date,
             },
           ]}
@@ -157,10 +157,11 @@ const ProductPage = () => {
             View More <Icon className="ml-[6px]" name="icon-arrow-right" />
           </Link>
         </div>
-        {collectionProductsLoading && <Loading message="Loading collecitons" />}
-        {!collectionProductsLoading && (
+        {!content && collectionProductsLoading ? (
+          <Loading message="Loading collecitons" />
+        ) : (
           <ProductList
-            gridType={"grid"}
+            gridType={'grid'}
             products={content || []}
             selectable={false}
             onSelect={() => {}}

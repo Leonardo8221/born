@@ -74,7 +74,7 @@ const Collections: FC<CollectionsProps> = ({
     return <ErrorMessage errorMessage={error?.message} />;
   }
 
-  if (loading) {
+  if (!data?.collectionsByOrganizationId && loading) {
     return <Loading message="Loading collecitons" />;
   }
 

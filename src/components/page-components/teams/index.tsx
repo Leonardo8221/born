@@ -19,7 +19,6 @@ const Teams = () => {
   const { data, loading, refetch } = useQuery(USERS_QUERY, {
     variables: { organizationId },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'network-only',
   });
 
   const handleErrorMesssage = (message: string) => {
@@ -54,7 +53,10 @@ const Teams = () => {
     }
   };
 
-  const handleUploadInviteUsers = async (users: any[]) => {
+  const handleUploadInviteUsers = async (
+    users: any[],
+    callback?: (val: any) => void
+  ) => {
     try {
       const config = await apiConfig();
       const api = new UserOrganizationResourceApi(config);
@@ -66,6 +68,15 @@ const Teams = () => {
         )
       );
       await Promise.all([arr]);
+      refetch();
+      callback?.([
+        {
+          id: Date.now(),
+          email: '',
+          role: 'MANAGER',
+          user_id: '',
+        },
+      ]);
       handleSuccessMesssage(`Invited ${users?.length} users successfully!`);
     } catch (error) {
       handleErrorMesssage('Failed to invite users!');

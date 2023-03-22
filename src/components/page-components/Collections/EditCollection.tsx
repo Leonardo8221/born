@@ -14,6 +14,7 @@ interface EditCollectionProps {
   collection: CollectionGraphqlDto;
   handleSuccessMessage: (message: string) => void;
   handleErrorMessage: (message: string) => void;
+  refetch?: () => void;
 }
 
 const EditCollection: FC<EditCollectionProps> = ({
@@ -23,6 +24,7 @@ const EditCollection: FC<EditCollectionProps> = ({
   collection,
   handleSuccessMessage,
   handleErrorMessage,
+  refetch,
 }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -44,6 +46,7 @@ const EditCollection: FC<EditCollectionProps> = ({
       });
       toggleModal(false);
       setIsSubmitting(false);
+      refetch?.()
       handleSuccessMessage('Collection updated successfully!');
     } catch (error: any) {
       setIsSubmitting(false);

@@ -21,7 +21,7 @@ export type User = {
 };
 
 interface InviteUsersProps {
-  handleInviteUsers: (users: any[]) => void;
+  handleInviteUsers: (users: any[], callback?: (val: any) => void) => void;
 }
 
 const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
@@ -210,7 +210,7 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
       <div className="mt-4">
         <Button
           className="!h-[32px] !w-[132px] !mx-0 !text-[12px]"
-          onClick={() => handleInviteUsers(inviteUsers)}
+          onClick={() => handleInviteUsers(inviteUsers, setInviteUsers)}
         >
           Upload
         </Button>

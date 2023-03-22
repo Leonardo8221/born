@@ -30,6 +30,8 @@ export const Table: FC<TableProps> = ({
   useEffect(() => {
     if (tableData && Array.isArray(tableData) && tableData.length) {
       setData(tableData);
+    } else {
+      setData([])
     }
   }, [tableData]);
 
