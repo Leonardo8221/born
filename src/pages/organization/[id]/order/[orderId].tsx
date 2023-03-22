@@ -206,10 +206,10 @@ function OrderPreview() {
     };
   };
 
-  const handleQuantities = async (val: string, id: number) => {
+  const handleQuantities = async (val: string, orderDetailId: number, id: number) => {
     try {
       const payload = {
-        note: val,
+        note: '',
         order_detail_sizes: [
           {
             order_detail_size_id: id,
@@ -218,8 +218,8 @@ function OrderPreview() {
         ],
       };
       const config: any = await apiConfig();
-      const api = new OrderResourceApi(config);
-      api.apiOrderUpdateDraftOrderPut(orderId, payload);
+      const api = new OrderDetailResourceApi(config);
+      api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, payload);
     } catch (error) {
       console.log(error);
     }
