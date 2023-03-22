@@ -15,6 +15,8 @@ import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
+import { formatCurrency } from '@/utils/formatCurrency';
+import clsx from 'clsx';
 
 function OrderPreview() {
   const router = useRouter();
@@ -311,23 +313,26 @@ function OrderPreview() {
             />
           </div>
           <div className="flex px-9 py-10 mb-6 shadow-md rounded-md items-center">
-            <Dropdown
-              options={dropdownmenu}
-              isValid={false}
-              label="Select Category"
-              onChange={(option) => handleDropdownChange(option?.value)}
-              className="mr-8 w-[278px]"
-              selectedOption={selectedOption}
-            />
+            <div className={clsx(!editMode && '!cursor-not-allowed [&>*]:!pointer-events-none opacity-[0.5]')}>
+              <Dropdown
+                options={dropdownmenu}
+                isValid={false}
+                label="Select Category"
+                onChange={(option) => handleDropdownChange(option?.value)}
+                className="mr-8 w-[278px]"
+                selectedOption={selectedOption}
+              />
+            </div>
             <Input
               value={orderDetails?.discount}
-              label="Discount"
+              label="Discount (%)"
               type="number"
               name="discount"
               isError={false}
               isValid={false}
               onChange={(val) => handleChange('discount', val)}
               className="mr-8 w-[139px] h-[56px]"
+              disabled={!editMode}
             />
             <Input
               value={orderDetails?.surcharge}
@@ -338,12 +343,13 @@ function OrderPreview() {
               isValid={false}
               onChange={(val) => handleChange('surcharge', val)}
               className="mr-8 w-[139px] h-[56px]"
+              disabled={!editMode}
             />
             <TotalQuantity
               title="Total Quantity"
               value={details?.total_quantity}
             />
-            <TotalQuantity title="Total price" value={details?.total_price} />
+            <TotalQuantity title="Total price" value={formatCurrency(details?.total_price)} />
           </div>
         </div>
         {/* <div className="py-6 !flex !justify-end">

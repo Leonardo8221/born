@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 export interface TotalQuantityProps {
   title: string;
-  value: number;
+  value: number | string;
 }
 
 export const TotalQuantity: FC<TotalQuantityProps> = ({ title, value }) => (
