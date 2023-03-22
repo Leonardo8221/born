@@ -116,6 +116,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
                 width: 56,
                 blurDataURL: srcLogo || srcBlurDataURL || LogoImage.src,
               }}
+              hideOverlay
               altText=" "
             />
           </div>

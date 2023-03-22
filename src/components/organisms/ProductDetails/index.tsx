@@ -20,7 +20,7 @@ export interface ProductDetailsProps extends ProductGraphqlDto {
 }
 
 const ProductDetails: FC<ProductDetailsProps> = ({
-  productImages,
+  attachments,
   associated_prices,
   description,
   colors,
@@ -29,15 +29,17 @@ const ProductDetails: FC<ProductDetailsProps> = ({
 }) => {
   return (
     <div className="flex flex-wrap gap-8">
-      <div className="h-fit">
+      <div className="flex-1 h-fit">
         <div className="flex w-full max-w-[736px] flex-wrap gap-1">
-          {productImages.map((item, index) => (
-            <img
-              key={`${index} product image`}
-              src={typeof item === 'string' ? item : item?.src}
-              alt="products"
-              className="h-full max-h-[366px] w-[366px] rounded"
-            />
+          {attachments?.map((item, index) => item?.medium_image_url && (
+            <div key={`${index} product image`} className="relative h-full max-h-[366px] w-[366px]">
+              <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.1)] rounded" />
+              <img
+                src={item?.medium_image_url}
+                alt="products"
+                className="h-full max-h-[366px] w-[366px] rounded"
+              />
+            </div>
           ))}
           <div className="flex h-full h-[366px] w-full max-w-[366px] m-auto justify-center">
             <div className="flex h-[304px] w-full max-w-[304px] m-auto bg-neutral-400 items-center justify-center rounded">
