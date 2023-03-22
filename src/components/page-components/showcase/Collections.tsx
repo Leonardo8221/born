@@ -33,7 +33,7 @@ const Collections: FC<CollectionsProps> = ({
   const [successMessage, setSuccessMessage] = useState('');
 
   const { data, loading, error, refetch } = useQuery(COLLECTIONS_QUERY, {
-    variables: { organizationId },
+    variables: { organizationId, rows: 50 },
   });
 
   const handleErrorMesssage = (message: string) => {

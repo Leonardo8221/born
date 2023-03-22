@@ -33,7 +33,7 @@ const Products: FC = () => {
   const id = router?.query?.id || '';
   const organizationId: number = +id;
   const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
-    variables: { organizationId, search: debouncedValue },
+    variables: { organizationId, search: debouncedValue, rows: 50 },
     notifyOnNetworkStatusChange: true,
   });
 

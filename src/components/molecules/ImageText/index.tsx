@@ -26,14 +26,19 @@ const ImageText: FC<ImageTextProps> = ({
   titleClassName,
 }) => {
   return (
-    <div className={clsx(variantClasses[variant], "items-center")}>
-      <Image
-        src={imgSrc}
-        alt={altText}
-        className={clsx("object-cover", variantImageClasses[variant])}
-        height={320}
-        width={320}
-      />
+    <div className={clsx(variantClasses[variant], "relative items-center")}>
+      <div className={clsx(variantImageClasses[variant], 'relative')}>
+        <div className="absolute left-0 right-0 w-full h-full bg-[rgba(0,0,0,0.1)]" />
+        {
+          imgSrc && (
+            <img
+              src={typeof imgSrc === 'string' ? imgSrc : imgSrc.src}
+              alt={altText}
+              className={clsx("object-cover", variantImageClasses[variant])}
+            />
+          )
+        }
+      </div>
       <div>
         <h3
           title={title}

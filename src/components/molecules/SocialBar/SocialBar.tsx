@@ -22,20 +22,33 @@ interface StyledImageProps {
 
 const StyledImage: FC<StyledImageProps> = ({ alt, src, Icon }) => {
   if (Icon) {
-    return <Icon className="w-5 h-5 ml-3 mr-3" />
+    return <Icon className="w-5 h-5 ml-3 mr-3" />;
   }
 
   return (
-    <Image className="w-5 h-5 ml-3 mr-3" alt={alt} src={src || ''} />
+    <img
+      className="w-5 h-5 ml-3 mr-3"
+      alt={alt}
+      src={(typeof src === 'string' ? src : src?.src) || ''}
+    />
   );
 };
 
 export const SocialBar: FC<SocialBarProps> = ({ icons, className }) => {
   return (
-    <div className={clsx("bg-shades-black flex w-44 px-4 m-auto h-[72px] items-center justify-center", className)}>
-      {icons.map (icon => (
+    <div
+      className={clsx(
+        'bg-shades-black flex w-44 px-4 m-auto h-[72px] items-center justify-center',
+        className
+      )}
+    >
+      {icons.map((icon) => (
         <a key={icon.link} href={icon.link} target="_blank" rel="noreferrer">
-          <StyledImage src={icon.src} alt={`Logo ${icon.name}`} Icon={icon.Icon} />
+          <StyledImage
+            src={icon.src}
+            alt={`Logo ${icon.name}`}
+            Icon={icon.Icon}
+          />
         </a>
       ))}
     </div>

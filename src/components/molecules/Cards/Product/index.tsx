@@ -1,10 +1,10 @@
-import { FC } from "react";
-import clsx from "clsx";
-import Image, { StaticImageData } from "next/image";
-import { Badge } from "../../Badge";
-import { Checkbox } from "../../Checkbox";
-import styles from "./product.module.css";
-import { ProductGraphqlDto } from "@/generated/types";
+import { FC } from 'react';
+import clsx from 'clsx';
+import Image, { StaticImageData } from 'next/image';
+import { Badge } from '../../Badge';
+import { Checkbox } from '../../Checkbox';
+import styles from './product.module.css';
+import { ProductGraphqlDto } from '@/generated/types';
 import {
   clsProductCard,
   clsProductCardColor,
@@ -15,12 +15,12 @@ import {
   clsProductCardTags,
   clsProductCardTitle,
   currencies,
-} from "./utils";
-import Link from "next/link";
-import { useRouter } from "next/router";
+} from './utils';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export interface ProductCardProps extends ProductGraphqlDto {
-  size?: "lg" | "sm";
+  size?: 'lg' | 'sm';
   imageUrl?: StaticImageData | string;
   isSelectable?: boolean;
   isSelected?: boolean;
@@ -33,10 +33,10 @@ const ProductCardWrapper: FC<{
   isSelectable?: boolean;
 }> = ({ id, isSelectable, children }) => {
   const router = useRouter();
-  if (!isSelectable && (typeof id === "number" || typeof id === "string")) {
+  if (!isSelectable && (typeof id === 'number' || typeof id === 'string')) {
     return (
       <Link
-        href={`/organization/${router.query.id || "1"}/discover/products/${id}`}
+        href={`/organization/${router.query.id || '1'}/discover/products/${id}`}
       >
         {children}
       </Link>
@@ -46,7 +46,7 @@ const ProductCardWrapper: FC<{
 };
 
 export const ProductCard: FC<ProductCardProps> = ({
-  size = "lg",
+  size = 'lg',
   product_id,
   style_name,
   imageUrl,
@@ -70,18 +70,27 @@ export const ProductCard: FC<ProductCardProps> = ({
         <div
           className={clsx(
             clsProductCardId(size),
-            "whitespace-nowrap text-ellipsis overflow-hidden"
+            'whitespace-nowrap text-ellipsis overflow-hidden'
           )}
         >
           {product_id}
         </div>
         <div>
-          <div className={styles.productCardImageWrapper}>
+          <div
+            className={clsx(
+              styles.productCardImageWrapper,
+              size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]'
+            )}
+          >
+            <div className="absolute top-0 left-0 h-full w-full rounded-lg bg-[rgba(0,0,0,0.1)]" />
             {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt={style_name + "image"}
-                className={clsx(styles.productCardImage, "rounded-lg")}
+              <img
+                src={typeof imageUrl === 'string' ? imageUrl : imageUrl.src}
+                alt={style_name + 'image'}
+                className={clsx(
+                  'rounded-lg',
+                  size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]'
+                )}
               />
             )}
             {renderCheckbox}
@@ -96,7 +105,7 @@ export const ProductCard: FC<ProductCardProps> = ({
               />
             ))}
           </div>
-          <div className={clsx(clsProductCardTags(size), "flex-wrap")}>
+          <div className={clsx(clsProductCardTags(size), 'flex-wrap')}>
             {collections?.map((collection) => (
               <div key={collection?.id} className="mb-1">
                 <Badge size={size}>{collection?.name}</Badge>

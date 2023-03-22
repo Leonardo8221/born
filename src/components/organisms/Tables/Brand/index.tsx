@@ -39,8 +39,12 @@ const BrandTable: FC<any> = ({ brands }) => {
       id: 'organzation',
       cell: ({ row }: any) => (
         <div className="flex items-center gap-x-4 pl-4">
-          <Image
-            src={row?.original?.logoUrl}
+          <img
+            src={
+              typeof row?.original?.logoUrl === 'string'
+                ? row?.original?.logoUrl
+                : row?.original?.logoUrl?.src
+            }
             alt={`${row?.original?.organization} logo`}
             className="h-12 w-12 rounded-full border border-neutral-200 p-1"
           />

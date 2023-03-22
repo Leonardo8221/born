@@ -32,9 +32,9 @@ const ProductDetails: FC<ProductDetailsProps> = ({
       <div className="h-fit">
         <div className="flex w-full max-w-[736px] flex-wrap gap-1">
           {productImages.map((item, index) => (
-            <Image
+            <img
               key={`${index} product image`}
-              src={item}
+              src={typeof item === 'string' ? item : item?.src}
               alt="products"
               className="h-full max-h-[366px] w-[366px] rounded"
             />

@@ -12,11 +12,10 @@ const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl, name }) => {
   return (
     <div className="mt-8 text-center">
       <div className="relative mx-auto h-[88px] w-[88px] rounded-full p-[7.33px] border border-neutral-200">
-        <Image
-          src={logoUrl || LogoImage}
+        <img
+          src={logoUrl || LogoImage.src}
           alt="Bornwave logo"
-          fill
-          className="!h-[73.33px] !w-[73.33px] !m-auto rounded-full"
+          className="object-cover !h-[73.33px] !w-[73.33px] !m-auto rounded-full"
         />
       </div>
       <Heading

@@ -1,6 +1,6 @@
-import Image, { StaticImageData } from "next/image";
-import { FC, SyntheticEvent } from "react";
-import { variants } from "./utils";
+import Image, { StaticImageData } from 'next/image';
+import { FC, SyntheticEvent } from 'react';
+import { variants } from './utils';
 
 export interface FileCardProps {
   src: string | StaticImageData;
@@ -9,7 +9,12 @@ export interface FileCardProps {
   variant?: keyof typeof variants;
 }
 
-export const FileCard: FC<FileCardProps> = ({ src, onClick, variant = "rectangle", icon }) => {
+export const FileCard: FC<FileCardProps> = ({
+  src,
+  onClick,
+  variant = 'rectangle',
+  icon,
+}) => {
   return (
     <div className={variants[variant]?.clsWrapper} onClick={onClick}>
       <div className={variants[variant]?.clsContainer}>
@@ -22,7 +27,11 @@ export const FileCard: FC<FileCardProps> = ({ src, onClick, variant = "rectangle
         ></div>
         {!src && icon && <div className="absolute z-[2]">{icon}</div>}
         {!!src && (
-          <Image src={src} alt="File" className={variants[variant]?.clsImage} fill />
+          <img
+            src={typeof src === 'string' ? src : src.src}
+            alt="File"
+            className={variants[variant]?.clsImage}
+          />
         )}
       </div>
     </div>

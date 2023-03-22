@@ -58,13 +58,13 @@ const Sidebar: FC<SidebarProps> = ({
         <div className="flex w-full flex-col items-center flex-1">
           <div className="[&>svg]:h-[80px] [&>svg]:w-[80px] [&>svg]:rounded-full">
             <div
-              className={`w-[${widthLogo}px] h-[${heightLogo}px] rounded-full border-2 border-neutral-200 flex justify-center items-center`}
+              className={`w-[${widthLogo}px] h-[${heightLogo}px] rounded-full border-2 border-neutral-200 flex justify-center items-center bg-shades-white`}
             >
               {logo
                 ? logo
                 : logoUrl && (
-                    <Image
-                      src={logoUrl}
+                    <img
+                      src={typeof logoUrl === 'string' ? logoUrl : logoUrl?.src}
                       alt={`${title} logo`}
                       width={heightLogo - 12}
                       height={widthLogo - 12}

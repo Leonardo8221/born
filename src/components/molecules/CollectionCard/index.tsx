@@ -91,11 +91,10 @@ export const CollectionCard: FC<CollectionCardProps> = ({
             </div>
           </div>
         )}
-        <Image
-          src={backgroundImageSrc}
+        <img
+          src={typeof backgroundImageSrc === 'string' ? backgroundImageSrc : backgroundImageSrc?.src}
           alt="Collection Card Background"
-          className="absolute w-full h-full object-cover z-[0] rounded"
-          fill
+          className="absolute object-cover w-full h-full object-cover z-[0] rounded"
         />
         <div className={styles.cardBackground}></div>
         <div className="relative m-auto">
@@ -106,11 +105,10 @@ export const CollectionCard: FC<CollectionCardProps> = ({
                   "mx-auto rounded-md bg-neutral-100 relative border border-neutral-200"
                 )}
               >
-                <Image
-                  src={imageSrc}
+                <img
+                  src={typeof imageSrc === 'string' ? imageSrc : imageSrc.src}
                   alt="Collection Card"
                   className="absolute w-full h-full object-contain p-1"
-                  fill
                 />
             </div>
           )}
