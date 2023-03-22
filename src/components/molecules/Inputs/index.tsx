@@ -41,6 +41,7 @@ const Input: FC<InputProps> = ({
             {inputType === 'textarea' ? (
               <>
                 <textarea
+                  {...props}
                   rows={4}
                   cols={50}
                   className="w-full text-[#666666] font-light leading-tight focus:outline-none focus:shadow-outline h-full"

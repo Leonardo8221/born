@@ -7,6 +7,7 @@ type Column = {
   key: string;
   value: string;
   inputType?: string;
+  name: string;
 };
 
 export interface OrderDetailsProps {
@@ -15,6 +16,7 @@ export interface OrderDetailsProps {
   column3: Column[];
   editMode: boolean;
   handleEditInputs?: any;
+  loading?: boolean;
 }
 
 const OrderDetails: FC<OrderDetailsProps> = ({
@@ -23,6 +25,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({
   column3,
   editMode,
   handleEditInputs,
+  loading,
 }) => {
   return (
     <div
@@ -38,16 +41,17 @@ const OrderDetails: FC<OrderDetailsProps> = ({
               <Input
                 onChange={(val) => console.log(val)}
                 editMode={editMode}
-                label={item.key}
+                label={item.name}
                 value={item.value}
                 className="mb-2"
+                disabled={loading}
               />
             ) : (
               <>
-                <div className="text-neutral-600 w-[132px] mx-2 my-2">
-                  {item.key}
+                <div className="text-[12px] font-light leading-[16px] text-neutral-600 w-[116px] mx-2 my-2">
+                  {item.name}
                 </div>
-                <div className="text-shades-black w-[300px] mx-2 my-2">
+                <div className="text-shades-black w-[188px] mx-2 my-2">
                   {item.value}
                 </div>
               </>
@@ -57,13 +61,14 @@ const OrderDetails: FC<OrderDetailsProps> = ({
       </div>
       <div>
         {column2.map((item, index) => (
-          <div key={index} className="flex">
+          <div key={index} className={clsx("flex", item.inputType === 'textarea' && 'h-[140px]')}>
             {editMode ? (
               <Input
                 editMode={editMode}
                 inputType={item.inputType}
-                label={item.key}
+                label={item.name}
                 value={item.value}
+                disabled={loading}
                 onChange={(event: any) =>
                   handleEditInputs(item.key, event.target.value)
                 }
@@ -71,10 +76,10 @@ const OrderDetails: FC<OrderDetailsProps> = ({
               />
             ) : (
               <>
-                <div className="text-neutral-600 w-[132px] mx-2 my-2">
-                  {item.key}
+                <div className="text-[12px] font-light leading-[16px] text-neutral-600 w-[116px] mx-2 my-2">
+                  {item.name}
                 </div>
-                <div className="text-shades-black w-[300px] mx-2 my-2">
+                <div className="text-shades-black w-[188px] mx-2 my-2">
                   {item.value}
                 </div>
               </>
@@ -88,16 +93,17 @@ const OrderDetails: FC<OrderDetailsProps> = ({
             {editMode ? (
               <Input
                 editMode={editMode}
-                label={item.key}
+                label={item.name}
                 value={item.value}
                 className="mb-2"
+                disabled={loading}
               />
             ) : (
               <>
-                <div className="text-neutral-600 w-[132px] mx-2 my-2">
-                  {item.key}
+                <div className="text-[12px] font-light leading-[16px] text-neutral-600 w-[116px] mx-2 my-2">
+                  {item.name}
                 </div>
-                <div className="text-shades-black w-[300px] mx-2 my-2">
+                <div className="text-[12px] font-light leading-[16px] text-shades-black w-[188px] mx-2 my-2">
                   {item.value}
                 </div>
               </>

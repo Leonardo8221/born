@@ -21,36 +21,26 @@ function OrderPreview() {
   const orderId = Number(router?.query?.orderId);
   const [editMode, setEditMode] = useState(false);
   const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
-  const [orderDetails, setDetails] = useState<any>({
-    surcharge: null,
-    discount: null,
-    category: {},
-    note: '',
-  });
+  const [orderDetails, setDetails] = useState<any>({});
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [orderNote, setOrderNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { loading, error, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
   const details = data?.orderByOrderId;
 
   useEffect(() => {
-    if (data && details) {
-      setDetails((prev: any) => {
-        if (JSON.stringify(prev) !== JSON.stringify(details)) {
-          return details;
-        }
-        return prev;
-      });
+    if (details) {
+      setDetails(details);
     }
-
-    return () => setDetails({});
-  }, [data]);
+  }, []);
 
   const handleEditInputs = (key: any, val: any) => {
-    let payload = { ...orderDetails };
+    let payload = { ...details };
     payload[key] = val;
     setDetails(payload);
   };
@@ -58,48 +48,58 @@ function OrderPreview() {
   const columnData = {
     column1: [
       {
-        key: 'Purchase order',
+        name: 'Purchase order',
+        key: 'purchase_order',
         value: details?.purchase_order,
       },
       {
-        key: 'Retailer',
+        name: 'Retailer',
+        key: 'retailer',
         value: details?.retailer,
       },
       {
-        key: 'Buyer name',
+        name: 'Buyer name',
+        key: 'buyer_name',
         value: details?.buyer_name,
       },
       {
-        key: 'Email address',
+        name: 'Email Address',
+        key: 'email_address',
         value: details?.email_address,
       },
     ],
     column2: [
       {
-        key: 'Billing address',
+        name: 'Billing address',
+        key: 'billing_address',
         value: details?.billing_address,
       },
       {
-        key: 'Delivery address',
+        name: 'Delivery address',
+        key: 'delivery_address',
         inputType: 'textarea',
         value: details?.delivery_address,
       },
     ],
     column3: [
       {
-        key: 'Payment terms',
+        name: 'Payment terms',
+        key: 'payment_terms',
         value: details?.payment_terms,
       },
       {
-        key: 'Delivery lead time',
+        name: 'Delivery lead time',
+        key: 'delivery_lead_time',
         value: '09/03/2023 - 12/06/2023',
       },
       {
-        key: 'Last updated',
+        name: 'Last updated',
+        key: 'last_updated',
         value: details?.last_updated,
       },
       {
-        key: 'Last modified',
+        name: 'Last modified',
+        key: 'last_modified',
         value: 'Stephanie Lomal',
       },
     ],
@@ -146,18 +146,22 @@ function OrderPreview() {
   };
 
   const handleSave = async () => {
+    setIsLoading(true);
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
-      api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
+      console.log(orderDetails);
+      await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
       refetch();
       setIsLoading(false);
       setEditMode(false);
+      setIsLoading(false);
       setSuccessMessage('Order modified successfully');
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
     } catch (error: any) {
+      setIsLoading(false);
       handleErrorMessage(error?.response?.message || 'Order update failed');
       console.log(error);
     }
@@ -270,21 +274,20 @@ function OrderPreview() {
         <div className="bg-[#fff]]">
           <div className="flex flex-1 justify-end mb-6">
             <div className="flex items-center">
-              {!editMode && (
-                <Button
-                  size="sm"
-                  onClick={() => setEditMode(true)}
-                  variant="outlined"
-                  className="!text-shades-black !text-[12px] !font-normal !px-[18.5] hover:!text-shades-white"
-                >
-                  Edit Details
-                </Button>
-              )}
+              <Button
+                size="sm"
+                onClick={() => setEditMode(!editMode)}
+                variant="outlined"
+                className="!text-shades-black !text-[12px] !font-normal !px-[18.5] hover:!text-shades-white"
+              >
+                {editMode ? 'Cancel' : 'Edit Details'}
+              </Button>
               {editMode && (
                 <Button
                   size="sm"
                   onClick={handleSave}
-                  className="!text-[12px] !font-normal !px-[18.5] !py-0"
+                  className="!text-[12px] !font-normal !px-[18.5] !py-0 ml-2"
+                  disabled={isLoading}
                 >
                   Save
                 </Button>
@@ -298,6 +301,7 @@ function OrderPreview() {
               column1={columnData.column1}
               column2={columnData.column2}
               column3={columnData.column3}
+              loading={isLoading}
             />
           </div>
           <div className="flex px-9 py-10 mb-6 shadow-md rounded-md items-center">

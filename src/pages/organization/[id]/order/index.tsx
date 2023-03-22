@@ -15,14 +15,12 @@ import { GET_ORDERS_LIST } from '@/utils/constants';
 export default function OrderManagement() {
   const router = useRouter();
   const id = router?.query?.id || '';
-  const organizationId: number = +id;
+  const organizationId: number = Number(id);
   const tabState = router.query.tab;
   const [activeTab, setActiveTab] = useState<string | number>('draft');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
-
-  console.log('working')
 
   const { data, refetch, loading } = useQuery(GET_ORDERS, {
     variables: {
@@ -39,15 +37,18 @@ export default function OrderManagement() {
   });
 
   const handleTabChange = (id: string | number) => {
-    if (!router?.query?.id) return;
-    router.push(`/organization/${router?.query?.id}/order?tab=${id}`);
+    if (!organizationId) return;
+    router.push(`/organization/${organizationId}/order?tab=${id}`);
     setActiveTab(id);
   };
+
+  useEffect(() => {
+    handleTabChange(router?.query?.tab ? `${router?.query?.tab}` : 'draft')
+  }, [router.isReady]);
 
   const ordersBySearch = data?.ordersBySearch?.content || [];
 
   const handleActions = async (action: string, id: number) => {
-    console.log(action, id);
     const config: any = await apiConfig();
     const api = new OrderResourceApi(config);
     try {
