@@ -10,6 +10,9 @@ export const GET_ORDER_BY_ID = gql`
       created_date
       delivery_address
       discount
+      total_price
+      total_quantity
+      surcharge
       email_address
       last_modified_by
       last_updated

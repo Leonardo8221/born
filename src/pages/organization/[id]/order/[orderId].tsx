@@ -15,6 +15,8 @@ import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
+import { formatCurrency } from '@/utils/formatCurrency';
+import clsx from 'clsx';
 
 function OrderPreview() {
   const router = useRouter();
@@ -26,6 +28,7 @@ function OrderPreview() {
   const [successMessage, setSuccessMessage] = useState('');
   const [orderNote, setOrderNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   const { loading, error, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
     notifyOnNetworkStatusChange: true,
@@ -37,7 +40,7 @@ function OrderPreview() {
     if (details) {
       setDetails(details);
     }
-  }, []);
+  }, [details]);
 
   const handleEditInputs = (key: any, val: any) => {
     let payload = { ...details };
@@ -150,7 +153,6 @@ function OrderPreview() {
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
-      console.log(orderDetails);
       await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
       refetch();
       setIsLoading(false);
@@ -188,12 +190,14 @@ function OrderPreview() {
     }
   };
 
-  const handleDropdownChange = (val: any) => {
-    setDetails({ ...orderDetails, category: val });
-  };
+  const selectedOption = dropdownmenu.filter(
+    (item) =>
+      item?.value?.toLocaleLowerCase() ===
+      details?.pricing_condition?.toLowerCase()
+  )?.[0];
 
-  const handleError = () => {
-    console.log('Error Handled');
+  const handleDropdownChange = (val: any) => {
+    setDetails({ ...orderDetails, pricing_condition: val });
   };
 
   const debounce = (func: Function, delay: number) => {
@@ -206,7 +210,11 @@ function OrderPreview() {
     };
   };
 
-  const handleQuantities = async (val: string, orderDetailId: number, id: number) => {
+  const handleQuantities = async (
+    val: string,
+    orderDetailId: number,
+    id: number
+  ) => {
     try {
       const payload = {
         note: '',
@@ -305,54 +313,52 @@ function OrderPreview() {
             />
           </div>
           <div className="flex px-9 py-10 mb-6 shadow-md rounded-md items-center">
-            <Dropdown
-              options={dropdownmenu}
-              isValid={false}
-              label="Select Category"
-              onChange={(val) => handleDropdownChange(val)}
-              className="mr-8 w-[278px]"
-              selectedOption={orderDetails?.category}
-            />
+            <div className={clsx(!editMode && '!cursor-not-allowed [&>*]:!pointer-events-none opacity-[0.5]')}>
+              <Dropdown
+                options={dropdownmenu}
+                isValid={false}
+                label="Select Category"
+                onChange={(option) => handleDropdownChange(option?.value)}
+                className="mr-8 w-[278px]"
+                selectedOption={selectedOption}
+              />
+            </div>
             <Input
               value={orderDetails?.discount}
-              label="Discount"
+              label="Discount (%)"
               type="number"
               name="discount"
               isError={false}
               isValid={false}
-              onError={handleError}
               onChange={(val) => handleChange('discount', val)}
               className="mr-8 w-[139px] h-[56px]"
+              disabled={!editMode}
             />
             <Input
               value={orderDetails?.surcharge}
               label="Surcharge"
               type="number"
-              name="number"
+              name="surcharge"
               isError={false}
               isValid={false}
-              onError={handleError}
               onChange={(val) => handleChange('surcharge', val)}
               className="mr-8 w-[139px] h-[56px]"
+              disabled={!editMode}
             />
             <TotalQuantity
               title="Total Quantity"
-              value={orderDetails?.totalQuantity}
+              value={details?.total_quantity}
             />
-            <TotalQuantity
-              title="Total price"
-              value={orderDetails?.orderPrice}
-            />
+            <TotalQuantity title="Total price" value={formatCurrency(details?.total_price)} />
           </div>
         </div>
         {/* <div className="py-6 !flex !justify-end">
           <div className="flex-1"></div>
           <Button
-            disabled={editMode}
             variant="outlined"
             className="!max-w-[74px] !text-[12px] !font-normal"
           >
-            Select
+            Save
           </Button>
         </div> */}
         <OrderListTable

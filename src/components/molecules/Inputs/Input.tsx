@@ -17,6 +17,7 @@ export interface InputProps {
   onChange: (value: string) => void;
   onError?: (message: string) => void;
   inputWrapperClasses?: string;
+  disabled?: boolean;
 }
 
 const Input: FC<InputProps> = ({
@@ -33,6 +34,7 @@ const Input: FC<InputProps> = ({
   onChange,
   onError,
   inputWrapperClasses,
+  disabled
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -50,8 +52,8 @@ const Input: FC<InputProps> = ({
   });
 
   return (
-    <div className="flex justify-center">
-      <div className={clsx('my-3 w-full', className)}>
+    <div className={clsx("flex justify-center")}>
+      <div className={clsx('my-3 w-full', disabled && '!cursor-not-allowed !opacity-[0.5] [&>*]:!pointer-events-none', className)}>
         <div className="relative h-[56px]">
           <label className={styles.label}>
             {label}
@@ -77,6 +79,7 @@ const Input: FC<InputProps> = ({
                   styles.resetOutline
                 )}
                 onChange={handleChange}
+                disabled={disabled}
               />
               <div className="flex items-center ml-3 mr-4 my-[15px] w-6">
                 {!isError &&
