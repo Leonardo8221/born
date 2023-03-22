@@ -66,7 +66,7 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
             title={row?.original?.style_name || ''}
             subTitle={row?.original?.style_number || ''}
             altText={row?.original?.style_name + 'logo'}
-            imgSrc={row?.original?.attachment_url || productPlaceholderImage}
+            imgSrc={row?.original?.attachments?.[0]?.medium_image_url || ''}
             variant="product"
             titleClassName="max-w-[125px] overflow-hidden text-ellipsis whitespace-nowrap"
           />

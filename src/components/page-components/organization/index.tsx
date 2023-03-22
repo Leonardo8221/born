@@ -1,9 +1,9 @@
-import { FC } from "react";
-import clsx from "clsx";
-import Image, { StaticImageData } from "next/image";
-import { fonts } from "@/config/fonts";
-import { Button } from "@/components/molecules/Button";
-import { OrganizationGraphqlDto } from "@/generated/types";
+import { FC } from 'react';
+import clsx from 'clsx';
+import Image, { StaticImageData } from 'next/image';
+import { fonts } from '@/config/fonts';
+import { Button } from '@/components/molecules/Button';
+import { OrganizationGraphqlDto } from '@/generated/types';
 
 export interface OrganizationCardProps extends OrganizationGraphqlDto {
   imgSrc: string | StaticImageData;
@@ -23,7 +23,7 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
         className="relative overflow-hidden flex h-[172px] w-full max-w-[320px] item-center justify-center bg-cover bg-no-repeat bg-center rounded-lg"
         style={{
           backgroundImage: `url(${
-            typeof imgSrc !== "string" ? imgSrc?.src : imgSrc
+            typeof imgSrc !== 'string' ? imgSrc?.src : imgSrc
           })`,
         }}
       >
@@ -31,39 +31,35 @@ const OrganizationCard: FC<OrganizationCardProps> = ({
           className="absolute h-full w-full left-0 top-0 bottom-0 right-0 rounded-lg"
           style={{
             background:
-              "linear-gradient(180deg, rgba(0, 0, 0, 0.81) 0%, rgba(0, 0, 0, 0.31) 100%)",
+              'linear-gradient(180deg, rgba(0, 0, 0, 0.81) 0%, rgba(0, 0, 0, 0.31) 100%)',
           }}
         />
         <div className="relative z-[2] m-auto text-center">
           {logoUrl && (
-            <Image
-              src={logoUrl}
-              alt={name + "logo"}
-              className="bg-shades-white rounded-full p-[3.33px] mx-auto"
-              height={40}
-              width={40}
+            <img
+              src={typeof logoUrl === 'string' ? logoUrl : logoUrl?.src}
+              alt={name + 'logo'}
+              className="bg-shades-white h-10 w-10 rounded-full p-[3.33px] mx-auto"
             />
           )}
           <h3
             className={clsx(
-              "text-shades-white mt-2 tracking-[0.06em]",
+              'text-shades-white mt-2 tracking-[0.06em]',
               fonts.text.xl
             )}
           >
             {name}
           </h3>
-          {
-            address && (
-              <h4
-                className={clsx(
-                  "text-shades-white mt-[3px] tracking-[0.06em]",
-                  fonts.text.sm
-                )}
-              >
-                {address}
-              </h4>
-            )
-          }
+          {address && (
+            <h4
+              className={clsx(
+                'text-shades-white mt-[3px] tracking-[0.06em]',
+                fonts.text.sm
+              )}
+            >
+              {address}
+            </h4>
+          )}
         </div>
       </div>
       <Button

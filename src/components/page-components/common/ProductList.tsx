@@ -63,7 +63,7 @@ const ProductList: FC<ProductListProps> = ({
           isSelectable={selectable}
           isSelected={!!selectedProducts?.includes(item.id)}
           onSelect={() => onSelect(item.id)}
-          imageUrl={productPlaceholderImage}
+          imageUrl={item?.attachments?.[0]?.medium_image_url || ''}
           {...item}
         />
       ))}
