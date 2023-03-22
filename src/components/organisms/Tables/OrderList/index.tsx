@@ -119,17 +119,7 @@ const OrderListTable: FC<OrderListTableProps> = ({
                 Cancel
               </Button>
             </div>
-          ) : orderType === 'cancelled' ? (
-            <div>
-              <Button
-                onClick={() => handleActions('approve', row.original.id)}
-                variant="outlined"
-                className="h-8 text-[12px] text-[#333333] border-[#999999]"
-              >
-                Approve
-              </Button>
-            </div>
-          ) : (
+          ) : orderType === 'cancelled' ? null : (
             <div>
               <Button
                 onClick={() => handleActions('confirm', row.original.id)}
