@@ -1,43 +1,45 @@
-import { FC } from "react";
-import clsx from "clsx";
-import Image, { StaticImageData } from "next/image";
+import { FC } from 'react';
+import clsx from 'clsx';
+import Image, { StaticImageData } from 'next/image';
 import {
   variantClasses,
   variantImageClasses,
   variantSubTitleClasses,
   variantTitleClasses,
-} from "./utils";
+} from './utils';
 
 export interface ImageTextProps {
-  variant?: "brand" | "product" | "brand-two";
+  variant?: 'brand' | 'product' | 'brand-two';
   title: string;
   subTitle?: string;
   imgSrc: StaticImageData | string;
   altText: string;
   titleClassName?: string;
+  hideOverlay?: boolean;
 }
 
 const ImageText: FC<ImageTextProps> = ({
-  variant = "brand",
+  variant = 'brand',
   title,
   subTitle,
   imgSrc,
   altText,
   titleClassName,
+  hideOverlay,
 }) => {
   return (
-    <div className={clsx(variantClasses[variant], "relative items-center")}>
-      <div className={clsx(variantImageClasses[variant], 'relative')}>
-        <div className="absolute left-0 right-0 w-full h-full bg-[rgba(0,0,0,0.1)]" />
-        {
-          imgSrc && (
-            <img
-              src={typeof imgSrc === 'string' ? imgSrc : imgSrc.src}
-              alt={altText}
-              className={clsx("object-cover", variantImageClasses[variant])}
-            />
-          )
-        }
+    <div className={clsx(variantClasses[variant], 'relative items-center')}>
+      <div className={clsx(variantImageClasses[variant], 'relative overflow-hidden')}>
+        {!hideOverlay && (
+          <div className="absolute left-0 right-0 w-full h-full bg-[rgba(0,0,0,0.1)]" />
+        )}
+        {imgSrc && (
+          <img
+            src={typeof imgSrc === 'string' ? imgSrc : imgSrc.src}
+            alt={altText}
+            className={clsx('object-cover', variantImageClasses[variant])}
+          />
+        )}
       </div>
       <div>
         <h3
@@ -45,7 +47,7 @@ const ImageText: FC<ImageTextProps> = ({
           className={clsx(
             variantTitleClasses[variant],
             titleClassName,
-            "text-shades-black tracking-[0.06em]"
+            'text-shades-black tracking-[0.06em]'
           )}
         >
           {title}
@@ -54,7 +56,7 @@ const ImageText: FC<ImageTextProps> = ({
           <h4
             className={clsx(
               variantSubTitleClasses[variant],
-              "text-neutral-700 font-light tracking-[0.06em]"
+              'text-neutral-700 font-light tracking-[0.06em]'
             )}
           >
             {subTitle}

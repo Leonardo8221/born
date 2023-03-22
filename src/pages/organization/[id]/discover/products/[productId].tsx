@@ -62,29 +62,12 @@ const ProductPage = () => {
         onDraftOrder={() => {}}
         hrefBack={`/organization/${router.query.id}/discover?tab=products`}
         containerClassName="mt-[42px] mb-[64px]"
+        srcLogo={currentProduct?.attachments?.[0]?.medium_image_url || ''}
       />
       <div className="max-w-[1200px] mx-auto">
         <ProductDetails
-          productImages={[
-            {
-              src: Product1.src,
-              height: 1464,
-              width: 1464,
-              blurDataURL: Product1.src,
-            },
-            {
-              src: Product3.src,
-              height: 1464,
-              width: 1464,
-              blurDataURL: Product3.src,
-            },
-            {
-              src: Product2.src,
-              height: 1464,
-              width: 1464,
-              blurDataURL: Product2.src,
-            },
-          ]}
+          attachments={currentProduct?.attachments || []}
+          productImages={currentProduct?.attachments || []}
           associated_prices={currentProduct?.associated_prices}
           description={currentProduct?.description}
           colors={currentProduct?.colour_families}
