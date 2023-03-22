@@ -14,6 +14,7 @@ import { OrderDetailResourceApi, OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
+import Loading from '@/components/page-components/Loading';
 
 function OrderPreview() {
   const router = useRouter();
@@ -249,18 +250,23 @@ function OrderPreview() {
     setDetails({ ...orderDetails, [key]: val });
   };
 
-  if (loading) {
-    return <>Loading...</>;
+  if (!details && loading) {
+    return <Loading message="Loading details..." />;
   }
 
   return (
     <div className="mx-auto overflow-x-hidden">
       <Header
         heading={orderDetails?.name}
+        status={{
+          confirmed: !!orderDetails?.confirmed,
+          approved: !!orderDetails?.approved,
+          cancelled: !!orderDetails?.cancelled,
+        }}
         handleErrorMessage={handleErrorMessage}
         addNote={() => setIsAddNoteOpen(!isAddNoteOpen)}
       />
-      <div className="mx-auto w-full max-w-[1440px] overflow-hidden px-16 py-16">
+      <div className="mx-auto w-full max-w-[1120px] py-16">
         <div className="bg-[#fff]]">
           <div className="flex flex-1 justify-end mb-6">
             <div className="flex items-center">
@@ -269,7 +275,7 @@ function OrderPreview() {
                   size="sm"
                   onClick={() => setEditMode(true)}
                   variant="outlined"
-                  className="!text-[#333333] !text-[12px] !font-normal mr-[14px] !px-[18.5]"
+                  className="!text-shades-black !text-[12px] !font-normal !px-[18.5] hover:!text-shades-white"
                 >
                   Edit Details
                 </Button>
@@ -278,7 +284,7 @@ function OrderPreview() {
                 <Button
                   size="sm"
                   onClick={handleSave}
-                  className="!text-[12px] !font-normal mr-[14px] !px-[18.5] !py-0"
+                  className="!text-[12px] !font-normal !px-[18.5] !py-0"
                 >
                   Save
                 </Button>

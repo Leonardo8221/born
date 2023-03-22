@@ -36,8 +36,9 @@ const CollectionPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAddToDraft, setIsAddToDraft] = useState(false);
 
-  const { data: collecitonData, loading } = useQuery(COLLECTION_QUERY, {
+  const { data: collecitonData, loading, refetch: refetchCollection } = useQuery(COLLECTION_QUERY, {
     variables: { collectionId },
+    notifyOnNetworkStatusChange: true,
   });
   const collection = collecitonData?.collectionByCollectionId;
 
@@ -47,6 +48,7 @@ const CollectionPage = () => {
     refetch,
   } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
     variables: { collectionId, search: debouncedValue },
+    notifyOnNetworkStatusChange: true,
   });
 
   const filterTags = [
@@ -147,7 +149,7 @@ const CollectionPage = () => {
     }
   };
 
-  if (loading) {
+  if (!collection && loading) {
     return <Loading message="Loading collections" />;
   }
 
@@ -179,7 +181,7 @@ const CollectionPage = () => {
           searchKeyword={searchKeyword}
           onSearch={setSearchKeyword}
         />
-        {productsCollectionLoading ? (
+        {!productsCollection && productsCollectionLoading ? (
           <div className="my-10 min-h-[400px]">
             <Loading message="Loading collecton products" />
           </div>
@@ -205,6 +207,7 @@ const CollectionPage = () => {
         toggleModal={setIsEditModal}
         handleSuccessMessage={handleSuccessMesssage}
         handleErrorMessage={handleErrorMesssage}
+        refetch={refetchCollection}
       />
       <OrderList
         setModalIsVisible={() => setIsAddToDraft(!isAddToDraft)}

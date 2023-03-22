@@ -1,4 +1,4 @@
-import { FC, HTMLProps } from 'react';
+import { FC, HTMLProps, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { theme } from '@/config/theme';
 import styles from './Input.module.css';
@@ -19,16 +19,23 @@ const Input: FC<InputProps> = ({
   className,
   ...props
 }) => {
+  const inputRef = useRef<any>(null)
+
+  const focusInput = () => {
+    inputRef.current && inputRef?.current?.focus?.()
+  }
+
   return (
     <div className={clsx('flex-1', className)}>
       {editMode ? (
         <>
           <div
             className={`${
-              inputType === 'textarea' ? 'h-auto' : 'h-7 items-center'
-            } flex border border-[#D8D8D8] rounded mx-2 my-1 w-full p-2 overflow-hidden`}
+              inputType === 'textarea' ? 'h-[140px]' : 'h-[28px] items-center'
+            } flex cursor-text border border-[#D8D8D8] rounded w-full p-2 overflow-hidden`}
+            onClick={focusInput}
           >
-            <label className="block text-[#999999] font-light leading-tight mr-4 min-w-[132px] max-w-[132px]:">
+            <label className="block cursor-text text-[#999999] font-light leading-tight mr-4 min-w-[132px] max-w-[132px]:">
               {label}
             </label>
             {inputType === 'textarea' ? (
@@ -37,6 +44,7 @@ const Input: FC<InputProps> = ({
                   rows={4}
                   cols={50}
                   className="w-full text-[#666666] font-light leading-tight focus:outline-none focus:shadow-outline h-full"
+                  ref={inputRef}
                 >
                   {value}
                 </textarea>
@@ -47,6 +55,7 @@ const Input: FC<InputProps> = ({
                 className="w-full text-[#666666] font-light leading-tight focus:outline-none focus:shadow-outline h-full"
                 id="username"
                 defaultValue={value}
+                ref={inputRef}
               />
             )}
           </div>

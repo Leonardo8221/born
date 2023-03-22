@@ -12,11 +12,16 @@ import { Icon } from '@/components/molecules/Icon';
 
 interface HeaderProps {
   heading: string;
+  status: {
+    confirmed: boolean;
+    approved: boolean;
+    cancelled: boolean;
+  },
   handleErrorMessage?: (error: string) => void;
   addNote?: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote }) => {
+const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote, status }) => {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
 
@@ -57,8 +62,20 @@ const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote }) => {
       action: () => handleDownloadCollection('xlsx'),
     },
   ];
+
+  const getStatus = () => {
+    if (status.confirmed) {
+      return 'Confirmed';
+    } else if (status.approved) {
+      return 'Approved';
+    } else if (status.cancelled) {
+      return 'Cancelled'
+    }
+    return 'Draft'
+  }
+
   return (
-    <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[64px]">
+    <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[32px]">
       <div className="flex w-[620px] gap-4 items-center">
         <ArrowIconLeft
           height={40}
@@ -66,21 +83,34 @@ const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote }) => {
           className="cursor-pointer"
           onClick={() => router.back()}
         />
-        <Pill label="Draft" appearance={'outlined'} size={'sm'} />
+        <Pill label={getStatus()} appearance={'outlined'} size={'sm'} />
         <Heading fontWeight="light" size="sm">
           {heading}
         </Heading>
       </div>
       <div className="flex items-center gap-x-4">
         <div>
+        {!status?.approved && !status.cancelled && !status?.confirmed && (
           <Button
-            label={'Add Note'}
+            label={'Add not'}
             {...{ variant: 'outlined' }}
             className="relative"
             onClick={addNote}
           >
             <Icon name="icon-message-square" />
           </Button>
+        )}
+        {
+          status.confirmed && (
+            <Button
+            label={'Revert to draft'}
+            {...{ variant: 'outlined' }}
+            className="relative"
+            onClick={addNote}
+          >
+          </Button>
+          )
+        }
         </div>
         <div>
           <DropdownMenu
@@ -93,9 +123,27 @@ const Header: FC<HeaderProps> = ({ heading, handleErrorMessage, addNote }) => {
           />
         </div>
         <div>
-          <Button className="!w-[172px] !px-[28px] text-[14px] leading-6">
-            Confirm
-          </Button>
+          {
+            !status?.approved && !status.cancelled && !status?.confirmed && (
+              <Button className="!w-[172px] !px-[28px] text-[14px] leading-6">
+                Confirm
+              </Button>
+            )
+          }
+          {
+            status?.confirmed && (
+              <Button className="!w-[172px] !px-[28px] text-[14px] leading-6">
+                Approve
+              </Button>
+            )
+          }
+          {
+            status?.approved && (
+              <Button className="!w-[172px] !px-[28px] text-[14px] leading-6">
+                Cancel order
+              </Button>
+            )
+          }
         </div>
       </div>
     </div>

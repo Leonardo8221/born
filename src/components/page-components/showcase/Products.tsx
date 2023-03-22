@@ -179,7 +179,7 @@ const Products: FC = () => {
           actions={actions}
           selectedItems={selectedProducts}
         />
-        {loading ? (
+        {!data?.productsBySearchAndOrganizationId && loading ? (
           <div className="mt-6">
             <Loading message="Loading products" />
           </div>
