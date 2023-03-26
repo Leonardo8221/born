@@ -8,12 +8,11 @@ interface HeaderProps {
   onClose: (event: any) => void;
 }
 
-const Header: FC<HeaderProps> = ({
-  title,
-  onClose,
-}) => (
-  <div className="sticky top-0 flex items-center bg-shades-white justify-between px-9 py-4 border-b border-b-neutral-400">
-    <h3 className={clsx(fonts.text['2xl'], 'text-shades-black tracking-[0.06em]')}>
+const Header: FC<HeaderProps> = ({ title, onClose }) => (
+  <div className="sticky top-0 flex items-center bg-shades-white justify-between px-9 py-4 border-b border-b-neutral-400 z-[2]">
+    <h3
+      className={clsx(fonts.text['2xl'], 'text-shades-black tracking-[0.06em]')}
+    >
       {title}
     </h3>
     <Icon
@@ -22,6 +21,6 @@ const Header: FC<HeaderProps> = ({
       className="flex h-6 w-6 cursor-pointer items-center justify-center text-shades-black"
     />
   </div>
-)
+);
 
 export default Header;

@@ -34,7 +34,7 @@ const Input: FC<InputProps> = ({
   onChange,
   onError,
   inputWrapperClasses,
-  disabled
+  disabled,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -52,8 +52,15 @@ const Input: FC<InputProps> = ({
   });
 
   return (
-    <div className={clsx("flex justify-center")}>
-      <div className={clsx('my-3 w-full', disabled && '!cursor-not-allowed !opacity-[0.5] [&>*]:!pointer-events-none', className)}>
+    <div className={clsx('flex justify-center')}>
+      <div
+        className={clsx(
+          'my-3 w-full',
+          disabled &&
+            '!cursor-not-allowed !opacity-[0.5] [&>*]:!pointer-events-none',
+          className
+        )}
+      >
         <div className="relative h-[56px]">
           <label className={styles.label}>
             {label}

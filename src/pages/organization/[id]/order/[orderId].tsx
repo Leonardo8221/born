@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import OrderListTable from '../../../../components/organisms/Tables/Product/OrderListTable';
-import OrderDetails from '../../../../components/molecules/OrderDetails/OrderDetails';
-import Dropdown from '../../../../components/molecules/Dropdown';
-import Input from '../../../../components/molecules/Inputs/Input';
-import { TotalQuantity } from '../../../../components/atoms/TotalQuantity/TotalQuantity';
+import OrderListTable from '@/components/organisms/Tables/Product/OrderListTable';
+import OrderDetails from '@/components/molecules/OrderDetails/OrderDetails';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/page-components/order/Header';
-import { GET_ORDER_BY_ID } from '../../../../queries/orders/details';
+import { GET_ORDER_BY_ID } from '@/queries/orders/details';
 import { Button } from '@/components/molecules/Button';
-import { OrderDetailResourceApi, OrderResourceApi } from 'client/command';
+import {
+  OrderDetailResourceApi,
+  OrderResourceApi,
+} from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
-import { formatCurrency } from '@/utils/formatCurrency';
-import clsx from 'clsx';
+import PricingCondition from '@/components/page-components/order/PricingCondition';
 
 function OrderPreview() {
   const router = useRouter();
@@ -102,44 +101,11 @@ function OrderPreview() {
       },
       {
         name: 'Last modified',
-        key: 'last_modified',
-        value: 'Stephanie Lomal',
+        key: 'last_modified_by',
+        value: details?.last_modified_by,
       },
     ],
   };
-
-  const dropdownmenu = [
-    {
-      value: 'USD_LANDED',
-      name: 'USD - Landed',
-      isDisabled: false,
-    },
-    {
-      value: 'USD_EXWORKS',
-      name: 'USD - ExWork',
-      isDisabled: false,
-    },
-    {
-      value: 'GBP_LANDED',
-      name: 'GBP - Landed',
-      isDisabled: true,
-    },
-    {
-      value: 'GBP_EXWORKS',
-      name: 'GBP - ExWork',
-      isDisabled: false,
-    },
-    {
-      value: 'EUR_LANDED',
-      name: 'EUR - Landed',
-      isDisabled: false,
-    },
-    {
-      value: 'EUR_EXWORKS',
-      name: 'EUR - ExWork',
-      isDisabled: false,
-    },
-  ];
 
   const handleErrorMessage = (message: string) => {
     setErrorMessage(message);
@@ -190,13 +156,7 @@ function OrderPreview() {
     }
   };
 
-  const selectedOption = dropdownmenu.filter(
-    (item) =>
-      item?.value?.toLocaleLowerCase() ===
-      details?.pricing_condition?.toLowerCase()
-  )?.[0];
-
-  const handleDropdownChange = (val: any) => {
+  const handleDropdownChange = async (val: any) => {
     setDetails({ ...orderDetails, pricing_condition: val });
   };
 
@@ -312,55 +272,12 @@ function OrderPreview() {
               loading={isLoading}
             />
           </div>
-          <div className="flex px-9 py-10 mb-6 shadow-md rounded-md items-center">
-            <div className={clsx(!editMode && '!cursor-not-allowed [&>*]:!pointer-events-none opacity-[0.5]')}>
-              <Dropdown
-                options={dropdownmenu}
-                isValid={false}
-                label="Select Category"
-                onChange={(option) => handleDropdownChange(option?.value)}
-                className="mr-8 w-[278px]"
-                selectedOption={selectedOption}
-              />
-            </div>
-            <Input
-              value={orderDetails?.discount}
-              label="Discount (%)"
-              type="number"
-              name="discount"
-              isError={false}
-              isValid={false}
-              onChange={(val) => handleChange('discount', val)}
-              className="mr-8 w-[139px] h-[56px]"
-              disabled={!editMode}
-            />
-            <Input
-              value={orderDetails?.surcharge}
-              label="Surcharge"
-              type="number"
-              name="surcharge"
-              isError={false}
-              isValid={false}
-              onChange={(val) => handleChange('surcharge', val)}
-              className="mr-8 w-[139px] h-[56px]"
-              disabled={!editMode}
-            />
-            <TotalQuantity
-              title="Total Quantity"
-              value={details?.total_quantity}
-            />
-            <TotalQuantity title="Total price" value={formatCurrency(details?.total_price)} />
-          </div>
+          <PricingCondition
+            details={details}
+            handleChange={handleChange}
+            handleDropdownChange={handleDropdownChange}
+          />
         </div>
-        {/* <div className="py-6 !flex !justify-end">
-          <div className="flex-1"></div>
-          <Button
-            variant="outlined"
-            className="!max-w-[74px] !text-[12px] !font-normal"
-          >
-            Save
-          </Button>
-        </div> */}
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={debouncedOrderNote}

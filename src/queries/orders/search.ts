@@ -3,17 +3,15 @@ import { gql } from '@apollo/client';
 export const ORDER_BY_SEARCH = gql`
   query orderBySearch(
     $organizationId: BigInteger!
-    $start: Int!
-    $rows: Int!
-    $confirmed: Boolean!
-    $cancelled: Boolean!
+    $start: Int
+    $rows: Int
+    $search: String
   ) {
     ordersBySearch(
       organizationId: $organizationId
       start: $start
       rows: $rows
-      confirmed: $confirmed
-      cancelled: $cancelled
+      search: $search
     ) {
       content {
         id
@@ -21,6 +19,7 @@ export const ORDER_BY_SEARCH = gql`
         total_price
         billing_address
         buyer_name
+        pricing_condition
       }
       total_pages
       total_elements

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { DraftTable } from '../../../../components/page-components/order/DraftsTable';
-import Tabs from '../../../../components/molecules/Tab/Tabs';
-import { Heading } from '../../../../components/molecules/Heading';
+import { DraftTable } from '@/components/page-components/order/DraftsTable';
+import Tabs from '@/components/molecules/Tab/Tabs';
+import { Heading } from '@/components/molecules/Heading';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import ShowcaseLayout from '@/components/layouts/ShowcaseLayout';
-import { GET_ORDERS } from '../../../../queries/orders/orders';
-import { OrderGraphqlDto } from '@/generated/types';
+import { GET_ORDERS } from '@/queries/orders/orders';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
@@ -43,7 +42,7 @@ export default function OrderManagement() {
   };
 
   useEffect(() => {
-    handleTabChange(router?.query?.tab ? `${router?.query?.tab}` : 'draft')
+    handleTabChange(router?.query?.tab ? `${router?.query?.tab}` : 'draft');
   }, [router.isReady]);
 
   const ordersBySearch = data?.ordersBySearch?.content || [];

@@ -1,6 +1,7 @@
-const formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
+type Currency = 'USD' | 'EUR' | 'GBP';
 
-export const formatCurrency = formatter.format;
+export const formatCurrency = (currency?: Currency) =>
+  new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency || 'USD',
+  });
