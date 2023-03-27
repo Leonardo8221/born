@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { DraftTable } from '../../../../components/page-components/order/DraftsTable';
-import Tabs from '../../../../components/molecules/Tab/Tabs';
-import { Heading } from '../../../../components/molecules/Heading';
+import { DraftTable } from '@/components/page-components/order/DraftsTable';
+import Tabs from '@/components/molecules/Tab/Tabs';
+import { Heading } from '@/components/molecules/Heading';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import ShowcaseLayout from '@/components/layouts/ShowcaseLayout';
-import { GET_ORDERS } from '../../../../queries/orders/orders';
-import { OrderGraphqlDto } from '@/generated/types';
+import { GET_ORDERS } from '@/queries/orders/orders';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import { GET_ORDERS_LIST } from '@/utils/constants';
+import useDebounce from '@/utils/debounce';
 
 export default function OrderManagement() {
   const router = useRouter();
@@ -21,6 +21,9 @@ export default function OrderManagement() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  const debounceValue = useDebounce(searchKeyword, 600);
 
   const { data, refetch, loading } = useQuery(GET_ORDERS, {
     variables: {
@@ -31,6 +34,7 @@ export default function OrderManagement() {
       approved: tabState === 'approved',
       start: 0,
       rows: 10,
+      search: debounceValue,
     },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
@@ -43,7 +47,7 @@ export default function OrderManagement() {
   };
 
   useEffect(() => {
-    handleTabChange(router?.query?.tab ? `${router?.query?.tab}` : 'draft')
+    handleTabChange(router?.query?.tab ? `${router?.query?.tab}` : 'draft');
   }, [router.isReady]);
 
   const ordersBySearch = data?.ordersBySearch?.content || [];
@@ -89,6 +93,8 @@ export default function OrderManagement() {
           loading={loading}
           type="draft"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },
@@ -102,6 +108,8 @@ export default function OrderManagement() {
           loading={loading}
           type="confirmed"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },
@@ -115,6 +123,8 @@ export default function OrderManagement() {
           loading={loading}
           type="approved"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },
@@ -128,6 +138,8 @@ export default function OrderManagement() {
           loading={loading}
           type="cancelled"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },

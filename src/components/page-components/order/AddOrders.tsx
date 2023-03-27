@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { OrderGraphqlDto } from '@/generated/types';
 import PlusIcon from '@/assets/svgs/plus.svg';
@@ -13,33 +13,41 @@ import { ORDER_LIST } from '@/utils/constants';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
+import { SearchInput } from '@/components/molecules/SearchInput';
+import useDebounce from '@/utils/debounce';
 
 interface AddOrderProp {
   productIds: number[];
   handleCloseModal: () => void;
   resetProductIds: () => void;
+  selectedOrder: OrderGraphqlDto | null;
+  setSelectedOrder: (order: OrderGraphqlDto | null) => void;
 }
 
 const AddOrders = ({
   productIds,
   handleCloseModal,
   resetProductIds,
+  setSelectedOrder,
 }: AddOrderProp) => {
   const router = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = +id;
+
   const [activeId, setActiveId] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const debouncedValue = useDebounce(searchKeyword, 800);
+
   const { data, loading, refetch } = useQuery(ORDER_BY_SEARCH, {
     variables: {
       key: ORDER_LIST,
       organizationId,
       start: 0,
       rows: 10,
-      confirmed: false,
-      cancelled: false,
+      search: debouncedValue,
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -65,13 +73,24 @@ const AddOrders = ({
     }, 3000);
   };
 
-  const handleAddProductsToOrder = async (id: number) => {
+  const handleAddProductsToOrder = async (
+    id: number,
+    orderDetails?: OrderGraphqlDto
+  ) => {
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
-      api.apiOrderAddProductsToDraftOrderPut(id, productIds);
-      handleSuccessMesssage('Add product to order successfully');
+      const response = await api.apiOrderAddProductsToDraftOrderPut(
+        id,
+        productIds
+      );
+      console.log(setSelectedOrder);
+      setSelectedOrder?.(orderDetails || null);
+      handleSuccessMesssage(
+        `Added ${productIds?.length} product to order successfully!`
+      );
       handleCloseModal();
+      return response;
     } catch (error: any) {
       handleErrorMesssage(
         error?.response?.message || 'Add product to draft failed'
@@ -83,7 +102,7 @@ const AddOrders = ({
 
   return (
     <div className="flex flex-col gap-y-6">
-      <div className="flex items-center gap-x-4">
+      <div className="flex items-center border-b border-neutral-400 gap-x-4 pb-6">
         <div className="flex h-[80px] w-[80px] cursor-pointer items-center justify-center bg-neutral-100 border border-neutral-400 rounded">
           <div className="inline-flex">
             <PlusIcon
@@ -101,6 +120,17 @@ const AddOrders = ({
         </h3>
       </div>
 
+      <SearchInput
+        value={searchKeyword || ''}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setSearchKeyword(e.target.value)
+        }
+        onClear={() => setSearchKeyword('')}
+        onEnter={() => {}}
+        placeholder="Search"
+        className="!relative !max-w-full !w-full z-[0]"
+      />
+
       {loading ? (
         <Loading message="Loading collections" />
       ) : (
@@ -109,7 +139,7 @@ const AddOrders = ({
             key={order?.id}
             onSelect={(id) => {
               setActiveId(id);
-              handleAddProductsToOrder(id);
+              handleAddProductsToOrder(id, order);
             }}
             isActive={order.id === activeId}
             approved={true}
@@ -119,12 +149,14 @@ const AddOrders = ({
             id={order.id}
             billing_address={order.billing_address}
             total_price={order.total_price}
+            pricing_condition={order.pricing_condition}
             buyer_name={order.buyer_name}
           />
         ))
       )}
       <CreateOrder
         showModal={showModal}
+        handleAddProductsToOrder={handleAddProductsToOrder}
         closeModal={() => {
           refetch();
           setShowModal(false);

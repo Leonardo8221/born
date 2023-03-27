@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import { SearchInput } from '../../molecules/SearchInput';
 import { TagCollection } from '../../molecules/TagCollection';
 import OrderListTable from '../../organisms/Tables/OrderList';
@@ -11,6 +11,8 @@ export interface DraftTableProps {
   loading: boolean;
   handleActions: (action: string, id: number) => void;
   actionsLoading?: boolean;
+  searchKeyword?: string;
+  setSearchKeyword?: (value: string) => void;
 }
 
 export const DraftTable: FC<DraftTableProps> = ({
@@ -19,16 +21,18 @@ export const DraftTable: FC<DraftTableProps> = ({
   loading,
   handleActions,
   actionsLoading,
+  searchKeyword,
+  setSearchKeyword,
 }) => {
   return (
     <div>
       <div id="header" className="flex justify-between">
         <div className="flex items-center pb-4">
           <SearchInput
-            onChange={() => {}}
-            onClear={function noRefCheck() {}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchKeyword?.(e.target.value)}
+            onClear={() => setSearchKeyword?.('')}
             onEnter={function noRefCheck() {}}
-            value={''}
+            value={searchKeyword || ''}
             placeholder="Search"
             className="mr-2"
           />

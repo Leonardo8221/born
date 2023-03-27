@@ -20,6 +20,8 @@ import { CollectionResourceApi, ProductResourceApi } from 'client/command';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
+import { OrderGraphqlDto } from '@/generated/types';
+import Notification from '@/components/page-components/order/Notification';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -35,6 +37,9 @@ const CollectionPage = () => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAddToDraft, setIsAddToDraft] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
+    null
+  );
 
   const { data: collecitonData, loading, refetch: refetchCollection } = useQuery(COLLECTION_QUERY, {
     variables: { collectionId },
@@ -214,9 +219,18 @@ const CollectionPage = () => {
         isModalVisible={isAddToDraft}
         productIds={selectedProducts}
         resetProductIds={() => setSelectedProducts([])}
+        selectedOrder={selectedOrder}
+        setSelectedOrder={setSelectedOrder}
       />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
       <Footer />
+
+      {selectedOrder?.id && (
+        <Notification
+          order={selectedOrder}
+          onCancel={() => setSelectedOrder(null)}
+        />
+      )}
     </div>
   );
 };

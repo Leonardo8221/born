@@ -3,14 +3,16 @@ import { gql } from '@apollo/client';
 export const GET_ORDERS = gql`
   query GetOrders(
     $organizationId: BigInteger!
-    $start: Int!
-    $rows: Int!
-    $confirmed: Boolean!
-    $approved: Boolean!
-    $cancelled: Boolean!
+    $search: String
+    $start: Int
+    $rows: Int
+    $confirmed: Boolean
+    $approved: Boolean
+    $cancelled: Boolean
   ) {
     ordersBySearch(
       organizationId: $organizationId
+      search: $search
       start: $start
       rows: $rows
       confirmed: $confirmed

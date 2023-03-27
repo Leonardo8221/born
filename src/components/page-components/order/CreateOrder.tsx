@@ -8,10 +8,15 @@ import Toast from '../Toast';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
 import { ORDER_LIST } from '@/utils/constants';
+import { OrderGraphqlDto } from '@/generated/types';
 
 interface CreatOrderProps {
   showModal: boolean;
   closeModal: () => void;
+  handleAddProductsToOrder?: (
+    id: number,
+    orderDetails: OrderGraphqlDto
+  ) => void;
 }
 
 interface OrderDetails {
@@ -23,21 +28,27 @@ interface OrderDetails {
   surcharge: number;
 }
 
+const initialState: OrderDetails = {
+  name: '',
+  purchase_order: '',
+  retailer: '',
+  buyer_name: '',
+  discount: 0,
+  surcharge: 0,
+};
+
 type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer';
 
-export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
+export const CreateOrder: FC<CreatOrderProps> = ({
+  showModal,
+  closeModal,
+  handleAddProductsToOrder,
+}) => {
   const router = useRouter();
   const client = useApolloClient();
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [details, setDetails] = useState<OrderDetails>({
-    name: '',
-    purchase_order: '',
-    retailer: '',
-    buyer_name: '',
-    discount: 0,
-    surcharge: 0
-  });
+  const [details, setDetails] = useState<OrderDetails>(initialState);
   const id = router?.query?.id || '';
   const organizationId: number = +id;
   const handleChange = (key: StateKeys, value: string) => {
@@ -51,38 +62,19 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal }) => {
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
-      api.apiOrderCreateNewDraftOrderPost(organizationId, details);
-      setSuccessMessage('Order details added successfully');
+      const response: any = await api.apiOrderCreateNewDraftOrderPost(
+        organizationId,
+        details
+      );
+      await handleAddProductsToOrder?.(response?.data?.id, response?.data);
       closeModal();
-      setDetails({
-        name: '',
-        purchase_order: '',
-        retailer: '',
-        buyer_name: '',
-        discount: 0,
-        surcharge: 0
-      });
+      setDetails(initialState);
       await client.refetchQueries({
         include: [ORDER_LIST],
       });
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
     } catch (error: any) {
-      setErrorMessage(error?.response?.message || 'Order failed to add');
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 3000);
       closeModal();
-      setDetails({
-        name: '',
-        purchase_order: '',
-        retailer: '',
-        buyer_name: '',
-        discount: 0,
-        surcharge: 0
-      });
-      console.log(error);
+      setDetails(initialState);
     }
   };
 
