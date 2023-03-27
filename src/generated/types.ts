@@ -56,11 +56,8 @@ export type OrderDetailSizeGraphqlDto = {
 
 export type OrderGraphqlDto = {
   __typename?: "OrderGraphqlDTO";
-  approved: Scalars["Boolean"];
   billing_address?: Maybe<Scalars["String"]>;
   buyer_name?: Maybe<Scalars["String"]>;
-  cancelled: Scalars["Boolean"];
-  confirmed: Scalars["Boolean"];
   created_by?: Maybe<Scalars["String"]>;
   /** ISO-8601 */
   created_date?: Maybe<Scalars["DateTime"]>;
@@ -74,6 +71,7 @@ export type OrderGraphqlDto = {
   name?: Maybe<Scalars["String"]>;
   note?: Maybe<Scalars["String"]>;
   order_details?: Maybe<Array<Maybe<OrderDetailGraphqlDto>>>;
+  order_status?: Maybe<OrderStatus>;
   payment_terms?: Maybe<Scalars["String"]>;
   pricing_condition?: Maybe<PricingCondition>;
   purchase_order?: Maybe<Scalars["String"]>;
@@ -84,6 +82,13 @@ export type OrderGraphqlDto = {
   total_price?: Maybe<Scalars["BigDecimal"]>;
   total_quantity?: Maybe<Scalars["Int"]>;
 };
+
+export enum OrderStatus {
+  Approved = "APPROVED",
+  Cancelled = "CANCELLED",
+  Confirmed = "CONFIRMED",
+  Draft = "DRAFT",
+}
 
 export type OrganizationGraphqlDto = {
   __typename?: "OrganizationGraphqlDTO";
@@ -258,12 +263,10 @@ export type QueryOrderByOrderIdArgs = {
 
 /** Query root */
 export type QueryOrdersBySearchArgs = {
-  approved?: InputMaybe<Scalars["Boolean"]>;
   buyerNames?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  cancelled?: InputMaybe<Scalars["Boolean"]>;
-  confirmed?: InputMaybe<Scalars["Boolean"]>;
   createdBy?: InputMaybe<Scalars["String"]>;
   createdDate?: InputMaybe<Scalars["DateTime"]>;
+  orderStatus: OrderStatus;
   organizationId: Scalars["BigInteger"];
   retailers?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   rows?: InputMaybe<Scalars["Int"]>;
@@ -591,6 +594,9 @@ export type GetOrderByIdQuery = {
     created_date?: any | null;
     delivery_address?: string | null;
     discount?: any | null;
+    total_price?: any | null;
+    total_quantity?: number | null;
+    surcharge?: any | null;
     email_address?: string | null;
     last_modified_by?: string | null;
     last_updated?: any | null;
@@ -599,9 +605,7 @@ export type GetOrderByIdQuery = {
     pricing_condition?: PricingCondition | null;
     purchase_order?: string | null;
     retailer?: string | null;
-    approved: boolean;
-    cancelled: boolean;
-    confirmed: boolean;
+    order_status?: OrderStatus | null;
     size?: string | null;
     order_details?: Array<{
       __typename?: "OrderDetailGraphqlDTO";
@@ -652,55 +656,12 @@ export type GetOrderByIdQuery = {
   } | null;
 };
 
-export type GetOrdersQueryVariables = Exact<{
-  organizationId: Scalars["BigInteger"];
-  start: Scalars["Int"];
-  rows: Scalars["Int"];
-  confirmed: Scalars["Boolean"];
-  approved: Scalars["Boolean"];
-  cancelled: Scalars["Boolean"];
-}>;
-
-export type GetOrdersQuery = {
-  __typename?: "Query";
-  ordersBySearch?: {
-    __typename?: "PageWrapper_OrderGraphqlDTO";
-    total_pages: number;
-    total_elements: any;
-    number_of_elements: number;
-    size: number;
-    content?: Array<{
-      __typename?: "OrderGraphqlDTO";
-      id?: any | null;
-      name?: string | null;
-      total_price?: any | null;
-      billing_address?: string | null;
-      buyer_name?: string | null;
-      created_date?: any | null;
-      delivery_address?: string | null;
-      discount?: any | null;
-      email_address?: string | null;
-      last_modified_by?: string | null;
-      last_updated?: any | null;
-      note?: string | null;
-      payment_terms?: string | null;
-      pricing_condition?: PricingCondition | null;
-      purchase_order?: string | null;
-      retailer?: string | null;
-      approved: boolean;
-      cancelled: boolean;
-      confirmed: boolean;
-      size?: string | null;
-    } | null> | null;
-  } | null;
-};
-
 export type OrderBySearchQueryVariables = Exact<{
   organizationId: Scalars["BigInteger"];
-  start: Scalars["Int"];
-  rows: Scalars["Int"];
-  confirmed: Scalars["Boolean"];
-  cancelled: Scalars["Boolean"];
+  start?: InputMaybe<Scalars["Int"]>;
+  rows?: InputMaybe<Scalars["Int"]>;
+  search?: InputMaybe<Scalars["String"]>;
+  orderStatus: OrderStatus;
 }>;
 
 export type OrderBySearchQuery = {
@@ -718,6 +679,7 @@ export type OrderBySearchQuery = {
       total_price?: any | null;
       billing_address?: string | null;
       buyer_name?: string | null;
+      pricing_condition?: PricingCondition | null;
     } | null> | null;
   } | null;
 };

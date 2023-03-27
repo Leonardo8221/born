@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 export const ORDER_BY_SEARCH = gql`
   query orderBySearch(
     $organizationId: BigInteger!
+    $orderStatus: OrderStatus!
     $start: Int
     $rows: Int
     $search: String
@@ -12,6 +13,7 @@ export const ORDER_BY_SEARCH = gql`
       start: $start
       rows: $rows
       search: $search
+      orderStatus: $orderStatus
     ) {
       content {
         id
