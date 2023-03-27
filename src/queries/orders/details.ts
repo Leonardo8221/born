@@ -42,6 +42,12 @@ export const GET_ORDER_BY_ID = gql`
             landed
             retail
           }
+          attachments {
+            id
+            small_image_url
+            medium_image_url
+            large_image_url
+          }
           first_category
           second_category
           third_category

@@ -340,6 +340,7 @@ function OrderPreview() {
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={debouncedOrderNote}
           products={details?.order_details}
+          pricing_condition={orderDetails?.pricing_condition}
           quantity={orderDetails?.quantity}
           total_price={orderDetails?.total_price}
           editMode={true}
