@@ -16,6 +16,7 @@ import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
 import PricingCondition from '@/components/page-components/order/PricingCondition';
+import Notification from '@/components/page-components/order/Notification';
 
 function OrderPreview() {
   const router = useRouter();

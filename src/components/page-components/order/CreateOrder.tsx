@@ -13,7 +13,10 @@ import { OrderGraphqlDto } from '@/generated/types';
 interface CreatOrderProps {
   showModal: boolean;
   closeModal: () => void;
-  handleAddProductsToOrder?: (id: number) => void;
+  handleAddProductsToOrder?: (
+    id: number,
+    orderDetails: OrderGraphqlDto
+  ) => void;
 }
 
 interface OrderDetails {
@@ -36,7 +39,11 @@ const initialState: OrderDetails = {
 
 type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer';
 
-export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal, handleAddProductsToOrder }) => {
+export const CreateOrder: FC<CreatOrderProps> = ({
+  showModal,
+  closeModal,
+  handleAddProductsToOrder,
+}) => {
   const router = useRouter();
   const client = useApolloClient();
   const [errorMessage, setErrorMessage] = useState('');
@@ -59,7 +66,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({ showModal, closeModal, handle
         organizationId,
         details
       );
-      await handleAddProductsToOrder?.(response?.data?.id);
+      await handleAddProductsToOrder?.(response?.data?.id, response?.data);
       closeModal();
       setDetails(initialState);
       await client.refetchQueries({

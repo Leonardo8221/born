@@ -20,12 +20,15 @@ interface AddOrderProp {
   productIds: number[];
   handleCloseModal: () => void;
   resetProductIds: () => void;
+  selectedOrder: OrderGraphqlDto | null;
+  setSelectedOrder: (order: OrderGraphqlDto | null) => void;
 }
 
 const AddOrders = ({
   productIds,
   handleCloseModal,
   resetProductIds,
+  setSelectedOrder,
 }: AddOrderProp) => {
   const router = useRouter();
   const id = router?.query?.id || '';
@@ -70,7 +73,10 @@ const AddOrders = ({
     }, 3000);
   };
 
-  const handleAddProductsToOrder = async (id: number) => {
+  const handleAddProductsToOrder = async (
+    id: number,
+    orderDetails?: OrderGraphqlDto
+  ) => {
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
@@ -78,6 +84,8 @@ const AddOrders = ({
         id,
         productIds
       );
+      console.log(setSelectedOrder);
+      setSelectedOrder?.(orderDetails || null);
       handleSuccessMesssage(
         `Added ${productIds?.length} product to order successfully!`
       );
@@ -131,7 +139,7 @@ const AddOrders = ({
             key={order?.id}
             onSelect={(id) => {
               setActiveId(id);
-              handleAddProductsToOrder(id);
+              handleAddProductsToOrder(id, order);
             }}
             isActive={order.id === activeId}
             approved={true}

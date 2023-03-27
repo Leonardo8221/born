@@ -15,6 +15,8 @@ import Modal from '@/components/molecules/Modal';
 import CreateCollection from './CreateCollection';
 import AddCollections from './AddCollections';
 import { OrderList } from '@/components/page-components/order/OrdersList';
+import { OrderGraphqlDto } from '@/generated/types';
+import Notification from '../order/Notification';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -28,6 +30,9 @@ const Products: FC = () => {
   const [isAddCollections, setIsAddCollections] = useState(false);
   const [isCreateModal, setIsCreateModal] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
+    null
+  );
 
   const router = useRouter();
   const id = router?.query?.id || '';
@@ -224,8 +229,16 @@ const Products: FC = () => {
         isModalVisible={isModalVisible}
         productIds={selectedProducts}
         resetProductIds={() => setSelectedProducts([])}
+        setSelectedOrder={setSelectedOrder}
+        selectedOrder={selectedOrder}
       />
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
+      {selectedOrder?.id && (
+        <Notification
+          order={selectedOrder}
+          onCancel={() => setSelectedOrder(null)}
+        />
+      )}
     </div>
   );
 };
