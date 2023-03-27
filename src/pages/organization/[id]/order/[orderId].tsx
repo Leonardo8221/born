@@ -7,16 +7,14 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/page-components/order/Header';
 import { GET_ORDER_BY_ID } from '@/queries/orders/details';
 import { Button } from '@/components/molecules/Button';
-import {
-  OrderDetailResourceApi,
-  OrderResourceApi,
-} from 'client/command';
+import { OrderDetailResourceApi, OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
 import PricingCondition from '@/components/page-components/order/PricingCondition';
 import Notification from '@/components/page-components/order/Notification';
+import useDebounce from '@/utils/debounce';
 
 function OrderPreview() {
   const router = useRouter();
@@ -28,6 +26,10 @@ function OrderPreview() {
   const [successMessage, setSuccessMessage] = useState('');
   const [orderNote, setOrderNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [discount, setDiscount] = useState(-1);
+  const [surcharge, setSurchange] = useState(-1);
+  const debouncedDiscount = useDebounce(discount, 600);
+  const debouncedSurcharge = useDebounce(surcharge, 600);
 
   const { loading, error, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
@@ -41,6 +43,43 @@ function OrderPreview() {
       setDetails(details);
     }
   }, [details]);
+
+  useEffect(() => {
+    const oId = Number(router?.query?.orderId);
+    const update = async () => {
+      try {
+        const config: any = await apiConfig();
+        const api = new OrderResourceApi(config);
+        await api.apiOrderUpdateDraftOrderPut(oId, {
+          ...orderDetails,
+          discount: Number(debouncedDiscount),
+        });
+        refetch();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    debouncedDiscount !== -1 && update();
+  }, [debouncedDiscount]);
+
+  useEffect(() => {
+    const oId = Number(router?.query?.orderId);
+    const update = async () => {
+      try {
+        const config: any = await apiConfig();
+        const api = new OrderResourceApi(config);
+        await api.apiOrderUpdateDraftOrderPut(oId, {
+          ...orderDetails,
+          surcharge: Number(debouncedSurcharge),
+        });
+        refetch();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    debouncedSurcharge !== -1 && update();
+  }, [debouncedSurcharge]);
 
   const handleEditInputs = (key: any, val: any) => {
     let payload = { ...details };
@@ -158,7 +197,17 @@ function OrderPreview() {
   };
 
   const handleDropdownChange = async (val: any) => {
-    setDetails({ ...orderDetails, pricing_condition: val });
+    try {
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      await api.apiOrderUpdateDraftOrderPut(orderId, {
+        ...orderDetails,
+        pricing_condition: val,
+      });
+      refetch();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const debounce = (func: Function, delay: number) => {
@@ -189,6 +238,7 @@ function OrderPreview() {
       const config: any = await apiConfig();
       const api = new OrderDetailResourceApi(config);
       api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, payload);
+      refetch();
     } catch (error) {
       console.log(error);
     }
@@ -211,6 +261,7 @@ function OrderPreview() {
       const config: any = await apiConfig();
       const api = new OrderDetailResourceApi(config);
       api.apiOrderUpdateDraftOrderDetailPut(id, orderId, payload);
+      refetch();
     } catch (error) {
       console.log(error);
     }
@@ -219,8 +270,14 @@ function OrderPreview() {
   const debouncedHandleQuantities = debounce(handleQuantities, 600);
   const debouncedOrderNote = debounce(handleDebouncedOrderNote, 600);
 
-  const handleChange = (key: any, val: any) => {
+  const handleChange = async (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
+
+    if (key === 'discount') {
+      setDiscount(val);
+    } else {
+      setSurchange(val);
+    }
   };
 
   if (!details && loading) {
@@ -274,7 +331,7 @@ function OrderPreview() {
             />
           </div>
           <PricingCondition
-            details={details}
+            details={orderDetails}
             handleChange={handleChange}
             handleDropdownChange={handleDropdownChange}
           />
@@ -283,7 +340,7 @@ function OrderPreview() {
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={debouncedOrderNote}
           products={details?.order_details}
-          editMode={editMode}
+          editMode={true}
         />
       </div>
       <AddNote
