@@ -60,6 +60,7 @@ export const GET_ORDER_BY_ID = gql`
           description
           upc
           style_number
+          style_name
           style_id
           size_type
           size_options
