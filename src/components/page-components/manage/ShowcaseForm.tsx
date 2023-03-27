@@ -5,12 +5,12 @@ import Dropdown from '@/components/molecules/Dropdown';
 import { FileUpload } from '@/components/molecules/FileUpload';
 import { OrganizationGraphqlDto } from '@/generated/types';
 import { Button } from '@/components/molecules/Button';
-import { FileType, OrganizationRestDTO } from 'client/command';
+import { FileType, OrganizationRequestDTO } from 'client/command';
 
 interface ShowcaseFormProps {
   organization: OrganizationGraphqlDto;
   handleUpdateOrganizationDetails: (
-    organizationRestDTO: OrganizationRestDTO
+    organizationRestDTO: OrganizationRequestDTO
   ) => void;
   handleUploadAttachment: ({
     type,

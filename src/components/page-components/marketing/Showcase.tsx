@@ -4,7 +4,7 @@ import {
   AttachmentResourceApi,
   FileType,
   OrganizationResourceApi,
-  OrganizationRestDTO,
+  OrganizationRequestDTO,
 } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
@@ -41,7 +41,7 @@ const Showcase: FC<ShowcaseProps> = ({ organization, refetch }) => {
   };
 
   const handleUpdateOrganizationDetails = async (
-    organizationRestDTO: OrganizationRestDTO
+    organizationRestDTO: OrganizationRequestDTO
   ) => {
     setIsSubmitting(true);
     try {

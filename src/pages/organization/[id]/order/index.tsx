@@ -10,6 +10,7 @@ import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import { GET_ORDERS_LIST } from '@/utils/constants';
+import useDebounce from '@/utils/debounce';
 
 export default function OrderManagement() {
   const router = useRouter();
@@ -20,6 +21,9 @@ export default function OrderManagement() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  const debounceValue = useDebounce(searchKeyword, 600);
 
   const { data, refetch, loading } = useQuery(GET_ORDERS, {
     variables: {
@@ -30,6 +34,7 @@ export default function OrderManagement() {
       approved: tabState === 'approved',
       start: 0,
       rows: 10,
+      search: debounceValue,
     },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
@@ -88,6 +93,8 @@ export default function OrderManagement() {
           loading={loading}
           type="draft"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },
@@ -101,6 +108,8 @@ export default function OrderManagement() {
           loading={loading}
           type="confirmed"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },
@@ -114,6 +123,8 @@ export default function OrderManagement() {
           loading={loading}
           type="approved"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },
@@ -127,6 +138,8 @@ export default function OrderManagement() {
           loading={loading}
           type="cancelled"
           content={ordersBySearch}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
         />
       ),
     },

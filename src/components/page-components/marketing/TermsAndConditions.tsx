@@ -1,7 +1,7 @@
 import { Button } from '@/components/molecules/Button';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { apiConfig } from '@/utils/apiConfig';
-import { OrganizationResourceApi, OrganizationRestDTO } from 'client/command';
+import { OrganizationResourceApi, OrganizationRequestDTO } from 'client/command';
 import { useRouter } from 'next/router';
 // import { OrganizationProps } from "@/pages/organization/[id]/manage/marketing";
 import React, { FC, useEffect, useState } from 'react';
@@ -39,7 +39,7 @@ const TermsAndConditions: FC<any> = ({ organization, refetch }) => {
   };
 
   const handleUpdateOrganizationDetails = async (
-    organizationRestDTO: OrganizationRestDTO
+    organizationRestDTO: OrganizationRequestDTO
   ) => {
     setIsLoading(true);
     try {
