@@ -6,10 +6,12 @@ import { fonts } from '@/config/fonts';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
 import ProductImage from '@/assets/images/products/product.png';
+import { formatCurrency } from '@/utils/formatCurrency';
 export interface OrderDetails {
   products: any[];
   quantity?: number;
   total_price?: number;
+  pricing_condition?: any;
   editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
   handleOrderNote?: (val: string, id: number, details: any) => void;
@@ -18,6 +20,7 @@ export interface OrderDetails {
 const OrderListTable: FC<OrderDetails> = ({
   products,
   editMode,
+  pricing_condition,
   handleQuantities,
   handleOrderNote,
 }) => {
@@ -29,10 +32,10 @@ const OrderListTable: FC<OrderDetails> = ({
       cell: ({ row }: any) => (
         <div>
           <ImageText
-            title={row?.original?.product?.upc || ''}
-            subTitle={row?.original?.product?.title || ''}
-            altText={row?.original?.product?.title + 'logo'}
-            imgSrc={ProductImage}
+            title={row?.original?.product?.style_name || ''}
+            subTitle={row?.original?.product?.style_number || ''}
+            altText={row?.original?.product?.style_name + 'logo'}
+            imgSrc={row?.original?.product?.attachments?.[0]?.medium_image_url}
             variant="product"
           />
         </div>
@@ -83,7 +86,7 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {info.getValue()}
+          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(info.getValue() || 0)}
         </div>
       ),
       header: () => 'Wholesale Price',
@@ -113,7 +116,7 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {info.getValue()}
+          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(info.getValue() || 0)}
         </div>
       ),
       header: () => 'Total Wholesale price',
