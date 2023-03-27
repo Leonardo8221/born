@@ -32,8 +32,13 @@ const Dropdown: FC<DropdownProps> = ({
   selectedOption,
   width,
 }) => {
+  const [isDropdownSelected, setIsDropdownSelected] = useState(false);
   const [selected, setSelected] = useState(selectedOption);
   const [isExpand, setIsExpand] = useState(false);
+
+  useEffect(() => {
+    !isDropdownSelected && setSelected(selectedOption);
+  }, [selectedOption])
 
   const clsDropDownCard = clsx({
     [styles.defaultDropDownCard]: !isExpand === true,
@@ -42,6 +47,7 @@ const Dropdown: FC<DropdownProps> = ({
   });
 
   const handleChange = (event: Option) => {
+    setIsDropdownSelected(true);
     setSelected(event);
     if (onChange) {
       onChange(event);

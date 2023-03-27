@@ -77,7 +77,7 @@ const Input: FC<InputProps> = ({
               )}
             >
               <input
-                value={value}
+                defaultValue={value}
                 placeholder={placeholder}
                 type={type}
                 name={name}
