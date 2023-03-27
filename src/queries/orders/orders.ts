@@ -3,21 +3,17 @@ import { gql } from '@apollo/client';
 export const GET_ORDERS = gql`
   query GetOrders(
     $organizationId: BigInteger!
+    $orderStatus: OrderStatus!
     $search: String
     $start: Int
     $rows: Int
-    $confirmed: Boolean
-    $approved: Boolean
-    $cancelled: Boolean
   ) {
     ordersBySearch(
       organizationId: $organizationId
       search: $search
       start: $start
       rows: $rows
-      confirmed: $confirmed
-      approved: $approved
-      cancelled: $cancelled
+      orderStatus: $orderStatus
     ) {
       content {
         id
@@ -36,9 +32,7 @@ export const GET_ORDERS = gql`
         pricing_condition
         purchase_order
         retailer
-        approved
-        cancelled
-        confirmed
+        order_status
         size
         retailer
       }

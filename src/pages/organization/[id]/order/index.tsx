@@ -11,13 +11,14 @@ import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
 import { GET_ORDERS_LIST } from '@/utils/constants';
 import useDebounce from '@/utils/debounce';
+import { OrderStatus } from '@/generated/types';
 
 export default function OrderManagement() {
-  const router = useRouter();
+  const router: any = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = Number(id);
   const tabState = router.query.tab;
-  const [activeTab, setActiveTab] = useState<string | number>('draft');
+  const [activeTab, setActiveTab] = useState<OrderStatus>(OrderStatus.Draft);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -29,11 +30,9 @@ export default function OrderManagement() {
     variables: {
       key: GET_ORDERS_LIST,
       organizationId: organizationId,
-      confirmed: tabState === 'confirmed',
-      cancelled: tabState === 'cancelled',
-      approved: tabState === 'approved',
+      orderStatus: tabState,
       start: 0,
-      rows: 10,
+      rows: 50,
       search: debounceValue,
     },
     notifyOnNetworkStatusChange: true,
@@ -43,11 +42,12 @@ export default function OrderManagement() {
   const handleTabChange = (id: string | number) => {
     if (!organizationId) return;
     router.push(`/organization/${organizationId}/order?tab=${id}`);
-    setActiveTab(id);
+    setActiveTab(id as OrderStatus);
   };
 
   useEffect(() => {
-    handleTabChange(router?.query?.tab ? `${router?.query?.tab}` : 'draft');
+    const status = router?.query?.tab?.toUpperCase() || 'DRAFT';
+    handleTabChange(status);
   }, [router.isReady]);
 
   const ordersBySearch = data?.ordersBySearch?.content || [];
@@ -84,7 +84,7 @@ export default function OrderManagement() {
 
   const tabs = [
     {
-      id: 'draft',
+      id: 'DRAFT',
       label: 'Draft',
       content: (
         <DraftTable
@@ -99,7 +99,7 @@ export default function OrderManagement() {
       ),
     },
     {
-      id: 'confirmed',
+      id: 'CONFIRMED',
       label: 'Confirmed',
       content: (
         <DraftTable
@@ -114,7 +114,7 @@ export default function OrderManagement() {
       ),
     },
     {
-      id: 'approved',
+      id: 'APPROVED',
       label: 'Approved',
       content: (
         <DraftTable
@@ -129,7 +129,7 @@ export default function OrderManagement() {
       ),
     },
     {
-      id: 'cancelled',
+      id: 'CANCELLED',
       label: 'Cancelled',
       content: (
         <DraftTable

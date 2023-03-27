@@ -8,6 +8,8 @@ import Badges from '../Badges';
 import ProductImage from '@/assets/images/products/product.png';
 export interface OrderDetails {
   products: any[];
+  quantity?: number;
+  total_price?: number;
   editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
   handleOrderNote?: (val: string, id: number, details: any) => void;
@@ -16,9 +18,20 @@ export interface OrderDetails {
 const OrderListTable: FC<OrderDetails> = ({
   products,
   editMode,
+  quantity,
+  total_price,
   handleQuantities,
   handleOrderNote,
 }) => {
+  const getQuantity = (info: any) => {
+    console.log(info);
+    return quantity
+  };
+
+  const getTotalPrice = (info: any) => {
+    return total_price
+  };
+
   const columnHelper: any = createColumnHelper();
   const columns = [
     columnHelper.accessor((row: any) => row, {
@@ -96,7 +109,7 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {info.getValue()}
+          {getQuantity(info)}
         </div>
       ),
       header: () => 'Quantities',
@@ -111,7 +124,7 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {info.getValue()}
+          {getTotalPrice(info)}
         </div>
       ),
       header: () => 'Total Wholesale price',

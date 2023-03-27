@@ -21,9 +21,7 @@ export const GET_ORDER_BY_ID = gql`
       pricing_condition
       purchase_order
       retailer
-      approved
-      cancelled
-      confirmed
+      order_status
       size
       retailer
       order_details {
