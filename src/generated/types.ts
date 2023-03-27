@@ -45,6 +45,9 @@ export type OrderDetailGraphqlDto = {
   note?: Maybe<Scalars["String"]>;
   order_detail_sizes?: Maybe<Array<Maybe<OrderDetailSizeGraphqlDto>>>;
   product?: Maybe<ProductGraphqlDto>;
+  total_quantity?: Maybe<Scalars["Int"]>;
+  wholesale_price?: Maybe<Scalars["BigDecimal"]>;
+  wholesale_total_price?: Maybe<Scalars["BigDecimal"]>;
 };
 
 export type OrderDetailSizeGraphqlDto = {
@@ -611,6 +614,9 @@ export type GetOrderByIdQuery = {
       __typename?: "OrderDetailGraphqlDTO";
       id?: any | null;
       note?: string | null;
+      total_quantity?: number | null;
+      wholesale_price?: any | null;
+      wholesale_total_price?: any | null;
       product?: {
         __typename?: "ProductGraphqlDTO";
         id?: any | null;
@@ -656,12 +662,52 @@ export type GetOrderByIdQuery = {
   } | null;
 };
 
+export type GetOrdersQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+  orderStatus: OrderStatus;
+  search?: InputMaybe<Scalars["String"]>;
+  start?: InputMaybe<Scalars["Int"]>;
+  rows?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetOrdersQuery = {
+  __typename?: "Query";
+  ordersBySearch?: {
+    __typename?: "PageWrapper_OrderGraphqlDTO";
+    total_pages: number;
+    total_elements: any;
+    number_of_elements: number;
+    size: number;
+    content?: Array<{
+      __typename?: "OrderGraphqlDTO";
+      id?: any | null;
+      name?: string | null;
+      total_price?: any | null;
+      billing_address?: string | null;
+      buyer_name?: string | null;
+      created_date?: any | null;
+      delivery_address?: string | null;
+      discount?: any | null;
+      email_address?: string | null;
+      last_modified_by?: string | null;
+      last_updated?: any | null;
+      note?: string | null;
+      payment_terms?: string | null;
+      pricing_condition?: PricingCondition | null;
+      purchase_order?: string | null;
+      retailer?: string | null;
+      order_status?: OrderStatus | null;
+      size?: string | null;
+    } | null> | null;
+  } | null;
+};
+
 export type OrderBySearchQueryVariables = Exact<{
   organizationId: Scalars["BigInteger"];
+  orderStatus: OrderStatus;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
   search?: InputMaybe<Scalars["String"]>;
-  orderStatus: OrderStatus;
 }>;
 
 export type OrderBySearchQuery = {

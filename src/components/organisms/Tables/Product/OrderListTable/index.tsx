@@ -18,20 +18,9 @@ export interface OrderDetails {
 const OrderListTable: FC<OrderDetails> = ({
   products,
   editMode,
-  quantity,
-  total_price,
   handleQuantities,
   handleOrderNote,
 }) => {
-  const getQuantity = (info: any) => {
-    console.log(info);
-    return quantity
-  };
-
-  const getTotalPrice = (info: any) => {
-    return total_price
-  };
-
   const columnHelper: any = createColumnHelper();
   const columns = [
     columnHelper.accessor((row: any) => row, {
@@ -84,7 +73,7 @@ const OrderListTable: FC<OrderDetails> = ({
       cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
       header: () => 'Department',
     }),
-    columnHelper.accessor('wholesalePrice', {
+    columnHelper.accessor('wholesale_price', {
       size: 130,
       id: 'wholesalePrice',
       cell: (info: any) => (
@@ -99,9 +88,9 @@ const OrderListTable: FC<OrderDetails> = ({
       ),
       header: () => 'Wholesale Price',
     }),
-    columnHelper.accessor('quantity', {
+    columnHelper.accessor('total_quantity', {
       size: 95,
-      id: 'quantites',
+      id: 'total_quantity',
       cell: (info: any) => (
         <div
           className={clsx(
@@ -109,14 +98,14 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {getQuantity(info)}
+          {info.getValue()}
         </div>
       ),
       header: () => 'Quantities',
     }),
-    columnHelper.accessor('totalWholesalePrice', {
+    columnHelper.accessor('wholesale_total_price', {
       size: 160,
-      id: 'totalWholesalePrice',
+      id: 'wholesale_total_price',
       cell: (info: any) => (
         <div
           className={clsx(
@@ -124,7 +113,7 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {getTotalPrice(info)}
+          {info.getValue()}
         </div>
       ),
       header: () => 'Total Wholesale price',

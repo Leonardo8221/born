@@ -142,9 +142,6 @@ const AddOrders = ({
               handleAddProductsToOrder(id, order);
             }}
             isActive={order.id === activeId}
-            approved={true}
-            confirmed={false}
-            cancelled={false}
             name={order.name}
             id={order.id}
             billing_address={order.billing_address}
