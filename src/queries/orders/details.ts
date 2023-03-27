@@ -27,6 +27,9 @@ export const GET_ORDER_BY_ID = gql`
       order_details {
         id
         note
+        total_quantity
+        wholesale_price
+        wholesale_total_price
         product {
           id
           description
