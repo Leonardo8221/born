@@ -489,6 +489,19 @@ export type GetProductsByCollectionIdQuery = {
   } | null;
 };
 
+export type CollectionsQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type CollectionsQuery = {
+  __typename?: "Query";
+  collectionsByOrganizationId?: Array<{
+    __typename?: "CollectionGraphqlDTO";
+    id?: any | null;
+    name?: string | null;
+  } | null> | null;
+};
+
 export type CollectionGraphqlDtoFragment = {
   __typename?: "CollectionGraphqlDTO";
   id?: any | null;
@@ -873,6 +886,9 @@ export type GetOrganizationQuery = {
 export type GetProductsQueryVariables = Exact<{
   organizationId: Scalars["BigInteger"];
   search?: InputMaybe<Scalars["String"]>;
+  collectionNames?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
 }>;
