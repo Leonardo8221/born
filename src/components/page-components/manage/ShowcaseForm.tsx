@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import Input from '@/components/molecules/Inputs/Input';
-import Dropdown from '@/components/molecules/Dropdown';
 import { FileUpload } from '@/components/molecules/FileUpload';
 import { OrganizationGraphqlDto } from '@/generated/types';
 import { Button } from '@/components/molecules/Button';
@@ -60,10 +59,10 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
   const isValidAdress = queryInputs.address.length > 0;
   const isValidInstagramLink = queryInputs.instagram_link.length > 0;
   const isValidWebsiteLink = queryInputs.website_link.length > 0;
-
   const isValidYearOfInception = queryInputs.year_of_inception.length > 0;
-
+  const isValidCountryOfOrigin = queryInputs.country_of_origin.length > 0;
   const isValidCompanyName = queryInputs.name.length > 0;
+  const isValidCity = queryInputs.city.length > 0;
 
   const [errorDescription, setErrorDescription] = useState('');
 
@@ -101,34 +100,19 @@ const ShowcaseForm: FC<ShowcaseFormProps> = ({
             inputClasses="!w-full"
             className='!w-full'
           />
-          <Dropdown
+          <Input
             label="Country of origin"
-            className="mt-6 w-full !mx-0 !mx-0 !h-[56px] [&>div]:!w-full"
-            isValid={false}
-            selectedOption={{
-              value: organization?.country_of_origin || '',
-              name: organization?.country_of_origin || '',
-            }}
-            options={[
-              { value: 'hieros', name: 'Hieros' },
-              { value: 'Origin 1', name: 'Origin 1' },
-            ]}
-            onChange={(option) => changeQueryInputs('country_of_origin')(option?.value || '')}
+            value={queryInputs.country_of_origin}
+            onChange={changeQueryInputs('country_of_origin')}
+            isValid={isValidCountryOfOrigin}
+            className="w-full"
           />
-          <Dropdown
+          <Input
             label="City"
-            className="mt-6 w-full !mx-0"
-            isValid={false}
-            selectedOption={{
-              value: organization?.city || '',
-              name: organization?.city || '',
-            }}
-            options={[
-              { value: 'hieros', name: 'Hieros' },
-              { value: 'Bristol', name: 'Bristol' },
-              { value: 'Liverpool', name: 'Liverpool' }
-            ]}
-            onChange={(option) => changeQueryInputs('city')(option?.value || '')}
+            value={queryInputs.city}
+            onChange={changeQueryInputs('city')}
+            isValid={isValidCity}
+            className="w-full"
           />
           <Input
             label="Address"

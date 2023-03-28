@@ -17,9 +17,11 @@ export const ORGANIZATION_FRAGMENT = gql`
     banner_guid
     banner_url
     logo_url
+    linesheet_name
     linesheet_url
+    lookbook_name
     lookbook_url
-    collections{
+    collections {
       name
       id
       banner_url

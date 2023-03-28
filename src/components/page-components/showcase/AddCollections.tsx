@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { CollectionGraphqlDto } from '@/generated/types';
 import PlusIcon from '@/assets/svgs/plus.svg';
 import ImageText from '@/components/molecules/ImageText';
-import ProductImage from '@/assets/images/product-image.png';
 import { fonts } from '@/config/fonts';
 import { COLLECTIONS_QUERY } from '@/queries/collecitons';
 import { useQuery } from '@apollo/client';
@@ -47,7 +46,6 @@ const AddCollections: FC<AddCollectionsProps> = ({
           New collection
         </h3>
       </div>
-
       {loading ? (
         <Loading message="Loading collections" />
       ) : (
@@ -55,13 +53,13 @@ const AddCollections: FC<AddCollectionsProps> = ({
           (collection: CollectionGraphqlDto) => (
             <div
               key={collection?.id}
-              className={isSelect ? "cursor-pointer" : ''}
+              className={isSelect ? 'cursor-pointer' : ''}
               onClick={() => onSelect(collection?.id)}
             >
               <ImageText
                 key={collection?.id}
                 title={collection?.name || ''}
-                imgSrc={collection?.banner_url || ProductImage}
+                imgSrc={collection?.banner_url || ''}
                 altText={`${collection.name} logo`}
                 variant="product"
               />
