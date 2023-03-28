@@ -35,13 +35,16 @@ const CollectionPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const debouncedValue = useDebounce(searchKeyword, 600);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAddToDraft, setIsAddToDraft] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
 
-  const { data: collecitonData, loading, refetch: refetchCollection } = useQuery(COLLECTION_QUERY, {
+  const {
+    data: collecitonData,
+    loading,
+    refetch: refetchCollection,
+  } = useQuery(COLLECTION_QUERY, {
     variables: { collectionId },
     notifyOnNetworkStatusChange: true,
   });
@@ -161,8 +164,7 @@ const CollectionPage = () => {
   return (
     <div>
       <Header
-        handleCreateOrder={() => setIsModalVisible(!isModalVisible)}
-        onEdit={() => setIsEditModal(true)}
+        handleCreateOrder={() => setIsAddToDraft(true)}
         handleErrorMessage={handleErrorMesssage}
       />
       <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">
@@ -171,7 +173,11 @@ const CollectionPage = () => {
             backgroundImageSrc={collection?.banner_url || placeholderImage}
             label={collection?.name}
             editBanner
-            onEdit={(e) => e.preventDefault()}
+            editButtonText="Edit Collection"
+            onEdit={(e) => {
+              e.preventDefault();
+              setIsEditModal(true);
+            }}
           />
           <Description description={collection?.description} />
         </div>

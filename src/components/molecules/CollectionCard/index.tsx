@@ -1,9 +1,9 @@
-import { FC } from "react";
-import clsx from "clsx";
-import Image, { StaticImageData } from "next/image";
-import { fonts } from "@/config/fonts";
-import styles from "./CollectionCard.module.css";
-import { Button } from "../Button";
+import { FC } from 'react';
+import clsx from 'clsx';
+import Image, { StaticImageData } from 'next/image';
+import { fonts } from '@/config/fonts';
+import styles from './CollectionCard.module.css';
+import { Button } from '../Button';
 
 export interface CollectionCardProps {
   backgroundImageSrc: string | StaticImageData;
@@ -16,27 +16,28 @@ export interface CollectionCardProps {
   editBanner?: boolean;
   onEdit?: (event: any) => void;
   cardClasses?: string;
+  editButtonText?: string;
 }
 
 const clsVariations = {
   lg: {
-    cardSize: "w-full max-w-[1120px] h-[436px]",
-    innerImageSize: "w-[92px] h-[92px]",
+    cardSize: 'w-full max-w-[1120px] h-[436px]',
+    innerImageSize: 'w-[92px] h-[92px]',
     clsLabel: clsx(
-      fonts.text["2xl"],
+      fonts.text['2xl'],
       fonts.fontWeights.regular,
-      "text-shades-white text-center mx-auto"
+      'text-shades-white text-center mx-auto'
     ),
     clsHeaderText: clsx(
       fonts.fontWeights.light,
-      "text-[18px] text-shades-black text-center leading-[32px] pt-8 max-w-[544px] mx-auto"
+      'text-[18px] text-shades-black text-center leading-[32px] pt-8 max-w-[544px] mx-auto'
     ),
     clsAuthor: clsx(
       fonts.fontWeights.light,
       fonts.text.lg,
-      "text-shades-white text-center max-w-[215px] max-auto"
+      'text-shades-white text-center max-w-[215px] max-auto'
     ),
-    clsOverlay: clsx("h-full w-full z-[2] absolute top-0", styles.overlay),
+    clsOverlay: clsx('h-full w-full z-[2] absolute top-0', styles.overlay),
   },
 };
 
@@ -62,19 +63,20 @@ export const CollectionCard: FC<CollectionCardProps> = ({
   imageSrc,
   label,
   author,
-  headerText = "",
-  size = "lg",
+  headerText = '',
+  size = 'lg',
   hasOverlay = false,
   editBanner,
   onEdit,
   cardClasses,
+  editButtonText,
 }) => {
   return (
     <div className="m-5 flex flex-col items-center">
       <div
         className={clsx(
           clsVariations[size].cardSize,
-          "relative rounded-[4px] relative flex flex-col items-center justify-start cursor-pointer",
+          'relative rounded-[4px] relative flex flex-col items-center justify-start cursor-pointer',
           cardClasses
         )}
       >
@@ -83,7 +85,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
             <div className={clsVariations[size].clsOverlay}></div>
             <div
               className={clsx(
-                "h-10 w-10 rounded-[100px] border text-neutral-100 z-[5] absolute right-8 top-0 bottom-0 my-auto border-neutral-100 flex items-center justify-center",
+                'h-10 w-10 rounded-[100px] border text-neutral-100 z-[5] absolute right-8 top-0 bottom-0 my-auto border-neutral-100 flex items-center justify-center',
                 styles.arrowButton
               )}
             >
@@ -92,34 +94,38 @@ export const CollectionCard: FC<CollectionCardProps> = ({
           </div>
         )}
         <img
-          src={typeof backgroundImageSrc === 'string' ? backgroundImageSrc : backgroundImageSrc?.src}
+          src={
+            typeof backgroundImageSrc === 'string'
+              ? backgroundImageSrc
+              : backgroundImageSrc?.src
+          }
           alt="Collection Card Background"
           className="absolute object-cover w-full h-full object-cover z-[0] rounded"
         />
         <div className={styles.cardBackground}></div>
         <div className="relative m-auto">
           {imageSrc && (
-              <div
-                className={clsx(
-                  clsVariations[size].innerImageSize,
-                  "mx-auto rounded-md bg-neutral-100 relative border border-neutral-200"
-                )}
-              >
-                <img
-                  src={typeof imageSrc === 'string' ? imageSrc : imageSrc.src}
-                  alt="Collection Card"
-                  className="absolute w-full h-full object-contain p-1"
-                />
+            <div
+              className={clsx(
+                clsVariations[size].innerImageSize,
+                'mx-auto rounded-md bg-neutral-100 relative border border-neutral-200'
+              )}
+            >
+              <img
+                src={typeof imageSrc === 'string' ? imageSrc : imageSrc.src}
+                alt="Collection Card"
+                className="absolute w-full h-full object-contain p-1"
+              />
             </div>
           )}
           {label && (
-            <p className={clsx("z-[1] pt-2", clsVariations[size].clsLabel)}>
+            <p className={clsx('z-[1] pt-2', clsVariations[size].clsLabel)}>
               {label}
             </p>
           )}
 
           {!!author && (
-            <div className={clsx("z-[1]", clsVariations[size].clsAuthor)}>
+            <div className={clsx('z-[1]', clsVariations[size].clsAuthor)}>
               {author}
             </div>
           )}
@@ -128,10 +134,10 @@ export const CollectionCard: FC<CollectionCardProps> = ({
           <Button
             color="white"
             size="sm"
-            className="absolute !max-w-[104px] right-4 bottom-4 text-[12px] leading-[16px]"
+            className="absolute right-4 bottom-4 text-[12px] leading-[16px]"
             onClick={onEdit}
           >
-            Edit banner
+            {editButtonText || 'Edit banner'}
           </Button>
         )}
         {!!headerText && (

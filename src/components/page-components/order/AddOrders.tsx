@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { OrderGraphqlDto } from '@/generated/types';
+import { OrderGraphqlDto, OrderStatus } from '@/generated/types';
 import PlusIcon from '@/assets/svgs/plus.svg';
 import { fonts } from '@/config/fonts';
 import { ORDER_BY_SEARCH } from '@/queries/orders/search';
@@ -48,6 +48,7 @@ const AddOrders = ({
       start: 0,
       rows: 10,
       search: debouncedValue,
+      orderStatus: OrderStatus.Draft,
     },
     notifyOnNetworkStatusChange: true,
   });

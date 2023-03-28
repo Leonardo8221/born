@@ -10,13 +10,11 @@ import { downloadFile } from '@/utils/downloadFile';
 
 interface HeaderProps {
   handleCreateOrder: () => void;
-  onEdit: () => void;
   handleErrorMessage?: (message: string) => void;
 }
 
 const Header: FC<HeaderProps> = ({
   handleCreateOrder,
-  onEdit,
   handleErrorMessage,
 }) => {
   const router = useRouter();
@@ -71,11 +69,6 @@ const Header: FC<HeaderProps> = ({
       </div>
       <div className="flex items-center gap-x-4">
         <div>
-          <Button variant="outlined" onClick={onEdit}>
-            Edit
-          </Button>
-        </div>
-        <div>
           <DropdownMenu
             options={items}
             variant="button"
@@ -88,9 +81,9 @@ const Header: FC<HeaderProps> = ({
         <div>
           <Button
             onClick={handleCreateOrder}
-            className="!w-[172px] !px-[28px] text-[14px] leading-6"
+            className="!w-[210px] !px-[28px] text-[14px] leading-6"
           >
-            <Icon name="icon-add" /> Create order
+            <Icon name="icon-add" /> Add to draft order
           </Button>
         </div>
       </div>

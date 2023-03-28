@@ -19,7 +19,7 @@ export interface ProductHeaderProps {
   srcLogo?: string;
   title?: string;
   srcBlurDataURL?: string;
-  onEdit: () => void;
+  onEdit?: () => void;
   onDraftOrder: () => void;
   containerClassName?: string;
   hrefBack?: string;
@@ -31,7 +31,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
   title,
   srcLogo,
   srcBlurDataURL,
-  onEdit,
+  // onEdit,
   onDraftOrder,
   hrefBack = "/",
   containerClassName,
@@ -42,6 +42,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
   const [isCreateModal, setIsCreateModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const handleErrorMesssage = (message: string) => {
     setErrorMessage(message);
 
@@ -120,13 +121,13 @@ const ProductHeader: FC<ProductHeaderProps> = ({
               altText=" "
             />
           </div>
-          <Button
+          {/* <Button
             onClick={onEdit}
             className={styles.toolButton}
             variant="outlined"
           >
             Edit
-          </Button>
+          </Button> */}
           <Button
             onClick={() => setIsAddCollections(true)}
             className={clsx(styles.toolButton, styles.addToCollection)}
@@ -136,7 +137,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
           </Button>
           <Button onClick={onDraftOrder} className={styles.toolButton}>
             <Icon name="icon-add" />
-            Draft order
+            Add to draft order
           </Button>
         </div>
       </div>

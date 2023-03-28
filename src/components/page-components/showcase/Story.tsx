@@ -7,6 +7,7 @@ import YourCollections from './YourCollections';
 import SocialLinks from './SocialLinks';
 import FileType from './FileType';
 import { OrganizationGraphqlDto } from '@/generated/types';
+import { useRouter } from 'next/router';
 
 interface StoryProps {
   onViewCollections: (e: any) => void;
@@ -14,6 +15,7 @@ interface StoryProps {
 }
 
 const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
 
@@ -22,11 +24,15 @@ const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
       <div className="mx-auto w-fit flex align-center mt-[7px] mb-[5px] text-[12px]">
         <div className="mr-16">
           <span className="text-neutral-600 mr-[32px]">Founded in</span>
-          <span className="text-shades-black">{organization?.year_of_inception}</span>
+          <span className="text-shades-black">
+            {organization?.year_of_inception}
+          </span>
         </div>
         <div className="mr-16">
           <span className="text-neutral-600 mr-[32px]">Origin</span>
-          <span className="text-shades-black">{organization?.country_of_origin}</span>
+          <span className="text-shades-black">
+            {organization?.country_of_origin}
+          </span>
         </div>
         <div>
           <span className="text-neutral-600 mr-[32px]">Currencies</span>
@@ -36,7 +42,9 @@ const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
       <CollectionCard
         backgroundImageSrc={organization?.banner_url || bannerPlaceholder}
         editBanner
-        onEdit={(e: any) => e.preventDefault()}
+        onEdit={(e: any) =>
+          router.push(`/organization/${organization?.id}/manage/profile`)
+        }
       />
       <Description
         description={organization?.description || ''}
