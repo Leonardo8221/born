@@ -33,8 +33,10 @@ export type CollectionGraphqlDto = {
   description?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
   linesheet_guid?: Maybe<Scalars["String"]>;
+  linesheet_name?: Maybe<Scalars["String"]>;
   linesheet_url?: Maybe<Scalars["String"]>;
   lookbook_guid?: Maybe<Scalars["String"]>;
+  lookbook_name?: Maybe<Scalars["String"]>;
   lookbook_url?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
 };
@@ -106,10 +108,12 @@ export type OrganizationGraphqlDto = {
   id?: Maybe<Scalars["BigInteger"]>;
   instagram_link?: Maybe<Scalars["String"]>;
   linesheet_guid?: Maybe<Scalars["String"]>;
+  linesheet_name?: Maybe<Scalars["String"]>;
   linesheet_url?: Maybe<Scalars["String"]>;
   logo_guid?: Maybe<Scalars["String"]>;
   logo_url?: Maybe<Scalars["String"]>;
   lookbook_guid?: Maybe<Scalars["String"]>;
+  lookbook_name?: Maybe<Scalars["String"]>;
   lookbook_url?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
   organization_type?: Maybe<OrganizationType>;
@@ -227,6 +231,8 @@ export type Query = {
   organizationByOrganizationId?: Maybe<OrganizationGraphqlDto>;
   /** Return user organizations by logged user keycloak id */
   organizationsByLoggedUser?: Maybe<Array<Maybe<OrganizationGraphqlDto>>>;
+  /** Return list of pricing conditions for order */
+  pricingConditionsByOrderId?: Maybe<Array<Maybe<PricingCondition>>>;
   /** Return product by product id */
   productByProductId?: Maybe<ProductGraphqlDto>;
   /** Return list of product variant's by styleNumber */
@@ -280,6 +286,11 @@ export type QueryOrdersBySearchArgs = {
 /** Query root */
 export type QueryOrganizationByOrganizationIdArgs = {
   organizationId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QueryPricingConditionsByOrderIdArgs = {
+  orderId: Scalars["BigInteger"];
 };
 
 /** Query root */
@@ -380,9 +391,11 @@ export type GetCollectionsQuery = {
     banner_guid?: string | null;
     banner_url?: string | null;
     linesheet_guid?: string | null;
+    linesheet_name?: string | null;
     linesheet_url?: string | null;
     lookbook_guid?: string | null;
     lookbook_url?: string | null;
+    lookbook_name?: string | null;
   } | null> | null;
 };
 
@@ -400,9 +413,11 @@ export type GetColletonQuery = {
     banner_guid?: string | null;
     banner_url?: string | null;
     linesheet_guid?: string | null;
+    linesheet_name?: string | null;
     linesheet_url?: string | null;
     lookbook_guid?: string | null;
     lookbook_url?: string | null;
+    lookbook_name?: string | null;
   } | null;
 };
 
@@ -482,9 +497,11 @@ export type CollectionGraphqlDtoFragment = {
   banner_guid?: string | null;
   banner_url?: string | null;
   linesheet_guid?: string | null;
+  linesheet_name?: string | null;
   linesheet_url?: string | null;
   lookbook_guid?: string | null;
   lookbook_url?: string | null;
+  lookbook_name?: string | null;
 };
 
 export type OrganizationGraphqlDtoFragment = {
@@ -504,7 +521,9 @@ export type OrganizationGraphqlDtoFragment = {
   banner_guid?: string | null;
   banner_url?: string | null;
   logo_url?: string | null;
+  linesheet_name?: string | null;
   linesheet_url?: string | null;
+  lookbook_name?: string | null;
   lookbook_url?: string | null;
   collections?: Array<{
     __typename?: "CollectionGraphqlDTO";
@@ -635,6 +654,7 @@ export type GetOrderByIdQuery = {
         delivery_window_start_date?: any | null;
         upc?: string | null;
         style_number?: string | null;
+        style_name?: string | null;
         style_id?: string | null;
         size_type?: string | null;
         size_options?: Array<string | null> | null;
@@ -650,6 +670,13 @@ export type GetOrderByIdQuery = {
           exworks?: any | null;
           landed?: any | null;
           retail?: any | null;
+        } | null> | null;
+        attachments?: Array<{
+          __typename?: "ProductAttachmentGraphqlDTO";
+          id?: any | null;
+          small_image_url?: string | null;
+          medium_image_url?: string | null;
+          large_image_url?: string | null;
         } | null> | null;
       } | null;
       order_detail_sizes?: Array<{
@@ -753,7 +780,9 @@ export type GetOrganizationsQuery = {
       banner_guid?: string | null;
       banner_url?: string | null;
       logo_url?: string | null;
+      linesheet_name?: string | null;
       linesheet_url?: string | null;
+      lookbook_name?: string | null;
       lookbook_url?: string | null;
       collections?: Array<{
         __typename?: "CollectionGraphqlDTO";
@@ -791,7 +820,9 @@ export type GetOrganizationByIdQuery = {
       banner_guid?: string | null;
       banner_url?: string | null;
       logo_url?: string | null;
+      linesheet_name?: string | null;
       linesheet_url?: string | null;
+      lookbook_name?: string | null;
       lookbook_url?: string | null;
       collections?: Array<{
         __typename?: "CollectionGraphqlDTO";
@@ -826,7 +857,9 @@ export type GetOrganizationQuery = {
     banner_guid?: string | null;
     banner_url?: string | null;
     logo_url?: string | null;
+    linesheet_name?: string | null;
     linesheet_url?: string | null;
+    lookbook_name?: string | null;
     lookbook_url?: string | null;
     collections?: Array<{
       __typename?: "CollectionGraphqlDTO";

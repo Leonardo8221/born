@@ -41,6 +41,18 @@ export interface CollectionRequestDTO {
      * @memberof CollectionRequestDTO
      */
     'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionRequestDTO
+     */
+    'linesheet_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionRequestDTO
+     */
+    'lookbook_name'?: string;
 }
 /**
  * 
@@ -385,6 +397,18 @@ export interface OrganizationRequestDTO {
      * @memberof OrganizationRequestDTO
      */
     'terms_and_conditions'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrganizationRequestDTO
+     */
+    'linesheet_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrganizationRequestDTO
+     */
+    'lookbook_name'?: string;
 }
 
 

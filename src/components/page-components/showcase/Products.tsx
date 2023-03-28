@@ -17,6 +17,8 @@ import AddCollections from './AddCollections';
 import { OrderList } from '@/components/page-components/order/OrdersList';
 import { OrderGraphqlDto } from '@/generated/types';
 import Notification from '../order/Notification';
+import { COLLECTION_FILTER_QUERY } from '@/queries/collecitons';
+import { Item } from '@/components/molecules/DropdownFilter';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -33,31 +35,58 @@ const Products: FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
   const router = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = +id;
   const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
-    variables: { organizationId, search: debouncedValue, rows: 50 },
+    variables: {
+      organizationId,
+      search: debouncedValue,
+      collectionNames: selectedCollections,
+      rows: 50,
+    },
     notifyOnNetworkStatusChange: true,
   });
+
+  const { data: collections } = useQuery(COLLECTION_FILTER_QUERY, {
+    variables: { organizationId },
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const handleFilterCollections = (e: Item) => {
+    console.log(e);
+    if (selectedCollections.includes(e.label)) {
+      setSelectedCollections(selectedCollections?.filter((c) => c !== e.label));
+    } else {
+      setSelectedCollections([...selectedCollections, e.label]);
+    }
+  };
 
   const filterTags = [
     {
       label: 'collections',
-      size: 'default',
-      type: 'default',
+      options: collections?.collectionsByOrganizationId?.map(
+        (item: { id: number; name: string }) => ({
+          id: item.id,
+          label: item.name,
+        })
+      ),
+      action: handleFilterCollections,
+      selectedItems: selectedCollections,
+      onReset: () => setSelectedCollections([]),
     },
-    {
-      label: 'Colours',
-      size: 'default',
-      type: 'default',
-    },
-    {
-      label: 'Season',
-      size: 'default',
-      type: 'default',
-    },
+    // {
+    //   label: 'Colours',
+    //   size: 'default',
+    //   type: 'default',
+    // },
+    // {
+    //   label: 'Season',
+    //   size: 'default',
+    //   type: 'default',
+    // },
   ];
 
   const handleErrorMesssage = (message: string) => {
@@ -185,7 +214,7 @@ const Products: FC = () => {
           selectedItems={selectedProducts}
         />
         {!data?.productsBySearchAndOrganizationId && loading ? (
-          <div className="mt-6">
+          <div className="mt-6 min-h-[400px]">
             <Loading message="Loading products" />
           </div>
         ) : (

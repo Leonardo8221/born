@@ -5,12 +5,14 @@ export const PRODUCTS_QUERY = gql`
   query getProducts(
     $organizationId: BigInteger!
     $search: String
+    $collectionNames: [String]
     $start: Int
     $rows: Int
   ) {
     productsBySearchAndOrganizationId(
       organizationId: $organizationId
       search: $search
+      collectionNames: $collectionNames
       start: $start
       rows: $rows
     ) {

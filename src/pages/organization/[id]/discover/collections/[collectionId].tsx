@@ -62,13 +62,9 @@ const CollectionPage = () => {
   const filterTags = [
     {
       label: 'Colours',
-      size: 'default',
-      type: 'default',
     },
     {
       label: 'Season',
-      size: 'default',
-      type: 'default',
     },
   ];
 
@@ -179,7 +175,13 @@ const CollectionPage = () => {
               setIsEditModal(true);
             }}
           />
-          <Description description={collection?.description} />
+          <Description
+            lookbookName={collection?.lookbook_name || ''}
+            lookbookUrl={collection?.lookbook_url || ''}
+            linesheetName={collection?.linesheet_name || ''}
+            linesheetUrl={collection?.linesheet_url || ''}
+            description={collection?.description}
+          />
         </div>
         <Filters
           onGridChange={setGrid}

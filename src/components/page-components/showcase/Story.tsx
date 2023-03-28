@@ -47,6 +47,10 @@ const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
         }
       />
       <Description
+        lookbookName={organization?.lookbook_name || ''}
+        lookbookUrl={organization?.lookbook_url || ''}
+        linesheetName={organization?.linesheet_name || ''}
+        linesheetUrl={organization?.linesheet_url || ''}
         description={organization?.description || ''}
         onUpload={() => setIsOpen(true)}
       />

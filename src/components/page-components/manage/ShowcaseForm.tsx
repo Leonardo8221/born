@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import Input from '@/components/molecules/Inputs/Input';
-import Dropdown from '@/components/molecules/Dropdown';
 import { FileUpload } from '@/components/molecules/FileUpload';
 import { OrganizationGraphqlDto } from '@/generated/types';
 import { Button } from '@/components/molecules/Button';

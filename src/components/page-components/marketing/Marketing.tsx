@@ -4,7 +4,7 @@ import { OrganizationGraphqlDto } from '@/generated/types';
 import { apiConfig } from '@/utils/apiConfig';
 import { AttachmentResourceApi } from 'client/command';
 import { useRouter } from 'next/router';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Toast from '../Toast';
 
 interface MarketingProps {
@@ -33,6 +33,10 @@ const Marketing: FC<MarketingProps> = ({ organization }) => {
   };
 
   const collections = organization?.collections;
+
+  useEffect(() => {
+    setActiveCollectionId(collections?.[0]?.id);
+  }, [])
 
   const handleErrorMesssage = (message: string) => {
     setErrorMessage(message);
@@ -148,7 +152,7 @@ const Marketing: FC<MarketingProps> = ({ organization }) => {
             handleUploadCollectionAttachment(activeCollectionId, file);
           }
         }}
-        disabled={!activeCollectionId || isCollectionUpload}
+        disabled={isCollectionUpload}
         acceptedFileTypes={['application/pdf']}
         labelText="Lookbook | PDF only (25 MB max)"
         className="mb-8"

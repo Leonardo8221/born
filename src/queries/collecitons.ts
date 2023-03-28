@@ -48,3 +48,16 @@ export const PRODUCTS_BY_COLLECTION_ID_QUERY = gql`
   }
   ${PRODUCT_FRAGMENT}
 `;
+
+export const COLLECTION_FILTER_QUERY = gql`
+  query collections($organizationId: BigInteger!) {
+    collectionsByOrganizationId(
+      organizationId: $organizationId
+      start: 0
+      rows: 100
+    ) {
+      id
+      name
+    }
+  }
+`;
