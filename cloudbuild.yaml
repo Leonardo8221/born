@@ -16,6 +16,7 @@ steps:
       - NEXTAUTH_SECRET=${_NEXTAUTH_SECRET}
       - NEXTAUTH_URL=${_NEXTAUTH_URL}
       - NEXT_PUBLIC_IMAGE_BASE_PATH=${_NEXT_PUBLIC_IMAGE_BASE_PATH}
+      - NEXT_HOTJAR_ID=${_NEXT_HOTJAR_ID}
     args:
       - run
       - create-env
