@@ -85,16 +85,17 @@ const AddOrders = ({
         id,
         productIds
       );
-      console.log(response)
       setSelectedOrder?.(orderDetails || null);
       handleSuccessMesssage(
-        `Added ${productIds?.length} product to order successfully!`
+        productIds?.length > 0
+          ? `Added ${productIds?.length} products to order successfully!`
+          : 'Added product to order successfully'
       );
       handleCloseModal();
       return response;
     } catch (error: any) {
       handleErrorMesssage(
-        error?.response?.message || 'Add product to draft failed'
+        error?.response?.message || 'Failed to add products to order'
       );
       handleCloseModal();
       console.log(error);

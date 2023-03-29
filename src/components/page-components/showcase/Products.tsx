@@ -115,7 +115,9 @@ const Products: FC = () => {
         selectedProducts
       );
       handleSuccessMesssage(
-        `Added ${selectedProducts.length} products to collections sucessfully!!`
+        selectedProducts.length > 0
+          ? `Added ${selectedProducts.length} products to collection sucessfully!!`
+          : 'Added product to collection successfully!!'
       );
       setIsAddCollections(false);
       setIsCreateModal(false);
@@ -148,16 +150,18 @@ const Products: FC = () => {
     }
   };
 
-  const handleDeleteProducts = async () => {
+  const handleDeleteProducts = async (id?: number) => {
     setIsLoading(true);
     try {
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
-      await api.apiProductDeleteProductsDelete(selectedProducts);
+      await api.apiProductDeleteProductsDelete(id ? [id] : selectedProducts);
       refetch();
       setIsLoading(false);
       handleSuccessMesssage(
-        `Deleted ${selectedProducts.length} products successfully!`
+        selectedProducts.length > 0
+          ? `Deleted ${selectedProducts.length} products successfully!`
+          : 'Deleted product successfully!'
       );
       setSelectedProducts([]);
     } catch (error: any) {
@@ -223,6 +227,17 @@ const Products: FC = () => {
             products={data?.productsBySearchAndOrganizationId?.content}
             selectable={isSelectable}
             selectedProducts={selectedProducts}
+            hanldeAddToDraftOrder={(id) => {
+              setSelectedProducts([id]);
+              setIsModalVisible(true);
+            }}
+            handleAddToCollection={(id) => {
+              setSelectedProducts([id]);
+              setIsAddCollections(true);
+            }}
+            handleDeleteProduct={(id) => {
+              handleDeleteProducts(id);
+            }}
             onSelect={handleSelectedProducts}
           />
         )}
