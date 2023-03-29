@@ -99,9 +99,9 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
       header: () => 'Color name',
     }),
     columnHelper.accessor('season', {
-      size: 87,
+      size: 90,
       id: 'season',
-      cell: (info: any) => <Badges items={['SS23']} />,
+      cell: (info: any) => <Badges items={[info.getValue()]} />,
       header: () => 'Season',
     }),
     columnHelper.accessor('collections', {
@@ -130,7 +130,7 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
       header: () => 'Currency',
     }),
     columnHelper.accessor('associated_prices', {
-      size: 271,
+      size: 190,
       id: 'associated_prices',
       cell: (info: any) => (
         <div className="[&>div]:flex-wrap">
