@@ -132,7 +132,7 @@ const Header: FC<HeaderProps> = ({
           onClick={() => router.back()}
         />
         <Pill label={getStatus()} appearance={'outlined'} size={'sm'} />
-        <Heading fontWeight="light" size="sm">
+        <Heading fontWeight="light" size="sm" className="whitespace-nowrap text-ellipsis overflow-hidden">
           {heading}
         </Heading>
       </div>
