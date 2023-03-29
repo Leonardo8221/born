@@ -7,6 +7,7 @@ export interface BadgeProps {
   children?: any;
   className?: string;
   onClick?: (event: any) => void;
+  title?: string;
 }
 
 export const Badge: FC<BadgeProps> = ({ size, children, className, ...props }) => (
