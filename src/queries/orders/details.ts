@@ -80,3 +80,12 @@ export const GET_ORDER_BY_ID = gql`
     }
   }
 `;
+
+export const PRICING_CONDITIONS_QUERY = gql`
+  query pricingConditionsByOrderId($orderId: BigInteger!) {
+    pricingConditionsByOrderId(orderId: $orderId) {
+      label
+      currency
+    }
+  }
+`;

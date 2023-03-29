@@ -13,7 +13,6 @@ import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
 import PricingCondition from '@/components/page-components/order/PricingCondition';
-import Notification from '@/components/page-components/order/Notification';
 import useDebounce from '@/utils/debounce';
 
 function OrderPreview() {
@@ -154,6 +153,13 @@ function OrderPreview() {
     }, 3000);
   };
 
+  const handleSuccessMessage = (message: string) => {
+    setSuccessMessage(message);
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 3000);
+  };
+
   const handleSave = async () => {
     setIsLoading(true);
     try {
@@ -164,10 +170,7 @@ function OrderPreview() {
       setIsLoading(false);
       setEditMode(false);
       setIsLoading(false);
-      setSuccessMessage('Order modified successfully');
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
+      handleSuccessMessage('Order modified successfully');
     } catch (error: any) {
       setIsLoading(false);
       handleErrorMessage(error?.response?.message || 'Order update failed');
@@ -186,10 +189,7 @@ function OrderPreview() {
       });
       setIsAddNoteOpen(!isAddNoteOpen);
       refetch();
-      setSuccessMessage('Order note added successfully');
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
+      handleSuccessMessage('Order note added successfully');
     } catch (error: any) {
       handleErrorMessage(error?.response?.message || 'Order note failed');
       console.log(error);
@@ -287,42 +287,49 @@ function OrderPreview() {
   return (
     <div className="mx-auto overflow-x-hidden">
       <Header
+        id={orderDetails?.id}
         heading={orderDetails?.name}
         status={{
-          confirmed: !!orderDetails?.confirmed,
-          approved: !!orderDetails?.approved,
-          cancelled: !!orderDetails?.cancelled,
+          confirmed: orderDetails?.order_status === 'CONFIRMED',
+          approved: orderDetails?.order_status === 'APPROVED',
+          cancelled: orderDetails?.order_status === 'CANCELLED',
+          draft: orderDetails?.order_status === 'DRAFT',
         }}
         handleErrorMessage={handleErrorMessage}
         addNote={() => setIsAddNoteOpen(!isAddNoteOpen)}
+        setSuccessMessage={handleSuccessMessage}
+        setErrorMessage={handleErrorMessage}
+        refetch={refetch}
       />
       <div className="mx-auto w-full max-w-[1120px] py-16">
         <div className="bg-[#fff]]">
-          <div className="flex flex-1 justify-end mb-6">
-            <div className="flex items-center">
-              <Button
-                size="sm"
-                onClick={() => setEditMode(!editMode)}
-                variant="outlined"
-                className="!text-shades-black !text-[12px] !font-normal !px-[18.5] hover:!text-shades-white"
-              >
-                {editMode ? 'Cancel' : 'Edit Details'}
-              </Button>
-              {editMode && (
+          {orderDetails?.order_status === 'DRAFT' && (
+            <div className="flex flex-1 justify-end mb-6">
+              <div className="flex items-center">
                 <Button
                   size="sm"
-                  onClick={handleSave}
-                  className="!text-[12px] !font-normal !px-[18.5] !py-0 ml-2"
-                  disabled={isLoading}
+                  onClick={() => setEditMode(!editMode)}
+                  variant="outlined"
+                  className="!text-shades-black !text-[12px] !font-normal !px-[18.5] hover:!text-shades-white"
                 >
-                  Save
+                  {editMode ? 'Cancel' : 'Edit Details'}
                 </Button>
-              )}
+                {editMode && (
+                  <Button
+                    size="sm"
+                    onClick={handleSave}
+                    className="!text-[12px] !font-normal !px-[18.5] !py-0 ml-2"
+                    disabled={isLoading}
+                  >
+                    Save
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
           <div className="flex flex-col">
             <OrderDetails
-              editMode={editMode}
+              editMode={orderDetails?.order_status === 'DRAFT' && editMode}
               handleEditInputs={handleEditInputs}
               column1={columnData.column1}
               column2={columnData.column2}

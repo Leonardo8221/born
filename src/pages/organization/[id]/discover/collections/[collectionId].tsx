@@ -164,7 +164,8 @@ const CollectionPage = () => {
           setSelectedProducts(
             productsCollection?.productsBySearchAndCollectionId?.content?.map(
               (item: ProductGraphqlDto) => item.id
-            ));
+            )
+          );
           setIsAddToDraft(true);
         }}
         handleErrorMessage={handleErrorMesssage}

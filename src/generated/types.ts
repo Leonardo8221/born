@@ -170,6 +170,12 @@ export enum PricingCondition {
   UsdRetail = "USD_RETAIL",
 }
 
+export type PricingConditionGraphqlDto = {
+  __typename?: "PricingConditionGraphqlDTO";
+  currency?: Maybe<Scalars["String"]>;
+  label?: Maybe<Scalars["String"]>;
+};
+
 export type ProductAttachmentGraphqlDto = {
   __typename?: "ProductAttachmentGraphqlDTO";
   id?: Maybe<Scalars["BigInteger"]>;
@@ -232,7 +238,7 @@ export type Query = {
   /** Return user organizations by logged user keycloak id */
   organizationsByLoggedUser?: Maybe<Array<Maybe<OrganizationGraphqlDto>>>;
   /** Return list of pricing conditions for order */
-  pricingConditionsByOrderId?: Maybe<Array<Maybe<PricingCondition>>>;
+  pricingConditionsByOrderId?: Maybe<Array<Maybe<PricingConditionGraphqlDto>>>;
   /** Return product by product id */
   productByProductId?: Maybe<ProductGraphqlDto>;
   /** Return list of product variant's by styleNumber */
@@ -612,94 +618,6 @@ export type UserGraphqlDtoFragment = {
   message_notification_enabled: boolean;
   order_notification_enabled: boolean;
   product_notification_enabled: boolean;
-};
-
-export type GetOrderByIdQueryVariables = Exact<{
-  orderId: Scalars["BigInteger"];
-}>;
-
-export type GetOrderByIdQuery = {
-  __typename?: "Query";
-  orderByOrderId?: {
-    __typename?: "OrderGraphqlDTO";
-    id?: any | null;
-    name?: string | null;
-    billing_address?: string | null;
-    buyer_name?: string | null;
-    created_date?: any | null;
-    delivery_address?: string | null;
-    discount?: any | null;
-    total_price?: any | null;
-    total_quantity?: number | null;
-    surcharge?: any | null;
-    email_address?: string | null;
-    last_modified_by?: string | null;
-    last_updated?: any | null;
-    note?: string | null;
-    payment_terms?: string | null;
-    pricing_condition?: PricingCondition | null;
-    purchase_order?: string | null;
-    retailer?: string | null;
-    order_status?: OrderStatus | null;
-    size?: string | null;
-    order_details?: Array<{
-      __typename?: "OrderDetailGraphqlDTO";
-      id?: any | null;
-      note?: string | null;
-      total_quantity?: number | null;
-      wholesale_price?: any | null;
-      wholesale_total_price?: any | null;
-      product?: {
-        __typename?: "ProductGraphqlDTO";
-        id?: any | null;
-        description?: string | null;
-        colour_code?: string | null;
-        colour_name?: string | null;
-        colour_families?: Array<string | null> | null;
-        first_category?: string | null;
-        second_category?: string | null;
-        third_category?: string | null;
-        fourth_category?: string | null;
-        compositions?: Array<string | null> | null;
-        country_of_origin?: string | null;
-        delivery_lead_time?: number | null;
-        delivery_window_end_date?: any | null;
-        delivery_window_start_date?: any | null;
-        upc?: string | null;
-        style_number?: string | null;
-        style_name?: string | null;
-        style_id?: string | null;
-        size_type?: string | null;
-        size_options?: Array<string | null> | null;
-        size_category?: string | null;
-        season?: string | null;
-        min_order_value?: number | null;
-        min_order_quantity?: number | null;
-        measurements?: Array<string | null> | null;
-        materials?: Array<string | null> | null;
-        associated_prices?: Array<{
-          __typename?: "PriceGraphqlDTO";
-          currency?: string | null;
-          exworks?: any | null;
-          landed?: any | null;
-          retail?: any | null;
-        } | null> | null;
-        attachments?: Array<{
-          __typename?: "ProductAttachmentGraphqlDTO";
-          id?: any | null;
-          small_image_url?: string | null;
-          medium_image_url?: string | null;
-          large_image_url?: string | null;
-        } | null> | null;
-      } | null;
-      order_detail_sizes?: Array<{
-        __typename?: "OrderDetailSizeGraphqlDTO";
-        id?: any | null;
-        quantity?: number | null;
-        size?: string | null;
-      } | null> | null;
-    } | null> | null;
-  } | null;
 };
 
 export type GetOrdersQueryVariables = Exact<{

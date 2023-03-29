@@ -2,7 +2,9 @@ import { TotalQuantity } from '@/components/atoms/TotalQuantity/TotalQuantity';
 import Dropdown from '@/components/molecules/Dropdown';
 import Input from '@/components/molecules/Inputs/Input';
 import { OrderGraphqlDto } from '@/generated/types';
+import { PRICING_CONDITIONS_QUERY } from '@/queries/orders/details';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { useQuery } from '@apollo/client';
 import { FC } from 'react';
 
 interface PricingConditionProps {
@@ -16,36 +18,18 @@ const PricingCondition: FC<PricingConditionProps> = ({
   handleChange,
   handleDropdownChange,
 }) => {
-  const dropdownmenu = [
-    {
-      value: 'USD_LANDED',
-      name: 'USD - Landed',
-    },
-    {
-      value: 'USD_EXWORKS',
-      name: 'USD - ExWork',
-    },
-    {
-      value: 'GBP_LANDED',
-      name: 'GBP - Landed',
-    },
-    {
-      value: 'GBP_EXWORKS',
-      name: 'GBP - ExWork',
-    },
-    {
-      value: 'EUR_LANDED',
-      name: 'EUR - Landed',
-    },
-    {
-      value: 'EUR_EXWORKS',
-      name: 'EUR - ExWork',
-    },
-  ];
+  const { data } = useQuery(PRICING_CONDITIONS_QUERY, {
+    variables: { orderId: details?.id },
+  });
+  const dropdownmenu =
+    data?.pricingConditionsByOrderId?.map((item: any) => ({
+      name: `${item?.currency} - ${item?.label}`,
+      value: `${item?.currency}_${item?.label}`,
+    })) || [];
 
   const selectedOption = dropdownmenu.filter(
-    (item) =>
-      item?.value?.toLocaleLowerCase() ===
+    (item: any) =>
+      item?.value?.toLowerCase() ===
       details?.pricing_condition?.toLowerCase()
   )?.[0];
 
@@ -87,9 +71,9 @@ const PricingCondition: FC<PricingConditionProps> = ({
       />
       <TotalQuantity
         title="Total price"
-        value={formatCurrency(details?.pricing_condition?.split('_')?.[0] as any)?.format(
-          details?.total_price
-        )}
+        value={formatCurrency(
+          details?.pricing_condition?.split('_')?.[0] as any
+        )?.format(details?.total_price)}
       />
     </div>
   );

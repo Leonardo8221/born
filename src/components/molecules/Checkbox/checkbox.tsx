@@ -1,18 +1,22 @@
-import { FC } from "react";
-import clsx from "clsx";
-import style from "./checkbox.module.css";
+import { FC } from 'react';
+import clsx from 'clsx';
+import style from './checkbox.module.css';
 
 interface StyledCheckboxProps {
   children?: any;
   checked?: boolean;
 }
 
-export const StyledCheckbox: FC<StyledCheckboxProps> = ({ children, checked, ...props }) => {
+export const StyledCheckbox: FC<StyledCheckboxProps> = ({
+  children,
+  checked,
+  ...props
+}) => {
   return (
     <div
       className={clsx(
         style.customCheckbox,
-        checked ? style.customCheckbox_checked : ""
+        checked ? style.customCheckbox_checked : 'z-[1] !bg-shades-white'
       )}
       {...props}
     >
