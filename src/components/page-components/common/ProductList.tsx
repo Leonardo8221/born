@@ -54,6 +54,9 @@ const ProductList: FC<ProductListProps> = ({
           handleAddToCollection={handleAddToCollection}
           hanldeAddToDraftOrder={hanldeAddToDraftOrder}
           handleDeleteProduct={handleDeleteProduct}
+          isSelectable={selectable}
+          selectedProducts={selectedProducts}
+          onSelect={onSelect}
         />
       </div>
     );

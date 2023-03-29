@@ -16,6 +16,9 @@ export interface ListTableProps {
   hanldeAddToDraftOrder?: (id: number) => void;
   handleAddToCollection?: (id: number) => void;
   handleDeleteProduct?: (id: number) => void;
+  isSelectable?: boolean;
+  selectedProducts?: Array<number | string>;
+  onSelect?: (id: number) => void;
 }
 
 const ListTable: FC<ListTableProps> = ({
@@ -23,6 +26,9 @@ const ListTable: FC<ListTableProps> = ({
   handleAddToCollection,
   handleDeleteProduct,
   hanldeAddToDraftOrder,
+  selectedProducts,
+  isSelectable,
+  onSelect,
 }) => {
   const columnHelper: any = createColumnHelper();
 
@@ -52,6 +58,9 @@ const ListTable: FC<ListTableProps> = ({
       cell: ({ row }: any) => (
         <div className="max-w-[221px]">
           <ImageText
+            isSelectable={isSelectable}
+            onSelect={() => onSelect?.(row?.original?.id)}
+            isSelected={selectedProducts?.includes(row?.original?.id)}
             title={row?.original?.style_name || ''}
             subTitle={row?.original?.style_number || ''}
             altText={row?.original?.style_name + 'logo'}

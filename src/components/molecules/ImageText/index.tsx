@@ -1,12 +1,13 @@
 import { FC } from 'react';
 import clsx from 'clsx';
-import Image, { StaticImageData } from 'next/image';
+import { StaticImageData } from 'next/image';
 import {
   variantClasses,
   variantImageClasses,
   variantSubTitleClasses,
   variantTitleClasses,
 } from './utils';
+import { Checkbox } from '../Checkbox';
 
 export interface ImageTextProps {
   variant?: 'brand' | 'product' | 'brand-two';
@@ -16,6 +17,9 @@ export interface ImageTextProps {
   altText: string;
   titleClassName?: string;
   hideOverlay?: boolean;
+  isSelectable?: boolean;
+  onSelect?: (event: any) => void;
+  isSelected?: boolean;
 }
 
 const ImageText: FC<ImageTextProps> = ({
@@ -26,10 +30,21 @@ const ImageText: FC<ImageTextProps> = ({
   altText,
   titleClassName,
   hideOverlay,
+  isSelectable,
+  onSelect,
+  isSelected,
 }) => {
+  const renderCheckbox = isSelectable && (
+    <div className='absolute top-3 left-3'>
+      <Checkbox checked={isSelected} onChange={onSelect} />
+    </div>
+  );
+
   return (
     <div className={clsx(variantClasses[variant], 'relative items-center')}>
+
       <div className={clsx(variantImageClasses[variant], 'relative overflow-hidden')}>
+        {renderCheckbox}
         {!hideOverlay && (
           <div className="absolute left-0 right-0 w-full h-full bg-[rgba(0,0,0,0.1)]" />
         )}
