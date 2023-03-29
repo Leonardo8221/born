@@ -63,7 +63,7 @@ const Badges: FC<BadgeProps> = ({ items = [], countLimit = 1 }) => {
             <div className="absolute left-[50%] translate-x-[-50%] -top-[9px]">
               <TriangleDecorator />
             </div>
-            {items?.map((item: string) => (
+            {items?.map?.((item: string) => (
               <div
                 key={item}
                 className={clsx(

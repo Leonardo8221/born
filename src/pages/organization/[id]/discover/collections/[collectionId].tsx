@@ -20,7 +20,7 @@ import { CollectionResourceApi, ProductResourceApi } from 'client/command';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
-import { OrderGraphqlDto } from '@/generated/types';
+import { OrderGraphqlDto, ProductGraphqlDto } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
 
 const CollectionPage = () => {
@@ -160,7 +160,13 @@ const CollectionPage = () => {
   return (
     <div>
       <Header
-        handleCreateOrder={() => setIsAddToDraft(true)}
+        handleCreateOrder={() => {
+          setSelectedProducts(
+            productsCollection?.productsBySearchAndCollectionId?.content?.map(
+              (item: ProductGraphqlDto) => item.id
+            ));
+          setIsAddToDraft(true);
+        }}
         handleErrorMessage={handleErrorMesssage}
       />
       <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">

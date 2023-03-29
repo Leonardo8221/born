@@ -16,7 +16,7 @@ const TopBar: FC = () => {
       </div>
       <div
         className="flex h-10 w-10 cursor-pointer items-center justify-center"
-        onClick={() => router.push('/')}
+        onClick={() => router.push(`/organization/${router?.query?.id}/discover`)}
       >
         <Icon name="icon-close" height={20} width={20} />
       </div>

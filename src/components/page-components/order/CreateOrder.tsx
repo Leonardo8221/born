@@ -4,7 +4,6 @@ import { Button } from '@/components/molecules/Button';
 import Input from '@/components/molecules/Inputs/Input';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
-import Toast from '../Toast';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
 import { ORDER_LIST } from '@/utils/constants';
@@ -12,7 +11,11 @@ import { OrderGraphqlDto } from '@/generated/types';
 
 interface CreatOrderProps {
   showModal: boolean;
+  productIds: number[];
   closeModal: () => void;
+  resetProductIds: () => void;
+  handleCloseModal: () => void;
+  setSelectedOrder: (order: OrderGraphqlDto | null) => void;
   handleAddProductsToOrder?: (
     id: number,
     orderDetails: OrderGraphqlDto
@@ -41,13 +44,14 @@ type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer';
 
 export const CreateOrder: FC<CreatOrderProps> = ({
   showModal,
+  productIds,
   closeModal,
-  handleAddProductsToOrder,
+  setSelectedOrder,
+  resetProductIds,
+  handleCloseModal
 }) => {
   const router = useRouter();
   const client = useApolloClient();
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [details, setDetails] = useState<OrderDetails>(initialState);
   const id = router?.query?.id || '';
   const organizationId: number = +id;
@@ -64,16 +68,19 @@ export const CreateOrder: FC<CreatOrderProps> = ({
       const api = new OrderResourceApi(config);
       const response: any = await api.apiOrderCreateNewDraftOrderPost(
         organizationId,
-        details
+        { ...details, productIds }
       );
-      await handleAddProductsToOrder?.(response?.data?.id, response?.data);
+      handleCloseModal();
+      setSelectedOrder?.(response?.data);
       closeModal();
       setDetails(initialState);
       await client.refetchQueries({
         include: [ORDER_LIST],
       });
+      resetProductIds();
     } catch (error: any) {
       closeModal();
+      handleCloseModal();
       setDetails(initialState);
     }
   };
@@ -130,7 +137,6 @@ export const CreateOrder: FC<CreatOrderProps> = ({
           />
         </div>
       </Modal>
-      <Toast errorMessage={errorMessage} successMessage={successMessage} />
     </div>
   );
 };

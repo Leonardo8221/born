@@ -14,6 +14,7 @@ export interface SwitchProps {
   onChange?: (checked: boolean) => void;
   position?: "start" | "end";
   classNameLabel?: string;
+  className?: string;
 }
 
 const Switch: FC<SwitchProps> = ({
@@ -22,6 +23,7 @@ const Switch: FC<SwitchProps> = ({
   onChange,
   position = "end",
   classNameLabel,
+  className,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -38,7 +40,8 @@ const Switch: FC<SwitchProps> = ({
     <div
       className={clsx(
         "inline-flex gap-x-3 items-center",
-        position === "start" && "flex-row-reverse"
+        position === "start" && "flex-row-reverse",
+        className,
       )}
     >
       {label && (

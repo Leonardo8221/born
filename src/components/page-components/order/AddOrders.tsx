@@ -85,7 +85,7 @@ const AddOrders = ({
         id,
         productIds
       );
-      console.log(setSelectedOrder);
+      console.log(response)
       setSelectedOrder?.(orderDetails || null);
       handleSuccessMesssage(
         `Added ${productIds?.length} product to order successfully!`
@@ -155,6 +155,10 @@ const AddOrders = ({
       <CreateOrder
         showModal={showModal}
         handleAddProductsToOrder={handleAddProductsToOrder}
+        productIds={productIds}
+        handleCloseModal={handleCloseModal}
+        resetProductIds={resetProductIds}
+        setSelectedOrder={setSelectedOrder}
         closeModal={() => {
           refetch();
           setShowModal(false);

@@ -83,7 +83,7 @@ const Header: FC<HeaderProps> = ({
             onClick={handleCreateOrder}
             className="!w-[210px] !px-[28px] text-[14px] leading-6"
           >
-            <Icon name="icon-add" /> Add to draft order
+            <Icon name="icon-add" /> Create order
           </Button>
         </div>
       </div>
