@@ -6,7 +6,8 @@ const {
   NEXTAUTH_SECRET,
   NEXTAUTH_URL,
   NEXT_OPENAPI_BASE_PATH,
-  NEXT_PUBLIC_IMAGE_BASE_PATH
+  NEXT_PUBLIC_IMAGE_BASE_PATH,
+  NEXT_HOTJAR_ID,
 } = process.env;
 
 /** @type {import('next').NextConfig} */
@@ -19,7 +20,8 @@ const nextConfig = {
     NEXTAUTH_SECRET,
     NEXTAUTH_URL,
     NEXT_OPENAPI_BASE_PATH,
-    NEXT_PUBLIC_IMAGE_BASE_PATH
+    NEXT_PUBLIC_IMAGE_BASE_PATH,
+    NEXT_HOTJAR_ID,
   },
   images: {
     domains: [NEXT_PUBLIC_IMAGE_BASE_PATH]
