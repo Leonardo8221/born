@@ -8,15 +8,22 @@ import ListPrices from '../../../ProductDetails/ListPrices';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
 import { fonts } from '@/config/fonts';
-import productPlaceholderImage from '@/assets/images/product-image.png';
 import { PriceGraphqlDto, ProductGraphqlDto } from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
 
 export interface ListTableProps {
   products: ProductGraphqlDto[];
+  hanldeAddToDraftOrder?: (id: number) => void;
+  handleAddToCollection?: (id: number) => void;
+  handleDeleteProduct?: (id: number) => void;
 }
 
-const ListTable: FC<ListTableProps> = ({ products }) => {
+const ListTable: FC<ListTableProps> = ({
+  products,
+  handleAddToCollection,
+  handleDeleteProduct,
+  hanldeAddToDraftOrder,
+}) => {
   const columnHelper: any = createColumnHelper();
 
   const getPriceList = (prices?: PriceGraphqlDto[]) => {
@@ -37,24 +44,6 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
     });
     return items as any;
   };
-
-  const options = [
-    {
-      label: 'Add to draft order',
-      value: 'draft-order',
-      action: () => console.log('Added to draft order'),
-    },
-    {
-      label: 'Add to collections',
-      value: 'add-collection',
-      action: () => console.log('Added to collections!'),
-    },
-    {
-      label: 'Delete',
-      value: 'delete',
-      action: () => console.log('Deleted!'),
-    },
-  ];
 
   const columns = [
     columnHelper.accessor((row: any) => row, {
@@ -154,11 +143,31 @@ const ListTable: FC<ListTableProps> = ({ products }) => {
     columnHelper.accessor('options', {
       size: 39,
       id: 'options',
-      cell: () => (
-        <div>
-          <DropdownMenu options={options} variant="dots" />
-        </div>
-      ),
+      cell: (info: any) => {
+        const options = [
+          {
+            label: 'Add to draft order',
+            value: 'draft-order',
+            action: () => hanldeAddToDraftOrder?.(info?.row?.original?.id),
+          },
+          {
+            label: 'Add to collections',
+            value: 'add-collection',
+            action: () => handleAddToCollection?.(info?.row?.original?.id),
+          },
+          {
+            label: 'Delete',
+            value: 'delete',
+            action: () => handleDeleteProduct?.(info?.row?.original?.id),
+          },
+        ];
+
+        return (
+          <div>
+            <DropdownMenu options={options} variant="dots" />
+          </div>
+        );
+      },
       header: () => '',
     }),
   ];

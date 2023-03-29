@@ -1,14 +1,13 @@
-import { FC } from "react";
-import clsx from "clsx";
+import { FC } from 'react';
+import clsx from 'clsx';
 import {
   ProductCard,
   ProductCardProps,
-} from "@/components/molecules/Cards/Product";
-import { GridType } from "@/components/molecules/IconButtonGroup";
-import ListTable from "@/components/organisms/Tables/Product/ListTable";
-import { ProductGraphqlDto } from "@/generated/types";
-import productPlaceholderImage from "@/assets/images/product-image.png";
-import { Icon } from "@/components/molecules/Icon";
+} from '@/components/molecules/Cards/Product';
+import { GridType } from '@/components/molecules/IconButtonGroup';
+import ListTable from '@/components/organisms/Tables/Product/ListTable';
+import { ProductGraphqlDto } from '@/generated/types';
+import { Icon } from '@/components/molecules/Icon';
 
 interface ProductListProps {
   products: ProductCardProps[];
@@ -16,14 +15,20 @@ interface ProductListProps {
   selectable: boolean;
   selectedProducts: Array<number | string>;
   onSelect: (value: number) => void;
+  hanldeAddToDraftOrder?: (id: number) => void;
+  handleAddToCollection?: (id: number) => void;
+  handleDeleteProduct?: (id: number) => void;
 }
 
 const ProductList: FC<ProductListProps> = ({
   products,
-  gridType = "grid",
+  gridType = 'grid',
   selectable,
   selectedProducts,
   onSelect,
+  handleAddToCollection,
+  handleDeleteProduct,
+  hanldeAddToDraftOrder,
 }) => {
   if (!products?.length) {
     return (
@@ -41,10 +46,15 @@ const ProductList: FC<ProductListProps> = ({
     );
   }
 
-  if (gridType === "list") {
+  if (gridType === 'list') {
     return (
       <div className="mb-8 mt-8">
-        <ListTable products={products} />
+        <ListTable
+          products={products}
+          handleAddToCollection={handleAddToCollection}
+          hanldeAddToDraftOrder={hanldeAddToDraftOrder}
+          handleDeleteProduct={handleDeleteProduct}
+        />
       </div>
     );
   }
@@ -52,14 +62,14 @@ const ProductList: FC<ProductListProps> = ({
   return (
     <div
       className={clsx(
-        "grid mb-8 mt-8 gap-4",
-        gridType === "smallGrid" ? "grid-cols-6" : "grid-cols-3"
+        'grid mb-8 mt-8 gap-4',
+        gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
       )}
     >
       {products?.map((item: ProductGraphqlDto) => (
         <ProductCard
           key={`${item?.id}`}
-          size={gridType === "smallGrid" ? "sm" : "lg"}
+          size={gridType === 'smallGrid' ? 'sm' : 'lg'}
           isSelectable={selectable}
           isSelected={!!selectedProducts?.includes(item.id)}
           onSelect={() => onSelect(item.id)}

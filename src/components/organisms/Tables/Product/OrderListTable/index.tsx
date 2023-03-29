@@ -67,15 +67,15 @@ const OrderListTable: FC<OrderDetails> = ({
     columnHelper.accessor((row: any) => row, {
       size: 96,
       id: 'season',
-      cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
+      cell: ({ row }: any) => <Badges items={[row?.original?.product?.season]} />,
       header: () => 'Season',
     }),
-    columnHelper.accessor((row: any) => row, {
-      size: 120,
-      id: 'department',
-      cell: ({ row }: any) => <Badges items={row?.original?.product?.season} />,
-      header: () => 'Department',
-    }),
+    // columnHelper.accessor((row: any) => row, {
+    //   size: 120,
+    //   id: 'department',
+    //   cell: ({ row }: any) => <Badges items={[row?.original?.product?.season]} />,
+    //   header: () => 'Department',
+    // }),
     columnHelper.accessor('wholesale_price', {
       size: 130,
       id: 'wholesalePrice',
