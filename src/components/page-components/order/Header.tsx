@@ -149,7 +149,7 @@ const Header: FC<HeaderProps> = ({
               <Icon name="icon-message-square" />
             </Button>
           )}
-          {status?.approved && (
+          {status?.confirmed && (
             <Button
               label={'Revert to draft'}
               {...{ variant: 'outlined' }}

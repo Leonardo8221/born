@@ -1,12 +1,18 @@
+import { useEffect } from "react";
 import SelectOrganization from "@/components/page-components/organization/SelectOrganization";
 import { useSession, signIn } from "next-auth/react";
 import backgroundImage from "@/assets/images/sign-bg.png";
 import { Button } from "@/components/molecules/Button";
 import { Heading } from "@/components/molecules/Heading";
 import User from '@/assets/svgs/user.svg';
+import { hotjar } from "react-hotjar";
 
 export default function Home() {
   const { data: session, status } = useSession();
+
+  useEffect(() => {
+    hotjar.initialize(Number(process.env.NEXT_HOTJAR_ID), 6);
+  }, [])
   
   if (status === "loading") {
     return <div>Loading...</div>;
