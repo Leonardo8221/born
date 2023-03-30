@@ -6,11 +6,11 @@ import { fonts } from '../../../config/fonts';
 import { Icon } from '../../molecules/Icon';
 import { Badge } from '../../molecules/Badge';
 import ListPrices from './ListPrices';
-import { ProductGraphqlDto } from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import ColorVariant from '@/components/molecules/ColorVariant';
 
-export interface ProductDetailsProps extends ProductGraphqlDto {
+export interface ProductDetailsProps extends ProductWithCollectionsGraphqlDto {
   productImages: StaticImageData[] | string[];
   description: string;
   colors: string[];
