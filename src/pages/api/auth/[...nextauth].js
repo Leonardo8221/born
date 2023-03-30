@@ -9,8 +9,8 @@ export const authOptions = {
             clientId: process.env.NEXT_PUBLIC_CLIENT_ID || "born-ui",
             clientSecret: process.env.NEXT_PUBLIC_CLIENT_SECRET || "bqNTOGPXaivza7elslad4nZNIAgWlB41",
             issuer: process.env.NEXT_PUBLIC_CLIENT_ISSUER || "https://alkeon-dev-sso-dot-master-works-375211.ew.r.appspot.com/auth/realms/Born",
-            accessTokenUrl: 'https://alkeon-dev-sso-dot-master-works-375211.ew.r.appspot.com/auth/realms/Born/protocol/openid-connect/token',
-            authorizationUrl: 'https://alkeon-dev-sso-dot-master-works-375211.ew.r.appspot.com/auth/realms/Born/protocol/openid-connect/auth'
+            accessTokenUrl: process.env.NEXT_ACCESS_TOKEN_URL || 'https://alkeon-dev-sso-dot-master-works-375211.ew.r.appspot.com/auth/realms/Born/protocol/openid-connect/token',
+            authorizationUrl: process.env.NEXT_AUTH_URL || 'https://alkeon-dev-sso-dot-master-works-375211.ew.r.appspot.com/auth/realms/Born/protocol/openid-connect/auth'
         }),
         // ...add more providers here
     ],

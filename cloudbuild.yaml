@@ -17,6 +17,8 @@ steps:
       - NEXTAUTH_URL=${_NEXTAUTH_URL}
       - NEXT_PUBLIC_IMAGE_BASE_PATH=${_NEXT_PUBLIC_IMAGE_BASE_PATH}
       - NEXT_HOTJAR_ID=${_NEXT_HOTJAR_ID}
+      - NEXT_ACCESS_TOKEN_URL=${_NEXT_ACCESS_TOKEN_URL}
+      - NEXT_AUTH_URL=${_NEXT_AUTH_URL}
     args:
       - run
       - create-env
