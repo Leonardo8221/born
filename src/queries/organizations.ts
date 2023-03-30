@@ -28,6 +28,7 @@ export const ORGANIZATION_QUERY = gql`
   query getOrganization($organizationId: BigInteger!) {
     organizationByOrganizationId(organizationId: $organizationId) {
       ...OrganizationGraphqlDTO
+      currency_types
     }
   }
   ${ORGANIZATION_FRAGMENT}

@@ -18,6 +18,7 @@ const AddProduct: FC<AddProductProps> = () => {
   const [organizationId, setOrganiationId] = useState<null | number>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [file, setFile] = useState<File | null>(null);
 
   const router = useRouter();
 
@@ -53,6 +54,7 @@ const AddProduct: FC<AddProductProps> = () => {
             setProgress(Math.round((loaded * 100) / (total || 0)));
             setShowProgress(false);
             setSuccess(true);
+            setFile(acceptedFiles);
           }
         });
         handleSuccessMesssage('File uploaded successfully!');
@@ -75,7 +77,7 @@ const AddProduct: FC<AddProductProps> = () => {
           <ProgressBar percentage={progress} />
         ) : !showProgress && success ? (
           <SuccessMessageBox
-            placeholder="Your file ‘filename.excel’ has been uploaded successfully"
+            placeholder={`Your file ${file?.name} has been uploaded successfully`}
             buttonLabel="Back to products"
           />
         ) : (

@@ -25,6 +25,14 @@ export const ORGANIZATION_FRAGMENT = gql`
       name
       id
       banner_url
+      products {
+        attachments {
+          id
+          small_image_url
+          medium_image_url
+          large_image_url
+        }
+      }
     }
   }
 `;

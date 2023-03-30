@@ -19,6 +19,7 @@ const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('');
 
+
   return (
     <div>
       <div className="mx-auto w-fit flex align-center mt-[7px] mb-[5px] text-[12px]">
@@ -36,12 +37,13 @@ const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
         </div>
         <div>
           <span className="text-neutral-600 mr-[32px]">Currencies</span>
-          <span className="text-shades-black">{organization?.city}</span>
+          <span className="text-shades-black">{organization?.currency_types?.join(' / ')}</span>
         </div>
       </div>
       <CollectionCard
         backgroundImageSrc={organization?.banner_url || bannerPlaceholder}
         editBanner
+        editButtonText="Edit marketing"
         onEdit={(e: any) =>
           router.push(`/organization/${organization?.id}/manage/profile`)
         }

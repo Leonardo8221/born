@@ -12,6 +12,7 @@ import { apiConfig } from '@/utils/apiConfig';
 import { CollectionResourceApi } from 'client/command';
 import { useRouter } from 'next/router';
 import Toast from '../Toast';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 
 interface YourCollectionProps {
   collections?: any;
@@ -70,9 +71,12 @@ const YourCollections: FC<YourCollectionProps> = ({
             href={`/organization/1/discover/collections/${item.id}`}
           >
             <CollectionCard
-              backgroundImageSrc={bgImage1}
-              imageSrc={item?.banner_url || InnerCardImage}
+              backgroundImageSrc={item?.banner_url || bgImage1}
               label={item?.name || undefined}
+              images={item?.products?.map(
+                (product: ProductWithCollectionsGraphqlDto) =>
+                  product?.attachments?.[0]?.small_image_url
+              )}
               hasOverlay={index === 1}
               cardClasses="!h-[272px] !max-w-auto min-w-[736px]"
             />

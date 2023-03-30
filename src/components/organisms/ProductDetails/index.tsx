@@ -8,6 +8,7 @@ import { Badge } from '../../molecules/Badge';
 import ListPrices from './ListPrices';
 import { ProductGraphqlDto } from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
+import ColorVariant from '@/components/molecules/ColorVariant';
 
 export interface ProductDetailsProps extends ProductGraphqlDto {
   productImages: StaticImageData[] | string[];
@@ -106,22 +107,8 @@ const ProductDetails: FC<ProductDetailsProps> = ({
             }
           })}
         </div>
-        <p
-          className={clsx(
-            'mt-3 font-light text-shades-black tracking-[0.06em]',
-            fonts.text.base
-          )}
-        >
-          {description}
-        </p>
-        <div className="mt-6 flex">
-          {colors?.map((color, index) => (
-            <div
-              key={`${color} + ${index}`}
-              className="h-8 mr-2 w-8 rounded border-2 border-neutral-100"
-              style={color ? { backgroundColor: color } : {}}
-            />
-          ))}
+        <div className='mt-3'>
+          <ColorVariant colors={colors || []} label={description} />
         </div>
         <div>
           {tags?.map((tag: any) => (
