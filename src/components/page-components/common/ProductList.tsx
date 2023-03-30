@@ -6,7 +6,7 @@ import {
 } from '@/components/molecules/Cards/Product';
 import { GridType } from '@/components/molecules/IconButtonGroup';
 import ListTable from '@/components/organisms/Tables/Product/ListTable';
-import { ProductGraphqlDto } from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { Icon } from '@/components/molecules/Icon';
 
 interface ProductListProps {
@@ -69,7 +69,7 @@ const ProductList: FC<ProductListProps> = ({
         gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
       )}
     >
-      {products?.map((item: ProductGraphqlDto) => (
+      {products?.map((item: ProductWithCollectionsGraphqlDto) => (
         <ProductCard
           key={`${item?.id}`}
           size={gridType === 'smallGrid' ? 'sm' : 'lg'}

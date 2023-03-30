@@ -13,7 +13,7 @@ import { apiConfig } from "@/utils/apiConfig";
 import { CollectionResourceApi } from "client/command";
 import { useRouter } from "next/router";
 import Toast from "@/components/page-components/Toast";
-import { ProductGraphqlDto } from "@/generated/types";
+import { ProductWithCollectionsGraphqlDto } from "@/generated/types";
 
 export interface ProductHeaderProps {
   srcLogo?: string;
@@ -23,7 +23,7 @@ export interface ProductHeaderProps {
   onDraftOrder: () => void;
   containerClassName?: string;
   hrefBack?: string;
-  currentProduct: ProductGraphqlDto | null;
+  currentProduct: ProductWithCollectionsGraphqlDto | null;
   productRefectch: () => void;
 }
 

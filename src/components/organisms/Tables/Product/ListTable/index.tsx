@@ -8,11 +8,11 @@ import ListPrices from '../../../ProductDetails/ListPrices';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
 import { fonts } from '@/config/fonts';
-import { PriceGraphqlDto, ProductGraphqlDto } from '@/generated/types';
+import { PriceGraphqlDto, ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
 
 export interface ListTableProps {
-  products: ProductGraphqlDto[];
+  products: ProductWithCollectionsGraphqlDto[];
   hanldeAddToDraftOrder?: (id: number) => void;
   handleAddToCollection?: (id: number) => void;
   handleDeleteProduct?: (id: number) => void;
