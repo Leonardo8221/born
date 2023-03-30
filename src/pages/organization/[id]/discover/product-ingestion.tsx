@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 export default function ProductIngestion() {
   const router = useRouter();
-
+  
   return (
     <div>
       <Header
