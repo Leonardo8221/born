@@ -20,6 +20,7 @@ const StoryPage = () => {
 
   const { data, loading } = useQuery(ORGANIZATION_QUERY, {
     variables: { organizationId: Number(router?.query?.id) },
+    fetchPolicy: 'cache-and-network',
   });
   const organization = data?.organizationByOrganizationId || {};
 

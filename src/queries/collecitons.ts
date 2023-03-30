@@ -3,12 +3,8 @@ import { COLLECTION_FRAGMENT } from './fragments/collection';
 import { PRODUCT_FRAGMENT } from './fragments/product';
 
 export const COLLECTIONS_QUERY = gql`
-  query getCollections($organizationId: BigInteger!, $start: Int, $rows: Int) {
-    collectionsByOrganizationId(
-      organizationId: $organizationId
-      start: $start
-      rows: $rows
-    ) {
+  query getCollections($organizationId: BigInteger!) {
+    collectionsByOrganizationId(organizationId: $organizationId) {
       ...CollectionGraphqlDTO
     }
   }
@@ -38,7 +34,7 @@ export const PRODUCTS_BY_COLLECTION_ID_QUERY = gql`
       rows: $rows
     ) {
       content {
-        ...ProductGraphqlDTO
+        ...ProductWithCollectionsGraphqlDTO
       }
       total_pages
       total_elements
@@ -51,11 +47,7 @@ export const PRODUCTS_BY_COLLECTION_ID_QUERY = gql`
 
 export const COLLECTION_FILTER_QUERY = gql`
   query collections($organizationId: BigInteger!) {
-    collectionsByOrganizationId(
-      organizationId: $organizationId
-      start: 0
-      rows: 100
-    ) {
+    collectionsByOrganizationId(organizationId: $organizationId) {
       id
       name
     }

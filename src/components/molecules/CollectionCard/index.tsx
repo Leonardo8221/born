@@ -7,7 +7,7 @@ import { Button } from '../Button';
 
 export interface CollectionCardProps {
   backgroundImageSrc: string | StaticImageData;
-  imageSrc?: StaticImageData;
+  images?: Array<string>;
   label?: string;
   author?: string;
   headerText?: string;
@@ -60,7 +60,7 @@ const arrowIcon = (
 
 export const CollectionCard: FC<CollectionCardProps> = ({
   backgroundImageSrc,
-  imageSrc,
+  images,
   label,
   author,
   headerText = '',
@@ -104,18 +104,26 @@ export const CollectionCard: FC<CollectionCardProps> = ({
         />
         <div className={styles.cardBackground}></div>
         <div className="relative m-auto">
-          {imageSrc && (
+          {!!images?.length && (
             <div
               className={clsx(
                 clsVariations[size].innerImageSize,
-                'mx-auto rounded-md bg-neutral-100 relative border border-neutral-200'
+                'flex flex-wrap py-[3px] px-[3px] gap-y-1 gap-x-1 mx-auto rounded-md bg-neutral-100 relative border border-neutral-200'
               )}
             >
-              <img
-                src={typeof imageSrc === 'string' ? imageSrc : imageSrc.src}
-                alt="Collection Card"
-                className="absolute w-full h-full object-contain p-1"
-              />
+              {images.map((item: string) => (
+                <div key={item} className="relative h-10 w-10">
+                  <div className="absolute top-0 left-0 h-full w-full rounded bg-[rgba(0,0,0,0.1)]" />
+                  {item && (
+                    <img
+                      key={item}
+                      src={item}
+                      alt="Collection Card"
+                      className="h-full w-full rounded"
+                    />
+                  )}
+                </div>
+              ))}
             </div>
           )}
           {label && (

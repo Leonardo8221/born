@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import clsx from 'clsx';
 import { fonts } from '@/config/fonts';
-// import LogoutIcon from '@/assets/svgs/logout.svg';
-// import BookIcon from '@/assets/svgs/collection/book.svg';
-// import DocumentIcon from '@/assets/svgs/collection/document.svg';
+import LogoutIcon from '@/assets/svgs/logout.svg';
+import BookIcon from '@/assets/svgs/collection/book.svg';
+import DocumentIcon from '@/assets/svgs/collection/document.svg';
 
 interface DescriptionProps {
   onUpload?: (e: any) => void;
@@ -24,7 +24,7 @@ const Description: FC<DescriptionProps> = ({
 }) => {
   return (
     <div>
-      {/* <div className="flex mt-8 items-center justify-center gap-6">
+      <div className="flex mt-8 items-center justify-center gap-6">
         {lookbookName && lookbookUrl && (
           <div className="flex cursor-pointer border border-neutral-200 rounded">
             <div className="flex h-[50px] w-[60px] justify-center items-center">
@@ -78,7 +78,7 @@ const Description: FC<DescriptionProps> = ({
         <div className="cursor-pointer border border-neutral-200 rounded">
           <LogoutIcon width={60} height={54} onClick={onUpload} />
         </div>
-      </div> */}
+      </div>
       {description && (
         <p
           className={clsx(

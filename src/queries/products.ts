@@ -17,7 +17,7 @@ export const PRODUCTS_QUERY = gql`
       rows: $rows
     ) {
       content {
-        ...ProductGraphqlDTO
+        ...ProductWithCollectionsGraphqlDTO
       }
       total_pages
       total_elements
@@ -35,7 +35,7 @@ export const GET_PRODUCT_BY_ID = gql`
     productByProductId(
       productId: $productId
      ) {
-      ...ProductGraphqlDTO
+      ...ProductWithCollectionsGraphqlDTO
     }
   }
   ${PRODUCT_FRAGMENT}
@@ -59,7 +59,7 @@ export const GET_PRODUCTS_BY_COLLECTION_ID = gql`
       rows: $rows
     ) {
       content {
-        ...ProductGraphqlDTO
+        ...ProductWithCollectionsGraphqlDTO
       }
       total_pages
       total_elements

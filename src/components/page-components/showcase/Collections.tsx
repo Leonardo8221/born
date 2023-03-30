@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
 import placeholderImage from '@/assets/images/placeholders/collection-preview.png';
-import imageSrc from '@/assets/images/collection-card/inner-collection-card-image.png';
 import { COLLECTIONS_QUERY } from '@/queries/collecitons';
 import { CollectionGraphqlDto } from '@/generated/types';
 import Loading from '../Loading';
@@ -90,14 +89,15 @@ const Collections: FC<CollectionsProps> = ({
                 <CollectionCard
                   backgroundImageSrc={item?.banner_url || placeholderImage}
                   label={item.name || ''}
+                  images={item?.products?.map(
+                    (product: any) => product?.attachments?.[0]?.small_image_url
+                  )}
                   author={''}
-                  imageSrc={imageSrc}
                 />
               </Link>
               <div className="mt-8">
                 <p className="max-w-[544px] mx-auto text-shades-black text-center text-[18px] tracking-[0.06em] leading-[32px]">
-                  {item.description ||
-                    ''}
+                  {item.description || ''}
                 </p>
               </div>
             </div>

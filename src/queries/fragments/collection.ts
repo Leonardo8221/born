@@ -13,5 +13,13 @@ export const COLLECTION_FRAGMENT = gql`
     lookbook_guid
     lookbook_url
     lookbook_name
+    products {
+      attachments {
+        id
+        small_image_url
+        medium_image_url
+        large_image_url
+      }
+    }
   }
 `;
