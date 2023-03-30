@@ -11,6 +11,8 @@ import Layout from '../components/layouts/DefaultLayout';
 import AuthContext from '../components/AuthContext';
 import '../assets/css/global.css';
 
+import { hotjar } from "react-hotjar";
+
 // create http link to your graphql endpoint
 const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_DEV_GRAPHQL_ENDPOINT || "https://dev-born-api-ubx6j6ehna-nw.a.run.app/api/graphql",
@@ -53,6 +55,11 @@ const client = new ApolloClient({
 });
 
 export default function MyApp({ Component, pageProps }) {
+
+  useEffect(() => {
+    hotjar.initialize(Number(process.env.NEXT_HOTJAR_ID), 6);
+  }, [])
+
   return (
     <AuthContext>
       <ApolloProvider client={client}>
