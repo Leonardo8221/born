@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import clsx from 'clsx';
-import Image, { StaticImageData } from 'next/image';
+import { StaticImageData } from 'next/image';
 import { Badge } from '../../Badge';
 import { Checkbox } from '../../Checkbox';
 import styles from './product.module.css';
-import { ProductGraphqlDto } from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import {
   clsProductCard,
   clsProductCardColor,
@@ -18,8 +18,9 @@ import {
 } from './utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import ColorVariant, { VariantColors } from '../../ColorVariant';
 
-export interface ProductCardProps extends ProductGraphqlDto {
+export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   size?: 'lg' | 'sm';
   imageUrl?: StaticImageData | string;
   isSelectable?: boolean;
@@ -96,17 +97,9 @@ export const ProductCard: FC<ProductCardProps> = ({
             {renderCheckbox}
           </div>
           <h3 className={clsProductCardTitle(size)}>{style_name}</h3>
-          <div className={clsProductCardColors(size)}>
-            {colour_families?.map((color) => (
-              <div
-                key={color}
-                className={clsProductCardColor(size)}
-                style={color ? { backgroundColor: color } : {}}
-              />
-            ))}
-          </div>
-          <div className={clsx(clsProductCardTags(size), 'flex-wrap')}>
-            {collections?.map((collection) => (
+          <VariantColors colors={!!colour_families ? colour_families as string[] : []} />
+          <div className={clsx(clsProductCardTags(size), 'mt-4 flex-wrap')}>
+            {collections?.map((collection: any) => (
               <div key={collection?.id} className="mb-1">
                 <Badge size={size}>{collection?.name}</Badge>
               </div>
