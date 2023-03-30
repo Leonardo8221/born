@@ -27,5 +27,5 @@ steps:
       - build
     entrypoint: npm
   - name: gcr.io/cloud-builders/gcloud
-    args: ["app", "deploy", 'app-${_APP_ID}.yaml']
+    args: ["app", "deploy", 'app-${_ENV}.yaml']
 timeout: 1600s
