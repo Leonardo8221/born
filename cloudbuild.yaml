@@ -1,7 +1,7 @@
 steps:
   - name: gcr.io/cloud-builders/gcloud
     script: |
-      gcloud app versions list --format="value(version.id)" --sort-by="~version.createTime" | tail -n +2 | xargs -r gcloud app versions delete --service=default --quiet
+      gcloud app versions list --format="value(version.id)" --sort-by="~version.createTime" | tail -n +2 | xargs -r gcloud app versions delete --service=${_APP_ID} --quiet
   - name: node
     args:
       - install
@@ -27,7 +27,5 @@ steps:
       - build
     entrypoint: npm
   - name: gcr.io/cloud-builders/gcloud
-    args:
-      - app
-      - deploy
+    args: ["app", "deploy", "--service=${_APP_ID}"]
 timeout: 1600s
