@@ -17,6 +17,19 @@ export const GET_ORGANIZATION_BY_ID = gql`
     userOrganizationByOrganizationId(id: $id) {
       organization {
         ...OrganizationGraphqlDTO
+        collections {
+          name
+          id
+          banner_url
+          products {
+            attachments {
+              id
+              small_image_url
+              medium_image_url
+              large_image_url
+            }
+          }
+        }
         currency_types
       }
     }
@@ -28,6 +41,19 @@ export const ORGANIZATION_QUERY = gql`
   query getOrganization($organizationId: BigInteger!) {
     organizationByOrganizationId(organizationId: $organizationId) {
       ...OrganizationGraphqlDTO
+      collections {
+        name
+        id
+        banner_url
+        products {
+          attachments {
+            id
+            small_image_url
+            medium_image_url
+            large_image_url
+          }
+        }
+      }
       currency_types
     }
   }
