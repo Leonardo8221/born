@@ -21,18 +21,5 @@ export const ORGANIZATION_FRAGMENT = gql`
     linesheet_url
     lookbook_name
     lookbook_url
-    collections {
-      name
-      id
-      banner_url
-      products {
-        attachments {
-          id
-          small_image_url
-          medium_image_url
-          large_image_url
-        }
-      }
-    }
   }
 `;
