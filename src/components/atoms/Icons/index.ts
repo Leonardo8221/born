@@ -24,7 +24,7 @@ import IconMessageSqure from '@/assets/svgs/dark/message-square.svg';
 import IconLogout from '@/assets/svgs/dark/logout.svg';
 import IconInfoCircle from '@/assets/svgs/dark/info-circle.svg';
 import IconChevronDown from '@/assets/svgs/dark/chevron-down.svg';
-import IconTrash from '@/assets/svgs/dark/trash.svg';
+import IconTrash from '@/assets/svgs/dark/icon-trash.svg';
 import IconCheckCircle from '@/assets/svgs/dark/icon-check.svg';
 
 export const icons = {

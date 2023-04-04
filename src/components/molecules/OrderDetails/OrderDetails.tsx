@@ -39,7 +39,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({
           <div key={index} className="flex">
             {editMode ? (
               <Input
-                onChange={(val) => console.log(val)}
+                onChange={(event: any) => handleEditInputs(item.key, event?.target?.value)}
                 editMode={editMode}
                 label={item.name}
                 value={item.value}
@@ -97,6 +97,9 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                 value={item.value}
                 className="mb-2"
                 disabled={loading}
+                onChange={(event: any) =>
+                  handleEditInputs(item.key, event.target.value)
+                }
               />
             ) : (
               <>

@@ -13,7 +13,7 @@ import { GET_ORDERS_LIST } from '@/utils/constants';
 import useDebounce from '@/utils/debounce';
 import { OrderStatus } from '@/generated/types';
 
-export default function OrderManagement() {
+const OrderPage = () => {
   const router: any = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = Number(id);
@@ -157,3 +157,5 @@ export default function OrderManagement() {
     </ShowcaseLayout>
   );
 }
+
+export default OrderPage;

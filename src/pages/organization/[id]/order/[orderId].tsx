@@ -27,10 +27,11 @@ function OrderPreview() {
   const [isLoading, setIsLoading] = useState(false);
   const [discount, setDiscount] = useState(-1);
   const [surcharge, setSurchange] = useState(-1);
+  const [orderDetailId, setorderDetailId] = useState();
   const debouncedDiscount = useDebounce(discount, 600);
   const debouncedSurcharge = useDebounce(surcharge, 600);
 
-  const { loading, error, data, refetch } = useQuery(GET_ORDER_BY_ID, {
+  const { loading, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
@@ -91,42 +92,42 @@ function OrderPreview() {
       {
         name: 'Purchase order',
         key: 'purchase_order',
-        value: details?.purchase_order,
+        value: orderDetails?.purchase_order,
       },
       {
         name: 'Retailer',
         key: 'retailer',
-        value: details?.retailer,
+        value: orderDetails?.retailer,
       },
       {
         name: 'Buyer name',
         key: 'buyer_name',
-        value: details?.buyer_name,
+        value: orderDetails?.buyer_name,
       },
       {
         name: 'Email Address',
         key: 'email_address',
-        value: details?.email_address,
+        value: orderDetails?.email_address,
       },
     ],
     column2: [
       {
         name: 'Billing address',
         key: 'billing_address',
-        value: details?.billing_address,
+        value: orderDetails?.billing_address,
       },
       {
         name: 'Delivery address',
         key: 'delivery_address',
         inputType: 'textarea',
-        value: details?.delivery_address,
+        value: orderDetails?.delivery_address,
       },
     ],
     column3: [
       {
         name: 'Payment terms',
         key: 'payment_terms',
-        value: details?.payment_terms,
+        value: orderDetails?.payment_terms,
       },
       {
         name: 'Delivery lead time',
@@ -136,12 +137,12 @@ function OrderPreview() {
       {
         name: 'Last updated',
         key: 'last_updated',
-        value: details?.last_updated,
+        value: orderDetails?.last_updated,
       },
       {
         name: 'Last modified',
         key: 'last_modified_by',
-        value: details?.last_modified_by,
+        value: orderDetails?.last_modified_by,
       },
     ],
   };
@@ -181,17 +182,26 @@ function OrderPreview() {
   const handleSaveNote = async () => {
     try {
       const config: any = await apiConfig();
-      const api = new OrderResourceApi(config);
+      
       if (!orderNote && !orderNote.length) return;
-      api.apiOrderUpdateDraftOrderPut(orderId, {
-        ...orderDetails,
-        note: orderNote,
-      });
+      if (orderDetailId) {
+        const api = new OrderDetailResourceApi(config);
+        await api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, {
+          note: orderNote,
+          
+        });  
+      } else {
+        const api = new OrderResourceApi(config);
+        await api.apiOrderUpdateDraftOrderPut(orderId, {
+          ...orderDetails,
+          note: orderNote,
+        });
+      }
       setIsAddNoteOpen(!isAddNoteOpen);
       refetch();
-      handleSuccessMessage('Order note added successfully');
+      handleSuccessMessage('Note added successfully');
     } catch (error: any) {
-      handleErrorMessage(error?.response?.message || 'Order note failed');
+      handleErrorMessage(error?.response?.message || 'Failed to add note!');
       console.log(error);
     }
   };
@@ -244,31 +254,7 @@ function OrderPreview() {
     }
   };
 
-  const handleDebouncedOrderNote = async (
-    note: string,
-    id: number,
-    details: any
-  ) => {
-    try {
-      const orderDetailSizes = details.map((item: any) => ({
-        order_detail_size_id: item.id,
-        quantity: item.quantity,
-      }));
-      const payload = {
-        note,
-        order_detail_sizes: [...orderDetailSizes],
-      };
-      const config: any = await apiConfig();
-      const api = new OrderDetailResourceApi(config);
-      api.apiOrderUpdateDraftOrderDetailPut(id, orderId, payload);
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const debouncedHandleQuantities = debounce(handleQuantities, 600);
-  const debouncedOrderNote = debounce(handleDebouncedOrderNote, 600);
 
   const handleChange = async (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
@@ -279,6 +265,17 @@ function OrderPreview() {
       setSurchange(val);
     }
   };
+
+  const handleDelete = async(id?: number) => {
+    try {
+      const config: any = await apiConfig();
+      refetch();
+      handleSuccessMessage('Note added successfully');
+    } catch (error: any) {
+      handleErrorMessage(error?.response?.message || 'Failed to add note!');
+      console.log(error);
+    }
+  }
 
   if (!details && loading) {
     return <Loading message="Loading details..." />;
@@ -301,6 +298,7 @@ function OrderPreview() {
         setErrorMessage={handleErrorMessage}
         refetch={refetch}
       />
+      
       <div className="mx-auto w-full max-w-[1120px] py-16">
         <div className="bg-[#fff]]">
           {orderDetails?.order_status === 'DRAFT' && (
@@ -345,12 +343,16 @@ function OrderPreview() {
         </div>
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
-          handleOrderNote={debouncedOrderNote}
+          handleOrderNote={(id) => {
+            setIsAddNoteOpen(true);
+            setorderDetailId(id);
+          }}
           products={details?.order_details}
           pricing_condition={orderDetails?.pricing_condition}
           quantity={orderDetails?.quantity}
           total_price={orderDetails?.total_price}
           editMode={true}
+          handleDelete={handleDelete}
         />
       </div>
       <AddNote
