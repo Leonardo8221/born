@@ -35,7 +35,7 @@ export const VariantColors = ({
   className?: string;
 }) => {
   return (
-    <div className={clsx('h-4 w-4 p-0.5', className)}>
+    <div className={clsx('h-4 w-4 p-0.5 opacity-[0.7]', className)}>
       <div className="flex h-full w-full rounded-full rounded-full overflow-hidden bg-shades-white">
         {colors?.map((col) => (
           <div

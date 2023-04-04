@@ -61,7 +61,7 @@ const Header: FC<HeaderProps> = ({
   ];
 
   return (
-    <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
+    <div className="print:hidden flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[50px] px-[64px]">
       <div>
         <div onClick={() => router?.back()}>
           <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
