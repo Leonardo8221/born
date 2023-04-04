@@ -8,7 +8,10 @@ import ListPrices from '../../../ProductDetails/ListPrices';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
 import { fonts } from '@/config/fonts';
-import { PriceGraphqlDto, ProductWithCollectionsGraphqlDto } from '@/generated/types';
+import {
+  PriceGraphqlDto,
+  ProductWithCollectionsGraphqlDto,
+} from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
 
 export interface ListTableProps {
@@ -19,6 +22,7 @@ export interface ListTableProps {
   isSelectable?: boolean;
   selectedProducts?: Array<number | string>;
   onSelect?: (id: number) => void;
+  type?: 'products' | 'collection';
 }
 
 const ListTable: FC<ListTableProps> = ({
@@ -29,6 +33,7 @@ const ListTable: FC<ListTableProps> = ({
   selectedProducts,
   isSelectable,
   onSelect,
+  type = 'products',
 }) => {
   const columnHelper: any = createColumnHelper();
 
@@ -160,8 +165,11 @@ const ListTable: FC<ListTableProps> = ({
             action: () => hanldeAddToDraftOrder?.(info?.row?.original?.id),
           },
           {
-            label: 'Add to collections',
-            value: 'add-collection',
+            label:
+              type === 'products'
+                ? 'Add to collection'
+                : 'Remove from collection',
+            value: type === 'products' ? 'add-collection' : 'remove-collection',
             action: () => handleAddToCollection?.(info?.row?.original?.id),
           },
           {
@@ -173,7 +181,11 @@ const ListTable: FC<ListTableProps> = ({
 
         return (
           <div>
-            <DropdownMenu options={options} variant="dots" />
+            <DropdownMenu
+              className={type === 'collection' ? '!w-[165px]' : ''}
+              options={options}
+              variant="dots"
+            />
           </div>
         );
       },

@@ -20,7 +20,10 @@ import { CollectionResourceApi, ProductResourceApi } from 'client/command';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
-import { OrderGraphqlDto, ProductWithCollectionsGraphqlDto } from '@/generated/types';
+import {
+  OrderGraphqlDto,
+  ProductWithCollectionsGraphqlDto,
+} from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
 
 const CollectionPage = () => {
@@ -84,14 +87,14 @@ const CollectionPage = () => {
     }, 3000);
   };
 
-  const handleRemoveProducts = async () => {
+  const handleRemoveProducts = async (id?: number) => {
     setIsLoading(true);
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
       await api.apiCollectionDisassociateProductsPut(
         collectionId,
-        selectedProducts
+        id ? [id] : selectedProducts
       );
       handleSuccessMesssage(
         `Removed ${selectedProducts.length} products from collections sucessfully!!`
@@ -107,12 +110,12 @@ const CollectionPage = () => {
     }
   };
 
-  const handleDeleteProducts = async () => {
+  const handleDeleteProducts = async (id?: number) => {
     setIsLoading(true);
     try {
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
-      await api.apiProductDeleteProductsDelete(selectedProducts);
+      await api.apiProductDeleteProductsDelete(id ? [id] : selectedProducts);
       setIsLoading(false);
       handleSuccessMesssage(
         `Deleted ${selectedProducts.length} products successfully!`
@@ -216,6 +219,17 @@ const CollectionPage = () => {
               selectable={isSelectable}
               selectedProducts={selectedProducts}
               onSelect={handleSelectedProducts}
+              type="collection"
+              hanldeAddToDraftOrder={(id) => {
+                setSelectedProducts([id]);
+                setIsAddToDraft(true);
+              }}
+              handleAddToCollection={(id) => {
+                handleRemoveProducts(id);
+              }}
+              handleDeleteProduct={(id) => {
+                handleDeleteProducts(id);
+              }}
             />
           </>
         )}
