@@ -23,6 +23,7 @@ export interface DropdownMenuProps {
   variant?: keyof typeof dropdownVariants;
   options: Option[];
   buttonProps?: ButtonProps;
+  className?: string;
 }
 
 export const DropdownMenu: FC<DropdownMenuProps> = ({
@@ -32,6 +33,7 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
   label = "",
   options = [],
   buttonProps = {},
+  className,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -84,10 +86,11 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
       >
         <div
           className={clsx(
-            "absolute z-10 w-[141px] ring-1 rounded-[4px] ring-shades-black ring-opacity-5 !shadow-extra",
+            "absolute z-10 w-[140px] ring-1 rounded-[4px] ring-shades-black ring-opacity-5 !shadow-extra",
             styles.dropdown,
             styles.dropdownTriangle,
-            dropdownVariants[variant]
+            dropdownVariants[variant],
+            className,
           )}
         >
           <div

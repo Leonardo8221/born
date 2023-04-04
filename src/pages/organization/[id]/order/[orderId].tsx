@@ -188,7 +188,6 @@ function OrderPreview() {
         const api = new OrderDetailResourceApi(config);
         await api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, {
           note: orderNote,
-          
         });  
       } else {
         const api = new OrderResourceApi(config);

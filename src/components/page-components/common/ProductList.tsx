@@ -18,6 +18,7 @@ interface ProductListProps {
   hanldeAddToDraftOrder?: (id: number) => void;
   handleAddToCollection?: (id: number) => void;
   handleDeleteProduct?: (id: number) => void;
+  type?: 'products' | 'collection';
 }
 
 const ProductList: FC<ProductListProps> = ({
@@ -29,6 +30,7 @@ const ProductList: FC<ProductListProps> = ({
   handleAddToCollection,
   handleDeleteProduct,
   hanldeAddToDraftOrder,
+  type,
 }) => {
   if (!products?.length) {
     return (
@@ -57,6 +59,7 @@ const ProductList: FC<ProductListProps> = ({
           isSelectable={selectable}
           selectedProducts={selectedProducts}
           onSelect={onSelect}
+          type={type}
         />
       </div>
     );
