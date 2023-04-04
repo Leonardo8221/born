@@ -46,7 +46,7 @@ const Filters: FC<FiltersProps> = ({
   onSearch,
 }) => {
   return (
-    <div className="mt-4 flex items-center justify-between">
+    <div className="print:hidden mt-4 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <SearchInput
           value={searchKeyword || ''}

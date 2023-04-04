@@ -70,6 +70,13 @@ export const GET_ORDER_BY_ID = gql`
           min_order_quantity
           measurements
           materials
+          productVariants {
+            colour_code
+            colour_name
+            id
+            product_id
+            style_number
+          }
         }
         order_detail_sizes {
           id

@@ -5,9 +5,12 @@ import ImageText from '@/components/molecules/ImageText';
 import { fonts } from '@/config/fonts';
 import { Table } from '../../../Table';
 import Badges from '../Badges';
-import ProductImage from '@/assets/images/products/product.png';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Icon } from '@/components/molecules/Icon';
+import ColorVairant, {
+  VariantColors,
+} from '@/components/molecules/ColorVariant';
+
 export interface OrderDetails {
   products: any[];
   quantity?: number;
@@ -17,7 +20,6 @@ export interface OrderDetails {
   handleQuantities?: (val: string, id: number) => void;
   handleOrderNote?: (id?: any) => void;
   handleDelete?: (id?: number) => void;
-  
 }
 
 const OrderListTable: FC<OrderDetails> = ({
@@ -52,17 +54,20 @@ const OrderListTable: FC<OrderDetails> = ({
       cell: ({ row }: any) => {
         const colors = row?.original?.product?.colour_families || [];
         return (
-          <div className="flex flex-col gap-y-2">
-            {Array.isArray(colors) &&
-              colors.map((item: any) => (
-                <div key={item} className="flex items-center gap-x-2">
-                  <div
-                    className="h-4 w-4 rounded border-2 border-shades-white"
-                    style={item && { backgroundColor: `${item}` }}
-                  />
-                  <span>{item}</span>
-                </div>
-              ))}
+          <div className="flex items-center gap-x-2">
+            <div>
+              <VariantColors
+                colors={colors?.map((item: any) => item?.toLowerCase()) || []}
+              />
+            </div>
+            <span
+              className={clsx(
+                'text-shades-black tracking-[0.06em] text-center',
+                fonts.text.md
+              )}
+            >
+              {row?.original?.product?.colour_name}
+            </span>
           </div>
         );
       },

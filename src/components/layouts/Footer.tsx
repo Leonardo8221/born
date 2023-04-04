@@ -32,7 +32,7 @@ const Footer = () => {
 	]
 
   return (
-    <div className="bg-shades-black">
+    <div className="print:hidden bg-shades-black">
       <div className="w-full max-w-[1440px] flex mx-auto items-center justify-between">
         <div className="flex-1">
           <FooterNav nav={footerMenuItems} />

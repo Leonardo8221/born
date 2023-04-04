@@ -58,6 +58,9 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-primary)', 'sans-serif'],
       },
+      screens: {
+          'print': { 'raw': 'print' },
+      }
     },
   },
   plugins: [],

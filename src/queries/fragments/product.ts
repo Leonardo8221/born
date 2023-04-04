@@ -47,5 +47,12 @@ export const PRODUCT_FRAGMENT = gql`
       id
       name
     }
+    productVariants {
+      colour_code
+      colour_name
+      id
+      product_id
+      style_number
+    }
   }
 `;

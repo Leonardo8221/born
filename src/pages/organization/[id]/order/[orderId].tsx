@@ -82,7 +82,7 @@ function OrderPreview() {
   }, [debouncedSurcharge]);
 
   const handleEditInputs = (key: any, val: any) => {
-    let payload = { ...details };
+    let payload = { ...orderDetails };
     payload[key] = val;
     setDetails(payload);
   };
@@ -182,7 +182,6 @@ function OrderPreview() {
   const handleSaveNote = async () => {
     try {
       const config: any = await apiConfig();
-      
       if (!orderNote && !orderNote.length) return;
       if (orderDetailId) {
         const api = new OrderDetailResourceApi(config);
