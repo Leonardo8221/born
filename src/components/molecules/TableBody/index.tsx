@@ -80,7 +80,7 @@ export const TableBody: FC<TableBodyProps> = ({
                     }
                   />
                   <DescriptionField
-                    disabled={!editMode}
+                    disabled={true}
                     onChange={(val) =>
                       handleOrderNote(
                         val,
@@ -89,7 +89,7 @@ export const TableBody: FC<TableBodyProps> = ({
                       )
                     }
                     value={row.getVisibleCells()[0].row.original.note}
-                    className="mb-8 mt-4 w-2/3"
+                    className="mb-8 mt-4 w-2/3 disabled:!bg-shades-white"
                     label="Order Note"
                     placeholder="This Order...."
                   />

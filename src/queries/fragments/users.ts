@@ -15,5 +15,6 @@ export const USERS_FRAMGMENT = gql`
     message_notification_enabled
     order_notification_enabled
     product_notification_enabled
+    
   }
 `;

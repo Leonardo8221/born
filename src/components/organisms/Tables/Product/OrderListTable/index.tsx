@@ -7,6 +7,7 @@ import { Table } from '../../../Table';
 import Badges from '../Badges';
 import ProductImage from '@/assets/images/products/product.png';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { Icon } from '@/components/molecules/Icon';
 export interface OrderDetails {
   products: any[];
   quantity?: number;
@@ -14,7 +15,9 @@ export interface OrderDetails {
   pricing_condition?: any;
   editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
-  handleOrderNote?: (val: string, id: number, details: any) => void;
+  handleOrderNote?: (id?: any) => void;
+  handleDelete?: (id?: number) => void;
+  
 }
 
 const OrderListTable: FC<OrderDetails> = ({
@@ -23,6 +26,7 @@ const OrderListTable: FC<OrderDetails> = ({
   pricing_condition,
   handleQuantities,
   handleOrderNote,
+  handleDelete,
 }) => {
   const columnHelper: any = createColumnHelper();
   const columns = [
@@ -67,15 +71,11 @@ const OrderListTable: FC<OrderDetails> = ({
     columnHelper.accessor((row: any) => row, {
       size: 96,
       id: 'season',
-      cell: ({ row }: any) => <Badges items={[row?.original?.product?.season]} />,
+      cell: ({ row }: any) => (
+        <Badges items={[row?.original?.product?.season]} />
+      ),
       header: () => 'Season',
     }),
-    // columnHelper.accessor((row: any) => row, {
-    //   size: 120,
-    //   id: 'department',
-    //   cell: ({ row }: any) => <Badges items={[row?.original?.product?.season]} />,
-    //   header: () => 'Department',
-    // }),
     columnHelper.accessor('wholesale_price', {
       size: 130,
       id: 'wholesalePrice',
@@ -86,7 +86,9 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(info.getValue() || 0)}
+          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(
+            info.getValue() || 0
+          )}
         </div>
       ),
       header: () => 'Wholesale Price',
@@ -116,10 +118,31 @@ const OrderListTable: FC<OrderDetails> = ({
             fonts.text.xl
           )}
         >
-          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(info.getValue() || 0)}
+          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(
+            info.getValue() || 0
+          )}
         </div>
       ),
       header: () => 'Total Wholesale price',
+    }),
+    columnHelper.accessor((row: any) => row, {
+      size: 124,
+      id: 'actions',
+      cell: ({ row }: any) => (
+        <div className="flex">
+          <Icon
+            name="icon-message-square"
+            className="cursor-pointer text-shades-black ml-[28px] mr-[48px]"
+            onClick={() => handleOrderNote?.(row?.original?.id)}
+          />
+          <Icon
+            name="icon-trash"
+            className="cursor-pointer text-shades-black"
+            onClick={() => handleDelete?.(row?.original?.id)}
+          />
+        </div>
+      ),
+      header: () => '',
     }),
   ];
 
@@ -129,7 +152,6 @@ const OrderListTable: FC<OrderDetails> = ({
         <Table
           tableData={products}
           handleQuantities={handleQuantities}
-          handleOrderNote={handleOrderNote}
           columns={columns}
           className="w-full [&>tbody>tr>td]:pt-4"
           size={true}
