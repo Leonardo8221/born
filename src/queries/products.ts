@@ -6,6 +6,8 @@ export const PRODUCTS_QUERY = gql`
     $organizationId: BigInteger!
     $search: String
     $collectionNames: [String]
+    $colourFamilies: [String]
+    $season: String
     $start: Int
     $rows: Int
   ) {
@@ -13,6 +15,8 @@ export const PRODUCTS_QUERY = gql`
       organizationId: $organizationId
       search: $search
       collectionNames: $collectionNames
+      colourFamilies: $colourFamilies
+      season: $season
       start: $start
       rows: $rows
     ) {

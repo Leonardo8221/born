@@ -19,6 +19,7 @@ import { OrderGraphqlDto } from '@/generated/types';
 import Notification from '../order/Notification';
 import { COLLECTION_FILTER_QUERY } from '@/queries/collecitons';
 import { Item } from '@/components/molecules/DropdownFilter';
+import { COLOUR_FAMILIES_QUERY } from '@/queries/colourFamiles';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -36,6 +37,7 @@ const Products: FC = () => {
     null
   );
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
+  const [selectedColours, setSelectedColours] = useState<string[]>([]);
 
   const router = useRouter();
   const id = router?.query?.id || '';
@@ -45,6 +47,7 @@ const Products: FC = () => {
       organizationId,
       search: debouncedValue,
       collectionNames: selectedCollections,
+      colourFamilies: selectedColours,
       rows: 50,
     },
     notifyOnNetworkStatusChange: true,
@@ -55,12 +58,23 @@ const Products: FC = () => {
     notifyOnNetworkStatusChange: true,
   });
 
+  const { data: colourFamilies } = useQuery(COLOUR_FAMILIES_QUERY, {
+    variables: { organizationId },
+  });
+
   const handleFilterCollections = (e: Item) => {
-    console.log(e);
     if (selectedCollections.includes(e.label)) {
       setSelectedCollections(selectedCollections?.filter((c) => c !== e.label));
     } else {
       setSelectedCollections([...selectedCollections, e.label]);
+    }
+  };
+
+  const handleFilterColours = (e: Item) => {
+    if (selectedColours.includes(e.label)) {
+      setSelectedColours(selectedColours?.filter((c) => c !== e.label));
+    } else {
+      setSelectedColours([...selectedColours, e.label]);
     }
   };
 
@@ -77,16 +91,16 @@ const Products: FC = () => {
       selectedItems: selectedCollections,
       onReset: () => setSelectedCollections([]),
     },
-    // {
-    //   label: 'Colours',
-    //   size: 'default',
-    //   type: 'default',
-    // },
-    // {
-    //   label: 'Season',
-    //   size: 'default',
-    //   type: 'default',
-    // },
+    {
+      label: 'Colours',
+      options:
+        colourFamilies?.colourFamiliesByNameAndOrganizationId?.map(
+          (item: string) => ({ id: item, label: item })
+        ) || [],
+      action: handleFilterColours,
+      selectedItems: selectedColours,
+      onReset: () => setSelectedColours([]),
+    },
   ];
 
   const handleErrorMesssage = (message: string) => {

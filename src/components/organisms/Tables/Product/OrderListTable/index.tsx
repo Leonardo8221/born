@@ -19,7 +19,7 @@ export interface OrderDetails {
   editMode?: boolean;
   handleQuantities?: (val: string, id: number) => void;
   handleOrderNote?: (id?: any) => void;
-  handleDelete?: (id?: number) => void;
+  handleDelete?: (id: number) => void;
 }
 
 const OrderListTable: FC<OrderDetails> = ({
@@ -143,7 +143,7 @@ const OrderListTable: FC<OrderDetails> = ({
           <Icon
             name="icon-trash"
             className="cursor-pointer text-shades-black"
-            onClick={() => handleDelete?.(row?.original?.id)}
+            onClick={() => handleDelete?.(row?.original?.product?.id)}
           />
         </div>
       ),

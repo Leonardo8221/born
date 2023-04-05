@@ -52,7 +52,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
     {
       label: "Switch accounts",
       value: "switch-accounts",
-      action: () => router.push(returnRedirectManageLink("switch-accounts")),
+      action: () => router.push('/'),
     },
     {
       label: "Sign out",

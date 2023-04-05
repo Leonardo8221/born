@@ -264,13 +264,15 @@ function OrderPreview() {
     }
   };
 
-  const handleDelete = async(id?: number) => {
+  const handleDelete = async(id: number) => {
     try {
       const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      await api.apiOrderRemoveProductsFromDraftOrderPut(orderId, [id]);
       refetch();
-      handleSuccessMessage('Note added successfully');
+      handleSuccessMessage('Order detail deleted successfully');
     } catch (error: any) {
-      handleErrorMessage(error?.response?.message || 'Failed to add note!');
+      handleErrorMessage(error?.response?.message || 'Failed to remove order detail!');
       console.log(error);
     }
   }

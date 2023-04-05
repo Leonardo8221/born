@@ -6,9 +6,16 @@ import { fonts } from '../../../config/fonts';
 import { Icon } from '../../molecules/Icon';
 import { Badge } from '../../molecules/Badge';
 import ListPrices from './ListPrices';
-import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
+import {
+  ProductVariantGraphqlDto,
+  ProductWithCollectionsGraphqlDto,
+} from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
-import ColorVariant from '@/components/molecules/ColorVariant';
+import ColorVariant, {
+  VariantColors,
+} from '@/components/molecules/ColorVariant';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export interface ProductDetailsProps extends ProductWithCollectionsGraphqlDto {
   productImages: StaticImageData[] | string[];
@@ -19,6 +26,7 @@ export interface ProductDetailsProps extends ProductWithCollectionsGraphqlDto {
     list?: string[];
   }[];
   specifications: { label: string; value: string }[];
+  variants?: ProductVariantGraphqlDto[];
 }
 
 const ProductDetails: FC<ProductDetailsProps> = ({
@@ -28,7 +36,9 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   colors,
   tags,
   specifications,
+  variants,
 }) => {
+  const router = useRouter();
   return (
     <div className="flex flex-wrap gap-8">
       <div className="flex-1 h-fit">
@@ -107,8 +117,19 @@ const ProductDetails: FC<ProductDetailsProps> = ({
             }
           })}
         </div>
-        <div className='mt-3'>
+        <div className="flex items-center gap-2.5 mt-3">
           <ColorVariant colors={colors || []} label={description} />
+          {variants?.map((variant: any) => (
+            <Link
+              key={variant?.id}
+              href={`/organization/${router.query.id}/discover/products/${variant?.product_id}`}
+            >
+              <ColorVariant
+                key={variant?.id}
+                colors={variant?.colourFamilies || []}
+              />
+            </Link>
+          ))}
         </div>
         <div>
           {tags?.map((tag: any) => (
