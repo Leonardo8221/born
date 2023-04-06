@@ -24,12 +24,14 @@ export const PRODUCTS_BY_COLLECTION_ID_QUERY = gql`
   query getProductsByCollectionId(
     $collectionId: BigInteger!
     $search: String
+    $colourFamilies: [String]
     $start: Int
     $rows: Int
   ) {
     productsBySearchAndCollectionId(
       collectionId: $collectionId
       search: $search
+      colourFamilies: $colourFamilies
       start: $start
       rows: $rows
     ) {

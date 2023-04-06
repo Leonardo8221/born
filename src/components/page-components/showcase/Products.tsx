@@ -94,9 +94,10 @@ const Products: FC = () => {
     {
       label: 'Colours',
       options:
-        colourFamilies?.colourFamiliesByNameAndOrganizationId?.map(
-          (item: string) => ({ id: item, label: item })
-        ) || [],
+        colourFamilies?.colourFamiliesByOrganizationId?.map((item: string) => ({
+          id: item,
+          label: item,
+        })) || [],
       action: handleFilterColours,
       selectedItems: selectedColours,
       onReset: () => setSelectedColours([]),

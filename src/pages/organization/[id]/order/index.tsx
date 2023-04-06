@@ -14,6 +14,7 @@ import useDebounce from '@/utils/debounce';
 import { OrderStatus } from '@/generated/types';
 import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
 import { Tags } from '@/components/page-components/common/Filters';
+import getConfig from 'next/config';
 
 const OrderPage = () => {
   const router: any = useRouter();
@@ -75,7 +76,7 @@ const OrderPage = () => {
     {
       label: 'Retailers',
       options:
-        retailers?.retailersByNameAndOrganizationId?.map((item: string) => ({
+        retailers?.retailersByOrganizationId?.map((item: string) => ({
           id: item,
           label: item,
         })) || [],
@@ -86,7 +87,7 @@ const OrderPage = () => {
     {
       label: 'Buyers',
       options:
-        buyers?.buyersByNameAndOrganizationId?.map((item: string) => ({
+        buyers?.buyersByOrganizationId?.map((item: string) => ({
           id: item,
           label: item,
         })) || [],
@@ -125,19 +126,37 @@ const OrderPage = () => {
       }
       refetch();
       setIsLoading(false);
-      setSuccessMessage('Order modified successfully');
+      setSuccessMessage('Order modified successfully!');
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
     } catch (error: any) {
       setIsLoading(false);
-      setErrorMessage(error?.message ?? 'Order modified failed');
+      setErrorMessage(error?.message ?? 'Order modified failed!');
       setTimeout(() => {
         setErrorMessage('');
       }, 3000);
       console.log(error);
     }
   };
+
+  const handleDeleteOrder = async (id: number) => {
+    try {
+      const config = await getConfig();
+      const api = new OrderResourceApi(config);
+      await api.apiOrderDeleteOrderDelete(id);
+      setSuccessMessage('Order Deleted successfully!');
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (error: any) {
+      setErrorMessage(error?.message ?? 'Failed to delete order!');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      console.log(error);
+    }
+  }
 
   const tabs = [
     {
@@ -153,6 +172,7 @@ const OrderPage = () => {
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
+          handleDelete={handleDeleteOrder}
         />
       ),
     },
@@ -169,6 +189,7 @@ const OrderPage = () => {
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
+          handleDelete={handleDeleteOrder}
         />
       ),
     },
@@ -185,6 +206,7 @@ const OrderPage = () => {
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
+          handleDelete={handleDeleteOrder}
         />
       ),
     },
@@ -201,6 +223,7 @@ const OrderPage = () => {
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
+          handleDelete={handleDeleteOrder}
         />
       ),
     },

@@ -98,13 +98,6 @@ const OrderListTable: FC<OrderListTableProps> = ({
           {orderType === 'confirmed' ? (
             <div className="flex items-center">
               <Button
-                onClick={() => handleActions('cancel', row.original.id)}
-                variant="outlined"
-                className="h-8 text-[12px] text-[#333333] border-[#999999] mr-2"
-              >
-                Cancel
-              </Button>
-              <Button
                 onClick={() => handleActions('approve', row.original.id)}
                 variant="outlined"
                 className="h-8 text-[12px] text-[#333333] border-[#999999]"
@@ -112,17 +105,8 @@ const OrderListTable: FC<OrderListTableProps> = ({
                 Approve
               </Button>
             </div>
-          ) : orderType === 'approved' ? (
-            <div>
-              <Button
-                onClick={() => handleActions('cancel', row.original.id)}
-                variant="outlined"
-                className="h-8 text-[12px] text-[#333333] border-[#999999]"
-              >
-                Cancel
-              </Button>
-            </div>
-          ) : orderType === 'cancelled' ? null : (
+          ) : orderType === 'approved' ? null : orderType ===
+            'cancelled' ? null : (
             <div>
               <Button
                 onClick={() => handleActions('confirm', row.original.id)}
@@ -141,26 +125,37 @@ const OrderListTable: FC<OrderListTableProps> = ({
       size: 60,
       id: 'confirm',
       cell: (info: any) => {
-        const options = [
-          {
+        let options = [];
+        if (
+          info?.row?.original?.order_status === 'DRAFT' ||
+          info?.row?.original?.order_status === 'CONFIRMED'
+        ) {
+          options.push({
             label: 'Delete',
             value: 'delete',
             action: () => handleDelete?.(info?.row?.original?.id),
-          }
-        ];
+          });
+        }
+
+        if (info?.row?.original?.order_status === 'CONFIRMED') {
+          options.push({
+            label: 'Cancel',
+            value: 'cancel',
+            action: () => handleActions('cancel', info?.row?.original?.id),
+          });
+        }
 
         return (
-          <div className='[&>div]:justify-center'>
-            <DropdownMenu
-              options={options}
-              variant="dots"
-            />
-          </div>
+          !!options.length && (
+            <div className="[&>div]:justify-center">
+              <DropdownMenu options={options} variant="dots" />
+            </div>
+          )
         );
       },
-      header: () => ''
+      header: () => '',
     }),
-  ]
+  ];
 
   return (
     <>
