@@ -12,6 +12,8 @@ import Toast from '@/components/page-components/Toast';
 import { GET_ORDERS_LIST } from '@/utils/constants';
 import useDebounce from '@/utils/debounce';
 import { OrderStatus } from '@/generated/types';
+import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
+import { Tags } from '@/components/page-components/common/Filters';
 
 const OrderPage = () => {
   const router: any = useRouter();
@@ -23,13 +25,17 @@ const OrderPage = () => {
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [selectedBuyers, setSelectedBuyers] = useState<string[]>([]);
+  const [selectedRetailers, setSelectedRetailers] = useState<string[]>([]);
 
   const debounceValue = useDebounce(searchKeyword, 600);
 
   const { data, refetch, loading } = useQuery(GET_ORDERS, {
     variables: {
       key: GET_ORDERS_LIST,
-      organizationId: organizationId,
+      organizationId,
+      retailers: selectedRetailers,
+      buyers: selectedBuyers,
       orderStatus: tabState,
       start: 0,
       rows: 50,
@@ -38,6 +44,57 @@ const OrderPage = () => {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
   });
+
+  const { data: buyers } = useQuery(BUYERS_QUERY, {
+    variables: {
+      organizationId,
+    },
+  });
+
+  const { data: retailers } = useQuery(RETAILERS_QUERY, {
+    variables: { organizationId },
+  });
+
+  const handleBuyersAction = (e: { id: number | string; label: string }) => {
+    if (selectedBuyers.includes(e.label)) {
+      setSelectedBuyers(selectedBuyers?.filter((c) => c !== e.label));
+    } else {
+      setSelectedBuyers([...selectedBuyers, e.label]);
+    }
+  };
+
+  const handleRetailersAction = (e: { id: number | string; label: string }) => {
+    if (selectedRetailers.includes(e.label)) {
+      setSelectedRetailers(selectedRetailers?.filter((c) => c !== e.label));
+    } else {
+      setSelectedRetailers([...selectedRetailers, e.label]);
+    }
+  };
+
+  const filterTags: Tags[] = [
+    {
+      label: 'Retailers',
+      options:
+        retailers?.retailersByNameAndOrganizationId?.map((item: string) => ({
+          id: item,
+          label: item,
+        })) || [],
+      selectedItems: selectedRetailers,
+      action: handleRetailersAction,
+      onReset: () => setSelectedRetailers([]),
+    },
+    {
+      label: 'Buyers',
+      options:
+        buyers?.buyersByNameAndOrganizationId?.map((item: string) => ({
+          id: item,
+          label: item,
+        })) || [],
+      selectedItems: selectedBuyers,
+      action: handleBuyersAction,
+      onReset: () => setSelectedBuyers([]),
+    },
+  ];
 
   const handleTabChange = (id: string | number) => {
     if (!organizationId) return;
@@ -95,6 +152,7 @@ const OrderPage = () => {
           content={ordersBySearch}
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
+          filterTags={filterTags}
         />
       ),
     },
@@ -110,6 +168,7 @@ const OrderPage = () => {
           content={ordersBySearch}
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
+          filterTags={filterTags}
         />
       ),
     },
@@ -125,6 +184,7 @@ const OrderPage = () => {
           content={ordersBySearch}
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
+          filterTags={filterTags}
         />
       ),
     },
@@ -140,6 +200,7 @@ const OrderPage = () => {
           content={ordersBySearch}
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
+          filterTags={filterTags}
         />
       ),
     },
@@ -156,6 +217,6 @@ const OrderPage = () => {
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </ShowcaseLayout>
   );
-}
+};
 
 export default OrderPage;

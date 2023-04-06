@@ -189,6 +189,7 @@ export type ProductAttachmentGraphqlDto = {
 export type ProductVariantGraphqlDto = {
   __typename?: "ProductVariantGraphqlDTO";
   colour_code?: Maybe<Scalars["String"]>;
+  colour_families?: Maybe<Array<Maybe<Scalars["String"]>>>;
   colour_name?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
   product_id?: Maybe<Scalars["String"]>;
@@ -272,13 +273,21 @@ export type ProductWithoutCollectionsGraphqlDto = {
 /** Query root */
 export type Query = {
   __typename?: "Query";
+  /** Return list of buyer names by name and organizationId */
+  buyersByNameAndOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
   /** Return collection by collection id */
   collectionByCollectionId?: Maybe<CollectionGraphqlDto>;
   /** Return list of organization's collections */
   collectionsByOrganizationId?: Maybe<Array<Maybe<CollectionGraphqlDto>>>;
+  /** Return list of colour families by name and collectionId */
+  colourFamiliesByNameAndCollectionId?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  /** Return list of colour families by name and organizationId */
+  colourFamiliesByNameAndOrganizationId?: Maybe<
+    Array<Maybe<Scalars["String"]>>
+  >;
   /** Return order by order id */
   orderByOrderId?: Maybe<OrderGraphqlDto>;
-  /** Return list of all filtered order's by retailers, buyerNames, confirmed, approved, cancelled,createdDate and createdBy */
+  /** Return list of all filtered order's by retailers, buyerNames, orderStatus, season, dateFrom, dateTo and createdBy */
   ordersBySearch?: Maybe<PageWrapper_OrderGraphqlDto>;
   /** Return organization by organization id */
   organizationByOrganizationId?: Maybe<OrganizationGraphqlDto>;
@@ -294,6 +303,8 @@ export type Query = {
   productsBySearchAndCollectionId?: Maybe<PageWrapper_ProductWithCollectionsGraphqlDto>;
   /** Return list of filtered product's by organization id */
   productsBySearchAndOrganizationId?: Maybe<PageWrapper_ProductWithCollectionsGraphqlDto>;
+  /** Return list of retailer names by name and organizationId */
+  retailersByNameAndOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
   /** Return user with its organization data */
   userOrganizationByOrganizationId?: Maybe<UserOrganizationGraphqlDto>;
   /** Return user with list of user organizations and update last logged in date */
@@ -307,6 +318,11 @@ export type Query = {
 };
 
 /** Query root */
+export type QueryBuyersByNameAndOrganizationIdArgs = {
+  organizationId: Scalars["BigInteger"];
+};
+
+/** Query root */
 export type QueryCollectionByCollectionIdArgs = {
   collectionId: Scalars["BigInteger"];
 };
@@ -317,20 +333,32 @@ export type QueryCollectionsByOrganizationIdArgs = {
 };
 
 /** Query root */
+export type QueryColourFamiliesByNameAndCollectionIdArgs = {
+  collectionId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QueryColourFamiliesByNameAndOrganizationIdArgs = {
+  organizationId: Scalars["BigInteger"];
+};
+
+/** Query root */
 export type QueryOrderByOrderIdArgs = {
   orderId: Scalars["BigInteger"];
 };
 
 /** Query root */
 export type QueryOrdersBySearchArgs = {
-  buyerNames?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  buyers?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   createdBy?: InputMaybe<Scalars["String"]>;
-  createdDate?: InputMaybe<Scalars["DateTime"]>;
+  dateFrom?: InputMaybe<Scalars["DateTime"]>;
+  dateTo?: InputMaybe<Scalars["DateTime"]>;
   orderStatus: OrderStatus;
   organizationId: Scalars["BigInteger"];
   retailers?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   rows?: InputMaybe<Scalars["Int"]>;
   search?: InputMaybe<Scalars["String"]>;
+  season?: InputMaybe<Scalars["String"]>;
   start?: InputMaybe<Scalars["Int"]>;
 };
 
@@ -358,7 +386,7 @@ export type QueryProductVariantsByStyleNumberArgs = {
 /** Query root */
 export type QueryProductsBySearchAndCollectionIdArgs = {
   collectionId: Scalars["BigInteger"];
-  colourNames?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  colourFamilies?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   rows?: InputMaybe<Scalars["Int"]>;
   search?: InputMaybe<Scalars["String"]>;
   season?: InputMaybe<Scalars["String"]>;
@@ -368,12 +396,17 @@ export type QueryProductsBySearchAndCollectionIdArgs = {
 /** Query root */
 export type QueryProductsBySearchAndOrganizationIdArgs = {
   collectionNames?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  colourNames?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  colourFamilies?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   organizationId: Scalars["BigInteger"];
   rows?: InputMaybe<Scalars["Int"]>;
   search?: InputMaybe<Scalars["String"]>;
   season?: InputMaybe<Scalars["String"]>;
   start?: InputMaybe<Scalars["Int"]>;
+};
+
+/** Query root */
+export type QueryRetailersByNameAndOrganizationIdArgs = {
+  organizationId: Scalars["BigInteger"];
 };
 
 /** Query root */
@@ -580,6 +613,33 @@ export type CollectionsQuery = {
   } | null> | null;
 };
 
+export type ColourFamiliesQueryQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type ColourFamiliesQueryQuery = {
+  __typename?: "Query";
+  colourFamiliesByNameAndOrganizationId?: Array<string | null> | null;
+};
+
+export type BuyersQueryQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type BuyersQueryQuery = {
+  __typename?: "Query";
+  buyersByNameAndOrganizationId?: Array<string | null> | null;
+};
+
+export type RetailersQueryQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type RetailersQueryQuery = {
+  __typename?: "Query";
+  retailersByNameAndOrganizationId?: Array<string | null> | null;
+};
+
 export type CollectionGraphqlDtoFragment = {
   __typename?: "CollectionGraphqlDTO";
   id?: any | null;
@@ -781,6 +841,14 @@ export type GetOrderByIdQuery = {
           medium_image_url?: string | null;
           large_image_url?: string | null;
         } | null> | null;
+        productVariants?: Array<{
+          __typename?: "ProductVariantGraphqlDTO";
+          colour_code?: string | null;
+          colour_name?: string | null;
+          id?: any | null;
+          product_id?: string | null;
+          style_number?: string | null;
+        } | null> | null;
       } | null;
       order_detail_sizes?: Array<{
         __typename?: "OrderDetailSizeGraphqlDTO";
@@ -808,6 +876,12 @@ export type PricingConditionsByOrderIdQuery = {
 export type GetOrdersQueryVariables = Exact<{
   organizationId: Scalars["BigInteger"];
   orderStatus: OrderStatus;
+  retailers?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  buyers?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
   search?: InputMaybe<Scalars["String"]>;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
@@ -1007,6 +1081,10 @@ export type GetProductsQueryVariables = Exact<{
   collectionNames?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
+  colourFamilies?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  season?: InputMaybe<Scalars["String"]>;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
 }>;
@@ -1149,7 +1227,7 @@ export type GetProductByIdQuery = {
 export type GetProductsBySearchAndCollectionIdQueryVariables = Exact<{
   collectionId: Scalars["BigInteger"];
   search?: InputMaybe<Scalars["String"]>;
-  colourNames?: InputMaybe<
+  colourFamilies?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
   season?: InputMaybe<Scalars["String"]>;

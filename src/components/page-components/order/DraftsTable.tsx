@@ -1,9 +1,7 @@
-import React, { ChangeEvent, FC } from 'react';
-import { SearchInput } from '../../molecules/SearchInput';
-import { TagCollection } from '../../molecules/TagCollection';
+import React, { FC } from 'react';
 import OrderListTable from '../../organisms/Tables/OrderList';
-import { Button } from '../../molecules/Button';
 import { OrderGraphqlDto } from '@/generated/types';
+import Filters, { Tags } from '../common/Filters';
 
 export interface DraftTableProps {
   content: OrderGraphqlDto[];
@@ -13,6 +11,7 @@ export interface DraftTableProps {
   actionsLoading?: boolean;
   searchKeyword?: string;
   setSearchKeyword?: (value: string) => void;
+  filterTags?: Tags[];
 }
 
 export const DraftTable: FC<DraftTableProps> = ({
@@ -23,57 +22,17 @@ export const DraftTable: FC<DraftTableProps> = ({
   actionsLoading,
   searchKeyword,
   setSearchKeyword,
+  filterTags,
 }) => {
   return (
     <div>
-      <div id="header" className="flex justify-between">
-        <div className="flex items-center pb-4">
-          <SearchInput
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchKeyword?.(e.target.value)}
-            onClear={() => setSearchKeyword?.('')}
-            onEnter={function noRefCheck() {}}
-            value={searchKeyword || ''}
-            placeholder="Search"
-            className="mr-2"
-          />
-          <TagCollection
-            tags={[
-              {
-                label: 'Retailers',
-                size: 'default',
-                type: 'default',
-              },
-              {
-                label: 'Buyer',
-                size: 'default',
-                type: 'default',
-              },
-              {
-                label: 'Season',
-                size: 'default',
-                type: 'default',
-              },
-              {
-                label: 'Status',
-                size: 'default',
-                type: 'default',
-              },
-              {
-                label: 'Order date',
-                size: 'default',
-                type: 'default',
-              },
-            ]}
-          />
-        </div>
-        <div>
-          <Button
-            variant="outlined"
-            className="h-8 border-[#999999] text-[12px] text-[#333333]"
-          >
-            Export
-          </Button>
-        </div>
+      <div className='pb-4'>
+        <Filters
+          searchKeyword={searchKeyword}
+          onSearch={setSearchKeyword}
+          isOrder
+          filterTags={filterTags}
+        />
       </div>
       <OrderListTable
         handleActions={handleActions}

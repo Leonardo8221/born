@@ -13,6 +13,7 @@ import {
   ProductWithCollectionsGraphqlDto,
 } from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
+import { VariantColors } from '@/components/molecules/ColorVariant';
 
 export interface ListTableProps {
   products: ProductWithCollectionsGraphqlDto[];
@@ -83,19 +84,17 @@ const ListTable: FC<ListTableProps> = ({
       cell: (info: any) => {
         const colour_families = info.getValue();
         return (
-          <div className="flex flex-col gap-y-2">
-            {colour_families?.map(
-              (item: any, index: number) =>
-                index === 0 && (
-                  <div key={item} className="flex items-center gap-x-2">
-                    <div
-                      className="h-4 w-4 rounded border-2 border-shades-white"
-                      style={item && { backgroundColor: item }}
-                    />
-                    <span>{item}</span>
-                  </div>
-                )
-            )}
+          <div className="flex items-center gap-2">
+            <VariantColors colors={colour_families || []} />
+            <div
+              className={clsx(
+                'text-shades-black tracking-[0.06em] max-w-[90px] text-ellipsis whitespace-nowrap overflow-hidden',
+                fonts.text.sm
+              )}
+              title={info?.row?.original?.colour_name}
+            >
+              {info?.row?.original?.colour_name}
+            </div>
           </div>
         );
       },

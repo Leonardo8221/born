@@ -8,12 +8,14 @@ import Link from 'next/link';
 import { OrderGraphqlDto } from '@/generated/types';
 import { formatDate } from '@/utils';
 import { Paragraph } from '@/components/molecules/Paragraph';
+import { DropdownMenu } from '@/components/molecules/DropdownMenu';
 export interface OrderListTableProps {
   orders: OrderGraphqlDto[];
   orderType: string;
   loading: boolean;
   handleActions: (action: string, id: number) => void;
   actionsLoading?: boolean;
+  handleDelete?: (id: number) => void;
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({
@@ -21,6 +23,7 @@ const OrderListTable: FC<OrderListTableProps> = ({
   orderType,
   loading,
   handleActions,
+  handleDelete,
 }) => {
   const columnHelper: any = createColumnHelper();
 
@@ -132,10 +135,32 @@ const OrderListTable: FC<OrderListTableProps> = ({
           )}
         </>
       ),
-      onclick: () => console.log('click'),
       header: () => '',
     }),
-  ];
+    columnHelper.accessor((row: any) => row, {
+      size: 60,
+      id: 'confirm',
+      cell: (info: any) => {
+        const options = [
+          {
+            label: 'Delete',
+            value: 'delete',
+            action: () => handleDelete?.(info?.row?.original?.id),
+          }
+        ];
+
+        return (
+          <div className='[&>div]:justify-center'>
+            <DropdownMenu
+              options={options}
+              variant="dots"
+            />
+          </div>
+        );
+      },
+      header: () => ''
+    }),
+  ]
 
   return (
     <>
