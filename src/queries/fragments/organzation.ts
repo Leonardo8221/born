@@ -22,5 +22,6 @@ export const ORGANIZATION_FRAGMENT = gql`
     lookbook_name
     lookbook_url
     product_csv_url
+    product_csv_guid
   }
 `;

@@ -1,8 +1,8 @@
 import { Button } from '@/components/molecules/Button';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import { OrderGraphqlDto } from '@/generated/types';
+import { apiConfig } from '@/utils/apiConfig';
 import { OrderResourceApi } from 'client/command';
-import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 
@@ -21,7 +21,7 @@ const Notification: FC<NotificationProps> = ({
   const handleCancel = async () => {
     onCancel();
     try {
-      const config = await getConfig();
+      const config = await apiConfig();
       const api = new OrderResourceApi(config);
       await api.apiOrderCancelOrderPut(order?.id);
     } catch (error) {

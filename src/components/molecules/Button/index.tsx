@@ -14,6 +14,7 @@ export interface ButtonProps {
   onClick?: (e: any) => void;
   children?: any;
   disabled?: boolean;
+  download?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
