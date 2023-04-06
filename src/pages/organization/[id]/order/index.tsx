@@ -14,7 +14,6 @@ import useDebounce from '@/utils/debounce';
 import { OrderStatus } from '@/generated/types';
 import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
 import { Tags } from '@/components/page-components/common/Filters';
-import getConfig from 'next/config';
 
 const OrderPage = () => {
   const router: any = useRouter();
@@ -142,7 +141,7 @@ const OrderPage = () => {
 
   const handleDeleteOrder = async (id: number) => {
     try {
-      const config = await getConfig();
+      const config = await apiConfig();
       const api = new OrderResourceApi(config);
       await api.apiOrderDeleteOrderDelete(id);
       setSuccessMessage('Order Deleted successfully!');

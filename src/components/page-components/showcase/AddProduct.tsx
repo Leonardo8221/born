@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import Toast from '../Toast';
 import { useQuery } from '@apollo/client';
 import { ORGANIZATION_QUERY } from '@/queries/organizations';
+import { downloadFile } from '@/utils/downloadFile';
 
 export interface AddProductProps {}
 
@@ -31,7 +32,7 @@ const AddProduct: FC<AddProductProps> = () => {
     variables: { organizationId },
   });
 
-  const productCvsURL = data?.organizationByOrganizationId?.product_csv_url;
+  const productCsvGuid = data?.organizationByOrganizationId?.product_csv_guid;
 
   const handleErrorMesssage = (message: string) => {
     setErrorMessage(message);
@@ -79,16 +80,11 @@ const AddProduct: FC<AddProductProps> = () => {
 
   const handleDownloadProductInventory = async () => {
     try {
-      if (productCvsURL) {
-        const link = document.createElement('a');
-        link.href = productCvsURL;
-        link.setAttribute('download', `product-inventory.xlsx`);
-        const tempElement = document.createElement('div');
-        tempElement.appendChild(link);
-        tempElement.style.display = 'none';
-        document.body.appendChild(tempElement);
-        link.click();
-        document.body.removeChild(tempElement);
+      if (productCsvGuid) {
+        const config = await apiConfig();
+        const api = new FileIngestionResourceApi(config);
+        const res: any = await api.apiIngestionDownloadProductXlsGet(productCsvGuid);
+        downloadFile(res?.data, 'xlsx', productCsvGuid);
       } else {
         setErrorMessage('Filed to download product inventory!');
       }
@@ -142,6 +138,9 @@ const AddProduct: FC<AddProductProps> = () => {
           variant="outlined"
           className="h-[40px] w-[352px] !m-0"
           size="sm"
+          as='a'
+          href='https://storage.googleapis.com/born-files-dev/template/RBW%20-%20Product%20Ingestion%20Template.xlsx'
+          download
         >
           <Icon name="icon-document" /> Download CSV template
         </Button>
