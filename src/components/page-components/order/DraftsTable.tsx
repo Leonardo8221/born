@@ -12,6 +12,7 @@ export interface DraftTableProps {
   searchKeyword?: string;
   setSearchKeyword?: (value: string) => void;
   filterTags?: Tags[];
+  handleDelete?: (id: number) => void;
 }
 
 export const DraftTable: FC<DraftTableProps> = ({
@@ -23,6 +24,7 @@ export const DraftTable: FC<DraftTableProps> = ({
   searchKeyword,
   setSearchKeyword,
   filterTags,
+  handleDelete,
 }) => {
   return (
     <div>
@@ -40,6 +42,7 @@ export const DraftTable: FC<DraftTableProps> = ({
         loading={loading}
         orderType={type}
         orders={content}
+        handleDelete={handleDelete}
       />
     </div>
   );

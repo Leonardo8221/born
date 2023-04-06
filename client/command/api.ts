@@ -2220,6 +2220,46 @@ export const OrderResourceApiAxiosParamCreator = function (configuration?: Confi
         /**
          * 
          * @param {number} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderDeleteOrderDelete: async (orderId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderId' is not null or undefined
+            assertParamExists('apiOrderDeleteOrderDelete', 'orderId', orderId)
+            const localVarPath = `/api/order/delete-order`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (orderId !== undefined) {
+                localVarQueryParameter['order_id'] = orderId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} orderId 
          * @param {Array<number>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2410,6 +2450,16 @@ export const OrderResourceApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {number} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiOrderDeleteOrderDelete(orderId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderDeleteOrderDelete(orderId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} orderId 
          * @param {Array<number>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2495,6 +2545,15 @@ export const OrderResourceApiFactory = function (configuration?: Configuration, 
          */
         apiOrderCreateNewDraftOrderPost(organizationId: number, orderWithProductsRequestDTO?: OrderWithProductsRequestDTO, options?: any): AxiosPromise<void> {
             return localVarFp.apiOrderCreateNewDraftOrderPost(organizationId, orderWithProductsRequestDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} orderId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderDeleteOrderDelete(orderId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiOrderDeleteOrderDelete(orderId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2590,6 +2649,17 @@ export class OrderResourceApi extends BaseAPI {
      */
     public apiOrderCreateNewDraftOrderPost(organizationId: number, orderWithProductsRequestDTO?: OrderWithProductsRequestDTO, options?: AxiosRequestConfig) {
         return OrderResourceApiFp(this.configuration).apiOrderCreateNewDraftOrderPost(organizationId, orderWithProductsRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} orderId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrderResourceApi
+     */
+    public apiOrderDeleteOrderDelete(orderId: number, options?: AxiosRequestConfig) {
+        return OrderResourceApiFp(this.configuration).apiOrderDeleteOrderDelete(orderId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

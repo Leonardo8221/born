@@ -8,6 +8,8 @@ import { apiConfig } from '@/utils/apiConfig';
 import { FileIngestionResourceApi } from 'client/command';
 import { useRouter } from 'next/router';
 import Toast from '../Toast';
+import { useQuery } from '@apollo/client';
+import { ORGANIZATION_QUERY } from '@/queries/organizations';
 
 export interface AddProductProps {}
 
@@ -19,12 +21,17 @@ const AddProduct: FC<AddProductProps> = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [file, setFile] = useState<File | null>(null);
-
   const router = useRouter();
 
   useEffect(() => {
     setOrganiationId(Number(router?.query?.id));
-  }, [router?.isReady])
+  }, [router?.isReady]);
+
+  const { data } = useQuery(ORGANIZATION_QUERY, {
+    variables: { organizationId },
+  });
+
+  const productCvsURL = data?.organizationByOrganizationId?.product_csv_url;
 
   const handleErrorMesssage = (message: string) => {
     setErrorMessage(message);
@@ -48,20 +55,46 @@ const AddProduct: FC<AddProductProps> = () => {
     try {
       const config = await apiConfig();
       const api = new FileIngestionResourceApi(config);
-      if(organizationId) {
-        await api.apiIngestionUploadAndImportProductXlsPost(organizationId, acceptedFiles, acceptedFiles?.name, {
-          onUploadProgress: ({ loaded, total }) => {
-            setProgress(Math.round((loaded * 100) / (total || 0)));
-            setShowProgress(false);
-            setSuccess(true);
-            setFile(acceptedFiles);
+      if (organizationId) {
+        await api.apiIngestionUploadAndImportProductXlsPost(
+          organizationId,
+          acceptedFiles,
+          acceptedFiles?.name,
+          {
+            onUploadProgress: ({ loaded, total }) => {
+              setProgress(Math.round((loaded * 100) / (total || 0)));
+              setShowProgress(false);
+              setSuccess(true);
+              setFile(acceptedFiles);
+            },
           }
-        });
+        );
         handleSuccessMesssage('File uploaded successfully!');
       }
     } catch (error) {
       handleErrorMesssage('Failed to upload file!');
-     console.log(error); 
+      console.log(error);
+    }
+  };
+
+  const handleDownloadProductInventory = async () => {
+    try {
+      if (productCvsURL) {
+        const link = document.createElement('a');
+        link.href = productCvsURL;
+        link.setAttribute('download', `product-inventory.xlsx`);
+        const tempElement = document.createElement('div');
+        tempElement.appendChild(link);
+        tempElement.style.display = 'none';
+        document.body.appendChild(tempElement);
+        link.click();
+        document.body.removeChild(tempElement);
+      } else {
+        setErrorMessage('Filed to download product inventory!');
+      }
+    } catch (error) {
+      setErrorMessage('Failed to download product inventory!');
+      console.error(error);
     }
   };
 
@@ -121,6 +154,15 @@ const AddProduct: FC<AddProductProps> = () => {
           variant="outlined"
           className="h-[40px] w-[352px] !m-0"
           size="sm"
+          onClick={() => {
+            const win = window.open(
+              'https://equatorial-mask-ab1.notion.site/BORN-Onboarding-Process-70fa777541b84fe7a2ad879a69d42a5a',
+              '_blank'
+            );
+            if (win != null) {
+              win.focus();
+            }
+          }}
         >
           <Icon name="icon-book" /> Ingestion resources
         </Button>
@@ -133,6 +175,7 @@ const AddProduct: FC<AddProductProps> = () => {
           variant="outlined"
           className="h-[40px] w-[352px] !m-0"
           size="sm"
+          onClick={handleDownloadProductInventory}
         >
           <Icon name="icon-document" /> Download product inventory CSV
         </Button>

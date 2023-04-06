@@ -25,6 +25,7 @@ import {
   ProductWithCollectionsGraphqlDto,
 } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
+import { COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY } from '@/queries/filters';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -42,6 +43,7 @@ const CollectionPage = () => {
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
+  const [selectedColours, setSelectedColours] = useState<string[]>([]);
 
   const {
     data: collecitonData,
@@ -58,16 +60,34 @@ const CollectionPage = () => {
     loading: productsCollectionLoading,
     refetch,
   } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
-    variables: { collectionId, search: debouncedValue },
+    variables: {
+      collectionId,
+      search: debouncedValue,
+      colourFamilies: selectedColours,
+    },
     notifyOnNetworkStatusChange: true,
+  });
+
+  const { data: colours } = useQuery(COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, {
+    variables: { collectionId },
   });
 
   const filterTags = [
     {
       label: 'Colours',
-    },
-    {
-      label: 'Season',
+      options: colours?.colourFamiliesByCollectionId?.map((item: string) => ({
+        id: item,
+        label: item,
+      })),
+      selectedItems: selectedColours,
+      action: (e: { id: string | number; label: string }) => {
+        if (selectedColours.includes(e.label)) {
+          setSelectedColours(selectedColours?.filter((c) => c !== e.label));
+        } else {
+          setSelectedColours([...selectedColours, e.label]);
+        }
+      },
+      onReset: () => setSelectedColours([]),
     },
   ];
 
