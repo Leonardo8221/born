@@ -14,7 +14,7 @@ type Action = {
   disabled?: boolean;
 };
 
-type Tags = {
+export type Tags = {
   action?: (e: { id: number | string; label: string }) => void;
   options?: { id: number | string; label: string }[];
   selectedItems?: string[];
@@ -23,15 +23,16 @@ type Tags = {
 };
 
 interface FiltersProps {
-  onGridChange: (grid: GridType) => void;
-  gridType: GridType;
-  onSelect: () => void;
+  onGridChange?: (grid: GridType) => void;
+  gridType?: GridType;
+  onSelect?: () => void;
   filterTags?: Tags[];
   actions?: Action[];
-  isSelectable: boolean;
-  selectedItems: Array<string | number>;
+  isSelectable?: boolean;
+  selectedItems?: Array<string | number>;
   searchKeyword?: string;
   onSearch?: (value: string) => void;
+  isOrder?: boolean;
 }
 
 const Filters: FC<FiltersProps> = ({
@@ -44,6 +45,7 @@ const Filters: FC<FiltersProps> = ({
   selectedItems,
   searchKeyword,
   onSearch,
+  isOrder,
 }) => {
   return (
     <div className="print:hidden mt-4 flex items-center justify-between">
@@ -71,39 +73,56 @@ const Filters: FC<FiltersProps> = ({
           />
         ))}
       </div>
-      <div className="flex items-center">
-        <div className="flex gap-2 items-center pr-4 mr-4 border-r border-neutral-400">
+      {isOrder ? (
+        <div>
           <Button
             variant="outlined"
             size="sm"
-            onClick={onSelect}
             className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
           >
-            Select{' '}
-            {selectedItems?.length > 0 && (
-              <span className="flex items-center justify-center ml-[-6px] mt-[-1px] bg-accent-a-200 h-3 w-3 text-shades-white text-[8px] leading-[9.99px] tracking-[0.06em] rounded-full">
-                {selectedItems.length}
-              </span>
-            )}
+            Export
           </Button>
-          {isSelectable &&
-            actions?.map((item) => (
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center">
+            <div className="flex gap-2 items-center pr-4 mr-4 border-r border-neutral-400">
               <Button
-                key={item.name}
                 variant="outlined"
                 size="sm"
-                onClick={item.action}
-                disabled={item.disabled}
+                onClick={onSelect && onSelect}
                 className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
               >
-                {item.name}
+                Select{' '}
+                {selectedItems && selectedItems?.length > 0 && (
+                  <span className="flex items-center justify-center ml-[-6px] mt-[-1px] bg-accent-a-200 h-3 w-3 text-shades-white text-[8px] leading-[9.99px] tracking-[0.06em] rounded-full">
+                    {selectedItems.length}
+                  </span>
+                )}
               </Button>
-            ))}
-        </div>
-        <div>
-          <IconButtonGroup value={gridType} handleChange={onGridChange} />
-        </div>
-      </div>
+              {isSelectable &&
+                actions?.map((item) => (
+                  <Button
+                    key={item.name}
+                    variant="outlined"
+                    size="sm"
+                    onClick={item.action}
+                    disabled={item.disabled}
+                    className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
+                  >
+                    {item.name}
+                  </Button>
+                ))}
+            </div>
+            <div>
+              <IconButtonGroup
+                value={gridType || 'grid'}
+                handleChange={onGridChange && onGridChange}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

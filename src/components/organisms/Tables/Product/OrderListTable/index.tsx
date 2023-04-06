@@ -152,18 +152,14 @@ const OrderListTable: FC<OrderDetails> = ({
   ];
 
   return (
-    <Fragment>
-      <>
-        <Table
-          tableData={products}
-          handleQuantities={handleQuantities}
-          columns={columns}
-          className="w-full [&>tbody>tr>td]:pt-4"
-          size={true}
-          editMode={editMode}
-        />
-      </>
-    </Fragment>
+    <Table
+      tableData={products}
+      handleQuantities={handleQuantities}
+      columns={columns}
+      className="w-full [&>tbody>tr>td]:pt-4"
+      size={true}
+      editMode={editMode}
+    />
   );
 };
 

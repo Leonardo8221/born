@@ -4,6 +4,8 @@ export const GET_ORDERS = gql`
   query GetOrders(
     $organizationId: BigInteger!
     $orderStatus: OrderStatus!
+    $retailers: [String]
+    $buyers: [String]
     $search: String
     $start: Int
     $rows: Int
@@ -11,6 +13,8 @@ export const GET_ORDERS = gql`
     ordersBySearch(
       organizationId: $organizationId
       search: $search
+      retailers: $retailers
+      buyers: $buyers
       start: $start
       rows: $rows
       orderStatus: $orderStatus

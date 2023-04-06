@@ -49,7 +49,7 @@ export const GET_PRODUCTS_BY_COLLECTION_ID = gql`
   query getProductsBySearchAndCollectionId(
     $collectionId: BigInteger!
     $search: String
-    $colourNames: [String]
+    $colourFamilies: [String]
     $season: String
     $start: Int
     $rows: Int
@@ -57,7 +57,7 @@ export const GET_PRODUCTS_BY_COLLECTION_ID = gql`
     productsBySearchAndCollectionId(
       collectionId: $collectionId
       search: $search
-      colourNames: $colourNames
+      colourFamilies: $colourFamilies
       season: $season
       start: $start
       rows: $rows

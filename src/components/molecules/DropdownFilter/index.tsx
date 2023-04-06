@@ -30,7 +30,6 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
   isSearchable,
   onReset,
 }) => {
-  console.log(selectedItems);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<any>(null);
 
@@ -94,7 +93,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
           )}
           <div className='max-h-[250px] overflow-x-hidden'>
             {items?.length ? (
-              items?.map((item: Item) => (
+              items?.map((item: Item) => item.label && (
                 <div
                   key={item.id}
                   className={clsx(
