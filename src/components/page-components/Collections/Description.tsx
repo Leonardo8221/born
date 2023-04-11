@@ -24,7 +24,7 @@ const Description: FC<DescriptionProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex mt-8 items-center justify-center gap-6">
+      <div className="print:hidden flex mt-8 items-center justify-center gap-6">
         {lookbookName && lookbookUrl && (
           <div className="flex cursor-pointer border border-neutral-200 rounded">
             <div className="flex h-[50px] w-[60px] justify-center items-center">

@@ -69,6 +69,20 @@ const Collections: FC<CollectionsProps> = ({
     }
   };
 
+  const handleDeleteCollection = async (id: number, e: any) => {
+    e?.preventDefault();
+    try {
+      const config: any = await apiConfig();
+      const api = new CollectionResourceApi(config);
+      await api.apiCollectionDeleteCollectionDelete(id);
+      refetch();
+      handleSuccessMesssage('Collection Deleted successfully!');
+    } catch (error) {
+      handleErrorMesssage('Faild to delete collection!');
+      console.error(error);
+    }
+  }
+
   if (error) {
     return <ErrorMessage errorMessage={error?.message} />;
   }
@@ -93,6 +107,9 @@ const Collections: FC<CollectionsProps> = ({
                     (product: any) => product?.attachments?.[0]?.small_image_url
                   )}
                   author={''}
+                  editBanner
+                  editButtonText="Delete"
+                  onEdit={(e) => handleDeleteCollection(item.id, e)}
                 />
               </Link>
               <div className="mt-8">

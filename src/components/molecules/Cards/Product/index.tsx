@@ -7,8 +7,6 @@ import styles from './product.module.css';
 import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import {
   clsProductCard,
-  clsProductCardColor,
-  clsProductCardColors,
   clsProductCardId,
   clsProductCardPrice,
   clsProductCardPrices,
@@ -18,7 +16,7 @@ import {
 } from './utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import ColorVariant, { VariantColors } from '../../ColorVariant';
+import { VariantColors } from '../../ColorVariant';
 
 export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   size?: 'lg' | 'sm';
@@ -57,6 +55,8 @@ export const ProductCard: FC<ProductCardProps> = ({
   associated_prices,
   colour_families,
   collections,
+  size_options,
+  compositions,
   id,
 }) => {
   const renderCheckbox = isSelectable && (
@@ -107,6 +107,14 @@ export const ProductCard: FC<ProductCardProps> = ({
               </div>
             ))}
           </div>
+          {compositions && (
+            <div className="hidden print:block mt-2">
+              <h5 className={clsProductCardPrice(size)}>
+                {compositions?.join(', ')}
+              </h5>
+              <p className={styles.priceLabel}>Material</p>
+            </div>
+          )}
           {associated_prices?.map(
             (item) =>
               item?.currency &&
@@ -150,6 +158,19 @@ export const ProductCard: FC<ProductCardProps> = ({
                   )}
                 </div>
               )
+          )}
+          {size_options && (
+            <div className="hidden print:block mt-1">
+              <h5
+                className={clsx(
+                  clsProductCardPrice(size),
+                  'whitespace-nowrap text-ellipsis overflow-hidden'
+                )}
+              >
+                {[...size_options]?.sort()?.join(', ')}
+              </h5>
+              <p className={styles.priceLabel}>Sizes</p>
+            </div>
           )}
         </div>
       </div>

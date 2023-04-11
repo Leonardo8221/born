@@ -1253,6 +1253,46 @@ export const CollectionResourceApiAxiosParamCreator = function (configuration?: 
         /**
          * 
          * @param {number} collectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiCollectionDeleteCollectionDelete: async (collectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'collectionId' is not null or undefined
+            assertParamExists('apiCollectionDeleteCollectionDelete', 'collectionId', collectionId)
+            const localVarPath = `/api/collection/delete-collection`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (collectionId !== undefined) {
+                localVarQueryParameter['collection_id'] = collectionId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} collectionId 
          * @param {Array<number>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1373,6 +1413,16 @@ export const CollectionResourceApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {number} collectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiCollectionDeleteCollectionDelete(collectionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiCollectionDeleteCollectionDelete(collectionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} collectionId 
          * @param {Array<number>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1421,6 +1471,15 @@ export const CollectionResourceApiFactory = function (configuration?: Configurat
          */
         apiCollectionCreateNewCollectionPost(organizationId: number, collectionWithProductsRequestDTO?: CollectionWithProductsRequestDTO, options?: any): AxiosPromise<void> {
             return localVarFp.apiCollectionCreateNewCollectionPost(organizationId, collectionWithProductsRequestDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} collectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiCollectionDeleteCollectionDelete(collectionId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiCollectionDeleteCollectionDelete(collectionId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1474,6 +1533,17 @@ export class CollectionResourceApi extends BaseAPI {
      */
     public apiCollectionCreateNewCollectionPost(organizationId: number, collectionWithProductsRequestDTO?: CollectionWithProductsRequestDTO, options?: AxiosRequestConfig) {
         return CollectionResourceApiFp(this.configuration).apiCollectionCreateNewCollectionPost(organizationId, collectionWithProductsRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} collectionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CollectionResourceApi
+     */
+    public apiCollectionDeleteCollectionDelete(collectionId: number, options?: AxiosRequestConfig) {
+        return CollectionResourceApiFp(this.configuration).apiCollectionDeleteCollectionDelete(collectionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

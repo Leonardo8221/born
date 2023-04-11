@@ -76,7 +76,7 @@ export const TableBody: FC<TableBodyProps> = ({
                     editMode={editMode}
                     handleQuantities={(val: string, id: number) => handleQuantities?.(val, Number(row?.original?.id), id)}
                     orderDetailSizes={
-                      row.getVisibleCells()[0].row.original.order_detail_sizes
+                      row?.getVisibleCells()[0]?.row?.original?.order_detail_sizes
                     }
                   />
                   <DescriptionField
