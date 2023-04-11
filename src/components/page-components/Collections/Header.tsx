@@ -7,8 +7,6 @@ import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
 import { apiConfig } from '@/utils/apiConfig';
 import { CollectionReportResourceApi } from 'client/command';
 import { downloadFile } from '@/utils/downloadFile';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 interface HeaderProps {
   handleCreateOrder: () => void;
@@ -50,26 +48,7 @@ const Header: FC<HeaderProps> = ({
   };
 
   const handleDownloadPdf = () => {
-    const input: any = document.getElementById('collection');
-    const filters: any = document.getElementById('collection-filter');
-    input.style.height = 'auto';
-    input.style.overflow = 'auto';
-    filters.style.display = 'none';
-
-    html2canvas(input, { useCORS: true }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'p',
-        });
-        const imgProps= pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('download.pdf');
-      })
-    filters.style.display = 'flex';
-    input.style.height = '';
-    input.style.overflow = '';
+    window?.print();
   };
 
   const items = [

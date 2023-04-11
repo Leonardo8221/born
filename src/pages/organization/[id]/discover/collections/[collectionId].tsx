@@ -79,12 +79,16 @@ const CollectionPage = () => {
   });
 
   useEffect(() => {
-    if (!!productsCollection?.productsBySearchAndCollectionId?.content?.length) {
+    if (
+      !!productsCollection?.productsBySearchAndCollectionId?.content?.length
+    ) {
       const newProducts: any[] =
         productsCollection?.productsBySearchAndCollectionId?.content || [];
       setProducts([...products, ...newProducts]);
       !totalPages &&
-        setTotalPages(productsCollection?.productsBySearchAndCollectionId?.total_pages);
+        setTotalPages(
+          productsCollection?.productsBySearchAndCollectionId?.total_pages
+        );
     }
   }, [productsCollection]);
 
@@ -219,7 +223,10 @@ const CollectionPage = () => {
         }}
         handleErrorMessage={handleErrorMesssage}
       />
-      <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto" id="collection">
+      <div
+        className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto"
+        id="collection"
+      >
         <div className="mb-[64px]">
           <CollectionCard
             backgroundImageSrc={collection?.banner_url || placeholderImage}
@@ -256,41 +263,40 @@ const CollectionPage = () => {
           </div>
         ) : (
           <>
-          <InfiniteScroll
+            <InfiniteScroll
               dataLength={products.length}
               next={async () => {
                 const start = pageNo + 1;
                 totalPages && start <= totalPages && setPageNo(start);
               }}
               hasMore={!!totalPages && pageNo < totalPages}
-              loader={totalPages && pageNo < totalPages && <Loading message="Loading more products..." />}
-              // endMessage={
-              //   pageNo === totalPages && (
-              //     <p className="text-center mb-6">
-              //       You have seen all the products!
-              //     </p>
-              //   )
-              // }
+              loader={
+                pageNo > 1 &&
+                totalPages &&
+                pageNo < totalPages && (
+                  <Loading message="Loading more products..." />
+                )
+              }
             >
-            <ProductList
-              gridType={gridType}
-              products={products}
-              selectable={isSelectable}
-              selectedProducts={selectedProducts}
-              onSelect={handleSelectedProducts}
-              type="collection"
-              hanldeAddToDraftOrder={(id) => {
-                setSelectedProducts([id]);
-                setIsAddToDraft(true);
-              }}
-              handleAddToCollection={(id) => {
-                handleRemoveProducts(id);
-              }}
-              handleDeleteProduct={(id) => {
-                handleDeleteProducts(id);
-              }}
-            />
-          </InfiniteScroll>
+              <ProductList
+                gridType={gridType}
+                products={products}
+                selectable={isSelectable}
+                selectedProducts={selectedProducts}
+                onSelect={handleSelectedProducts}
+                type="collection"
+                hanldeAddToDraftOrder={(id) => {
+                  setSelectedProducts([id]);
+                  setIsAddToDraft(true);
+                }}
+                handleAddToCollection={(id) => {
+                  handleRemoveProducts(id);
+                }}
+                handleDeleteProduct={(id) => {
+                  handleDeleteProducts(id);
+                }}
+              />
+            </InfiniteScroll>
           </>
         )}
       </div>

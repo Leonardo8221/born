@@ -142,7 +142,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
           <Button
             color="white"
             size="sm"
-            className="absolute right-4 bottom-4 text-[12px] leading-[16px]"
+            className="print:hidden absolute right-4 bottom-4 text-[12px] leading-[16px]"
             onClick={onEdit}
           >
             {editButtonText || 'Edit banner'}
