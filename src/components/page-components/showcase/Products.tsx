@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { CollectionResourceApi, ProductResourceApi } from 'client/command';
 import ProductList from '@/components/page-components/common/ProductList';
@@ -20,6 +20,7 @@ import Notification from '../order/Notification';
 import { COLLECTION_FILTER_QUERY } from '@/queries/collecitons';
 import { Item } from '@/components/molecules/DropdownFilter';
 import { COLOUR_FAMILIES_QUERY } from '@/queries/colourFamiles';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -38,20 +39,35 @@ const Products: FC = () => {
   );
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
+  const [pageNo, setPageNo] = useState(0);
+  const [rows] = useState(24);
+  const [products, setProducts] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState(null);
 
   const router = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = +id;
-  const { data, error, loading, refetch } = useQuery(PRODUCTS_QUERY, {
+  const { data, error, loading, refetch }: any = useQuery(PRODUCTS_QUERY, {
     variables: {
       organizationId,
       search: debouncedValue,
       collectionNames: selectedCollections,
       colourFamilies: selectedColours,
-      rows: 50,
+      rows,
+      start: pageNo,
     },
     notifyOnNetworkStatusChange: true,
   });
+
+  useEffect(() => {
+    if (!!data?.productsBySearchAndOrganizationId?.content?.length) {
+      const newProducts: any[] =
+        data?.productsBySearchAndOrganizationId?.content || [];
+      setProducts([...products, ...newProducts]);
+      !totalPages &&
+        setTotalPages(data?.productsBySearchAndOrganizationId?.total_pages);
+    }
+  }, [data]);
 
   const { data: collections } = useQuery(COLLECTION_FILTER_QUERY, {
     variables: { organizationId },
@@ -63,6 +79,8 @@ const Products: FC = () => {
   });
 
   const handleFilterCollections = (e: Item) => {
+    setProducts([])
+    setPageNo(0);
     if (selectedCollections.includes(e.label)) {
       setSelectedCollections(selectedCollections?.filter((c) => c !== e.label));
     } else {
@@ -71,6 +89,8 @@ const Products: FC = () => {
   };
 
   const handleFilterColours = (e: Item) => {
+    setProducts([]);
+    setPageNo(0);
     if (selectedColours.includes(e.label)) {
       setSelectedColours(selectedColours?.filter((c) => c !== e.label));
     } else {
@@ -89,7 +109,11 @@ const Products: FC = () => {
       ),
       action: handleFilterCollections,
       selectedItems: selectedCollections,
-      onReset: () => setSelectedCollections([]),
+      onReset: () => {
+        setSelectedCollections([]);
+        setProducts([]);
+        setPageNo(0);
+      },
     },
     {
       label: 'Colours',
@@ -100,7 +124,11 @@ const Products: FC = () => {
         })) || [],
       action: handleFilterColours,
       selectedItems: selectedColours,
-      onReset: () => setSelectedColours([]),
+      onReset: () => {
+        setSelectedColours([]);
+        setProducts([]);
+        setPageNo(0);
+      },
     },
   ];
 
@@ -220,42 +248,66 @@ const Products: FC = () => {
 
   return (
     <div>
-      <div className="max-w-[1120px] mx-auto">
-        <Filters
-          onGridChange={setGrid}
-          gridType={gridType}
-          onSelect={() => setIsSelectable(!isSelectable)}
-          searchKeyword={searchKeyword}
-          onSearch={setSearchKeyword}
-          isSelectable={isSelectable}
-          filterTags={filterTags}
-          actions={actions}
-          selectedItems={selectedProducts}
-        />
-        {!data?.productsBySearchAndOrganizationId && loading ? (
-          <div className="mt-6 min-h-[400px]">
-            <Loading message="Loading products" />
-          </div>
-        ) : (
-          <ProductList
+      <div className="relative max-w-[1120px] mx-auto">
+        <div>
+          <Filters
+            onGridChange={setGrid}
             gridType={gridType}
-            products={data?.productsBySearchAndOrganizationId?.content}
-            selectable={isSelectable}
-            selectedProducts={selectedProducts}
-            hanldeAddToDraftOrder={(id) => {
-              setSelectedProducts([id]);
-              setIsModalVisible(true);
-            }}
-            handleAddToCollection={(id) => {
-              setSelectedProducts([id]);
-              setIsAddCollections(true);
-            }}
-            handleDeleteProduct={(id) => {
-              handleDeleteProducts(id);
-            }}
-            onSelect={handleSelectedProducts}
+            onSelect={() => setIsSelectable(!isSelectable)}
+            searchKeyword={searchKeyword}
+            onSearch={setSearchKeyword}
+            isSelectable={isSelectable}
+            filterTags={filterTags}
+            actions={actions}
+            selectedItems={selectedProducts}
           />
-        )}
+          {!products.length && loading ? (
+            <div className="mt-6 min-h-[400px]">
+              <Loading message="Loading products" />
+            </div>
+          ) : (
+            <InfiniteScroll
+              dataLength={products.length}
+              next={async () => {
+                const start = pageNo + 1;
+                totalPages && start <= totalPages && setPageNo(start);
+              }}
+              hasMore={!!totalPages && pageNo < totalPages}
+              loader={
+                totalPages &&
+                pageNo < totalPages && (
+                  <Loading message="Loading more products..." />
+                )
+              }
+              // endMessage={
+              //   pageNo === totalPages && (
+              //     <p className="text-center mb-6">
+              //       You have seen all the products!
+              //     </p>
+              //   )
+              // }
+            >
+              <ProductList
+                gridType={gridType}
+                products={products}
+                selectable={isSelectable}
+                selectedProducts={selectedProducts}
+                hanldeAddToDraftOrder={(id) => {
+                  setSelectedProducts([id]);
+                  setIsModalVisible(true);
+                }}
+                handleAddToCollection={(id) => {
+                  setSelectedProducts([id]);
+                  setIsAddCollections(true);
+                }}
+                handleDeleteProduct={(id) => {
+                  handleDeleteProducts(id);
+                }}
+                onSelect={handleSelectedProducts}
+              />
+            </InfiniteScroll>
+          )}
+        </div>
       </div>
 
       <Modal

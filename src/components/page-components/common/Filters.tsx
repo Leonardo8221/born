@@ -48,7 +48,7 @@ const Filters: FC<FiltersProps> = ({
   isOrder,
 }) => {
   return (
-    <div className="print:hidden mt-4 flex items-center justify-between">
+    <div className="sticky top-0 print:hidden py-4 flex items-center justify-between bg-shades-white z-[2]" id="collection-filter">
       <div className="flex items-center gap-2">
         <SearchInput
           value={searchKeyword || ''}
