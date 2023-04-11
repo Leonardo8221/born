@@ -7,15 +7,18 @@ import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
 import { apiConfig } from '@/utils/apiConfig';
 import { CollectionReportResourceApi } from 'client/command';
 import { downloadFile } from '@/utils/downloadFile';
+import { GridType } from '@/components/molecules/IconButtonGroup';
 
 interface HeaderProps {
   handleCreateOrder: () => void;
   handleErrorMessage?: (message: string) => void;
+  handlePrint?: (e: GridType) => void;
 }
 
 const Header: FC<HeaderProps> = ({
   handleCreateOrder,
   handleErrorMessage,
+  handlePrint,
 }) => {
   const router = useRouter();
   const collectionId = Number(router?.query?.collectionId);
@@ -48,7 +51,10 @@ const Header: FC<HeaderProps> = ({
   };
 
   const handleDownloadPdf = () => {
-    window?.print();
+    handlePrint?.('smallGrid');
+    setTimeout(() => {
+      window?.print();
+    })
   };
 
   const items = [

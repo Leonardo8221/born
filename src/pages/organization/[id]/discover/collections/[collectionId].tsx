@@ -213,6 +213,7 @@ const CollectionPage = () => {
   return (
     <div>
       <Header
+        handlePrint={(e: GridType) => setGrid(e)}
         handleCreateOrder={() => {
           setSelectedProducts(
             productsCollection?.productsBySearchAndCollectionId?.content?.map(
