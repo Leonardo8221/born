@@ -302,7 +302,7 @@ function OrderPreview() {
       <div className="mx-auto w-full max-w-[1120px] py-16">
         <div className="bg-[#fff]]">
           {orderDetails?.order_status === 'DRAFT' && (
-            <div className="flex flex-1 justify-end mb-6">
+            <div className="print:hidden flex flex-1 justify-end mb-6">
               <div className="flex items-center">
                 <Button
                   size="sm"

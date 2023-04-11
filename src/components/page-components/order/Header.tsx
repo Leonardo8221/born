@@ -9,6 +9,7 @@ import { apiConfig } from '@/utils/apiConfig';
 import { OrderReportResourceApi, OrderResourceApi } from 'client/command';
 import { downloadFile } from '@/utils/downloadFile';
 import { Icon } from '@/components/molecules/Icon';
+import { Logo } from '@/components/atoms/Logo';
 
 interface HeaderProps {
   heading: string;
@@ -102,7 +103,7 @@ const Header: FC<HeaderProps> = ({
     {
       label: 'PDF',
       value: 'pdf',
-      action: () => handleDownloadCollection('pdf'),
+      action: () => window?.print(),
     },
     {
       label: 'Excel',
@@ -123,7 +124,9 @@ const Header: FC<HeaderProps> = ({
   };
 
   return (
-    <div className="flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[32px]">
+    <>
+    <PrintHeader heading={heading} />
+    <div className="print:hidden flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[32px]">
       <div className="flex w-[620px] gap-4 items-center">
         <ArrowIconLeft
           height={40}
@@ -200,7 +203,21 @@ const Header: FC<HeaderProps> = ({
         </div>
       </div>
     </div>
+    </>
   );
 };
+
+const PrintHeader: FC<{ heading: string; }> = ({
+  heading,
+}) => (
+  <div className='hidden print:flex items-center max-w-[1440px] mx-auto p-8'>
+    <Logo variant='dark' />
+    <div className='w-full text-center'>
+      <Heading fontWeight="light" size="sm" className="whitespace-nowrap text-ellipsis overflow-hidden">
+        {heading}
+      </Heading>
+    </div>
+  </div>
+)
 
 export default Header;

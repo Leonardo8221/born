@@ -79,7 +79,7 @@ const Products: FC = () => {
   });
 
   const handleFilterCollections = (e: Item) => {
-    setProducts([])
+    setProducts([]);
     setPageNo(0);
     if (selectedCollections.includes(e.label)) {
       setSelectedCollections(selectedCollections?.filter((c) => c !== e.label));
@@ -279,13 +279,6 @@ const Products: FC = () => {
                   <Loading message="Loading more products..." />
                 )
               }
-              // endMessage={
-              //   pageNo === totalPages && (
-              //     <p className="text-center mb-6">
-              //       You have seen all the products!
-              //     </p>
-              //   )
-              // }
             >
               <ProductList
                 gridType={gridType}
