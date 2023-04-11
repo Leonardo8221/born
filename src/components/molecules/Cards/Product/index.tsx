@@ -89,7 +89,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                 src={typeof imageUrl === 'string' ? imageUrl : imageUrl.src}
                 alt={style_name + 'image'}
                 className={clsx(
-                  'rounded-lg',
+                  'rounded-lg object-contain',
                   size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]'
                 )}
               />
@@ -97,7 +97,9 @@ export const ProductCard: FC<ProductCardProps> = ({
             {renderCheckbox}
           </div>
           <h3 className={clsProductCardTitle(size)}>{style_name}</h3>
-          <VariantColors colors={!!colour_families ? colour_families as string[] : []} />
+          <VariantColors
+            colors={!!colour_families ? (colour_families as string[]) : []}
+          />
           <div className={clsx(clsProductCardTags(size), 'mt-4 flex-wrap')}>
             {collections?.map((collection: any) => (
               <div key={collection?.id} className="mb-1">

@@ -21,3 +21,7 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.infinite-scroll-component {
+  overflow: hidden !important;
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
 import Header from '@/components/page-components/Collections/Header';
 import ProductList from '@/components/page-components/common/ProductList';
@@ -26,6 +26,7 @@ import {
 } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
 import { COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY } from '@/queries/filters';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -44,15 +45,22 @@ const CollectionPage = () => {
     null
   );
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
+  const [pageNo, setPageNo] = useState(0);
+  const [rows] = useState(24);
+  const [products, setProducts] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState(null);
 
   const {
     data: collecitonData,
     loading,
     refetch: refetchCollection,
   } = useQuery(COLLECTION_QUERY, {
-    variables: { collectionId },
+    variables: {
+      collectionId,
+    },
     notifyOnNetworkStatusChange: true,
   });
+
   const collection = collecitonData?.collectionByCollectionId;
 
   const {
@@ -64,9 +72,21 @@ const CollectionPage = () => {
       collectionId,
       search: debouncedValue,
       colourFamilies: selectedColours,
+      rows,
+      start: pageNo,
     },
     notifyOnNetworkStatusChange: true,
   });
+
+  useEffect(() => {
+    if (!!productsCollection?.productsBySearchAndCollectionId?.content?.length) {
+      const newProducts: any[] =
+        productsCollection?.productsBySearchAndCollectionId?.content || [];
+      setProducts([...products, ...newProducts]);
+      !totalPages &&
+        setTotalPages(productsCollection?.productsBySearchAndCollectionId?.total_pages);
+    }
+  }, [productsCollection]);
 
   const { data: colours } = useQuery(COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, {
     variables: { collectionId },
@@ -81,13 +101,19 @@ const CollectionPage = () => {
       })),
       selectedItems: selectedColours,
       action: (e: { id: string | number; label: string }) => {
+        setProducts([]);
+        setPageNo(0);
         if (selectedColours.includes(e.label)) {
           setSelectedColours(selectedColours?.filter((c) => c !== e.label));
         } else {
           setSelectedColours([...selectedColours, e.label]);
         }
       },
-      onReset: () => setSelectedColours([]),
+      onReset: () => {
+        setSelectedColours([]);
+        setPageNo(0);
+        setProducts([]);
+      },
     },
   ];
 
@@ -193,7 +219,7 @@ const CollectionPage = () => {
         }}
         handleErrorMessage={handleErrorMesssage}
       />
-      <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto">
+      <div className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto" id="collection">
         <div className="mb-[64px]">
           <CollectionCard
             backgroundImageSrc={collection?.banner_url || placeholderImage}
@@ -224,18 +250,31 @@ const CollectionPage = () => {
           searchKeyword={searchKeyword}
           onSearch={setSearchKeyword}
         />
-        {!productsCollection && productsCollectionLoading ? (
+        {!products.length && productsCollectionLoading ? (
           <div className="my-10 min-h-[400px]">
             <Loading message="Loading collecton products" />
           </div>
         ) : (
           <>
+          <InfiniteScroll
+              dataLength={products.length}
+              next={async () => {
+                const start = pageNo + 1;
+                totalPages && start <= totalPages && setPageNo(start);
+              }}
+              hasMore={!!totalPages && pageNo < totalPages}
+              loader={totalPages && pageNo < totalPages && <Loading message="Loading more products..." />}
+              // endMessage={
+              //   pageNo === totalPages && (
+              //     <p className="text-center mb-6">
+              //       You have seen all the products!
+              //     </p>
+              //   )
+              // }
+            >
             <ProductList
               gridType={gridType}
-              products={
-                productsCollection?.productsBySearchAndCollectionId?.content ||
-                []
-              }
+              products={products}
               selectable={isSelectable}
               selectedProducts={selectedProducts}
               onSelect={handleSelectedProducts}
@@ -251,6 +290,7 @@ const CollectionPage = () => {
                 handleDeleteProducts(id);
               }}
             />
+          </InfiniteScroll>
           </>
         )}
       </div>
