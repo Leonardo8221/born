@@ -13,6 +13,7 @@ import { CollectionResourceApi } from 'client/command';
 import { useRouter } from 'next/router';
 import Toast from '../Toast';
 import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
+import Carousel from '@/components/molecules/Slider';
 
 interface YourCollectionProps {
   collections?: any;
@@ -63,25 +64,28 @@ const YourCollections: FC<YourCollectionProps> = ({
   };
 
   const renderCollections = () => {
-    return collections?.map(
-      (item: any, index: number) =>
-        item.id && (
-          <Link
-            key={item.id}
-            href={`/organization/1/discover/collections/${item.id}`}
-          >
-            <CollectionCard
-              backgroundImageSrc={item?.banner_url || bgImage1}
-              label={item?.name || undefined}
-              images={item?.products?.map(
-                (product: ProductWithCollectionsGraphqlDto) =>
-                  product?.attachments?.[0]?.small_image_url
-              )}
-              hasOverlay={index === 1}
-              cardClasses="!h-[272px] !max-w-auto min-w-[736px]"
-            />
-          </Link>
-        )
+    return (
+      <Carousel>
+        {collections?.map(
+          (item: any, index: number) =>
+            item.id && (
+              <Link
+                key={item.id}
+                href={`/organization/1/discover/collections/${item.id}`}
+              >
+                <CollectionCard
+                  backgroundImageSrc={item?.banner_url || bgImage1}
+                  label={item?.name || undefined}
+                  images={item?.products?.map(
+                    (product: ProductWithCollectionsGraphqlDto) =>
+                      product?.attachments?.[0]?.small_image_url
+                  )}
+                  cardClasses="!h-[272px] !max-w-auto min-w-[736px]"
+                />
+              </Link>
+            )
+        )}
+      </Carousel>
     );
   };
 

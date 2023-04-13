@@ -41,9 +41,9 @@ const clsVariations = {
   },
 };
 
-const arrowIcon = (
+export const arrowIcon = (
   <svg
-    width="8"
+    width="16"
     height="16"
     viewBox="0 0 8 16"
     fill="none"
@@ -51,7 +51,7 @@ const arrowIcon = (
   >
     <path
       d="M1 15L6.33062 8.78095C6.71581 8.33156 6.71581 7.66844 6.33062 7.21905L1 1"
-      stroke="#F8F8F8"
+      stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
     />
