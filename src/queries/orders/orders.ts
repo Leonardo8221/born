@@ -39,6 +39,9 @@ export const GET_ORDERS = gql`
         order_status
         size
         retailer
+        season
+        total_price
+        total_quantity
       }
       total_pages
       total_elements

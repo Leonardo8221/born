@@ -46,7 +46,7 @@ const ProductCardWrapper: FC<{
 
 export const ProductCard: FC<ProductCardProps> = ({
   size = 'lg',
-  product_id,
+  style_number,
   style_name,
   imageUrl,
   isSelectable,
@@ -74,7 +74,7 @@ export const ProductCard: FC<ProductCardProps> = ({
             'whitespace-nowrap text-ellipsis overflow-hidden'
           )}
         >
-          {product_id}
+          {style_number}
         </div>
         <div>
           <div

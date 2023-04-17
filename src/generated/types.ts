@@ -30,6 +30,7 @@ export type CollectionGraphqlDto = {
   __typename?: "CollectionGraphqlDTO";
   banner_guid?: Maybe<Scalars["String"]>;
   banner_url?: Maybe<Scalars["String"]>;
+  default?: Maybe<Scalars["Boolean"]>;
   description?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
   linesheet_guid?: Maybe<Scalars["String"]>;
@@ -697,6 +698,7 @@ export type OrganizationGraphqlDtoFragment = {
   lookbook_name?: string | null;
   lookbook_url?: string | null;
   product_csv_url?: string | null;
+  product_csv_guid?: string | null;
 };
 
 export type ProductWithCollectionsGraphqlDtoFragment = {
@@ -926,6 +928,8 @@ export type GetOrdersQuery = {
       retailer?: string | null;
       order_status?: OrderStatus | null;
       size?: string | null;
+      season?: string | null;
+      total_quantity?: number | null;
     } | null> | null;
   } | null;
 };
@@ -986,6 +990,7 @@ export type GetOrganizationsQuery = {
       lookbook_name?: string | null;
       lookbook_url?: string | null;
       product_csv_url?: string | null;
+      product_csv_guid?: string | null;
     } | null> | null;
   } | null;
 };
@@ -1021,6 +1026,7 @@ export type GetOrganizationByIdQuery = {
       lookbook_name?: string | null;
       lookbook_url?: string | null;
       product_csv_url?: string | null;
+      product_csv_guid?: string | null;
       collections?: Array<{
         __typename?: "CollectionGraphqlDTO";
         name?: string | null;
@@ -1070,6 +1076,7 @@ export type GetOrganizationQuery = {
     lookbook_name?: string | null;
     lookbook_url?: string | null;
     product_csv_url?: string | null;
+    product_csv_guid?: string | null;
     collections?: Array<{
       __typename?: "CollectionGraphqlDTO";
       name?: string | null;

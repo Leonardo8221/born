@@ -315,6 +315,7 @@ function OrderPreview() {
         setSuccessMessage={handleSuccessMessage}
         setErrorMessage={handleErrorMessage}
         refetch={refetch}
+        total_quantities={orderDetails?.total_quantity}
       />
       
       <div className="mx-auto w-full max-w-[1120px] py-16">

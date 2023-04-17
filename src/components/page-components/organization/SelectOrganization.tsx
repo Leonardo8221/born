@@ -38,10 +38,10 @@ const SelectOrganization = () => {
   return (
     <div>
       <Header />
-      <TitleHeader title="Choose an organization" />
+      <TitleHeader title="Choose a brand" />
       {loading ? (
         <div className="mt-[56px]">
-          <Loading message="Loading organizations" />
+          <Loading message="Loading data..." />
         </div>
       ) : (
         <div className="max-w-[1120px] grid grid-cols-3 mx-auto gap-[30px] mt-[56px]">
