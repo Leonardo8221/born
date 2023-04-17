@@ -55,7 +55,6 @@ const CollectionPage = () => {
     const doc: Document = document;
     const filters: any = doc.getElementById('filters');
     const detailHeight = collectionDetailRef?.current?.clientHeight;
-    console.log(detailHeight);
     if(filters) {
       if(doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= (detailHeight + 80)) {
         filters.style.position = 'fixed';
