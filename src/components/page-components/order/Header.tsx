@@ -143,7 +143,7 @@ const Header: FC<HeaderProps> = ({
         <div>
           {!status?.approved && !status.cancelled && !status?.confirmed && (
             <Button
-              label={'Add not'}
+              label={'Add note'}
               {...{ variant: 'outlined' }}
               className="relative"
               onClick={addNote}
