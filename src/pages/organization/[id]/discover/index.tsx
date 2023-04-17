@@ -24,6 +24,48 @@ const StoryPage = () => {
   });
   const organization = data?.organizationByOrganizationId || {};
 
+  const handleScroll = () => {
+    const doc: Document = document;
+    const tabs: any = document?.getElementById('tab-menu');
+    const filters: any = doc.getElementById('filters');
+    // const tableHeader: any = doc.getElementById('table-header');
+
+    if(tabs) {
+      if(doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= 200) {
+        tabs.style.position = 'fixed';
+        tabs.style.top = '72px';
+      } else {
+        tabs.style.position = '';
+      }
+    }
+
+    if(filters) {
+      if(doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= 220) {
+        filters.style.position = 'fixed';
+        filters.style.top = '128px';
+      } else {
+        filters.style.position = '';
+      }
+    }
+
+    // if(tableHeader) {
+    //   if(doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= 240) {
+    //     tableHeader.style.position = 'fixed';
+    //     tableHeader.style.top = '194px';
+    //   } else {
+    //     tableHeader.style.position = '';
+    //     tableHeader.style.top = "";
+    //   }
+    // }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  }, [])
+
   const tabs = [
     {
       id: 'story',

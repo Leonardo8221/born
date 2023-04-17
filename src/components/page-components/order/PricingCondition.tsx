@@ -11,12 +11,14 @@ interface PricingConditionProps {
   details: OrderGraphqlDto;
   handleChange: (name: string, value: any) => void;
   handleDropdownChange: (option: any) => void;
+  disabled?: boolean;
 }
 
 const PricingCondition: FC<PricingConditionProps> = ({
   details,
   handleChange,
   handleDropdownChange,
+  disabled,
 }) => {
   const { data } = useQuery(PRICING_CONDITIONS_QUERY, {
     variables: { orderId: details?.id },
@@ -55,6 +57,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
           isValid={false}
           onChange={(val) => handleChange('discount', val)}
           className="print:hidden mr-8 w-[139px] h-[56px]"
+          disabled={disabled}
         />
         <Input
           value={details?.surcharge}
@@ -65,6 +68,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
           isValid={false}
           onChange={(val) => handleChange('surcharge', val)}
           className="print:hidden mr-8 w-[139px] h-[56px]"
+          disabled={disabled}
         />
       </div>
       <div className='flex items-center center'>

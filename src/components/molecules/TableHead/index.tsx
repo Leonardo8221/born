@@ -15,17 +15,21 @@ export const TableHead: FC<TableHeadProps> = ({ table, className = '' }) => {
   return (
     <thead className={clsx(styles.theadStyle, 'min-h-[40px]')}>
       {getHeaderGroups().map((headerGroup: any) => (
-        <tr className="min-h-[40px]" key={headerGroup.id}>
+        <tr
+          className="z-[5]"
+          key={headerGroup.id}
+          id="table-header"
+        >
           {headerGroup.headers.map((header: any) => (
             <th
               className={clsx(
-                'py-3 px-4 text-[#fff] bg-neutral-700 first:text-left first:rounded-tl first:rounded-bl last:rounded-tr last:rounded-br',
+                'sticky top-0 py-3 px-4 text-[#fff] bg-neutral-700 first:text-left first:rounded-tl first:rounded-bl last:rounded-tr last:rounded-br z-[1]',
                 fonts.text.md,
                 fonts.fontWeights.regular,
                 className
               )}
               style={{
-                minWidth: (header?.column?.getSize() || 150) + 'px',
+                width: (header?.column?.getSize() || 150) + 'px',
               }}
               key={header.id}
             >

@@ -50,7 +50,7 @@ const ProductList: FC<ProductListProps> = ({
 
   if (gridType === 'list') {
     return (
-      <div className="mb-8 mt-8">
+      <div className="mb-8">
         <ListTable
           products={products}
           handleAddToCollection={handleAddToCollection}
@@ -68,7 +68,7 @@ const ProductList: FC<ProductListProps> = ({
   return (
     <div
       className={clsx(
-        'grid mb-8 mt-8 gap-8',
+        'grid mb-8 gap-8',
         gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
       )}
     >

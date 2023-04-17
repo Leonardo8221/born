@@ -61,7 +61,7 @@ export const TableBody: FC<TableBodyProps> = ({
                     fonts.fontWeights.light
                   )}
                   style={{
-                    minWidth: (cell?.column?.getSize() || 150) + 'px',
+                    width: (cell?.column?.getSize() || 150) + 'px',
                   }}
                   key={cell.id}
                 >

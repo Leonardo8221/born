@@ -10,7 +10,7 @@ interface ListProps {
 
 const List: FC<ListProps> = ({ label, value, isSmall }) => {
   return (
-    <div className={isSmall ? "mb-0" : "mb-3"}>
+    <div className={isSmall ? "mb-0 min-w-[45px]" : "mb-3"}>
       <h4
         className={clsx(
           "text-neutral-800 tracking-[0.06em] font-light",

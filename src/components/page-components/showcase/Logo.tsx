@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
-import Image from 'next/image';
-import LogoImage from '@/assets/images/logo-image.png';
+import LogoImage from '@/assets/images/placeholders/user.png';
 import { Heading } from '@/components/molecules/Heading';
 
 interface ShowcaseLogoProps {
@@ -11,12 +10,22 @@ interface ShowcaseLogoProps {
 const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl, name }) => {
   return (
     <div className="mt-8 text-center">
-      <div className="relative mx-auto h-[88px] w-[88px] rounded-full p-[7.33px] border border-neutral-200">
-        <img
-          src={logoUrl || LogoImage.src}
-          alt="Bornwave logo"
-          className="object-cover !h-[73.33px] !w-[73.33px] !m-auto rounded-full"
-        />
+      <div className="relative flex items-center justify-center mx-auto h-[88px] w-[88px] rounded-full p-[7.33px] border border-neutral-200">
+        {logoUrl ? (
+          <img
+            src={logoUrl}
+            alt="Bornwave logo"
+            className={
+              'object-cover !h-[73.33px] !w-[73.33px] !m-auto rounded-full'
+            }
+          />
+        ) : (
+          <img
+            src={LogoImage.src}
+            alt="Logo"
+            className="h-10 w-10 rounded-fullm-auto"
+          />
+        )}
       </div>
       <Heading
         size="md"
