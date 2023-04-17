@@ -62,7 +62,7 @@ const ListTable: FC<ListTableProps> = ({
       size: 221,
       id: 'name',
       cell: ({ row }: any) => (
-        <div className="max-w-[221px]">
+        <div className="min-w-[221px]">
           <ImageText
             isSelectable={isSelectable}
             onSelect={() => onSelect?.(row?.original?.id)}
@@ -116,8 +116,8 @@ const ListTable: FC<ListTableProps> = ({
       ),
       header: () => 'Collections',
     }),
-    columnHelper.accessor('associated_prices', {
-      size: 105,
+    columnHelper.accessor('currency', {
+      size: 83,
       id: 'currencies',
       cell: (info: any) => (
         <div
@@ -132,7 +132,7 @@ const ListTable: FC<ListTableProps> = ({
       header: () => 'Currency',
     }),
     columnHelper.accessor('associated_prices', {
-      size: 190,
+      size: 271,
       id: 'associated_prices',
       cell: (info: any) => (
         <div className="[&>div]:flex-wrap">
@@ -154,7 +154,7 @@ const ListTable: FC<ListTableProps> = ({
       header: () => 'Status',
     }),
     columnHelper.accessor('options', {
-      size: 39,
+      size: 37,
       id: 'options',
       cell: (info: any) => {
         const options = [

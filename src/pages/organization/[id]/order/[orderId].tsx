@@ -28,8 +28,8 @@ function OrderPreview() {
   const [discount, setDiscount] = useState(-1);
   const [surcharge, setSurchange] = useState(-1);
   const [orderDetailId, setorderDetailId] = useState();
-  const debouncedDiscount = useDebounce(discount, 600);
-  const debouncedSurcharge = useDebounce(surcharge, 600);
+  const debouncedDiscount = useDebounce(discount, 500);
+  const debouncedSurcharge = useDebounce(surcharge, 500);
 
   const { loading, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId: orderId },
@@ -47,6 +47,7 @@ function OrderPreview() {
   useEffect(() => {
     const oId = Number(router?.query?.orderId);
     const update = async () => {
+      setIsLoading(true);
       try {
         const config: any = await apiConfig();
         const api = new OrderResourceApi(config);
@@ -54,8 +55,10 @@ function OrderPreview() {
           ...orderDetails,
           discount: Number(debouncedDiscount),
         });
-        refetch();
+        await refetch();
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error(error);
       }
     };
@@ -65,6 +68,7 @@ function OrderPreview() {
   useEffect(() => {
     const oId = Number(router?.query?.orderId);
     const update = async () => {
+      setIsLoading(true);
       try {
         const config: any = await apiConfig();
         const api = new OrderResourceApi(config);
@@ -72,8 +76,10 @@ function OrderPreview() {
           ...orderDetails,
           surcharge: Number(debouncedSurcharge),
         });
-        refetch();
+        await refetch();
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         console.error(error);
       }
     };
@@ -167,7 +173,7 @@ function OrderPreview() {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
-      refetch();
+      await refetch();
       setIsLoading(false);
       setEditMode(false);
       setIsLoading(false);
@@ -195,8 +201,8 @@ function OrderPreview() {
           note: orderNote,
         });
       }
+      await refetch();
       setIsAddNoteOpen(!isAddNoteOpen);
-      refetch();
       handleSuccessMessage('Note added successfully');
     } catch (error: any) {
       handleErrorMessage(error?.response?.message || 'Failed to add note!');
@@ -205,6 +211,7 @@ function OrderPreview() {
   };
 
   const handleDropdownChange = async (val: any) => {
+    setIsLoading(true);
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
@@ -212,9 +219,11 @@ function OrderPreview() {
         ...orderDetails,
         pricing_condition: val,
       });
-      refetch();
+      await refetch();
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -233,6 +242,7 @@ function OrderPreview() {
     orderDetailId: number,
     id: number
   ) => {
+    setIsLoading(true);
     try {
       const payload = {
         note: '',
@@ -245,14 +255,16 @@ function OrderPreview() {
       };
       const config: any = await apiConfig();
       const api = new OrderDetailResourceApi(config);
-      api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, payload);
-      refetch();
+      await api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, payload);
+      await refetch();
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
-  const debouncedHandleQuantities = debounce(handleQuantities, 600);
+  const debouncedHandleQuantities = debounce(handleQuantities, 500);
 
   const handleChange = async (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
@@ -265,14 +277,17 @@ function OrderPreview() {
   };
 
   const handleDelete = async(id: number) => {
+    setIsLoading(true);
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       await api.apiOrderRemoveProductsFromDraftOrderPut(orderId, [id]);
-      refetch();
+      await refetch();
+      setIsLoading(false);
       handleSuccessMessage('Order detail deleted successfully');
     } catch (error: any) {
       handleErrorMessage(error?.response?.message || 'Failed to remove order detail!');
+      setIsLoading(false);
       console.log(error);
     }
   }
@@ -293,7 +308,10 @@ function OrderPreview() {
           draft: orderDetails?.order_status === 'DRAFT',
         }}
         handleErrorMessage={handleErrorMessage}
-        addNote={() => setIsAddNoteOpen(!isAddNoteOpen)}
+        addNote={() => {
+          setIsAddNoteOpen(!isAddNoteOpen);
+          setOrderNote('');
+        }}
         setSuccessMessage={handleSuccessMessage}
         setErrorMessage={handleErrorMessage}
         refetch={refetch}
@@ -339,19 +357,21 @@ function OrderPreview() {
             details={orderDetails}
             handleChange={handleChange}
             handleDropdownChange={handleDropdownChange}
+            disabled={isLoading}
           />
         </div>
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
-          handleOrderNote={(id) => {
+          handleOrderNote={(id, note) => {
             setIsAddNoteOpen(true);
             setorderDetailId(id);
+            setOrderNote(note || '');
           }}
           products={details?.order_details}
           pricing_condition={orderDetails?.pricing_condition}
           quantity={orderDetails?.quantity}
           total_price={orderDetails?.total_price}
-          editMode={true}
+          editMode={!isLoading}
           handleDelete={handleDelete}
         />
       </div>

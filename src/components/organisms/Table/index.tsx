@@ -57,8 +57,8 @@ export const Table: FC<TableProps> = ({
   return (
     <div>
       <table
-        className={clsx('border-collapse', className)}
-        style={{ gridTemplateColumns: colWidthStyle.join(' ') }}
+        className={clsx('table border-collapse', className)}
+        style={{ tableLayout: 'fixed' }}
       >
         <TableHead table={table} />
         <TableBody
