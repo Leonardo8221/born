@@ -115,6 +115,7 @@ const OrderListTable: FC<OrderListTableProps> = ({
                 onClick={() => handleActions('confirm', row.original.id)}
                 variant="outlined"
                 className="h-8 text-[12px] text-[#333333] border-[#999999]"
+                disabled={!row?.original?.total_quantity}
               >
                 Confirm
               </Button>
