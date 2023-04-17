@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
 import Header from '@/components/page-components/Collections/Header';
 import ProductList from '@/components/page-components/common/ProductList';
@@ -49,6 +49,29 @@ const CollectionPage = () => {
   const [rows] = useState(24);
   const [products, setProducts] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(null);
+  const collectionDetailRef = useRef<any>(null);
+
+  const handleScroll = () => {
+    const doc: Document = document;
+    const filters: any = doc.getElementById('filters');
+    const detailHeight = collectionDetailRef?.current?.clientHeight;
+    console.log(detailHeight);
+    if(filters) {
+      if(doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= (detailHeight + 80)) {
+        filters.style.position = 'fixed';
+        filters.style.top = '114px';
+      } else {
+        filters.style.position = '';
+      }
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  }, [])
 
   const {
     data: collecitonData,
@@ -79,11 +102,12 @@ const CollectionPage = () => {
   });
 
   useEffect(() => {
-    if (
-      !!productsCollection?.productsBySearchAndCollectionId?.content?.length
-    ) {
-      const newProducts: any[] =
+    const newProducts: any[] =
         productsCollection?.productsBySearchAndCollectionId?.content || [];
+
+    if(!!searchKeyword || !!selectedColours.length) {
+      setProducts(pageNo > 0 ? [...products, ...newProducts] : newProducts);
+    } else if (!!newProducts.length) {
       setProducts([...products, ...newProducts]);
       !totalPages &&
         setTotalPages(
@@ -225,10 +249,10 @@ const CollectionPage = () => {
         handleErrorMessage={handleErrorMesssage}
       />
       <div
-        className="min-h-[calc(100vh-185px)] max-w-[1120px] mt-6 mx-auto"
+        className="min-h-[calc(100vh-185px)] max-w-[1120px] mx-auto"
         id="collection"
       >
-        <div className="mb-[64px]">
+        <div className="mb-[64px]" ref={collectionDetailRef}>
           <CollectionCard
             backgroundImageSrc={collection?.banner_url || placeholderImage}
             label={collection?.name}

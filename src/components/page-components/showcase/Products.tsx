@@ -60,7 +60,12 @@ const Products: FC = () => {
   });
 
   useEffect(() => {
-    if (!!data?.productsBySearchAndOrganizationId?.content?.length) {
+    const newProducts: any[] =
+        data?.productsBySearchAndOrganizationId?.content || [];
+
+    if(!!searchKeyword || !!selectedCollections.length || !!selectedColours.length) {
+      setProducts(pageNo > 0 ? [...products, ...newProducts] : newProducts);
+    } else if (!!newProducts.length) {
       const newProducts: any[] =
         data?.productsBySearchAndOrganizationId?.content || [];
       setProducts([...products, ...newProducts]);
@@ -274,7 +279,7 @@ const Products: FC = () => {
               }}
               hasMore={!!totalPages && pageNo < totalPages}
               loader={
-                totalPages &&
+                !!products.length && totalPages &&
                 pageNo < totalPages && (
                   <Loading message="Loading more products..." />
                 )
