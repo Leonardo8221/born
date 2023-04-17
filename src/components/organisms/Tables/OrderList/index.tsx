@@ -9,6 +9,7 @@ import { OrderGraphqlDto } from '@/generated/types';
 import { formatDate } from '@/utils';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import { DropdownMenu } from '@/components/molecules/DropdownMenu';
+import { formatCurrency } from '@/utils/formatCurrency';
 export interface OrderListTableProps {
   orders: OrderGraphqlDto[];
   orderType: string;
@@ -60,12 +61,14 @@ const OrderListTable: FC<OrderListTableProps> = ({
       ),
       header: () => 'Buyer name',
     }),
-    columnHelper.accessor('total', {
+    columnHelper.accessor('total_price', {
       size: 120,
       id: 'total',
       cell: (info: any) => (
         <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
-          {info.getValue()}
+          {formatCurrency(
+            info?.row?.pricing_condition?.split('_')?.[0] as any
+          )?.format(info.getValue())}
         </div>
       ),
       header: () => 'Total',

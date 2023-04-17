@@ -25,6 +25,7 @@ interface HeaderProps {
   setSuccessMessage?: (message: string) => void;
   setErrorMessage?: (message: string) => void;
   refetch?: () => void;
+  total_quantities?: number;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -36,6 +37,7 @@ const Header: FC<HeaderProps> = ({
   setErrorMessage,
   setSuccessMessage,
   refetch,
+  total_quantities,
 }) => {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
@@ -176,7 +178,7 @@ const Header: FC<HeaderProps> = ({
           {!status?.approved && !status.cancelled && !status?.confirmed && (
             <Button
               className="!w-[172px] !px-[28px] text-[14px] leading-6"
-              disabled={isLoading}
+              disabled={!total_quantities || isLoading}
               onClick={() => handleActions('confirm')}
             >
               Confirm
