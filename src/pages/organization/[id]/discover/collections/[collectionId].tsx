@@ -50,6 +50,7 @@ const CollectionPage = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(null);
   const collectionDetailRef = useRef<any>(null);
+  const [gridPrevState, setGridPrevState] = useState<GridType>('grid');
 
   const handleScroll = () => {
     const doc: Document = document;
@@ -114,6 +115,12 @@ const CollectionPage = () => {
         );
     }
   }, [productsCollection]);
+
+  useEffect(() => {
+    window.onafterprint = () => {
+      setGrid(gridPrevState);
+    }
+  }, []);
 
   const { data: colours } = useQuery(COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, {
     variables: { collectionId },
@@ -236,7 +243,10 @@ const CollectionPage = () => {
   return (
     <div>
       <Header
-        handlePrint={(e: GridType) => setGrid(e)}
+        handlePrint={(e: GridType) => {
+          setGridPrevState(gridType);
+          setGrid(e);
+        }}
         handleCreateOrder={() => {
           setSelectedProducts(
             productsCollection?.productsBySearchAndCollectionId?.content?.map(

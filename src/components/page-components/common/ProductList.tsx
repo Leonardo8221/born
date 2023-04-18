@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import {
   ProductCard,
@@ -68,7 +68,7 @@ const ProductList: FC<ProductListProps> = ({
   return (
     <div
       className={clsx(
-        'grid mb-8 gap-8',
+        'grid mb-8 gap-8 print:place-items-center print:!grid-cols-3 print:sm:!grid-cols-4',
         gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
       )}
     >
