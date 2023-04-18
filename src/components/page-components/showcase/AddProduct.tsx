@@ -78,22 +78,6 @@ const AddProduct: FC<AddProductProps> = () => {
     }
   };
 
-  const handleDownloadProductInventory = async () => {
-    try {
-      if (productCsvGuid) {
-        const config = await apiConfig();
-        const api = new FileIngestionResourceApi(config);
-        const res: any = await api.apiIngestionDownloadProductXlsGet(productCsvGuid);
-        downloadFile(res?.data, 'xlsx', productCsvGuid);
-      } else {
-        setErrorMessage('Filed to download product inventory!');
-      }
-    } catch (error) {
-      setErrorMessage('Failed to download product inventory!');
-      console.error(error);
-    }
-  };
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   return (
     <div className="flex flex-col items-center justify-center w-full pt-6 pb-16">
@@ -174,7 +158,9 @@ const AddProduct: FC<AddProductProps> = () => {
           variant="outlined"
           className="h-[40px] w-[352px] !m-0"
           size="sm"
-          onClick={handleDownloadProductInventory}
+          as='a'
+          href='https://storage.googleapis.com/born-files-dev/product-csv/09424fb7-ce8e-4754-ac3d-b7fe0cd17545_RU1QT1JJTyBTSVJFTlVTRQ%3D%3D.xlsx'
+          download
         >
           <Icon name="icon-document" /> Download product inventory CSV
         </Button>
