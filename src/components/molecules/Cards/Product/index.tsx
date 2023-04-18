@@ -67,7 +67,7 @@ export const ProductCard: FC<ProductCardProps> = ({
 
   return (
     <ProductCardWrapper isSelectable={isSelectable} id={id}>
-      <div className={clsProductCard(size)}>
+      <div className={clsx(clsProductCard(size), 'print:break-inside-avoid-page')}>
         <div
           className={clsx(
             clsProductCardId(size),

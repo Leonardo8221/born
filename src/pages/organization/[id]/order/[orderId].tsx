@@ -193,7 +193,7 @@ function OrderPreview() {
         const api = new OrderDetailResourceApi(config);
         await api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, {
           note: orderNote,
-        });  
+        });
       } else {
         const api = new OrderResourceApi(config);
         await api.apiOrderUpdateDraftOrderPut(orderId, {
@@ -255,7 +255,11 @@ function OrderPreview() {
       };
       const config: any = await apiConfig();
       const api = new OrderDetailResourceApi(config);
-      await api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, payload);
+      await api.apiOrderUpdateDraftOrderDetailPut(
+        orderDetailId,
+        orderId,
+        payload
+      );
       await refetch();
       setIsLoading(false);
     } catch (error) {
@@ -276,7 +280,7 @@ function OrderPreview() {
     }
   };
 
-  const handleDelete = async(id: number) => {
+  const handleDelete = async (id: number) => {
     setIsLoading(true);
     try {
       const config: any = await apiConfig();
@@ -286,15 +290,23 @@ function OrderPreview() {
       setIsLoading(false);
       handleSuccessMessage('Order detail deleted successfully');
     } catch (error: any) {
-      handleErrorMessage(error?.response?.message || 'Failed to remove order detail!');
+      handleErrorMessage(
+        error?.response?.message || 'Failed to remove order detail!'
+      );
       setIsLoading(false);
       console.log(error);
     }
-  }
+  };
 
   if (!details && loading) {
     return <Loading message="Loading details..." />;
   }
+
+  const isDisabled =
+    orderDetails?.order_status &&
+    !['DRAFT', 'CONFIRMED'].includes(orderDetails?.order_status);
+
+    console.log(!isDisabled, isLoading);
 
   return (
     <div className="mx-auto overflow-x-hidden">
@@ -317,10 +329,11 @@ function OrderPreview() {
         refetch={refetch}
         total_quantities={orderDetails?.total_quantity}
       />
-      
+
       <div className="mx-auto w-full max-w-[1120px] py-16">
         <div className="bg-[#fff]]">
-          {orderDetails?.order_status === 'DRAFT' && (
+          {(orderDetails?.order_status === 'DRAFT' ||
+            orderDetails?.order_status === 'CONFIRMED') && (
             <div className="print:hidden flex flex-1 justify-end mb-6">
               <div className="flex items-center">
                 <Button
@@ -346,7 +359,9 @@ function OrderPreview() {
           )}
           <div className="flex flex-col">
             <OrderDetails
-              editMode={orderDetails?.order_status === 'DRAFT' && editMode}
+              editMode={
+                !isDisabled && editMode
+              }
               handleEditInputs={handleEditInputs}
               column1={columnData.column1}
               column2={columnData.column2}
@@ -372,7 +387,7 @@ function OrderPreview() {
           pricing_condition={orderDetails?.pricing_condition}
           quantity={orderDetails?.quantity}
           total_price={orderDetails?.total_price}
-          editMode={!isLoading}
+          editMode={!isDisabled && !isLoading}
           handleDelete={handleDelete}
         />
       </div>

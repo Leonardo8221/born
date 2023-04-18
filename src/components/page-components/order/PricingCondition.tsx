@@ -5,6 +5,7 @@ import { OrderGraphqlDto } from '@/generated/types';
 import { PRICING_CONDITIONS_QUERY } from '@/queries/orders/details';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { useQuery } from '@apollo/client';
+import clsx from 'clsx';
 import { FC } from 'react';
 
 interface PricingConditionProps {
@@ -31,20 +32,25 @@ const PricingCondition: FC<PricingConditionProps> = ({
 
   const selectedOption = dropdownmenu.filter(
     (item: any) =>
-      item?.value?.toLowerCase() ===
-      details?.pricing_condition?.toLowerCase()
+      item?.value?.toLowerCase() === details?.pricing_condition?.toLowerCase()
   )?.[0];
+
+  const isDisabled = details?.order_status && !['DRAFT', 'CONFIRMED'].includes(details?.order_status);
 
   return (
     <div className="flex items-center justify-between px-9 py-10 mb-6 shadow-md rounded-md items-center">
-      <div className='flex items-center'>
+      <div className="flex items-center">
         <div>
           <Dropdown
             options={dropdownmenu}
             isValid={false}
             label="Select Category"
             onChange={(option) => handleDropdownChange(option?.value)}
-            className="print:hidden mr-8 w-[278px]"
+            className={clsx(
+              'print:hidden mr-8 w-[278px]',
+              isDisabled &&
+                '!pointer-events-none'
+            )}
             selectedOption={selectedOption}
           />
         </div>
@@ -56,8 +62,8 @@ const PricingCondition: FC<PricingConditionProps> = ({
           isError={false}
           isValid={false}
           onChange={(val) => handleChange('discount', val)}
-          className="print:hidden mr-8 w-[139px] h-[56px]"
-          disabled={disabled}
+          className={clsx("print:hidden mr-8 w-[139px] h-[56px]", isDisabled ? '!cursor-auto' : '')}
+          disabled={isDisabled || disabled}
         />
         <Input
           value={details?.surcharge}
@@ -67,11 +73,11 @@ const PricingCondition: FC<PricingConditionProps> = ({
           isError={false}
           isValid={false}
           onChange={(val) => handleChange('surcharge', val)}
-          className="print:hidden mr-8 w-[139px] h-[56px]"
-          disabled={disabled}
+          className={clsx("print:hidden mr-8 w-[139px] h-[56px]", isDisabled ? '!cursor-auto' : '')}
+          disabled={isDisabled || disabled}
         />
       </div>
-      <div className='flex items-center center'>
+      <div className="flex items-center center">
         <TotalQuantity
           title="Total Quantity"
           value={details?.total_quantity || 0}

@@ -133,7 +133,7 @@ const OrderListTable: FC<OrderDetails> = ({
     columnHelper.accessor((row: any) => row, {
       size: 124,
       id: 'actions',
-      cell: ({ row }: any) => (
+      cell: ({ row }: any) => editMode && (
         <div className="flex">
           <Icon
             name="icon-message-square"
