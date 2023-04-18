@@ -89,7 +89,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                 src={typeof imageUrl === 'string' ? imageUrl : imageUrl.src}
                 alt={style_name + 'image'}
                 className={clsx(
-                  'rounded-lg object-contain',
+                  'rounded-lg object-cover',
                   size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]'
                 )}
               />

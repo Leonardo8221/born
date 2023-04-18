@@ -56,7 +56,7 @@ const ImageText: FC<ImageTextProps> = ({
           <img
             src={typeof imgSrc === 'string' ? imgSrc : imgSrc.src}
             alt={altText}
-            className={clsx('object-contain', variantImageClasses[variant])}
+            className={clsx('object-cover', variantImageClasses[variant])}
           />
         )}
       </div>
