@@ -68,12 +68,12 @@ const ProductList: FC<ProductListProps> = ({
   return (
     <div
       className={clsx(
-        'grid mb-8 gap-8 print:place-items-center print:!grid-cols-3 print:sm:!grid-cols-4',
+        'grid mb-8 gap-8 pint:mb-4 print:gap-2 print:place-items-center print:!grid-cols-3 print:sm:!grid-cols-4',
         gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
       )}
     >
       {products?.map((item: ProductWithCollectionsGraphqlDto) => (
-        <ProductCard
+      <ProductCard
           key={`${item?.id}`}
           size={gridType === 'smallGrid' ? 'sm' : 'lg'}
           isSelectable={selectable}
