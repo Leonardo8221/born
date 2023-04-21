@@ -55,7 +55,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                     <img
                       src={item?.medium_image_url}
                       alt="products"
-                      className="h-full max-h-[366px] w-[366px] rounded"
+                      className="h-full max-h-[366px] w-[366px] object-cover rounded"
                     />
                   </div>
                 )
