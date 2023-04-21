@@ -62,7 +62,7 @@ const OrderListTable: FC<OrderDetails> = ({
             </div>
             <span
               className={clsx(
-                'text-shades-black tracking-[0.06em] text-center',
+                'text-shades-black tracking-[0.06em] text-center print:w-[60px] text-ellipsis overflow-hidden whitespace-nowrap',
                 fonts.text.md
               )}
             >
@@ -134,7 +134,7 @@ const OrderListTable: FC<OrderDetails> = ({
       size: 124,
       id: 'actions',
       cell: ({ row }: any) => editMode && (
-        <div className="flex">
+        <div className="print:hidden flex">
           <Icon
             name="icon-message-square"
             className="cursor-pointer text-shades-black ml-[28px] mr-[48px]"
@@ -156,7 +156,7 @@ const OrderListTable: FC<OrderDetails> = ({
       tableData={products}
       handleQuantities={handleQuantities}
       columns={columns}
-      className="w-full [&>tbody>tr>td]:pt-4"
+      className="!w-full [&>tbody>tr>td]:pt-4 order__list-table"
       size={true}
       editMode={editMode}
     />

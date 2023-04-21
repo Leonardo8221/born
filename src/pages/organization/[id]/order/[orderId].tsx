@@ -357,7 +357,7 @@ function OrderPreview() {
               </div>
             </div>
           )}
-          <div className="flex flex-col">
+          <div className="flex flex-col print:!block">
             <OrderDetails
               editMode={
                 !isDisabled && editMode

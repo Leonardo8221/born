@@ -41,19 +41,6 @@ export const Table: FC<TableProps> = ({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const colWidthStyle = useMemo(
-    () =>
-      table.getVisibleFlatColumns()?.map(({ columnDef: col }: any) => {
-        if (col.minWidth && col.maxWidth)
-          return `minmax(${col.minWidth}, ${col.maxWidth})`;
-        if (col.minWidth) return `minmax(${col.minWidth}, 1fr)`;
-        if (col.maxWidth) return `minmax(150px, ${col.maxWidth})`;
-
-        return `minmax(150px, 1fr)`;
-      }),
-    [table.getVisibleFlatColumns()]
-  );
-
   return (
     <div>
       <table

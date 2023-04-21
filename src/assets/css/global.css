@@ -25,3 +25,11 @@ body {
 .infinite-scroll-component {
   overflow: hidden !important;
 }
+
+
+
+@media print and (max-width: 768px) {
+  .order__list-table {
+      zoom: 53%;
+  }
+}

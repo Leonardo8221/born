@@ -30,11 +30,11 @@ const OrderDetails: FC<OrderDetailsProps> = ({
   return (
     <div
       className={clsx(
-        'grid gap-4 grid-cols-3 font-light tracking-[.06em]',
+        'grid gap-4 print:!grid-cols-1 print:sm:!grid-cols-3 grid-cols-3 font-light tracking-[.06em]',
         theme.fonts.text['md']
       )}
     >
-      <div>
+      <div className='h-auto'>
         {column1.map((item, index) => (
           <div key={index} className="flex">
             {editMode ? (
@@ -61,7 +61,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({
       </div>
       <div>
         {column2.map((item, index) => (
-          <div key={index} className={clsx("flex", item.inputType === 'textarea' && 'h-[140px]')}>
+          <div key={index} className={clsx("flex", item.inputType === 'textarea' && 'h-[140px] print:!h-auto')}>
             {editMode ? (
               <Input
                 editMode={editMode}
