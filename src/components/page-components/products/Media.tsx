@@ -18,7 +18,7 @@ interface MediaFormProps {
   refetch: () => void;
 }
 
-const MediaForm: FC<MediaFormProps> = ({ product , refetch }) => {
+const MediaForm: FC<MediaFormProps> = ({ product }) => {
   const [attachments, setAttachments] = useState<any[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -44,12 +44,11 @@ const MediaForm: FC<MediaFormProps> = ({ product , refetch }) => {
         file,
         file.name
       );
-      await refetch();
-      // const updatedAttachments = [...attachments];
-      // const selectedAttachments = updatedAttachments[index];
-      // selectedAttachments.medium_image_url = URL.createObjectURL(file);
-      // updatedAttachments[index] = selectedAttachments;
-      // setAttachments(updatedAttachments);
+      const updatedAttachments = [...attachments];
+      const selectedAttachments = updatedAttachments[index];
+      selectedAttachments.medium_image_url = URL.createObjectURL(file);
+      updatedAttachments[index] = selectedAttachments;
+      setAttachments(updatedAttachments);
       setIsSubmitted(false);
       setSuccessMessage('Product Image uploaded successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
