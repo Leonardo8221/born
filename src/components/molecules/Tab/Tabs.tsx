@@ -31,12 +31,12 @@ function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
     <div>
       <div className='min-h-[56px]'>
         <div className="mx-auto w-full bg-shades-white z-[9]" id="tab-menu">
-          <div className={clsx('flex', className)}>
+          <div className={clsx('flex gap-2', className)}>
             {tabs.map((tab, index) => (
               <div key={index} className="cursor-pointer">
                 <span
                   onClick={() => handleTabClick(tab.id)}
-                  className={`w-full inline-flex justify-center w-atuo py-4 px-2 mr-2 text-base tracking-[.08em] h-[56px] ${
+                  className={`inline-flex justify-center py-4 px-2 text-base tracking-[.08em] h-[56px] font-light ${
                     tab.id === activeTab
                       ? 'border-b-2 text-shades-black'
                       : 'text-neutral-700'

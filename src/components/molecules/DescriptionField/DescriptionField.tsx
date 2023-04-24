@@ -44,7 +44,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
       <div>
         <label className={styles.label}>{label}</label>
         <div
-          className={clsx('w-full border border-[#CCCCCC] rounded h-[190px] print:!h-[170px]', {
+          className={clsx('w-full border border-[#CCCCCC] rounded h-[190px] print:!h-[140px]', {
             [styles.errorTextarea]: isError === true,
           })}
         >
@@ -55,7 +55,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
             placeholder={placeholder}
             className={clsx(
               styles.textarea,
-              `h-[188px] print:!h-[168px] !w-full p-4 'text-shades-black' rounded focus:outline-none`,
+              `h-[188px] print:!h-[138px] !w-full p-4 'text-shades-black' rounded focus:outline-none`,
               theme.fonts.text['base'],
               inputClasses
             )}

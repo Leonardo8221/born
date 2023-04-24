@@ -309,7 +309,7 @@ function OrderPreview() {
     console.log(!isDisabled, isLoading);
 
   return (
-    <div className="mx-auto overflow-x-hidden">
+    <div className="mx-auto overflow-x-hidden order__page">
       <Header
         id={orderDetails?.id}
         heading={orderDetails?.name}
@@ -357,7 +357,7 @@ function OrderPreview() {
               </div>
             </div>
           )}
-          <div className="flex flex-col print:!block">
+          <div className="flex flex-col">
             <OrderDetails
               editMode={
                 !isDisabled && editMode

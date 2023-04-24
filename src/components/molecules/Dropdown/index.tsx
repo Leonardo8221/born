@@ -7,7 +7,7 @@ import DropDownUpIcon from '@/assets/svgs/dark/icon-dropdown-up.svg';
 import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
 import styles from './Dropdown.module.css';
 
-type Option = {
+export type Option = {
   value: string;
   name: string;
   isDisabled?: boolean;
@@ -38,7 +38,7 @@ const Dropdown: FC<DropdownProps> = ({
 
   useEffect(() => {
     !isDropdownSelected && setSelected(selectedOption);
-  }, [selectedOption])
+  }, [selectedOption]);
 
   const clsDropDownCard = clsx({
     [styles.defaultDropDownCard]: !isExpand === true,
@@ -113,18 +113,27 @@ const Dropdown: FC<DropdownProps> = ({
                     width ? `!w-[${width}px]` : '!w-full'
                   )}
                 >
-                  {options
-                    .filter((option) => option.value !== selected?.value)
-                    .map((option, personIdx) => (
-                      <Listbox.Option
-                        key={personIdx}
-                        className={styles.option}
-                        value={option}
-                        disabled={option.isDisabled}
-                      >
-                        {option.name}
-                      </Listbox.Option>
-                    ))}
+                  {options.length ? (
+                    options
+                      .filter((option) => option.value !== selected?.value)
+                      .map((option, personIdx) => (
+                        <Listbox.Option
+                          key={personIdx}
+                          className={styles.option}
+                          value={option}
+                          disabled={option.isDisabled}
+                        >
+                          {option.name}
+                        </Listbox.Option>
+                      ))
+                  ) : (
+                    <div
+                      onClick={() => setIsExpand(false)}
+                      className={clsx(styles.option, '!cursor-auto')}
+                    >
+                      No items found!
+                    </div>
+                  )}
                 </Listbox.Options>
               </Transition>
             </div>

@@ -14,7 +14,7 @@ export interface InputProps {
   className?: string;
   placeholder?: string;
   isEditMode?: boolean;
-  onChange: (value: string) => void;
+  onChange: (value: any) => void;
   onError?: (message: string) => void;
   inputWrapperClasses?: string;
   disabled?: boolean;
@@ -52,7 +52,7 @@ const Input: FC<InputProps> = ({
   });
 
   return (
-    <div className={clsx('flex justify-center')}>
+    <div className={clsx('flex justify-center w-full')}>
       <div
         className={clsx(
           'my-3 w-full',
