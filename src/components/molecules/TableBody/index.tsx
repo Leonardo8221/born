@@ -52,7 +52,7 @@ export const TableBody: FC<TableBodyProps> = ({
       {getRowModel()?.rows &&
         getRowModel().rows.map((row: any) => (
           <>
-            <tr key={row.id}>
+            <tr key={row.id} className="print:break-inside-avoid-page">
               {row.getVisibleCells().map((cell: any) => (
                 <td
                   className={clsx(

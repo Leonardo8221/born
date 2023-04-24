@@ -22,7 +22,7 @@ export interface SidebarProps {
   logo?: ReactNode;
   title: string;
   subTitle?: string;
-  menuItems: Menu[];
+  menuItems?: Menu[];
   onSignOut?: () => void;
 }
 
@@ -36,8 +36,7 @@ const Sidebar: FC<SidebarProps> = ({
   onSignOut,
 }) => {
   const {
-    height: heightLogo,
-    width: widthLogo,
+    wrapperClasses,
     className: classNameLogo,
   } = variantLogoStyles[variant];
 
@@ -58,7 +57,7 @@ const Sidebar: FC<SidebarProps> = ({
         <div className="flex w-full flex-col items-center flex-1">
           <div className="[&>svg]:h-[80px] [&>svg]:w-[80px] [&>svg]:rounded-full">
             <div
-              className={`w-[${widthLogo}px] h-[${heightLogo}px] rounded-full border-2 border-neutral-200 flex justify-center items-center bg-shades-white`}
+              className={wrapperClasses}
             >
               {logo
                 ? logo
@@ -66,20 +65,20 @@ const Sidebar: FC<SidebarProps> = ({
                     <img
                       src={typeof logoUrl === 'string' ? logoUrl : logoUrl?.src}
                       alt={`${title} logo`}
-                      width={heightLogo - 12}
-                      height={widthLogo - 12}
-                      className={classNameLogo}
+                      className={clsx(
+                        classNameLogo,
+                      )}
                     />
                   )}
             </div>
           </div>
-          <h3 className={clsx(fonts.text.xl, 'text-shades-black mt-2')}>
+          <h3 className={clsx(fonts.text.xl, 'text-shades-black mt-2  max-w-full text-ellipsis overflow-hidden whitespace-nowrap px-3')}>
             {title}
           </h3>
           {subTitle && (
             <h4
               className={clsx(
-                'text-shades-black font-light mt-1',
+                'text-shades-black font-light mt-1 max-w-full text-ellipsis overflow-hidden whitespace-nowrap',
                 fonts.text.base
               )}
             >

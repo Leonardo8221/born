@@ -29,7 +29,7 @@ body {
 
 
 @media print and (max-width: 768px) {
-  .order__list-table {
+  .order__page {
       zoom: 53%;
   }
 }

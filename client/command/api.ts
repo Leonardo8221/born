@@ -429,6 +429,37 @@ export type OrganizationType = typeof OrganizationType[keyof typeof Organization
 /**
  * 
  * @export
+ * @interface PriceRequestDTO
+ */
+export interface PriceRequestDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof PriceRequestDTO
+     */
+    'currency'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PriceRequestDTO
+     */
+    'landed'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PriceRequestDTO
+     */
+    'exworks'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PriceRequestDTO
+     */
+    'retail'?: number;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -447,6 +478,169 @@ export const PricingCondition = {
 export type PricingCondition = typeof PricingCondition[keyof typeof PricingCondition];
 
 
+/**
+ * 
+ * @export
+ * @interface ProductRequestDTO
+ */
+export interface ProductRequestDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'style_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'style_number'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'first_category'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'second_category'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'third_category'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'fourth_category'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProductRequestDTO
+     */
+    'keywords'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'season'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProductRequestDTO
+     */
+    'materials'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProductRequestDTO
+     */
+    'compositions'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'country_of_origin'?: string;
+    /**
+     * 
+     * @type {Array<PriceRequestDTO>}
+     * @memberof ProductRequestDTO
+     */
+    'associated_prices'?: Array<PriceRequestDTO>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'colour_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'colour_code'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProductRequestDTO
+     */
+    'colour_families'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'size_type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'size_category'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProductRequestDTO
+     */
+    'size_options'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProductRequestDTO
+     */
+    'measurements'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductRequestDTO
+     */
+    'min_order_quantity'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductRequestDTO
+     */
+    'min_order_value'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductRequestDTO
+     */
+    'delivery_lead_time'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'delivery_window_start_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'delivery_window_end_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductRequestDTO
+     */
+    'upc'?: string;
+}
 /**
  * 
  * @export
@@ -588,6 +782,46 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
     return {
         /**
          * 
+         * @param {number} attachmentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentDeleteProductImageDelete: async (attachmentId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'attachmentId' is not null or undefined
+            assertParamExists('apiAttachmentDeleteProductImageDelete', 'attachmentId', attachmentId)
+            const localVarPath = `/api/attachment/delete-product-image`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (attachmentId !== undefined) {
+                localVarQueryParameter['attachment_id'] = attachmentId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} fileName 
          * @param {FileType} fileType 
          * @param {*} [options] Override http request option.
@@ -667,6 +901,44 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
 
             if (fileType !== undefined) {
                 localVarQueryParameter['file_type'] = fileType;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} [filePathUrl] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentDownloadProductImageGet: async (filePathUrl?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/attachment/download-product-image`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (filePathUrl !== undefined) {
+                localVarQueryParameter['file_path_url'] = filePathUrl;
             }
 
 
@@ -802,6 +1074,67 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {File} [file] 
+         * @param {string} [fileName] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUploadProductImagePost: async (organizationId: number, productId: number, file?: File, fileName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationId' is not null or undefined
+            assertParamExists('apiAttachmentUploadProductImagePost', 'organizationId', organizationId)
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('apiAttachmentUploadProductImagePost', 'productId', productId)
+            const localVarPath = `/api/attachment/upload-product-image`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (organizationId !== undefined) {
+                localVarQueryParameter['organization_id'] = organizationId;
+            }
+
+            if (productId !== undefined) {
+                localVarQueryParameter['product_id'] = productId;
+            }
+
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+            if (fileName !== undefined) { 
+                localVarFormParams.append('fileName', fileName as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -812,6 +1145,16 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
 export const AttachmentResourceApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AttachmentResourceApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @param {number} attachmentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAttachmentDeleteProductImageDelete(attachmentId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentDeleteProductImageDelete(attachmentId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
         /**
          * 
          * @param {string} fileName 
@@ -832,6 +1175,16 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
          */
         async apiAttachmentDownloadOrganizationAttachmentGet(fileName: string, fileType: FileType, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentDownloadOrganizationAttachmentGet(fileName, fileType, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} [filePathUrl] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAttachmentDownloadProductImageGet(filePathUrl?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentDownloadProductImageGet(filePathUrl, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -860,6 +1213,19 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadOrganizationAttachmentPost(fileType, organizationId, file, fileName, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {File} [file] 
+         * @param {string} [fileName] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -870,6 +1236,15 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
 export const AttachmentResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = AttachmentResourceApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {number} attachmentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentDeleteProductImageDelete(attachmentId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiAttachmentDeleteProductImageDelete(attachmentId, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {string} fileName 
@@ -889,6 +1264,15 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
          */
         apiAttachmentDownloadOrganizationAttachmentGet(fileName: string, fileType: FileType, options?: any): AxiosPromise<void> {
             return localVarFp.apiAttachmentDownloadOrganizationAttachmentGet(fileName, fileType, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} [filePathUrl] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentDownloadProductImageGet(filePathUrl?: string, options?: any): AxiosPromise<void> {
+            return localVarFp.apiAttachmentDownloadProductImageGet(filePathUrl, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -914,6 +1298,18 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
         apiAttachmentUploadOrganizationAttachmentPost(fileType: FileType, organizationId: number, file?: File, fileName?: string, options?: any): AxiosPromise<void> {
             return localVarFp.apiAttachmentUploadOrganizationAttachmentPost(fileType, organizationId, file, fileName, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {File} [file] 
+         * @param {string} [fileName] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: any): AxiosPromise<void> {
+            return localVarFp.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -924,6 +1320,17 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
  * @extends {BaseAPI}
  */
 export class AttachmentResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} attachmentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AttachmentResourceApi
+     */
+    public apiAttachmentDeleteProductImageDelete(attachmentId: number, options?: AxiosRequestConfig) {
+        return AttachmentResourceApiFp(this.configuration).apiAttachmentDeleteProductImageDelete(attachmentId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {string} fileName 
@@ -946,6 +1353,17 @@ export class AttachmentResourceApi extends BaseAPI {
      */
     public apiAttachmentDownloadOrganizationAttachmentGet(fileName: string, fileType: FileType, options?: AxiosRequestConfig) {
         return AttachmentResourceApiFp(this.configuration).apiAttachmentDownloadOrganizationAttachmentGet(fileName, fileType, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} [filePathUrl] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AttachmentResourceApi
+     */
+    public apiAttachmentDownloadProductImageGet(filePathUrl?: string, options?: AxiosRequestConfig) {
+        return AttachmentResourceApiFp(this.configuration).apiAttachmentDownloadProductImageGet(filePathUrl, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -974,6 +1392,20 @@ export class AttachmentResourceApi extends BaseAPI {
      */
     public apiAttachmentUploadOrganizationAttachmentPost(fileType: FileType, organizationId: number, file?: File, fileName?: string, options?: AxiosRequestConfig) {
         return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadOrganizationAttachmentPost(fileType, organizationId, file, fileName, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} organizationId 
+     * @param {number} productId 
+     * @param {File} [file] 
+     * @param {string} [fileName] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AttachmentResourceApi
+     */
+    public apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig) {
+        return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2927,6 +3359,48 @@ export const ProductResourceApiAxiosParamCreator = function (configuration?: Con
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {number} [productId] 
+         * @param {ProductRequestDTO} [productRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiProductUpdateProductPut: async (productId?: number, productRequestDTO?: ProductRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/product/update-product`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (productId !== undefined) {
+                localVarQueryParameter['product_id'] = productId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(productRequestDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2945,6 +3419,17 @@ export const ProductResourceApiFp = function(configuration?: Configuration) {
          */
         async apiProductDeleteProductsDelete(requestBody?: Array<number>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiProductDeleteProductsDelete(requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} [productId] 
+         * @param {ProductRequestDTO} [productRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiProductUpdateProductPut(productId?: number, productRequestDTO?: ProductRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiProductUpdateProductPut(productId, productRequestDTO, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -2966,6 +3451,16 @@ export const ProductResourceApiFactory = function (configuration?: Configuration
         apiProductDeleteProductsDelete(requestBody?: Array<number>, options?: any): AxiosPromise<void> {
             return localVarFp.apiProductDeleteProductsDelete(requestBody, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {number} [productId] 
+         * @param {ProductRequestDTO} [productRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiProductUpdateProductPut(productId?: number, productRequestDTO?: ProductRequestDTO, options?: any): AxiosPromise<void> {
+            return localVarFp.apiProductUpdateProductPut(productId, productRequestDTO, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -2985,6 +3480,18 @@ export class ProductResourceApi extends BaseAPI {
      */
     public apiProductDeleteProductsDelete(requestBody?: Array<number>, options?: AxiosRequestConfig) {
         return ProductResourceApiFp(this.configuration).apiProductDeleteProductsDelete(requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [productId] 
+     * @param {ProductRequestDTO} [productRequestDTO] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductResourceApi
+     */
+    public apiProductUpdateProductPut(productId?: number, productRequestDTO?: ProductRequestDTO, options?: AxiosRequestConfig) {
+        return ProductResourceApiFp(this.configuration).apiProductUpdateProductPut(productId, productRequestDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

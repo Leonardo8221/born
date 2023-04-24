@@ -121,13 +121,13 @@ const ProductHeader: FC<ProductHeaderProps> = ({
               altText=" "
             />
           </div>
-          {/* <Button
-            onClick={onEdit}
+          <Button
+            onClick={() => router.push(`${router.asPath}/edit`)}
             className={styles.toolButton}
             variant="outlined"
           >
             Edit
-          </Button> */}
+          </Button>
           <Button
             onClick={() => setIsAddCollections(true)}
             className={clsx(styles.toolButton, styles.addToCollection)}
