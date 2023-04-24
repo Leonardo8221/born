@@ -27,7 +27,7 @@ const SizingForm: FC<SizingFormProps> = ({ product }) => {
       measurements: (product?.measurements || []) as string[],
       size_type: product?.size_type || '',
       size_category: product?.size_category || '',
-      size_options: (product?.measurements || []) as string[],
+      size_options: (product?.size_options || []) as string[],
     });
     setSelectedOptions(product?.size_options || []);
   }, [product]);
