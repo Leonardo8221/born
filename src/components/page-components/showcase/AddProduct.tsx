@@ -32,6 +32,8 @@ const AddProduct: FC<AddProductProps> = () => {
     variables: { organizationId },
   });
 
+  console.log(data)
+
   const productCsvGuid = data?.organizationByOrganizationId?.product_csv_guid;
 
   const handleErrorMesssage = (message: string) => {
@@ -123,7 +125,7 @@ const AddProduct: FC<AddProductProps> = () => {
           className="h-[40px] w-[352px] !m-0"
           size="sm"
           as='a'
-          href='https://storage.googleapis.com/born-files-dev/template/RBW%20-%20Product%20Ingestion%20Template.xlsx'
+          href={`https://storage.googleapis.com/born-files-dev/template/RBW%20-%20Product%20Ingestion%20Template.xlsx`}
           download
         >
           <Icon name="icon-document" /> Download CSV template
@@ -159,7 +161,7 @@ const AddProduct: FC<AddProductProps> = () => {
           className="h-[40px] w-[352px] !m-0"
           size="sm"
           as='a'
-          href='https://storage.googleapis.com/born-files-dev/product-csv/09424fb7-ce8e-4754-ac3d-b7fe0cd17545_RU1QT1JJTyBTSVJFTlVTRQ%3D%3D.xlsx'
+          href={`https://storage.googleapis.com/born-files-dev/product-csv/${productCsvGuid}`}
           download
         >
           <Icon name="icon-document" /> Download product inventory CSV
