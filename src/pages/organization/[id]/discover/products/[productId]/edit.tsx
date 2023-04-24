@@ -12,6 +12,7 @@ import PricingForm from '@/components/page-components/products/PricingForm';
 import SizingForm from '@/components/page-components/products/SizingForm';
 import OrderingForm from '@/components/page-components/products/OrderingForm';
 import CollectionsForm from '@/components/page-components/products/CollectionsForm';
+import MediaForm from '@/components/page-components/products/Media';
 
 const ProductEdit = () => {
   const router = useRouter();
@@ -60,11 +61,11 @@ const ProductEdit = () => {
       label: 'Ordering',
       content: <OrderingForm product={product} />,
     },
-    // {
-    //   id: 'media',
-    //   label: 'Media',
-    //   content: 'Media',
-    // },
+    {
+      id: 'media',
+      label: 'Media',
+      content: <MediaForm product={product} refetch={refetch} />,
+    },
     {
       id: 'collections',
       label: 'Collections',
