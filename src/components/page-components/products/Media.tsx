@@ -23,6 +23,7 @@ const MediaForm: FC<MediaFormProps> = ({ product }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMesage] = useState('');
+  const [id, setId] = useState<number | null>(null);
 
   const router = useRouter();
   const organizationId = Number(router?.query?.id);
@@ -34,6 +35,7 @@ const MediaForm: FC<MediaFormProps> = ({ product }) => {
   const handleUpload = async (e: any, index: number) => {
     e.preventDefault();
     const file = e.target.files[0];
+    setId(index);
     setIsSubmitted(true);
     try {
       const config = await apiConfig();
@@ -48,6 +50,7 @@ const MediaForm: FC<MediaFormProps> = ({ product }) => {
       const selectedAttachments = updatedAttachments[index];
       selectedAttachments.medium_image_url = URL.createObjectURL(file);
       updatedAttachments[index] = selectedAttachments;
+      setId(null);
       setAttachments(updatedAttachments);
       setIsSubmitted(false);
       setSuccessMessage('Product Image uploaded successfully!');
@@ -112,7 +115,7 @@ const MediaForm: FC<MediaFormProps> = ({ product }) => {
                     onChange={(e) => handleUpload(e, index)}
                     disabled={isSubmitted}
                   />
-                  {isSubmitted ? (
+                  {(isSubmitted && id === index) ? (
                     <Loading message="Uploading..." />
                   ) : (
                     <div>
