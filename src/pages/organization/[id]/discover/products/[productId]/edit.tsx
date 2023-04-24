@@ -13,8 +13,10 @@ import SizingForm from '@/components/page-components/products/SizingForm';
 import OrderingForm from '@/components/page-components/products/OrderingForm';
 import CollectionsForm from '@/components/page-components/products/CollectionsForm';
 import MediaForm from '@/components/page-components/products/Media';
+import { useEffect, useState } from 'react';
 
 const ProductEdit = () => {
+  const [activeTab, setActiveTab] = useState<string | number>('description');
   const router = useRouter();
   const productId = router?.query?.productId || '';
 
@@ -73,6 +75,18 @@ const ProductEdit = () => {
     },
   ]
 
+  const handleTabChange = (id: string | number) => {
+    router.push(`${window.location.pathname}?tab=${id}`);
+    setActiveTab(id);
+  };
+
+  useEffect(() => {
+    if (router.isReady) {
+      const activeTab = (router.query?.tab || 'description') as string | number;
+      handleTabChange(activeTab);
+    }
+  }, [router.isReady]);
+
   return (
     <div>
       <Header heading="Product edit" />
@@ -89,7 +103,7 @@ const ProductEdit = () => {
             </div>
           </div>
           <div className='w-full p-8'>
-            <Tabs tabs={tabs} />
+            <Tabs tabs={tabs} active={activeTab} onTabChange={handleTabChange} />
           </div>
         </div>
       </div>
