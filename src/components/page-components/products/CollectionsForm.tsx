@@ -1,15 +1,12 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  CollectionGraphqlDto,
-  ProductWithCollectionsGraphqlDto,
-} from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { Button } from '@/components/molecules/Button';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '../Toast';
 import { Badge } from '@/components/molecules/Badge';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import { useQuery } from '@apollo/client';
-import { COLLECTIONS_QUERY } from '@/queries/collecitons';
+import { COLLECTION_FILTER_QUERY } from '@/queries/collecitons';
 import { useRouter } from 'next/router';
 import CheckIcon from '@/assets/svgs/check.svg';
 import clsx from 'clsx';
@@ -28,7 +25,7 @@ const CollectionsForm: FC<CollectionsFormProps> = ({ product }) => {
 
   const router = useRouter();
   const organizationId = Number(router?.query?.id);
-  const { data, loading } = useQuery(COLLECTIONS_QUERY, {
+  const { data, loading } = useQuery(COLLECTION_FILTER_QUERY, {
     variables: { organizationId },
   });
 
@@ -56,11 +53,12 @@ const CollectionsForm: FC<CollectionsFormProps> = ({ product }) => {
   };
 
   const handleCollections = (collection: string) => {
+    console.log(collection, selectedCollections);
     setSelectedCollections(
       // @ts-ignore
-      selectedCollections.includes(collection.name)
+      selectedCollections.map((item) => item.name).includes(collection.name)
         ? // @ts-ignore
-          selectedCollections.filter((item) => item.name === collection.name)
+          selectedCollections.filter((item) => item.name !== collection.name)
         : [...selectedCollections, collection]
     );
   };
@@ -71,36 +69,39 @@ const CollectionsForm: FC<CollectionsFormProps> = ({ product }) => {
         Indicate the collections this product is included in
       </Paragraph>
       <div className="flex flex-wrap items-center gap-4">
-        {loading ? <Loading message='Loading collections...' /> : data?.collectionsByOrganizationId?.map((item: any) => (
-          <Badge
-            key={item.id}
-            className={clsx(
-              'cursor-pointer',
-              // @ts-ignore
-              selectedCollections
+        {loading ? (
+          <Loading message="Loading collections..." />
+        ) : (
+          data?.collectionsByOrganizationId?.map((item: any) => (
+            <Badge
+              key={item.id}
+              className={clsx(
+                'cursor-pointer',
                 // @ts-ignore
-                .map((item) => item.name)
-                .includes(item?.name || '') &&
-                '!bg-shades-black !text-shades-white'
-            )}
-            onClick={() => handleCollections(item)}
-          >
-            {item.name}{' '}
-            {
-              // @ts-ignore
-              selectedCollections
+                selectedCollections
+                  // @ts-ignore
+                  .map((collection) => collection.name)
+                  .includes(item?.name) && '!bg-shades-black !text-shades-white'
+              )}
+              onClick={() => handleCollections(item)}
+            >
+              {item.name}{' '}
+              {
                 // @ts-ignore
-                .map((item) => item.name)
-                .includes(item?.name || '') && (
-                <CheckIcon
-                  className="text-shades-white"
-                  height={24}
-                  width={24}
-                />
-              )
-            }
-          </Badge>
-        ))}
+                selectedCollections
+                  // @ts-ignore
+                  .map((collection) => collection.name)
+                  .includes(item?.name) && (
+                  <CheckIcon
+                    className="text-shades-white"
+                    height={24}
+                    width={24}
+                  />
+                )
+              }
+            </Badge>
+          ))
+        )}
       </div>
       <div className="mt-5 inline-flex">
         <Button onClick={handleSave} disabled={isSubmitted || loading}>
