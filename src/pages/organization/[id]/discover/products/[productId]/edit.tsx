@@ -36,7 +36,7 @@ const ProductEdit = () => {
     {
       id: 'description',
       label: 'Description',
-      content: <DescriptionForm product={product} />,
+      content: <DescriptionForm product={product} refetch={refetch} />,
     },
     {
       id: 'details',
@@ -46,7 +46,7 @@ const ProductEdit = () => {
     {
       id: 'pricing',
       label: 'Pricing',
-      content: <PricingForm product={product} />,
+      content: <PricingForm product={product} refetch={refetch}/>,
     },
     {
       id: 'colours',

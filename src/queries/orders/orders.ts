@@ -7,6 +7,7 @@ export const GET_ORDERS = gql`
     $retailers: [String]
     $buyers: [String]
     $search: String
+    $season: String
     $start: Int
     $rows: Int
   ) {
@@ -15,6 +16,7 @@ export const GET_ORDERS = gql`
       search: $search
       retailers: $retailers
       buyers: $buyers
+      season: $season
       start: $start
       rows: $rows
       orderStatus: $orderStatus

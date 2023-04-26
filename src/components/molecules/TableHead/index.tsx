@@ -16,14 +16,13 @@ export const TableHead: FC<TableHeadProps> = ({ table, className = '' }) => {
     <thead className={clsx(styles.theadStyle, 'min-h-[40px]')}>
       {getHeaderGroups().map((headerGroup: any) => (
         <tr
-          className="z-[5]"
           key={headerGroup.id}
           id="table-header"
         >
           {headerGroup.headers.map((header: any) => (
             <th
               className={clsx(
-                'sticky top-0 py-3 px-4 text-[#fff] bg-neutral-700 first:text-left first:rounded-tl first:rounded-bl last:rounded-tr last:rounded-br z-[1]',
+                'sticky top-0 py-3 px-4 text-[#fff] bg-neutral-700 first:text-left first:rounded-tl first:rounded-bl last:rounded-tr last:rounded-br',
                 fonts.text.md,
                 fonts.fontWeights.regular,
                 className

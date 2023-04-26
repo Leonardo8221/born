@@ -75,7 +75,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
         leave="transition ease-in duration-75 transform"
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
-        className="z-10"
+        className="z-20"
       >
         <div className="absolute w-[260px] mt-[17px] !left-[50%] !translate-x-[-50%] right-0 mx-auto shadow-extra bg-shades-white z-50 rounded p-3">
           <div className="absolute left-[50%] translate-x-[-50%] -top-[9px]">

@@ -14,9 +14,10 @@ import { PriceRequestDTO, ProductResourceApi } from 'client/command';
 
 interface PricingFormProps {
   product: ProductWithCollectionsGraphqlDto;
+  refetch: () => void;
 }
 
-const PricingForm: FC<PricingFormProps> = ({ product }) => {
+const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
   const [pricings, setPricings] = useState<PriceRequestDTO[]>([
     {
       currency: '',
@@ -66,7 +67,10 @@ const PricingForm: FC<PricingFormProps> = ({ product }) => {
     try {
       const config = await apiConfig();
       const api = new ProductResourceApi(config);
-      await api.apiProductUpdateProductPut(product?.id, { associated_prices: pricings });
+      await api.apiProductUpdateProductPut(product?.id, {
+        associated_prices: pricings,
+      });
+      await refetch();
       setIsSubmitted(false);
       setSuccessMessage('Product updated successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
