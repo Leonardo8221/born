@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import {
-  Maybe,
-  ProductAttachmentGraphqlDto,
   ProductWithCollectionsGraphqlDto,
 } from '@/generated/types';
 import { Button } from '@/components/molecules/Button';
@@ -18,7 +16,7 @@ interface MediaFormProps {
   refetch: () => void;
 }
 
-const MediaForm: FC<MediaFormProps> = ({ product }) => {
+const MediaForm: FC<MediaFormProps> = ({ product, refetch }) => {
   const [attachments, setAttachments] = useState<any[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -46,13 +44,11 @@ const MediaForm: FC<MediaFormProps> = ({ product }) => {
         file,
         file.name
       );
-      const updatedAttachments = [...attachments];
-      const selectedAttachments = updatedAttachments[index];
-      selectedAttachments.medium_image_url = URL.createObjectURL(file);
-      updatedAttachments[index] = selectedAttachments;
+      setTimeout(async() => {
+        await refetch();
+        setIsSubmitted(false);
+      }, 3000);
       setId(null);
-      setAttachments(updatedAttachments);
-      setIsSubmitted(false);
       setSuccessMessage('Product Image uploaded successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
@@ -69,7 +65,7 @@ const MediaForm: FC<MediaFormProps> = ({ product }) => {
       const config = await apiConfig();
       const api = new AttachmentResourceApi(config);
       await api.apiAttachmentDeleteProductImageDelete(id);
-      setAttachments(attachments.filter((item) => item.id !== id));
+      await refetch();
       setIsSubmitted(false);
       setSuccessMessage('Product image deleted successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);

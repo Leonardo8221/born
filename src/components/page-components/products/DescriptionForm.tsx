@@ -12,9 +12,10 @@ import { createableSelectStyles } from './utils';
 
 interface DescriptionFormProps {
   product: ProductWithCollectionsGraphqlDto;
+  refetch: () => void;
 }
 
-const DescriptionForm: FC<DescriptionFormProps> = ({ product }) => {
+const DescriptionForm: FC<DescriptionFormProps> = ({ product, refetch }) => {
   const [productDetails, setProductDetails] = useState<ProductRequestDTO>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -47,6 +48,7 @@ const DescriptionForm: FC<DescriptionFormProps> = ({ product }) => {
       const config = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductUpdateProductPut(product?.id, productDetails);
+      await refetch();
       setIsSubmitted(false);
       setSuccessMessage('Product updated successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);

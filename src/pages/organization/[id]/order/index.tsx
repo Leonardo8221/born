@@ -27,6 +27,7 @@ const OrderPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedBuyers, setSelectedBuyers] = useState<string[]>([]);
   const [selectedRetailers, setSelectedRetailers] = useState<string[]>([]);
+  const [selectedSeasons, setSelectedSeasons] = useState<string | null>(null);
 
   const debounceValue = useDebounce(searchKeyword, 600);
 
@@ -36,6 +37,7 @@ const OrderPage = () => {
       organizationId,
       retailers: selectedRetailers,
       buyers: selectedBuyers,
+      season: selectedSeasons,
       orderStatus: tabState,
       start: 0,
       rows: 50,
@@ -71,6 +73,15 @@ const OrderPage = () => {
     }
   };
 
+  const seasons: string[] = [
+    'Pre-Spring (PS)',
+    'Spring/Summer (SS)',
+    'High Summer (HS)',
+    'Pre Fall (PF)',
+    'Resort (R)',
+    'Autumn Winter (AW)'
+  ];
+
   const filterTags: Tags[] = [
     {
       label: 'Retailers',
@@ -94,6 +105,17 @@ const OrderPage = () => {
       action: handleBuyersAction,
       onReset: () => setSelectedBuyers([]),
     },
+    {
+      label: 'Season',
+      options: seasons.map((s: string) => ({ id: s, label: s })),
+      selectedItems: selectedSeasons ? [selectedSeasons] : [],
+      action: (e: { id: string | number; label: string }) => {
+        setSelectedSeasons(e.label);
+      },
+      onReset: () => {
+        setSelectedSeasons(null);
+      },
+    }
   ];
 
   const handleTabChange = (id: string | number) => {
