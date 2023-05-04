@@ -32,11 +32,11 @@ export interface ProductDetailsProps extends ProductWithCollectionsGraphqlDto {
 const ProductDetails: FC<ProductDetailsProps> = ({
   attachments,
   associated_prices,
-  description,
   colors,
   tags,
   specifications,
   variants,
+  colour_name,
 }) => {
   const router = useRouter();
   return (
@@ -118,7 +118,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
           })}
         </div>
         <div className="flex items-center gap-2.5 mt-3">
-          <ColorVariant colors={colors || []} label={description} />
+          <ColorVariant colors={colors || []} label={colour_name || ''} />
           {variants?.map((variant: any) => (
             <Link
               key={variant?.id}

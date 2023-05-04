@@ -13,6 +13,7 @@ export interface DescriptionFieldProps {
   disabled?: boolean;
   className?: string;
   inputClasses?: string;
+  readOnly?: boolean;
 }
 
 const DescriptionField: FC<DescriptionFieldProps> = ({
@@ -25,6 +26,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   className,
   inputClasses,
   disabled = false,
+  readOnly = false,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
@@ -53,6 +55,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
             defaultValue={value}
             onChange={handleChange}
             placeholder={placeholder}
+            readOnly={readOnly}
             className={clsx(
               styles.textarea,
               `h-[188px] print:!h-[138px] !w-full p-4 'text-shades-black' rounded focus:outline-none`,

@@ -67,7 +67,7 @@ const OrderListTable: FC<OrderListTableProps> = ({
       cell: (info: any) => (
         <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
           {formatCurrency(
-            info?.row?.pricing_condition?.split('_')?.[0] as any
+            info?.row?.original?.pricing_condition?.split('_')?.[0] as any
           )?.format(info.getValue())}
         </div>
       ),

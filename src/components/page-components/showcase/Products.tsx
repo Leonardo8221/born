@@ -61,14 +61,21 @@ const Products: FC = () => {
 
   useEffect(() => {
     const newProducts: any[] =
-        data?.productsBySearchAndOrganizationId?.content || [];
-
-    if(!!searchKeyword || !!selectedCollections.length || !!selectedColours.length) {
-      setProducts(pageNo > 0 ? [...products, ...newProducts] : newProducts);
+      data?.productsBySearchAndOrganizationId?.content || [];
+    if (
+      !!searchKeyword ||
+      !!selectedCollections.length ||
+      !!selectedColours.length
+    ) {
+      setProducts(
+        (pageNo !== 0 && pageNo) > 0
+          ? [...products, ...newProducts]
+          : newProducts
+      );
     } else if (!!newProducts.length) {
       const newProducts: any[] =
         data?.productsBySearchAndOrganizationId?.content || [];
-      setProducts([...products, ...newProducts]);
+      setProducts(pageNo !== 0 ? [...products, ...newProducts] : newProducts);
       !totalPages &&
         setTotalPages(data?.productsBySearchAndOrganizationId?.total_pages);
     }
@@ -76,7 +83,7 @@ const Products: FC = () => {
 
   const { data: collections } = useQuery(COLLECTION_FILTER_QUERY, {
     variables: { organizationId },
-    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   const { data: colourFamilies } = useQuery(COLOUR_FAMILIES_QUERY, {
@@ -105,7 +112,7 @@ const Products: FC = () => {
 
   const filterTags = [
     {
-      label: 'collections',
+      label: 'Collections',
       options: collections?.collectionsByOrganizationId?.map(
         (item: { id: number; name: string }) => ({
           id: item.id,
@@ -135,6 +142,13 @@ const Products: FC = () => {
         setPageNo(0);
       },
     },
+    {
+      label: 'Season',
+      options: [],
+      actions: () => {},
+      selectedItems: [],
+      onReset: () => {},
+    }
   ];
 
   const handleErrorMesssage = (message: string) => {
@@ -204,7 +218,7 @@ const Products: FC = () => {
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductDeleteProductsDelete(id ? [id] : selectedProducts);
-      refetch();
+      await refetch();
       setIsLoading(false);
       handleSuccessMesssage(
         selectedProducts.length > 0
@@ -260,7 +274,11 @@ const Products: FC = () => {
             gridType={gridType}
             onSelect={() => setIsSelectable(!isSelectable)}
             searchKeyword={searchKeyword}
-            onSearch={setSearchKeyword}
+            onSearch={(keyword: string) => {
+              console.log('working');
+              setSearchKeyword(keyword);
+              setPageNo(0);
+            }}
             isSelectable={isSelectable}
             filterTags={filterTags}
             actions={actions}
@@ -279,7 +297,8 @@ const Products: FC = () => {
               }}
               hasMore={!!totalPages && pageNo < totalPages}
               loader={
-                !!products.length && totalPages &&
+                !!products.length &&
+                totalPages &&
                 pageNo < totalPages && (
                   <Loading message="Loading more products..." />
                 )
