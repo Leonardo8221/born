@@ -14,6 +14,7 @@ import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
 import PricingCondition from '@/components/page-components/order/PricingCondition';
 import useDebounce from '@/utils/debounce';
+import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 
 function OrderPreview() {
   const router = useRouter();
@@ -306,7 +307,7 @@ function OrderPreview() {
     orderDetails?.order_status &&
     !['DRAFT', 'CONFIRMED'].includes(orderDetails?.order_status);
 
-    console.log(!isDisabled, isLoading);
+  console.log(!isDisabled, isLoading);
 
   return (
     <div className="mx-auto overflow-x-hidden order__page">
@@ -359,9 +360,7 @@ function OrderPreview() {
           )}
           <div className="flex flex-col">
             <OrderDetails
-              editMode={
-                !isDisabled && editMode
-              }
+              editMode={!isDisabled && editMode}
               handleEditInputs={handleEditInputs}
               column1={columnData.column1}
               column2={columnData.column2}
@@ -369,6 +368,15 @@ function OrderPreview() {
               loading={isLoading}
             />
           </div>
+          {orderDetails?.order_status !== 'DRAFT' && orderDetails?.note && (
+            <DescriptionField
+              value={orderDetails?.note}
+              label="Order note"
+              onChange={() => {}}
+              readOnly
+              className='mb-6 mt-2'
+            />
+          )}
           <PricingCondition
             details={orderDetails}
             handleChange={handleChange}

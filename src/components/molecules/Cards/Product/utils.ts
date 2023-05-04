@@ -3,9 +3,9 @@ import styles from './product.module.css';
 
 type Size = 'lg' | 'sm';
 export const currencies: any = {
-  USD: '$',
-  EUR: '€',
-  GBP: '£',
+  'USD': '$',
+  'EUR': '€',
+  'GBP': '£',
 };
 
 export const clsProductCard = (size: Size) => clsx({

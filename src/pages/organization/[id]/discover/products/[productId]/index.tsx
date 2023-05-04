@@ -57,6 +57,10 @@ const ProductPage = () => {
       value: currentProduct?.style_number,
     },
     {
+      label: 'Sizing',
+      value: currentProduct?.size_options.join(', ')
+    },
+    {
       label: 'Composition',
       value: currentProduct?.compositions?.join(', '),
     },
@@ -121,6 +125,7 @@ const ProductPage = () => {
               associated_prices={currentProduct?.associated_prices}
               description={currentProduct?.description}
               colors={currentProduct?.colour_families}
+              colour_name={currentProduct?.colour_name}
               tags={[
                 {
                   title: 'Season',

@@ -149,6 +149,13 @@ const CollectionPage = () => {
         setProducts([]);
       },
     },
+    {
+      label: 'Season',
+      options: [],
+      actions: () => {},
+      selectedItems: [],
+      onReset: () => {},
+    }
   ];
 
   const handleErrorMesssage = (message: string) => {

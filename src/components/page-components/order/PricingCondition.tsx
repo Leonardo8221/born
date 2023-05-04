@@ -47,7 +47,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
             label="Select Category"
             onChange={(option) => handleDropdownChange(option?.value)}
             className={clsx(
-              'print:hidden mr-8 w-[278px]',
+              'mr-8 w-[278px]',
               isDisabled &&
                 '!pointer-events-none'
             )}
@@ -62,7 +62,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
           isError={false}
           isValid={false}
           onChange={(val) => handleChange('discount', val)}
-          className={clsx("print:hidden mr-8 w-[139px] h-[56px]", isDisabled ? '!cursor-auto' : '')}
+          className={clsx("mr-8 w-[139px] h-[56px]", isDisabled ? '!cursor-auto' : '')}
           disabled={isDisabled || disabled}
         />
         <Input
@@ -73,7 +73,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
           isError={false}
           isValid={false}
           onChange={(val) => handleChange('surcharge', val)}
-          className={clsx("print:hidden mr-8 w-[139px] h-[56px]", isDisabled ? '!cursor-auto' : '')}
+          className={clsx("mr-8 w-[139px] h-[56px]", isDisabled ? '!cursor-auto' : '')}
           disabled={isDisabled || disabled}
         />
       </div>

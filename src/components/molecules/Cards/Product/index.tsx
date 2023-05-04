@@ -115,17 +115,17 @@ export const ProductCard: FC<ProductCardProps> = ({
               <p className={styles.priceLabel}>Material</p>
             </div>
           )}
-          {associated_prices?.map(
+          {/* {associated_prices?.map(
             (item) =>
-              item?.currency &&
-              (item?.landed || item.exworks || item.landed) && (
+              (item?.landed || item?.exworks || item?.landed) && (
                 <div
                   key={item?.currency}
                   className={clsProductCardPrices(size)}
                 >
-                  {item?.landed && (
+                  {item?.landed ? (
                     <>
                       <div>
+                        
                         <h5 className={clsProductCardPrice(size)}>
                           {item?.currency && currencies[item.currency]}
                           {item.landed}
@@ -133,8 +133,8 @@ export const ProductCard: FC<ProductCardProps> = ({
                         <p className={styles.priceLabel}>Landed</p>
                       </div>
                     </>
-                  )}
-                  {item?.exworks && (
+                  ): null}
+                  {item?.exworks ? (
                     <>
                       <div>
                         <h5 className={clsProductCardPrice(size)}>
@@ -144,8 +144,8 @@ export const ProductCard: FC<ProductCardProps> = ({
                         <p className={styles.priceLabel}>Exworks</p>
                       </div>
                     </>
-                  )}
-                  {item?.retail && (
+                  ): null}
+                  {item?.retail ? (
                     <>
                       <div>
                         <h5 className={clsProductCardPrice(size)}>
@@ -155,10 +155,10 @@ export const ProductCard: FC<ProductCardProps> = ({
                         <p className={styles.priceLabel}>MSRP</p>
                       </div>
                     </>
-                  )}
+                  ): null}
                 </div>
               )
-          )}
+          )} */}
           {size_options && (
             <div className="hidden print:block mt-1">
               <h5

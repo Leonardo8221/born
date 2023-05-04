@@ -896,6 +896,7 @@ export type GetOrdersQueryVariables = Exact<{
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
   search?: InputMaybe<Scalars["String"]>;
+  season?: InputMaybe<Scalars["String"]>;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
 }>;
