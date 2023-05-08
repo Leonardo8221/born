@@ -1,24 +1,80 @@
 import { FC, useState } from 'react';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
 import bannerPlaceholder from '@/assets/images/placeholders/banner.png';
-import Modal from '@/components/molecules/Modal';
 import Description from '../Collections/Description';
 import YourCollections from './YourCollections';
 import SocialLinks from './SocialLinks';
-import FileType from './FileType';
 import { OrganizationGraphqlDto } from '@/generated/types';
 import { useRouter } from 'next/router';
+import LinesheetUpload from './LinesheetUpload';
+import { AttachmentResourceApi, OrganizationResourceApi } from 'client/command';
+import Toast from '../Toast';
+import { apiConfig } from '@/utils/apiConfig';
 
 interface StoryProps {
   onViewCollections: (e: any) => void;
   organization: OrganizationGraphqlDto;
+  refetch: () => void;
 }
 
-const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
+const Story: FC<StoryProps> = ({
+  onViewCollections,
+  organization,
+  refetch,
+}) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [type, setType] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
+  const handleUploadFile = async ({
+    fileType,
+    file,
+    name,
+    onReset,
+  }: {
+    fileType: 'LINESHEET' | 'LOOKBOOK' | null;
+    file: File | null;
+    name: string;
+    onReset: () => void;
+  }) => {
+    try {
+      if (fileType && file) {
+        const config = await apiConfig();
+        const api = new AttachmentResourceApi(config);
+        const organizationApi = new OrganizationResourceApi(config);
+        await api.apiAttachmentUploadOrganizationAttachmentPost(
+          fileType,
+          organization.id,
+          file,
+          file.name
+        );
+        const payload = {
+          linesheet_name:
+            (fileType === 'LINESHEET' ? name : organization.linesheet_name) ||
+            '',
+          lookbook_name:
+            (fileType === 'LOOKBOOK' ? name : organization.lookbook_name) || '',
+        };
+        await organizationApi.apiOrganizationUpdateOrganizationDetailsPut(
+          organization.id,
+          payload
+        );
+        setSuccessMessage('File uploaded successfully');
+        setTimeout(() => setSuccessMessage(''), 3000);
+        setIsOpen(false);
+        onReset();
+        refetch();
+      } else {
+        setErrorMessage('File is required!');
+        setTimeout(() => setErrorMessage(''), 3000);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage('Something went wrong. Please try again!');
+      setTimeout(() => setErrorMessage(''), 3000);
+    }
+  };
 
   return (
     <div>
@@ -37,7 +93,9 @@ const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
         </div>
         <div>
           <span className="text-neutral-600 mr-[32px]">Currencies</span>
-          <span className="text-shades-black">{organization?.currency_types?.join(' / ')}</span>
+          <span className="text-shades-black">
+            {organization?.currency_types?.join(' / ')}
+          </span>
         </div>
       </div>
       <CollectionCard
@@ -63,14 +121,12 @@ const Story: FC<StoryProps> = ({ onViewCollections, organization }) => {
         />
       )}
       <SocialLinks />
-      <Modal
-        className="max-w-[736px] overflow-hidden"
+      <LinesheetUpload
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Choose a file type"
-      >
-        <FileType onClick={setType} />
-      </Modal>
+        setIsOpen={setIsOpen}
+        handleSubmit={handleUploadFile}
+      />
+      <Toast errorMessage={errorMessage} successMessage={successMessage} />
     </div>
   );
 };

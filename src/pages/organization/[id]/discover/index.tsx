@@ -18,7 +18,7 @@ const StoryPage = () => {
   const router = useRouter();
   const tab = router?.query?.tab;
 
-  const { data, loading } = useQuery(ORGANIZATION_QUERY, {
+  const { data, loading, refetch } = useQuery(ORGANIZATION_QUERY, {
     variables: { organizationId: Number(router?.query?.id) },
     fetchPolicy: 'cache-and-network',
   });
@@ -65,6 +65,7 @@ const StoryPage = () => {
         <Story
           onViewCollections={() => handleTabChange('collections')}
           organization={organization}
+          refetch={refetch}
         />
       ),
     },
