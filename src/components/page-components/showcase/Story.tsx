@@ -113,6 +113,9 @@ const Story: FC<StoryProps> = ({
         linesheetUrl={organization?.linesheet_url || ''}
         description={organization?.description || ''}
         onUpload={() => setIsOpen(true)}
+        linesheetGuid={organization?.linesheet_guid || ''}
+        lookbookGuid={organization?.lookbook_guid || ''}
+        isOrganization
       />
       {organization?.collections?.length && (
         <YourCollections

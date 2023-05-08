@@ -4,6 +4,9 @@ import { fonts } from '@/config/fonts';
 import LogoutIcon from '@/assets/svgs/logout.svg';
 import BookIcon from '@/assets/svgs/collection/book.svg';
 import DocumentIcon from '@/assets/svgs/collection/document.svg';
+import { apiConfig } from '@/utils/apiConfig';
+import { AttachmentResourceApi } from 'client/command';
+import { download } from '@/utils/downloadFile';
 
 interface DescriptionProps {
   onUpload?: (e: any) => void;
@@ -12,21 +15,63 @@ interface DescriptionProps {
   linesheetUrl?: string;
   lookbookName?: string;
   lookbookUrl?: string;
+  isOrganization?: boolean;
+  organizationId?: number;
+  collectionId?: number;
+  lookbookGuid: string;
+  linesheetGuid: string;
 }
 
 const Description: FC<DescriptionProps> = ({
   onUpload = () => {},
   description,
   linesheetName,
+  linesheetGuid,
+  lookbookGuid,
   linesheetUrl,
   lookbookName,
   lookbookUrl,
+  isOrganization,
 }) => {
+  const handleDownload = async (type: 'LOOKBOOK' | 'LINESHEET') => {
+    try {
+      const config = await apiConfig();
+      const api = new AttachmentResourceApi(config);
+      if (isOrganization) {
+        const res = await api.apiAttachmentDownloadOrganizationAttachmentGet(
+          type === 'LINESHEET' ? linesheetGuid : lookbookGuid,
+          type,
+          { responseType: 'blob' }
+        );
+        console.log(res);
+        download(
+          res.data as any,
+          type === 'LOOKBOOK' ? lookbookGuid : linesheetGuid
+        );
+      } else {
+        const res = await api.apiAttachmentDownloadCollectionAttachmentGet(
+          type === 'LINESHEET' ? linesheetGuid : lookbookGuid,
+          type,
+          { responseType: 'blob' }
+        );
+        download(
+          res.data as any,
+          type === 'LOOKBOOK' ? linesheetGuid : linesheetGuid
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <div className="print:hidden flex mt-8 items-center justify-center gap-6">
         {lookbookName && lookbookUrl && (
-          <div className="flex cursor-pointer border border-neutral-200 rounded">
+          <div
+            className="flex cursor-pointer border border-neutral-200 rounded"
+            onClick={() => handleDownload('LOOKBOOK')}
+          >
             <div className="flex h-[50px] w-[60px] justify-center items-center">
               <BookIcon height={50} width={60} />
             </div>
@@ -51,7 +96,10 @@ const Description: FC<DescriptionProps> = ({
           </div>
         )}
         {linesheetName && linesheetUrl && (
-          <div className="flex cursor-pointer border border-neutral-200 rounded">
+          <div
+            className="flex cursor-pointer border border-neutral-200 rounded"
+            onClick={() => handleDownload('LINESHEET')}
+          >
             <div className="flex h-[50px] w-[60px] justify-center items-center">
               <DocumentIcon height={50} width={60} />
             </div>

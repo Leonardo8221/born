@@ -377,6 +377,8 @@ const CollectionPage = () => {
             lookbookUrl={collection?.lookbook_url || ''}
             linesheetName={collection?.linesheet_name || ''}
             linesheetUrl={collection?.linesheet_url || ''}
+            linesheetGuid={collection?.linesheet_guid || ''}
+            lookbookGuid={collection?.lookbook_guid || ''}
             description={collection?.description}
             onUpload={() => setIsUpload(true)}
           />
