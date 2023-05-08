@@ -25,7 +25,7 @@ import {
   ProductWithCollectionsGraphqlDto,
 } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
-import { COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY } from '@/queries/filters';
+import { COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, SEASONS_BY_COLLECTION_ID } from '@/queries/filters';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const CollectionPage = () => {
@@ -45,33 +45,38 @@ const CollectionPage = () => {
     null
   );
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
+  const [selectedSeasons, setSelectedSeasons] = useState<string[]>([])
   const [pageNo, setPageNo] = useState(0);
   const [rows] = useState(24);
   const [products, setProducts] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(null);
   const collectionDetailRef = useRef<any>(null);
   const [gridPrevState, setGridPrevState] = useState<GridType>('grid');
+  const [isProductDelete, setIsProductDelete] = useState(false);
 
   const handleScroll = () => {
     const doc: Document = document;
     const filters: any = doc.getElementById('filters');
     const detailHeight = collectionDetailRef?.current?.clientHeight;
-    if(filters) {
-      if(doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= (detailHeight + 80)) {
+    if (filters) {
+      if (
+        doc?.scrollingElement &&
+        doc?.scrollingElement?.scrollTop >= detailHeight + 80
+      ) {
         filters.style.position = 'fixed';
         filters.style.top = '114px';
       } else {
         filters.style.position = '';
       }
     }
-  }
+  };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
-    }
-  }, [])
+    };
+  }, []);
 
   const {
     data: collecitonData,
@@ -95,35 +100,52 @@ const CollectionPage = () => {
       collectionId,
       search: debouncedValue,
       colourFamilies: selectedColours,
+      seasons: selectedSeasons,
       rows,
       start: pageNo,
     },
-    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   useEffect(() => {
     const newProducts: any[] =
-        productsCollection?.productsBySearchAndCollectionId?.content || [];
-
-    if(!!searchKeyword || !!selectedColours.length) {
-      setProducts(pageNo > 0 ? [...products, ...newProducts] : newProducts);
-    } else if (!!newProducts.length) {
-      setProducts([...products, ...newProducts]);
-      !totalPages &&
-        setTotalPages(
-          productsCollection?.productsBySearchAndCollectionId?.total_pages
+      productsCollection?.productsBySearchAndCollectionId?.content || [];
+    if (!isProductDelete) {
+      if (!!searchKeyword || !!selectedColours.length) {
+        setProducts(
+          pageNo !== 0 && pageNo > 0
+            ? [...products, ...newProducts]
+            : newProducts
         );
+      } else if (!!newProducts.length) {
+        setProducts(
+          pageNo !== 0 && pageNo > 0
+            ? [...products, ...newProducts]
+            : newProducts
+        );
+        !totalPages &&
+          setTotalPages(
+            productsCollection?.productsBySearchAndCollectionId?.total_pages
+          );
+      }
     }
   }, [productsCollection]);
 
   useEffect(() => {
     window.onafterprint = () => {
       setGrid(gridPrevState);
-    }
+    };
   }, []);
 
   const { data: colours } = useQuery(COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, {
     variables: { collectionId },
+    notifyOnNetworkStatusChange: true,
+  });
+
+
+  const { data: seasons } = useQuery(SEASONS_BY_COLLECTION_ID, {
+    variables: { collectionId },
+    notifyOnNetworkStatusChange: true,
   });
 
   const filterTags = [
@@ -150,12 +172,27 @@ const CollectionPage = () => {
       },
     },
     {
-      label: 'Season',
-      options: [],
-      actions: () => {},
-      selectedItems: [],
-      onReset: () => {},
-    }
+      label: 'Seasons',
+      options: seasons?.seasonsByCollectionId?.map((item: string) => ({
+        id: item,
+        label: item,
+      })),
+      selectedItems: selectedSeasons,
+      action: (e: { id: string | number; label: string }) => {
+        setProducts([]);
+        setPageNo(0);
+        if (selectedSeasons.includes(e.label)) {
+          setSelectedSeasons(selectedSeasons?.filter((c) => c !== e.label));
+        } else {
+          setSelectedSeasons([...selectedSeasons, e.label]);
+        }
+      },
+      onReset: () => {
+        setSelectedSeasons([]);
+        setPageNo(0);
+        setProducts([]);
+      },
+    },
   ];
 
   const handleErrorMesssage = (message: string) => {
@@ -176,20 +213,24 @@ const CollectionPage = () => {
 
   const handleRemoveProducts = async (id?: number) => {
     setIsLoading(true);
+    setIsProductDelete(true);
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      await api.apiCollectionDisassociateProductsPut(
-        collectionId,
-        id ? [id] : selectedProducts
-      );
+      const productIds = id ? [id] : selectedProducts;
+      await api.apiCollectionDisassociateProductsPut(collectionId, productIds);
+      setProducts(products.filter((item) => !productIds.includes(item.id)));
       handleSuccessMesssage(
-        `Removed ${selectedProducts.length} products from collections sucessfully!!`
+        `Removed ${
+          selectedProducts.length || 1
+        } products from collections sucessfully!!`
       );
       setIsLoading(false);
+      setIsProductDelete(false);
       setSelectedProducts([]);
     } catch (error: any) {
       setIsLoading(false);
+      setIsProductDelete(false);
       handleErrorMesssage(
         error?.message || 'Failed to removed products, please try again!'
       );
@@ -199,13 +240,16 @@ const CollectionPage = () => {
 
   const handleDeleteProducts = async (id?: number) => {
     setIsLoading(true);
+    setIsProductDelete(true);
     try {
+      const ids = id ? [id] : selectedProducts;
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
-      await api.apiProductDeleteProductsDelete(id ? [id] : selectedProducts);
+      await api.apiProductDeleteProductsDelete(ids);
+      setProducts(products.filter((item) => !ids.includes(item.id)));
       setIsLoading(false);
       handleSuccessMesssage(
-        `Deleted ${selectedProducts.length} products successfully!`
+        `Deleted ${selectedProducts.length || 1} products successfully!`
       );
       setSelectedProducts([]);
     } catch (error: any) {

@@ -24,6 +24,7 @@ export const GET_ORDER_BY_ID = gql`
       order_status
       size
       retailer
+      season
       order_details {
         id
         note

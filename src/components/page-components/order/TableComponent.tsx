@@ -12,19 +12,6 @@ const TableComponent: React.FC<Props> = ({
   handleQuantities,
   editMode,
 }) => {
-
-  const sizes = useCallback(() => {
-    const sizes = [ 'xl', 'xxl', 'sm', 's', 'm', 'l'];
-
-    const filteredSizes = filter(sizes, (size) => {
-      return /[smxl]{1,2}/.test(size);
-    });
-
-    return filteredSizes;
-  },[orderDetailSizes])
-
-  console.log(sizes());
-
   return (
     <div className="text-[12px] text-[#333333]">
       <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t">

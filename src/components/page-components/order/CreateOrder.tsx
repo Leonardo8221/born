@@ -6,8 +6,9 @@ import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
-import { ORDER_LIST } from '@/utils/constants';
+import { ORDER_LIST, seasons } from '@/utils/constants';
 import { OrderGraphqlDto } from '@/generated/types';
+import Dropdown from '@/components/molecules/Dropdown';
 
 interface CreatOrderProps {
   showModal: boolean;
@@ -29,6 +30,7 @@ interface OrderDetails {
   buyer_name: string;
   discount: number;
   surcharge: number;
+  season: string;
 }
 
 const initialState: OrderDetails = {
@@ -38,9 +40,10 @@ const initialState: OrderDetails = {
   buyer_name: '',
   discount: 0,
   surcharge: 0,
+  season: '',
 };
 
-type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer';
+type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer' | 'season';
 
 export const CreateOrder: FC<CreatOrderProps> = ({
   showModal,
@@ -127,6 +130,16 @@ export const CreateOrder: FC<CreatOrderProps> = ({
               type="text"
               name="buyer_name"
               onChange={(val) => handleChange('buyer_name', val)}
+              className="m-2 text-[14px] w-[324px]"
+            />
+          </div>
+          <div>
+            <Dropdown
+              label="Season"
+              selectedOption={{ name: details.season, value: details.season }}
+              options={seasons.map(item => ({ name: item, value: item }))}
+              isValid={false}
+              onChange={({ value, name }: any) => handleChange('season', value)}
               className="m-2 text-[14px] w-[324px]"
             />
           </div>

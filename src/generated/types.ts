@@ -280,9 +280,9 @@ export type Query = {
   collectionByCollectionId?: Maybe<CollectionGraphqlDto>;
   /** Return list of organization's collections */
   collectionsByOrganizationId?: Maybe<Array<Maybe<CollectionGraphqlDto>>>;
-  /** Return list of colour families by name and collectionId */
+  /** Return list of colour families by collectionId */
   colourFamiliesByCollectionId?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  /** Return list of colour families by name and organizationId */
+  /** Return list of colour families by organizationId */
   colourFamiliesByOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
   /** Return order by order id */
   orderByOrderId?: Maybe<OrderGraphqlDto>;
@@ -304,6 +304,10 @@ export type Query = {
   productsBySearchAndOrganizationId?: Maybe<PageWrapper_ProductWithCollectionsGraphqlDto>;
   /** Return list of retailer names by name and organizationId */
   retailersByOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  /** Return list of seasons by collectionId */
+  seasonsByCollectionId?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  /** Return list of seasons by organizationId */
+  seasonsByOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
   /** Return user with its organization data */
   userOrganizationByOrganizationId?: Maybe<UserOrganizationGraphqlDto>;
   /** Return user with list of user organizations and update last logged in date */
@@ -388,7 +392,7 @@ export type QueryProductsBySearchAndCollectionIdArgs = {
   colourFamilies?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   rows?: InputMaybe<Scalars["Int"]>;
   search?: InputMaybe<Scalars["String"]>;
-  season?: InputMaybe<Scalars["String"]>;
+  seasons?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   start?: InputMaybe<Scalars["Int"]>;
 };
 
@@ -399,12 +403,22 @@ export type QueryProductsBySearchAndOrganizationIdArgs = {
   organizationId: Scalars["BigInteger"];
   rows?: InputMaybe<Scalars["Int"]>;
   search?: InputMaybe<Scalars["String"]>;
-  season?: InputMaybe<Scalars["String"]>;
+  seasons?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   start?: InputMaybe<Scalars["Int"]>;
 };
 
 /** Query root */
 export type QueryRetailersByOrganizationIdArgs = {
+  organizationId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QuerySeasonsByCollectionIdArgs = {
+  collectionId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QuerySeasonsByOrganizationIdArgs = {
   organizationId: Scalars["BigInteger"];
 };
 
@@ -651,6 +665,24 @@ export type RetailersQueryQuery = {
   retailersByOrganizationId?: Array<string | null> | null;
 };
 
+export type SeasonsByCollectionIdQueryVariables = Exact<{
+  collectionId: Scalars["BigInteger"];
+}>;
+
+export type SeasonsByCollectionIdQuery = {
+  __typename?: "Query";
+  seasonsByCollectionId?: Array<string | null> | null;
+};
+
+export type SeasonsByOrganizationIdQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type SeasonsByOrganizationIdQuery = {
+  __typename?: "Query";
+  seasonsByOrganizationId?: Array<string | null> | null;
+};
+
 export type CollectionGraphqlDtoFragment = {
   __typename?: "CollectionGraphqlDTO";
   id?: any | null;
@@ -805,6 +837,7 @@ export type GetOrderByIdQuery = {
     retailer?: string | null;
     order_status?: OrderStatus | null;
     size?: string | null;
+    season?: string | null;
     order_details?: Array<{
       __typename?: "OrderDetailGraphqlDTO";
       id?: any | null;
@@ -1106,7 +1139,9 @@ export type GetProductsQueryVariables = Exact<{
   colourFamilies?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
-  season?: InputMaybe<Scalars["String"]>;
+  seasons?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
 }>;
@@ -1252,7 +1287,9 @@ export type GetProductsBySearchAndCollectionIdQueryVariables = Exact<{
   colourFamilies?: InputMaybe<
     Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
   >;
-  season?: InputMaybe<Scalars["String"]>;
+  seasons?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
   start?: InputMaybe<Scalars["Int"]>;
   rows?: InputMaybe<Scalars["Int"]>;
 }>;

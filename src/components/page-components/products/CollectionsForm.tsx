@@ -53,7 +53,6 @@ const CollectionsForm: FC<CollectionsFormProps> = ({ product }) => {
   };
 
   const handleCollections = (collection: string) => {
-    console.log(collection, selectedCollections);
     setSelectedCollections(
       // @ts-ignore
       selectedCollections.map((item) => item.name).includes(collection.name)

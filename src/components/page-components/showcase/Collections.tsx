@@ -33,6 +33,7 @@ const Collections: FC<CollectionsProps> = ({
 
   const { data, loading, error, refetch } = useQuery(COLLECTIONS_QUERY, {
     variables: { organizationId, rows: 50 },
+    fetchPolicy: 'network-only',
   });
 
   const handleErrorMesssage = (message: string) => {

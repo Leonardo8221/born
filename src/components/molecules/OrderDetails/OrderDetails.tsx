@@ -2,6 +2,8 @@ import { FC } from 'react';
 import clsx from 'clsx';
 import { theme } from '@/config/theme';
 import Input from '../Inputs';
+import DropdownFilter from '../DropdownFilter';
+import { seasons } from '@/utils/constants';
 
 type Column = {
   key: string;
@@ -91,16 +93,21 @@ const OrderDetails: FC<OrderDetailsProps> = ({
         {column3.map((item, index) => (
           <div key={index} className="flex">
             {editMode ? (
-              <Input
-                editMode={editMode}
-                label={item.name}
-                value={item.value}
-                className="mb-2"
-                disabled={loading}
-                onChange={(event: any) =>
-                  handleEditInputs(item.key, event.target.value)
-                }
-              />
+              <>
+                <Input
+                  editMode={editMode}
+                  label={item.name}
+                  value={item.value}
+                  inputType={item.name === 'Season' ? 'dropdown': 'text'}
+                  options={item.name === 'Season' && seasons || undefined}
+                  handleSelect={(value: string) => item.name === 'Season' ? handleEditInputs('season', value) : {}}
+                  className="mb-2"
+                  disabled={loading}
+                  onChange={(event: any) =>
+                    item.name !== 'Season' ? handleEditInputs(item.key, event.target.value) : {}
+                  }
+                />
+              </>
             ) : (
               <>
                 <div className="text-[12px] font-light leading-[16px] text-neutral-600 w-[116px] mx-2 my-2">

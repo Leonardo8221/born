@@ -23,3 +23,15 @@ export const RETAILERS_QUERY = gql`
     retailersByOrganizationId(organizationId: $organizationId)
   }
 `;
+
+export const SEASONS_BY_COLLECTION_ID = gql`
+  query seasonsByCollectionId($collectionId: BigInteger!) {
+    seasonsByCollectionId(collectionId: $collectionId)
+  }
+`;
+
+export const SEASONS_BY_ORGANIZATION_ID = gql`
+  query seasonsByOrganizationId($organizationId: BigInteger!) {
+    seasonsByOrganizationId(organizationId: $organizationId)
+  }
+`;

@@ -9,7 +9,7 @@ import { GET_ORDERS } from '@/queries/orders/orders';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '@/components/page-components/Toast';
-import { GET_ORDERS_LIST } from '@/utils/constants';
+import { GET_ORDERS_LIST, seasons } from '@/utils/constants';
 import useDebounce from '@/utils/debounce';
 import { OrderStatus } from '@/generated/types';
 import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
@@ -72,15 +72,6 @@ const OrderPage = () => {
       setSelectedRetailers([...selectedRetailers, e.label]);
     }
   };
-
-  const seasons: string[] = [
-    'Pre-Spring (PS)',
-    'Spring/Summer (SS)',
-    'High Summer (HS)',
-    'Pre Fall (PF)',
-    'Resort (R)',
-    'Autumn Winter (AW)'
-  ];
 
   const filterTags: Tags[] = [
     {
