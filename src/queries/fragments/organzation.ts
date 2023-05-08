@@ -18,9 +18,11 @@ export const ORGANIZATION_FRAGMENT = gql`
     banner_url
     logo_url
     linesheet_name
+    linesheet_guid
     linesheet_url
     lookbook_name
     lookbook_url
+    lookbook_guid
     product_csv_url
     product_csv_guid
   }
