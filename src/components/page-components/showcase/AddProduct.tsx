@@ -32,8 +32,6 @@ const AddProduct: FC<AddProductProps> = () => {
     variables: { organizationId },
   });
 
-  console.log(data)
-
   const productCsvGuid = data?.organizationByOrganizationId?.product_csv_guid;
 
   const handleErrorMesssage = (message: string) => {

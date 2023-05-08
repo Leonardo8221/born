@@ -50,7 +50,7 @@ const ProductList: FC<ProductListProps> = ({
 
   if (gridType === 'list') {
     return (
-      <div className="mb-8">
+      <div className="mb-[100px]">
         <ListTable
           products={products}
           handleAddToCollection={handleAddToCollection}

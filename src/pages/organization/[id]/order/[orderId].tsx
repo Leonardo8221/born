@@ -151,6 +151,11 @@ function OrderPreview() {
         key: 'last_modified_by',
         value: orderDetails?.last_modified_by,
       },
+      {
+        name: 'Season',
+        key: 'season',
+        value: orderDetails?.season,
+      }
     ],
   };
 
@@ -368,7 +373,7 @@ function OrderPreview() {
               loading={isLoading}
             />
           </div>
-          {orderDetails?.order_status !== 'DRAFT' && orderDetails?.note && (
+          {orderDetails?.note && (
             <DescriptionField
               value={orderDetails?.note}
               label="Order note"

@@ -56,7 +56,6 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
   ) => {
     const items = [...pricings];
     const selectedItem: any = items[index];
-    console.log(name, selectedItem);
     selectedItem[name] = value;
     items[index] = selectedItem;
     setPricings(items);
