@@ -43,21 +43,22 @@ const Description: FC<DescriptionProps> = ({
           type,
           { responseType: 'blob' }
         );
-        console.log(res);
-        download(
-          res.data as any,
-          type === 'LOOKBOOK' ? lookbookGuid : linesheetGuid
-        );
+        const contentDisposition = res?.headers?.['content-disposition'];
+        let startFileNameIndex = contentDisposition.indexOf('"') + 1
+        let endFileNameIndex = contentDisposition.lastIndexOf('"');
+        let filename = contentDisposition.substring(startFileNameIndex, endFileNameIndex);
+        download(res.data as any, filename);
       } else {
         const res = await api.apiAttachmentDownloadCollectionAttachmentGet(
           type === 'LINESHEET' ? linesheetGuid : lookbookGuid,
           type,
           { responseType: 'blob' }
         );
-        download(
-          res.data as any,
-          type === 'LOOKBOOK' ? linesheetGuid : linesheetGuid
-        );
+        const contentDisposition = res?.headers?.['content-disposition'];
+        let startFileNameIndex = contentDisposition.indexOf('"') + 1
+        let endFileNameIndex = contentDisposition.lastIndexOf('"');
+        let filename = contentDisposition.substring(startFileNameIndex, endFileNameIndex);
+        download(res.data as any, filename);
       }
     } catch (error) {
       console.error(error);
