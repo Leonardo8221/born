@@ -57,7 +57,7 @@ const Products: FC = () => {
       search: debouncedValue,
       collectionNames: selectedCollections,
       colourFamilies: selectedColours,
-    seasons: selectedSeasons,
+      seasons: selectedSeasons,
       rows,
       start: pageNo,
     },
@@ -74,7 +74,7 @@ const Products: FC = () => {
         !!selectedColours.length
       ) {
         setProducts(
-          (pageNo !== 0 && pageNo) > 0
+          pageNo !== 0 && pageNo > 0
             ? [...products, ...newProducts]
             : newProducts
         );
@@ -124,7 +124,7 @@ const Products: FC = () => {
   };
 
   const handleFilterSeasons = (e: Item) => {
-    console.log(e)
+    console.log(e);
     setProducts([]);
     setPageNo(0);
     if (selectedSeasons.includes(e.label)) {
@@ -177,7 +177,7 @@ const Products: FC = () => {
       selectedItems: selectedSeasons,
       onReset: () => {
         setSelectedSeasons([]);
-        setProducts([]);
+        // setProducts([]);
         setPageNo(0);
       },
     },

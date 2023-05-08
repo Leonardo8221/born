@@ -16,7 +16,7 @@ import Loading from '@/components/page-components/Loading';
 import { useRouter } from 'next/router';
 import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
-import { CollectionResourceApi, ProductResourceApi } from 'client/command';
+import { AttachmentResourceApi, CollectionResourceApi, ProductResourceApi } from 'client/command';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
@@ -27,6 +27,7 @@ import {
 import Notification from '@/components/page-components/order/Notification';
 import { COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, SEASONS_BY_COLLECTION_ID } from '@/queries/filters';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import LinesheetUpload from '@/components/page-components/showcase/LinesheetUpload';
 
 const CollectionPage = () => {
   const router = useRouter();
@@ -53,6 +54,7 @@ const CollectionPage = () => {
   const collectionDetailRef = useRef<any>(null);
   const [gridPrevState, setGridPrevState] = useState<GridType>('grid');
   const [isProductDelete, setIsProductDelete] = useState(false);
+  const [isUpload, setIsUpload] = useState(false);
 
   const handleScroll = () => {
     const doc: Document = document;
@@ -260,6 +262,53 @@ const CollectionPage = () => {
     }
   };
 
+  const handleUploadFile = async ({
+    fileType,
+    file,
+    name,
+    onReset,
+  }: {
+    fileType: 'LINESHEET' | 'LOOKBOOK' | null;
+    file: File | null;
+    name: string;
+    onReset: () => void;
+  }) => {
+    try {
+      if (fileType && file) {
+        const config = await apiConfig();
+        const api = new AttachmentResourceApi(config);
+        const collectionApi = new CollectionResourceApi(config);
+        await api.apiAttachmentUploadCollectionAttachmentPost(
+          collection.id,
+          fileType,
+          file,
+          file.name
+        );
+        const payload = {
+          ...collection,
+          linesheet_name:
+            (fileType === 'LINESHEET' ? name : collection.linesheet_name) ||
+            '',
+          lookbook_name:
+            (fileType === 'LOOKBOOK' ? name : collection.lookbook_name) || '',
+        };
+        await collectionApi.apiCollectionUpdateCollectionDetailsPut(
+          collection.id,
+          payload
+        );
+        handleSuccessMesssage('File uploaded successfully!');
+        setIsUpload(false);
+        onReset();
+        refetchCollection();
+      } else {
+        handleErrorMesssage('File is required!');
+      }
+    } catch (error) {
+      console.error(error);
+      handleErrorMesssage('Failed to upload file, please try again!');
+    }
+  };
+
   const actions = [
     {
       name: 'Add to draft order',
@@ -329,6 +378,7 @@ const CollectionPage = () => {
             linesheetName={collection?.linesheet_name || ''}
             linesheetUrl={collection?.linesheet_url || ''}
             description={collection?.description}
+            onUpload={() => setIsUpload(true)}
           />
         </div>
         <Filters
@@ -411,6 +461,7 @@ const CollectionPage = () => {
           onCancel={() => setSelectedOrder(null)}
         />
       )}
+      <LinesheetUpload isOpen={isUpload} setIsOpen={setIsUpload} handleSubmit={handleUploadFile}/>
     </div>
   );
 };
