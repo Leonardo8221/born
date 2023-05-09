@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { fonts } from '@/config/fonts';
 import clsx from 'clsx';
+import moment from 'moment';
 
 interface OrderingFormProps {
   product: ProductWithCollectionsGraphqlDto;
@@ -43,7 +44,15 @@ const OrderingForm: FC<OrderingFormProps> = ({ product }) => {
     try {
       const config = await apiConfig();
       const api = new ProductResourceApi(config);
-      await api.apiProductUpdateProductPut(product?.id, productDetails);
+      await api.apiProductUpdateProductPut(product?.id, {
+        ...productDetails,
+        delivery_window_start_date: moment(
+          productDetails.delivery_window_start_date || ''
+        ).format(),
+        delivery_window_end_date: moment(
+          productDetails.delivery_window_end_date || ''
+        ).format(),
+      });
       setIsSubmitted(false);
       setSuccessMessage('Product updated successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
@@ -87,7 +96,11 @@ const OrderingForm: FC<OrderingFormProps> = ({ product }) => {
             Delivery window start date
           </label>
           <DatePicker
-            selected={productDetails?.delivery_window_start_date ? new Date(productDetails?.delivery_window_start_date) : null}
+            selected={
+              productDetails?.delivery_window_start_date
+                ? new Date(productDetails?.delivery_window_start_date)
+                : null
+            }
             minDate={new Date()}
             onChange={(date: any) =>
               handleInputChange('delivery_window_start_date', date)
@@ -102,10 +115,14 @@ const OrderingForm: FC<OrderingFormProps> = ({ product }) => {
               fonts.text.md
             )}
           >
-            Delivery window start date
+            Delivery window end date
           </label>
           <DatePicker
-            selected={productDetails?.delivery_window_end_date ? new Date(productDetails?.delivery_window_end_date) : null}
+            selected={
+              productDetails?.delivery_window_end_date
+                ? new Date(productDetails?.delivery_window_end_date)
+                : null
+            }
             minDate={new Date()}
             onChange={(date: any) =>
               handleInputChange('delivery_window_end_date', date)

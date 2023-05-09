@@ -139,7 +139,7 @@ function OrderPreview() {
       {
         name: 'Delivery lead time',
         key: 'delivery_lead_time',
-        value: '09/03/2023 - 12/06/2023',
+        value: orderDetails?.delivery_lead_time,
       },
       {
         name: 'Last updated',

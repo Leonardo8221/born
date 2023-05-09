@@ -19,17 +19,14 @@ const ProductEdit = () => {
   const [activeTab, setActiveTab] = useState<string | number>('description');
   const router = useRouter();
   const productId = router?.query?.productId || '';
+  const [path, setPath] = useState('');
 
-  const {
-    data,
-    loading,
-    refetch,
-  } = useQuery(GET_PRODUCT_BY_ID, {
+  const { data, loading, refetch } = useQuery(GET_PRODUCT_BY_ID, {
     variables: {
       productId: Number(productId),
     },
   });
-  
+
   const product = data?.productByProductId || {};
 
   const tabs = [
@@ -46,7 +43,7 @@ const ProductEdit = () => {
     {
       id: 'pricing',
       label: 'Pricing',
-      content: <PricingForm product={product} refetch={refetch}/>,
+      content: <PricingForm product={product} refetch={refetch} />,
     },
     {
       id: 'colours',
@@ -73,7 +70,7 @@ const ProductEdit = () => {
       label: 'Collections',
       content: <CollectionsForm product={product} />,
     },
-  ]
+  ];
 
   const handleTabChange = (id: string | number) => {
     router.push(`${window.location.pathname}?tab=${id}`);
@@ -84,12 +81,21 @@ const ProductEdit = () => {
     if (router.isReady) {
       const activeTab = (router.query?.tab || 'description') as string | number;
       handleTabChange(activeTab);
+      setPath(window.location.pathname.replace('/edit', ''));
     }
   }, [router.isReady]);
 
   return (
     <div>
-      <Header heading="Product edit" />
+      <Header
+        heading="Product edit"
+        href={path}
+        onClose={() =>
+          router?.push(
+            `/organization/${router?.query?.id}/discover?tab=products`
+          )
+        }
+      />
       <div className="min-h-[calc(100vh-144px)]">
         <div className="flex">
           <div className="w-full max-w-[320px] min-h-full bg-neutral-100">
@@ -102,8 +108,12 @@ const ProductEdit = () => {
               />
             </div>
           </div>
-          <div className='w-full p-8'>
-            <Tabs tabs={tabs} active={activeTab} onTabChange={handleTabChange} />
+          <div className="w-full p-8">
+            <Tabs
+              tabs={tabs}
+              active={activeTab}
+              onTabChange={handleTabChange}
+            />
           </div>
         </div>
       </div>
@@ -111,7 +121,7 @@ const ProductEdit = () => {
         <Footer />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ProductEdit;
