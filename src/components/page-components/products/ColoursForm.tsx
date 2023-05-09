@@ -57,14 +57,14 @@ const ColoursForm: FC<ColoursFormProps> = ({ product }) => {
         <Input
           label="Colour name"
           value={productDetails?.colour_name || ''}
-          onChange={(value: string) => handleInputChange('colour_name', value.split(','))}
+          onChange={(value: string) => handleInputChange('colour_name', value)}
           isValid={false}
           className="w-full"
         />
         <Input
           label="Colour code"
           value={productDetails?.colour_code || ''}
-          onChange={(value: string) => handleInputChange('colour_code', value.split(','))}
+          onChange={(value: string) => handleInputChange('colour_code', value)}
           isValid={false}
           className="w-full"
         />
