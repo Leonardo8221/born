@@ -16,6 +16,7 @@ import { OrderList } from '@/components/page-components/order/OrdersList';
 import { useState } from 'react';
 import { OrderGraphqlDto } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
+import moment from 'moment';
 
 const ProductPage = () => {
   const router = useRouter();
@@ -34,6 +35,7 @@ const ProductPage = () => {
     variables: {
       productId: Number(productIdQuery),
     },
+    fetchPolicy: 'network-only',
   });
 
   const currentProduct = product?.productByProductId;
@@ -58,7 +60,7 @@ const ProductPage = () => {
     },
     {
       label: 'Sizing',
-      value: currentProduct?.size_options.join(', ')
+      value: currentProduct?.size_options.join(', '),
     },
     {
       label: 'Composition',
@@ -86,11 +88,17 @@ const ProductPage = () => {
     },
     {
       label: 'Delivery start',
-      value: currentProduct?.delivery_window_start_date,
+      value: currentProduct?.delivery_window_start_date
+        ? moment(currentProduct?.delivery_window_start_date).format(
+            'DD/MM/YYYY'
+          )
+        : '',
     },
     {
       label: 'Delivery end',
-      value: currentProduct?.delivery_window_start_date,
+      value: currentProduct?.delivery_window_end_date
+        ? moment(currentProduct?.delivery_window_end_date).format('DD/MM/YYYY')
+        : '',
     },
   ];
 

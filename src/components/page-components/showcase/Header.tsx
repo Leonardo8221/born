@@ -7,9 +7,10 @@ import { Heading } from '@/components/molecules/Heading';
 interface HeaderProps {
   heading: string;
   href?: string;
+  onClose?: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ heading = '', href = '' }) => {
+const Header: FC<HeaderProps> = ({ heading = '', href = '', onClose }) => {
   const router = useRouter();
   return (
     <div className="flex w-full mx-auto items-center justify-between px-6 py-4 bg-[#fff] shadow-sm">
@@ -24,7 +25,7 @@ const Header: FC<HeaderProps> = ({ heading = '', href = '' }) => {
       <div className="flex items-center gap-x-4">
         <Icon
           name="icon-close"
-          onClick={() => router?.back()}
+          onClick={() => onClose ? onClose() : router?.back()}
           className="flex h-6 w-6 cursor-pointer items-center justify-center text-[#333333]"
         />
       </div>
