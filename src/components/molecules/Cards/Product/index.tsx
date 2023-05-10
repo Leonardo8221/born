@@ -115,7 +115,7 @@ export const ProductCard: FC<ProductCardProps> = ({
               <p className={styles.priceLabel}>Material</p>
             </div>
           )}
-          {/* {associated_prices?.map(
+          {associated_prices?.map(
             (item) =>
               (item?.landed || item?.exworks || item?.landed) && (
                 <div
@@ -158,7 +158,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                   ): null}
                 </div>
               )
-          )} */}
+          )}
           {size_options && (
             <div className="hidden print:block mt-1">
               <h5
