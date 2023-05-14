@@ -51,7 +51,7 @@ const ProductPage = () => {
 
   const specifications = [
     {
-      label: 'Made in',
+      label: 'Country of origin',
       value: currentProduct?.country_of_origin,
     },
     {
@@ -69,6 +69,10 @@ const ProductPage = () => {
     {
       label: 'Material',
       value: currentProduct?.materials?.join(', '),
+    },
+    {
+      label: 'Category',
+      value: currentProduct?.first_category,
     },
     {
       label: 'Measurements',

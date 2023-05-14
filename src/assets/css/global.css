@@ -26,10 +26,20 @@ body {
   overflow: hidden !important;
 }
 
-
-
-@media print and (max-width: 768px) {
+@media print and (max-width: 874px) {
   .order__page {
-      zoom: 53%;
+      zoom: 75%;
+  }
+}
+
+@media print and (max-width: 560px) {
+  .order__page {
+      zoom: 50%;
+  }
+}
+
+@media print and (max-width: 421px) {
+  .order__page {
+      zoom: 35%;
   }
 }

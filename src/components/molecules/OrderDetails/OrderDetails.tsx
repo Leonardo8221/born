@@ -10,6 +10,7 @@ type Column = {
   value: string;
   inputType?: string;
   name: string;
+  options?: string[];
 };
 
 export interface OrderDetailsProps {
@@ -98,13 +99,13 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                   editMode={editMode}
                   label={item.name}
                   value={item.value}
-                  inputType={item.name === 'Season' ? 'dropdown': 'text'}
-                  options={item.name === 'Season' && seasons || undefined}
-                  handleSelect={(value: string) => item.name === 'Season' ? handleEditInputs('season', value) : {}}
+                  inputType={item.options ? 'dropdown': 'text'}
+                  options={item.options}
+                  handleSelect={(value: string) => item.options ? handleEditInputs(item.key, value) : {}}
                   className="mb-2"
                   disabled={loading}
                   onChange={(event: any) =>
-                    item.name !== 'Season' ? handleEditInputs(item.key, event.target.value) : {}
+                    !item.options ? handleEditInputs(item.key, event.target.value) : {}
                   }
                 />
               </>

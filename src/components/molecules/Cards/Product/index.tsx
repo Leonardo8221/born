@@ -17,6 +17,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { VariantColors } from '../../ColorVariant';
+import moment from 'moment';
 
 export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   size?: 'lg' | 'sm';
@@ -36,6 +37,7 @@ const ProductCardWrapper: FC<{
     return (
       <Link
         href={`/organization/${router.query.id || '1'}/discover/products/${id}`}
+        className="print:h-full"
       >
         {children}
       </Link>
@@ -57,17 +59,25 @@ export const ProductCard: FC<ProductCardProps> = ({
   collections,
   size_options,
   compositions,
+  first_category,
   id,
+  delivery_window_start_date,
+  delivery_window_end_date,
 }) => {
   const renderCheckbox = isSelectable && (
-    <div className={styles.productCardCheckbox}>
+    <div className={clsx(styles.productCardCheckbox, 'print:hidden')}>
       <Checkbox checked={isSelected} onChange={onSelect} />
     </div>
   );
 
   return (
     <ProductCardWrapper isSelectable={isSelectable} id={id}>
-      <div className={clsx(clsProductCard(size), 'print:break-inside-avoid-page')}>
+      <div
+        className={clsx(
+          clsProductCard(size),
+          'print:break-inside-avoid-page print:h-full'
+        )}
+      >
         <div
           className={clsx(
             clsProductCardId(size),
@@ -107,14 +117,11 @@ export const ProductCard: FC<ProductCardProps> = ({
               </div>
             ))}
           </div>
-          {compositions && (
-            <div className="hidden print:block mt-2">
-              <h5 className={clsProductCardPrice(size)}>
-                {compositions?.join(', ')}
-              </h5>
-              <p className={styles.priceLabel}>Material</p>
-            </div>
-          )}
+          <ListView
+            label="Material"
+            title={compositions?.join(', ') || ''}
+            size={size}
+          />
           {associated_prices?.map(
             (item) =>
               (item?.landed || item?.exworks || item?.landed) && (
@@ -125,7 +132,6 @@ export const ProductCard: FC<ProductCardProps> = ({
                   {item?.landed ? (
                     <>
                       <div>
-                        
                         <h5 className={clsProductCardPrice(size)}>
                           {item?.currency && currencies[item.currency]}
                           {item.landed}
@@ -133,7 +139,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                         <p className={styles.priceLabel}>Landed</p>
                       </div>
                     </>
-                  ): null}
+                  ) : null}
                   {item?.exworks ? (
                     <>
                       <div>
@@ -144,7 +150,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                         <p className={styles.priceLabel}>Exworks</p>
                       </div>
                     </>
-                  ): null}
+                  ) : null}
                   {item?.retail ? (
                     <>
                       <div>
@@ -155,25 +161,48 @@ export const ProductCard: FC<ProductCardProps> = ({
                         <p className={styles.priceLabel}>MSRP</p>
                       </div>
                     </>
-                  ): null}
+                  ) : null}
                 </div>
               )
           )}
-          {size_options && (
-            <div className="hidden print:block mt-1">
-              <h5
-                className={clsx(
-                  clsProductCardPrice(size),
-                  'whitespace-nowrap text-ellipsis overflow-hidden'
-                )}
-              >
-                {[...size_options]?.sort()?.join(', ')}
-              </h5>
-              <p className={styles.priceLabel}>Sizes</p>
-            </div>
-          )}
+          <ListView label="Category" title={first_category || ''} size={size} />
+          <ListView
+            label="Delivery Window"
+            title={
+              delivery_window_start_date && delivery_window_end_date
+                ? `${moment(delivery_window_start_date)?.format(
+                    'DD/MM/YYYY'
+                  )} - ${moment(delivery_window_end_date)?.format(
+                    'DD/MM/YYYY'
+                  )}`
+                : ''
+            }
+            size={size}
+          />
+          <ListView
+            label="Sizes"
+            title={size_options?.join(', ') || ''}
+            size={size}
+          />
         </div>
       </div>
     </ProductCardWrapper>
+  );
+};
+
+const ListView: FC<{ title: string; label: string; size: 'lg' | 'sm' }> = ({
+  label,
+  title,
+  size,
+}) => {
+  return (
+    <>
+      {title && (
+        <div className="hidden print:block mt-1">
+          <h5 className={clsx(clsProductCardPrice(size))}>{title}</h5>
+          <p className={styles.priceLabel}>{label}</p>
+        </div>
+      )}
+    </>
   );
 };

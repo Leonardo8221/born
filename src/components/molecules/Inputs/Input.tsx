@@ -18,6 +18,7 @@ export interface InputProps {
   onError?: (message: string) => void;
   inputWrapperClasses?: string;
   disabled?: boolean;
+  min?: number;
 }
 
 const Input: FC<InputProps> = ({
@@ -35,6 +36,7 @@ const Input: FC<InputProps> = ({
   onError,
   inputWrapperClasses,
   disabled,
+  min,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -80,6 +82,7 @@ const Input: FC<InputProps> = ({
                 defaultValue={value}
                 placeholder={placeholder}
                 type={type}
+                min={min}
                 name={name}
                 className={clsx(
                   'my-input w-full flex p-3 rounded text-shades-black',

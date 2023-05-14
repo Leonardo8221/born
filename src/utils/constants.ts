@@ -9,5 +9,12 @@ export const seasons: string[] = [
   'High Summer (HS)',
   'Pre Fall (PF)',
   'Resort (R)',
-  'Autumn Winter (AW)'
+  'Autumn Winter (AW)',
+];
+
+export const orderTypes: string[] = [
+  'Reorder',
+  'Consignment',
+  'ATS',
+  'Seasonal',
 ];

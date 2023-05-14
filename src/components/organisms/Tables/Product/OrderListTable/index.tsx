@@ -33,7 +33,7 @@ const OrderListTable: FC<OrderDetails> = ({
   const columnHelper: any = createColumnHelper();
   const columns = [
     columnHelper.accessor((row: any) => row, {
-      size: 180,
+      size: 244,
       id: 'name',
       cell: ({ row }: any) => (
         <div>
@@ -43,13 +43,14 @@ const OrderListTable: FC<OrderDetails> = ({
             altText={row?.original?.product?.style_name + 'logo'}
             imgSrc={row?.original?.product?.attachments?.[0]?.medium_image_url}
             variant="product"
+            deliveryLeadTime={row?.original?.product.delivery_lead_time || ''}
           />
         </div>
       ),
       header: () => 'Product name',
     }),
     columnHelper.accessor((row: any) => row, {
-      size: 110,
+      size: 122,
       id: 'colors',
       cell: ({ row }: any) => {
         const colors = row?.original?.product?.colour_families || [];
@@ -62,7 +63,7 @@ const OrderListTable: FC<OrderDetails> = ({
             </div>
             <span
               className={clsx(
-                'text-shades-black tracking-[0.06em] text-center print:w-[60px] text-ellipsis overflow-hidden whitespace-nowrap',
+                'text-shades-black tracking-[0.06em] text-center print:w-[60px]',
                 fonts.text.md
               )}
             >
@@ -73,22 +74,62 @@ const OrderListTable: FC<OrderDetails> = ({
       },
       header: () => 'Color name',
     }),
-    columnHelper.accessor((row: any) => row, {
-      size: 96,
-      id: 'season',
+    columnHelper.accessor('materials', {
+      size: 128,
+      id: 'materials',
       cell: ({ row }: any) => (
-        <Badges items={[row?.original?.product?.season]} />
+        <div
+          className={clsx(
+            'text-shades-black tracking-[0.06em] text-center',
+            fonts.text.xl
+          )}
+        >
+          {row?.original?.product?.materials?.join(', ')}
+        </div>
       ),
-      header: () => 'Season',
+      header: () => 'Materials',
+    }),
+    columnHelper.accessor('first_category', {
+      size: 142,
+      id: 'category',
+      cell: ({ row }: any) => (
+        <Badges items={[row?.original?.product?.first_category]} />
+      ),
+      header: () => 'Category',
+    }),
+    columnHelper.accessor((row: any) => row, {
+      size: 142,
+      id: 'country_of_origin',
+      cell: ({ row }: any) => (
+        <Badges items={[row?.original?.product?.country_of_origin]} />
+      ),
+      header: () => 'Country of Origin',
+    }),
+    columnHelper.accessor('msrp', {
+      size: 108,
+      id: 'msrp',
+      cell: (info: any) => (
+        <div
+          className={clsx(
+            'text-shades-black tracking-[0.06em] text-center',
+            fonts.text.lg
+          )}
+        >
+          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(
+            info.getValue() || 0
+          )}
+        </div>
+      ),
+      header: () => 'MSRP',
     }),
     columnHelper.accessor('wholesale_price', {
-      size: 130,
+      size: 126,
       id: 'wholesalePrice',
       cell: (info: any) => (
         <div
           className={clsx(
             'text-shades-black tracking-[0.06em] text-center',
-            fonts.text.xl
+            fonts.text.lg
           )}
         >
           {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(
@@ -99,13 +140,13 @@ const OrderListTable: FC<OrderDetails> = ({
       header: () => 'Wholesale Price',
     }),
     columnHelper.accessor('total_quantity', {
-      size: 95,
+      size: 79,
       id: 'total_quantity',
       cell: (info: any) => (
         <div
           className={clsx(
             'text-shades-black tracking-[0.06em] text-center',
-            fonts.text.xl
+            fonts.text.lg
           )}
         >
           {info.getValue()}
@@ -120,7 +161,7 @@ const OrderListTable: FC<OrderDetails> = ({
         <div
           className={clsx(
             'text-shades-black tracking-[0.06em] text-center',
-            fonts.text.xl
+            fonts.text.lg
           )}
         >
           {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(
@@ -133,20 +174,27 @@ const OrderListTable: FC<OrderDetails> = ({
     columnHelper.accessor((row: any) => row, {
       size: 124,
       id: 'actions',
-      cell: ({ row }: any) => editMode && (
-        <div className="print:hidden flex">
-          <Icon
-            name="icon-message-square"
-            className="cursor-pointer text-shades-black ml-[28px] mr-[48px]"
-            onClick={() => handleOrderNote?.(row?.original?.id, row?.original?.note)}
-          />
-          <Icon
-            name="icon-trash"
-            className="cursor-pointer text-shades-black"
-            onClick={() => handleDelete?.(row?.original?.product?.id)}
-          />
-        </div>
-      ),
+      cell: ({ row }: any) =>
+        editMode && (
+          <div className="print:hidden flex">
+            <div className="flex-1 text-center">
+              <Icon
+                name="icon-message-square"
+                className="cursor-pointer text-shades-black mx-auto"
+                onClick={() =>
+                  handleOrderNote?.(row?.original?.id, row?.original?.note)
+                }
+              />
+            </div>
+            <div className="flex-1 text-right">
+              <Icon
+                name="icon-trash"
+                className="cursor-pointer text-shades-black ml-auto"
+                onClick={() => handleDelete?.(row?.original?.product?.id)}
+              />
+            </div>
+          </div>
+        ),
       header: () => '',
     }),
   ];

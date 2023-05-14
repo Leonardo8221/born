@@ -20,6 +20,7 @@ export interface ImageTextProps {
   isSelectable?: boolean;
   onSelect?: (event: any) => void;
   isSelected?: boolean;
+  deliveryLeadTime?: any;
 }
 
 const ImageText: FC<ImageTextProps> = ({
@@ -33,6 +34,7 @@ const ImageText: FC<ImageTextProps> = ({
   isSelectable,
   onSelect,
   isSelected,
+  deliveryLeadTime,
 }) => {
   const renderCheckbox = isSelectable && (
     <div className="absolute top-3 left-3">
@@ -80,6 +82,16 @@ const ImageText: FC<ImageTextProps> = ({
           >
             {subTitle}
           </h4>
+        )}
+        {deliveryLeadTime && (
+          <h5
+            className={clsx(
+              variantTitleClasses[variant],
+              'text-neutral-700 font-light tracking-[0.06em] !text-[12px] min-w-[148px]'
+            )}
+          >
+            {deliveryLeadTime}
+          </h5>
         )}
       </div>
     </div>

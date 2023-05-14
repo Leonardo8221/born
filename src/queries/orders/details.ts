@@ -9,6 +9,7 @@ export const GET_ORDER_BY_ID = gql`
       buyer_name
       created_date
       delivery_address
+      delivery_lead_time
       discount
       total_price
       total_quantity
