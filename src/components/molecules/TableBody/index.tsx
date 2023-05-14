@@ -71,7 +71,7 @@ export const TableBody: FC<TableBodyProps> = ({
             </tr>
             {size && (
               <tr>
-                <td colSpan={row.getVisibleCells().length}>
+                <td colSpan={row.getAllCells().length}>
                   <TableComponent
                     editMode={editMode}
                     handleQuantities={(val: string, id: number) => handleQuantities?.(val, Number(row?.original?.id), id)}
@@ -79,20 +79,22 @@ export const TableBody: FC<TableBodyProps> = ({
                       row?.getVisibleCells()[0]?.row?.original?.order_detail_sizes
                     }
                   />
-                  <DescriptionField
-                    disabled={true}
-                    onChange={(val) =>
-                      handleOrderNote(
-                        val,
-                        row.getVisibleCells()[0].row.original.id,
-                        row.getVisibleCells()[0].row.original.order_detail_sizes
-                      )
-                    }
-                    value={row.getVisibleCells()[0].row.original.note}
-                    className="mb-8 mt-4 print:mt-10 w-2/3 disabled:!bg-shades-white"
-                    label="Order Note"
-                    placeholder="This Order...."
-                  />
+                  {row.getVisibleCells()[0].row.original.note && (
+                    <DescriptionField
+                      disabled={true}
+                      onChange={(val) =>
+                        handleOrderNote(
+                          val,
+                          row.getVisibleCells()[0].row.original.id,
+                          row.getVisibleCells()[0].row.original.order_detail_sizes
+                        )
+                      }
+                      value={row.getVisibleCells()[0].row.original.note}
+                      className="mb-8 mt-4 print:mt-10 w-2/3 disabled:!bg-shades-white"
+                      label="Order Note"
+                      placeholder="This Order...."
+                    />
+                  )}
                 </td>
               </tr>
             )}

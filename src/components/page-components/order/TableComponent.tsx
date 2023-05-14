@@ -38,6 +38,7 @@ const TableComponent: React.FC<Props> = ({
           >
             <input
               type="number"
+              min="0"
               disabled={!editMode}
               onChange={(e: any) =>
                 handleQuantities && handleQuantities(e.target.value, item.id)

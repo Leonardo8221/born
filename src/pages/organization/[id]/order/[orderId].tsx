@@ -15,6 +15,7 @@ import Loading from '@/components/page-components/Loading';
 import PricingCondition from '@/components/page-components/order/PricingCondition';
 import useDebounce from '@/utils/debounce';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
+import { orderTypes, seasons } from '@/utils/constants';
 
 function OrderPreview() {
   const router = useRouter();
@@ -152,9 +153,16 @@ function OrderPreview() {
         value: orderDetails?.last_modified_by,
       },
       {
+        name: 'Order type',
+        key: 'order_type',
+        value: orderDetails?.order_type,
+        options: orderTypes,
+      },
+      {
         name: 'Season',
         key: 'season',
         value: orderDetails?.season,
+        options: seasons
       }
     ],
   };
@@ -336,7 +344,7 @@ function OrderPreview() {
         total_quantities={orderDetails?.total_quantity}
       />
 
-      <div className="mx-auto w-full max-w-[1120px] py-16">
+      <div className="mx-auto w-full max-w-[1120px] pt-16">
         <div className="bg-[#fff]]">
           {(orderDetails?.order_status === 'DRAFT' ||
             orderDetails?.order_status === 'CONFIRMED') && (
@@ -389,6 +397,8 @@ function OrderPreview() {
             disabled={isLoading}
           />
         </div>
+      </div>
+      <div className='max-w-[1376px] mx-auto pb-16'>
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={(id, note) => {

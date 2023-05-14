@@ -10,7 +10,7 @@ export const variantClasses = {
 
 export const variantImageClasses = {
   brand: 'h-12 w-12 border border-neutral-200 rounded-full',
-  product: 'h-[80px] w-[80px] rounded',
+  product: 'min-h-[80px] min-w-[80px] h-[80px] w-[80px] rounded',
   'brand-two': 'h-[88px] w-[88px] rounded-full border border-neutral-200 mb-4',
 };
 

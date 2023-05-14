@@ -57,6 +57,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
         <Input
           value={details?.discount}
           label="Discount (%)"
+          min={0}
           type="number"
           name="discount"
           isError={false}
@@ -70,6 +71,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
           label="Surcharge (%)"
           type="number"
           name="surcharge"
+          min={0}
           isError={false}
           isValid={false}
           onChange={(val) => handleChange('surcharge', val)}
