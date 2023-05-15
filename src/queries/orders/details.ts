@@ -9,7 +9,8 @@ export const GET_ORDER_BY_ID = gql`
       buyer_name
       created_date
       delivery_address
-      delivery_lead_time
+      delivery_window_start_date
+      delivery_window_end_date
       discount
       total_price
       total_quantity
@@ -23,6 +24,7 @@ export const GET_ORDER_BY_ID = gql`
       purchase_order
       retailer
       order_status
+      order_type
       size
       retailer
       season

@@ -10,6 +10,7 @@ import { Icon } from '@/components/molecules/Icon';
 import ColorVairant, {
   VariantColors,
 } from '@/components/molecules/ColorVariant';
+import moment from 'moment';
 
 export interface OrderDetails {
   products: any[];
@@ -43,7 +44,17 @@ const OrderListTable: FC<OrderDetails> = ({
             altText={row?.original?.product?.style_name + 'logo'}
             imgSrc={row?.original?.product?.attachments?.[0]?.medium_image_url}
             variant="product"
-            deliveryLeadTime={row?.original?.product.delivery_lead_time || ''}
+            deliveryLeadTime={
+              (row?.original?.product?.delivery_window_start_date ||
+                row?.original?.product?.delivery_window_end_date) &&
+              `${moment(
+                row?.original?.product?.delivery_window_start_date || ''
+              ).format('DD/MM/YYYY')} - ${
+                moment(row?.original?.product?.delivery_window_end_date).format(
+                  'DD/MM/YYYY'
+                ) || ''
+              }`
+            }
           />
         </div>
       ),
@@ -108,18 +119,22 @@ const OrderListTable: FC<OrderDetails> = ({
     columnHelper.accessor('msrp', {
       size: 108,
       id: 'msrp',
-      cell: (info: any) => (
-        <div
-          className={clsx(
-            'text-shades-black tracking-[0.06em] text-center',
-            fonts.text.lg
-          )}
-        >
-          {formatCurrency(pricing_condition?.split('_')?.[0] as any)?.format(
-            info.getValue() || 0
-          )}
-        </div>
-      ),
+      cell: (info: any) => {
+        const currency = pricing_condition?.split('_')?.[0];
+        const price = info?.row?.original?.product?.associated_prices?.filter(
+          (item: any) => item?.currency === currency
+        )?.[0]?.retail;
+        return (
+          <div
+            className={clsx(
+              'text-shades-black tracking-[0.06em] text-center',
+              fonts.text.lg
+            )}
+          >
+            {formatCurrency(currency as any)?.format(price || 0)}
+          </div>
+        );
+      },
       header: () => 'MSRP',
     }),
     columnHelper.accessor('wholesale_price', {

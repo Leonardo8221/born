@@ -72,7 +72,7 @@ const ProductPage = () => {
     },
     {
       label: 'Category',
-      value: currentProduct?.first_category,
+      value: currentProduct?.third_category,
     },
     {
       label: 'Measurements',

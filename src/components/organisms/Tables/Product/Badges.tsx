@@ -34,7 +34,7 @@ const Badges: FC<BadgeProps> = ({ items = [], countLimit = 1 }) => {
           key={item}
           size="xl"
           title={item}
-          className="max-w-[111px] !leading-8 !inline-block text-ellipsis overflow-hidden whitespace-nowrap"
+          className="max-w-[111px] !inline-block !h-auto !leading-[18px]"
         >
           {item}
         </Badge>

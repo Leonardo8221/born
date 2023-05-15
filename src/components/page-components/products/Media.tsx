@@ -14,9 +14,10 @@ import Loading from '../Loading';
 interface MediaFormProps {
   product: ProductWithCollectionsGraphqlDto;
   refetch: () => void;
+  loading?: boolean;
 }
 
-const MediaForm: FC<MediaFormProps> = ({ product, refetch }) => {
+const MediaForm: FC<MediaFormProps> = ({ product, refetch, loading }) => {
   const [attachments, setAttachments] = useState<any[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -44,10 +45,15 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch }) => {
         file,
         file.name
       );
-      setTimeout(async() => {
-        await refetch();
-        setIsSubmitted(false);
-      }, 3000);
+      const updatedAttachments = [...attachments];
+      const selectedAttachments = updatedAttachments[index];
+      selectedAttachments.medium_image_url = URL.createObjectURL(file);
+      updatedAttachments[index] = selectedAttachments;
+      setAttachments(updatedAttachments);
+      // setTimeout(async() => {
+      //   await refetch();
+      //   setIsSubmitted(false);
+      // }, 3000);
       setId(null);
       setSuccessMessage('Product Image uploaded successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
@@ -76,6 +82,10 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch }) => {
       console.error(error);
     }
   };
+
+  if(loading) {
+    <Loading message='Loading attachments' />
+  }
 
   return (
     <div className="max-w-[1119px]">
@@ -112,7 +122,7 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch }) => {
                     disabled={isSubmitted}
                   />
                   {(isSubmitted && id === index) ? (
-                    <Loading message="Uploading..." />
+                    <Loading message="It will take a few seconds to upload" className='px-6' />
                   ) : (
                     <div>
                       <ImageUpload

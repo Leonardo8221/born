@@ -111,8 +111,8 @@ const AddProduct: FC<AddProductProps> = () => {
         )}
       </div>
       <p className="max-w-[500px] font-light text-center text-[14px] text-[#333333] pb-4">
-        In order to upload your product CSV without any issues, please make sure
-        you have the correct CSV file format
+        In order to upload your product sheet without any issues, please make
+        sure you have the correct xls file format.
       </p>
       <div className="pb-[50px] flex flex-col items-center">
         <h2 className="text-[18px] pb-8 text-[#333333] font-normal leading-6">
@@ -122,11 +122,11 @@ const AddProduct: FC<AddProductProps> = () => {
           variant="outlined"
           className="h-[40px] w-[352px] !m-0"
           size="sm"
-          as='a'
+          as="a"
           href={`https://storage.googleapis.com/born-files-dev/template/RBW%20-%20Product%20Ingestion%20Template.xlsx`}
           download
         >
-          <Icon name="icon-document" /> Download CSV template
+          <Icon name="icon-document" /> Download ingestion template
         </Button>
       </div>
       <div className="pb-[50px] flex flex-col items-center">
@@ -158,7 +158,7 @@ const AddProduct: FC<AddProductProps> = () => {
           variant="outlined"
           className="h-[40px] w-[352px] !m-0"
           size="sm"
-          as='a'
+          as="a"
           href={`https://storage.googleapis.com/born-files-dev/product-csv/${productCsvGuid}`}
           download
         >

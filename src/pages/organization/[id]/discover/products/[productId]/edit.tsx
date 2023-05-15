@@ -25,6 +25,7 @@ const ProductEdit = () => {
     variables: {
       productId: Number(productId),
     },
+    fetchPolicy: 'network-only'
   });
 
   const product = data?.productByProductId || {};
@@ -63,7 +64,7 @@ const ProductEdit = () => {
     {
       id: 'media',
       label: 'Media',
-      content: <MediaForm product={product} refetch={refetch} />,
+      content: <MediaForm product={product} refetch={refetch} loading={loading} />,
     },
     {
       id: 'collections',

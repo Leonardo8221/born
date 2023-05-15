@@ -58,8 +58,8 @@ const Products: FC = () => {
       collectionNames: selectedCollections,
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
-      rows,
-      start: pageNo,
+      rows: (pageNo + 1) * rows,
+      start: pageNo * rows,
     },
     notifyOnNetworkStatusChange: true,
   });
@@ -124,7 +124,6 @@ const Products: FC = () => {
   };
 
   const handleFilterSeasons = (e: Item) => {
-    console.log(e);
     setProducts([]);
     setPageNo(0);
     if (selectedSeasons.includes(e.label)) {
@@ -329,13 +328,11 @@ const Products: FC = () => {
               dataLength={products.length}
               next={async () => {
                 const start = pageNo + 1;
-                totalPages && start <= totalPages && setPageNo(start);
+                totalPages && start < totalPages && setPageNo(start);
               }}
               hasMore={!!totalPages && pageNo < totalPages}
               loader={
-                !!products.length &&
-                totalPages &&
-                pageNo < totalPages && (
+                pageNo + 1 !== totalPages && (
                   <Loading message="Loading more products..." />
                 )
               }
