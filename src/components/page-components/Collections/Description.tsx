@@ -44,10 +44,7 @@ const Description: FC<DescriptionProps> = ({
           { responseType: 'blob' }
         );
         const contentDisposition = res?.headers?.['content-disposition'];
-        let startFileNameIndex = contentDisposition.indexOf('"') + 1
-        let endFileNameIndex = contentDisposition.lastIndexOf('"');
-        let filename = contentDisposition.substring(startFileNameIndex, endFileNameIndex);
-        download(res.data as any, filename);
+        download(res.data as any, contentDisposition);
       } else {
         const res = await api.apiAttachmentDownloadCollectionAttachmentGet(
           type === 'LINESHEET' ? linesheetGuid : lookbookGuid,
@@ -55,10 +52,7 @@ const Description: FC<DescriptionProps> = ({
           { responseType: 'blob' }
         );
         const contentDisposition = res?.headers?.['content-disposition'];
-        let startFileNameIndex = contentDisposition.indexOf('"') + 1
-        let endFileNameIndex = contentDisposition.lastIndexOf('"');
-        let filename = contentDisposition.substring(startFileNameIndex, endFileNameIndex);
-        download(res.data as any, filename);
+        download(res.data as any, contentDisposition);
       }
     } catch (error) {
       console.error(error);

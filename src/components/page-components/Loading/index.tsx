@@ -1,11 +1,13 @@
+import clsx from 'clsx';
 import { FC } from 'react';
 
 interface LoadingProps {
   message?: string;
+  className?: string;
 }
 
-const Loading: FC<LoadingProps> = ({ message }) => (
-  <div className="mt-4 flex items-center justify-center text-shades-black">
+const Loading: FC<LoadingProps> = ({ message, className }) => (
+  <div className={clsx("mt-4 flex items-center justify-center text-shades-black", className)}>
     <svg
       className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
       xmlns="http://www.w3.org/2000/svg"

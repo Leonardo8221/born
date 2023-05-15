@@ -198,6 +198,24 @@ export interface OrderRequestDTO {
      * @type {string}
      * @memberof OrderRequestDTO
      */
+    'delivery_window_start_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderRequestDTO
+     */
+    'delivery_window_end_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderRequestDTO
+     */
+    'order_type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderRequestDTO
+     */
     'payment_terms'?: string;
     /**
      * 
@@ -224,6 +242,22 @@ export interface OrderRequestDTO {
      */
     'size'?: string;
 }
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const OrderStatus = {
+    Draft: 'DRAFT',
+    Confirmed: 'CONFIRMED',
+    Approved: 'APPROVED',
+    Cancelled: 'CANCELLED'
+} as const;
+
+export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
 
 
 /**
@@ -286,6 +320,24 @@ export interface OrderWithProductsRequestDTO {
      * @memberof OrderWithProductsRequestDTO
      */
     'delivery_address'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRequestDTO
+     */
+    'delivery_window_start_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRequestDTO
+     */
+    'delivery_window_end_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof OrderWithProductsRequestDTO
+     */
+    'order_type'?: string;
     /**
      * 
      * @type {string}
@@ -2012,13 +2064,13 @@ export const FileIngestionResourceApiAxiosParamCreator = function (configuration
     return {
         /**
          * 
-         * @param {string} fileName 
+         * @param {number} organizationId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiIngestionDownloadProductXlsGet: async (fileName: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'fileName' is not null or undefined
-            assertParamExists('apiIngestionDownloadProductXlsGet', 'fileName', fileName)
+        apiIngestionDownloadProductXlsGet: async (organizationId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationId' is not null or undefined
+            assertParamExists('apiIngestionDownloadProductXlsGet', 'organizationId', organizationId)
             const localVarPath = `/api/ingestion/download-product-xls`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2035,8 +2087,8 @@ export const FileIngestionResourceApiAxiosParamCreator = function (configuration
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
 
-            if (fileName !== undefined) {
-                localVarQueryParameter['file_name'] = fileName;
+            if (organizationId !== undefined) {
+                localVarQueryParameter['organization_id'] = organizationId;
             }
 
 
@@ -2116,12 +2168,12 @@ export const FileIngestionResourceApiFp = function(configuration?: Configuration
     return {
         /**
          * 
-         * @param {string} fileName 
+         * @param {number} organizationId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiIngestionDownloadProductXlsGet(fileName: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiIngestionDownloadProductXlsGet(fileName, options);
+        async apiIngestionDownloadProductXlsGet(organizationId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiIngestionDownloadProductXlsGet(organizationId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2148,12 +2200,12 @@ export const FileIngestionResourceApiFactory = function (configuration?: Configu
     return {
         /**
          * 
-         * @param {string} fileName 
+         * @param {number} organizationId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiIngestionDownloadProductXlsGet(fileName: string, options?: any): AxiosPromise<void> {
-            return localVarFp.apiIngestionDownloadProductXlsGet(fileName, options).then((request) => request(axios, basePath));
+        apiIngestionDownloadProductXlsGet(organizationId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiIngestionDownloadProductXlsGet(organizationId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2178,13 +2230,13 @@ export const FileIngestionResourceApiFactory = function (configuration?: Configu
 export class FileIngestionResourceApi extends BaseAPI {
     /**
      * 
-     * @param {string} fileName 
+     * @param {number} organizationId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FileIngestionResourceApi
      */
-    public apiIngestionDownloadProductXlsGet(fileName: string, options?: AxiosRequestConfig) {
-        return FileIngestionResourceApiFp(this.configuration).apiIngestionDownloadProductXlsGet(fileName, options).then((request) => request(this.axios, this.basePath));
+    public apiIngestionDownloadProductXlsGet(organizationId: number, options?: AxiosRequestConfig) {
+        return FileIngestionResourceApiFp(this.configuration).apiIngestionDownloadProductXlsGet(organizationId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2413,6 +2465,90 @@ export const OrderReportResourceApiAxiosParamCreator = function (configuration?:
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {OrderStatus} orderStatus 
+         * @param {Array<string>} [buyers] 
+         * @param {string} [createdBy] 
+         * @param {string} [dateFrom] 
+         * @param {string} [dateTo] 
+         * @param {number} [organizationId] 
+         * @param {Array<string>} [retailers] 
+         * @param {string} [search] 
+         * @param {string} [season] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderDownloadOrderTableReportAsExcelGet: async (orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderStatus' is not null or undefined
+            assertParamExists('apiOrderDownloadOrderTableReportAsExcelGet', 'orderStatus', orderStatus)
+            const localVarPath = `/api/order/download-order-table-report-as-excel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (buyers) {
+                localVarQueryParameter['buyers'] = buyers;
+            }
+
+            if (createdBy !== undefined) {
+                localVarQueryParameter['created_by'] = createdBy;
+            }
+
+            if (dateFrom !== undefined) {
+                localVarQueryParameter['date_from'] = (dateFrom as any instanceof Date) ?
+                    (dateFrom as any).toISOString().substr(0,10) :
+                    dateFrom;
+            }
+
+            if (dateTo !== undefined) {
+                localVarQueryParameter['date_to'] = (dateTo as any instanceof Date) ?
+                    (dateTo as any).toISOString().substr(0,10) :
+                    dateTo;
+            }
+
+            if (orderStatus !== undefined) {
+                localVarQueryParameter['order_status'] = orderStatus;
+            }
+
+            if (organizationId !== undefined) {
+                localVarQueryParameter['organization_id'] = organizationId;
+            }
+
+            if (retailers) {
+                localVarQueryParameter['retailers'] = retailers;
+            }
+
+            if (search !== undefined) {
+                localVarQueryParameter['search'] = search;
+            }
+
+            if (season !== undefined) {
+                localVarQueryParameter['season'] = season;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2443,6 +2579,24 @@ export const OrderReportResourceApiFp = function(configuration?: Configuration) 
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderDownloadOrderReportAsPdfGet(orderId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {OrderStatus} orderStatus 
+         * @param {Array<string>} [buyers] 
+         * @param {string} [createdBy] 
+         * @param {string} [dateFrom] 
+         * @param {string} [dateTo] 
+         * @param {number} [organizationId] 
+         * @param {Array<string>} [retailers] 
+         * @param {string} [search] 
+         * @param {string} [season] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiOrderDownloadOrderTableReportAsExcelGet(orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderDownloadOrderTableReportAsExcelGet(orderStatus, buyers, createdBy, dateFrom, dateTo, organizationId, retailers, search, season, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -2470,6 +2624,23 @@ export const OrderReportResourceApiFactory = function (configuration?: Configura
          */
         apiOrderDownloadOrderReportAsPdfGet(orderId: number, options?: any): AxiosPromise<void> {
             return localVarFp.apiOrderDownloadOrderReportAsPdfGet(orderId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {OrderStatus} orderStatus 
+         * @param {Array<string>} [buyers] 
+         * @param {string} [createdBy] 
+         * @param {string} [dateFrom] 
+         * @param {string} [dateTo] 
+         * @param {number} [organizationId] 
+         * @param {Array<string>} [retailers] 
+         * @param {string} [search] 
+         * @param {string} [season] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiOrderDownloadOrderTableReportAsExcelGet(orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options?: any): AxiosPromise<void> {
+            return localVarFp.apiOrderDownloadOrderTableReportAsExcelGet(orderStatus, buyers, createdBy, dateFrom, dateTo, organizationId, retailers, search, season, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2501,6 +2672,25 @@ export class OrderReportResourceApi extends BaseAPI {
      */
     public apiOrderDownloadOrderReportAsPdfGet(orderId: number, options?: AxiosRequestConfig) {
         return OrderReportResourceApiFp(this.configuration).apiOrderDownloadOrderReportAsPdfGet(orderId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {OrderStatus} orderStatus 
+     * @param {Array<string>} [buyers] 
+     * @param {string} [createdBy] 
+     * @param {string} [dateFrom] 
+     * @param {string} [dateTo] 
+     * @param {number} [organizationId] 
+     * @param {Array<string>} [retailers] 
+     * @param {string} [search] 
+     * @param {string} [season] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OrderReportResourceApi
+     */
+    public apiOrderDownloadOrderTableReportAsExcelGet(orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options?: AxiosRequestConfig) {
+        return OrderReportResourceApiFp(this.configuration).apiOrderDownloadOrderTableReportAsExcelGet(orderStatus, buyers, createdBy, dateFrom, dateTo, organizationId, retailers, search, season, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

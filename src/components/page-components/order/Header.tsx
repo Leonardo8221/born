@@ -7,7 +7,7 @@ import { Pill } from '@/components/atoms/Pill';
 import { useRouter } from 'next/router';
 import { apiConfig } from '@/utils/apiConfig';
 import { OrderReportResourceApi, OrderResourceApi } from 'client/command';
-import { downloadFile } from '@/utils/downloadFile';
+import { download, downloadFile } from '@/utils/downloadFile';
 import { Icon } from '@/components/molecules/Icon';
 import { Logo } from '@/components/atoms/Logo';
 
@@ -43,25 +43,17 @@ const Header: FC<HeaderProps> = ({
   const orderId = Number(router?.query?.orderId);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleDownloadCollection = async (downloadAs: 'pdf' | 'xlsx') => {
+  const handleDownloadCollection = async () => {
     try {
       const config = await apiConfig();
       const api = new OrderReportResourceApi(config);
       let file: BlobPart;
-      if (downloadAs === 'pdf') {
-        const response = await api.apiOrderDownloadOrderReportAsPdfGet(
-          orderId,
-          { responseType: 'blob' }
-        );
-        file = response.data as any;
-      } else {
-        const response = await api.apiOrderDownloadOrderReportAsExcelGet(
-          orderId,
-          { responseType: 'blob' }
-        );
-        file = response?.data as any;
-      }
-      downloadFile(file, downloadAs);
+      const response = await api.apiOrderDownloadOrderReportAsExcelGet(
+        orderId,
+        { responseType: 'blob' }
+      );
+      file = response?.data as any;
+      download(response.data as any, response?.headers?.['content-disposition']);
     } catch (error) {
       console.log(error);
       handleErrorMessage?.('Failed to download file!');
@@ -110,7 +102,7 @@ const Header: FC<HeaderProps> = ({
     {
       label: 'Excel',
       value: 'excel',
-      action: () => handleDownloadCollection('xlsx'),
+      action: () => handleDownloadCollection(),
     },
   ];
 

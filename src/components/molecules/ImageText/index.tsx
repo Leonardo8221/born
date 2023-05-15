@@ -86,8 +86,7 @@ const ImageText: FC<ImageTextProps> = ({
         {deliveryLeadTime && (
           <h5
             className={clsx(
-              variantTitleClasses[variant],
-              'text-neutral-700 font-light tracking-[0.06em] !text-[12px] min-w-[148px]'
+              'mt-1 text-neutral-700 font-light tracking-[0.06em] !text-[10px] min-w-[148px]'
             )}
           >
             {deliveryLeadTime}

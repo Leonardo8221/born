@@ -19,6 +19,7 @@ import { orderTypes, seasons } from '@/utils/constants';
 
 function OrderPreview() {
   const router = useRouter();
+
   const orderId = Number(router?.query?.orderId);
   const [editMode, setEditMode] = useState(false);
   const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
@@ -34,7 +35,7 @@ function OrderPreview() {
   const debouncedSurcharge = useDebounce(surcharge, 500);
 
   const { loading, data, refetch } = useQuery(GET_ORDER_BY_ID, {
-    variables: { orderId: orderId },
+    variables: { orderId },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
   });
@@ -139,8 +140,8 @@ function OrderPreview() {
       },
       {
         name: 'Delivery lead time',
-        key: 'delivery_lead_time',
-        value: orderDetails?.delivery_lead_time,
+        key: 'devlivery_window_start_date',
+        value: `${orderDetails?.delivery_window_start_date || ''} - ${orderDetails?.delivery_window_end_end || ''}`,
       },
       {
         name: 'Last updated',
@@ -259,7 +260,6 @@ function OrderPreview() {
     setIsLoading(true);
     try {
       const payload = {
-        note: '',
         order_detail_sizes: [
           {
             order_detail_size_id: id,
@@ -318,9 +318,7 @@ function OrderPreview() {
 
   const isDisabled =
     orderDetails?.order_status &&
-    !['DRAFT', 'CONFIRMED'].includes(orderDetails?.order_status);
-
-  console.log(!isDisabled, isLoading);
+    !['DRAFT'].includes(orderDetails?.order_status);
 
   return (
     <div className="mx-auto overflow-x-hidden order__page">
