@@ -145,6 +145,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
             if (!item.value || item.value?.length === 0) {
               return null;
             }
+            
             return (
               <div
                 key={`${item.value} ${item.label}`}
