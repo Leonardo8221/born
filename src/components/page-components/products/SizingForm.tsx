@@ -85,7 +85,7 @@ const SizingForm: FC<SizingFormProps> = ({ product }) => {
         <div className="absolute w-full h-[1px] bg-[#999999] top-0 left-0 bottom-0 my-auto" />
       </div>
       <div>
-        <div className="inline-flex mb-3">
+        <div className="inline-flex flex-wrap mb-3">
           {productDetails?.size_options?.map((item: any) => (
             <div className="flex w-[160px] gap-x-3 py-2" key={item}>
               <Checkbox
