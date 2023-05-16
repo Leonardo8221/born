@@ -35,7 +35,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
       item?.value?.toLowerCase() === details?.pricing_condition?.toLowerCase()
   )?.[0];
 
-  const isDisabled = details?.order_status && !['DRAFT', 'CONFIRMED'].includes(details?.order_status);
+  const isDisabled = details?.order_status && !['DRAFT'].includes(details?.order_status);
 
   return (
     <div className="flex items-center justify-between px-9 py-10 mb-6 shadow-md rounded-md items-center">

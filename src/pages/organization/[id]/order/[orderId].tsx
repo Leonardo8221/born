@@ -141,7 +141,9 @@ function OrderPreview() {
       {
         name: 'Delivery lead time',
         key: 'devlivery_window_start_date',
-        value: `${orderDetails?.delivery_window_start_date || ''} - ${orderDetails?.delivery_window_end_end || ''}`,
+        value: `${orderDetails?.delivery_window_start_date || ''} - ${
+          orderDetails?.delivery_window_end_end || ''
+        }`,
       },
       {
         name: 'Last updated',
@@ -163,8 +165,8 @@ function OrderPreview() {
         name: 'Season',
         key: 'season',
         value: orderDetails?.season,
-        options: seasons
-      }
+        options: seasons,
+      },
     ],
   };
 
@@ -344,8 +346,7 @@ function OrderPreview() {
 
       <div className="mx-auto w-full max-w-[1120px] pt-16">
         <div className="bg-[#fff]]">
-          {(orderDetails?.order_status === 'DRAFT' ||
-            orderDetails?.order_status === 'CONFIRMED') && (
+          {orderDetails?.order_status === 'DRAFT' && (
             <div className="print:hidden flex flex-1 justify-end mb-6">
               <div className="flex items-center">
                 <Button
@@ -385,7 +386,7 @@ function OrderPreview() {
               label="Order note"
               onChange={() => {}}
               readOnly
-              className='mb-6 mt-2'
+              className="mb-6 mt-2"
             />
           )}
           <PricingCondition
@@ -396,7 +397,7 @@ function OrderPreview() {
           />
         </div>
       </div>
-      <div className='max-w-[1376px] mx-auto pb-16'>
+      <div className="max-w-[1376px] mx-auto pb-16">
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={(id, note) => {
