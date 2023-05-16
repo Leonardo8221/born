@@ -54,13 +54,13 @@ const Marketing: FC<MarketingProps> = ({ organization }) => {
     }, 3000);
   };
 
-  const handleUploadOrganizationAttachment = async (file: File) => {
+  const handleUploadOrganizationAttachment = async (file: File, type: 'LOOKBOOK' | 'LINESHEET') => {
     setIsBrandUpload(true);
     try {
       const config: any = await apiConfig();
       const api = new AttachmentResourceApi(config);
       await api.apiAttachmentUploadOrganizationAttachmentPost(
-        'LOOKBOOK',
+        type,
         organizationId,
         file,
         file.name
@@ -78,7 +78,8 @@ const Marketing: FC<MarketingProps> = ({ organization }) => {
 
   const handleUploadCollectionAttachment = async (
     collectionId: number,
-    file: File
+    file: File,
+    type: 'LOOKBOOK' | 'LINESHEET',
   ) => {
     setIsCollectionUplaod(true);
     try {
@@ -86,7 +87,7 @@ const Marketing: FC<MarketingProps> = ({ organization }) => {
       const api = new AttachmentResourceApi(config);
       await api.apiAttachmentUploadCollectionAttachmentPost(
         collectionId,
-        'LOOKBOOK',
+        type,
         file,
         file.name
       );
@@ -108,18 +109,35 @@ const Marketing: FC<MarketingProps> = ({ organization }) => {
         them to a <br></br> specific collection.
       </p>
       <h2 className="mb-6 text-[24px] leading-10 font-light">Brand Profile</h2>
-      <FileUpload
-        idInput="uploadOrganizationAttachment"
-        handleUpload={(file) => {
-          if (handleUploadOrganizationAttachment) {
-            handleUploadOrganizationAttachment(file);
-          }
-        }}
-        acceptedFileTypes={['application/pdf']}
-        labelText="Lookbook | PDF only (25 MB max)"
-        className="mb-8"
-        disabled={isBrandUpload}
-      />
+      <div className='flex gap-8'>
+        <FileUpload
+          idInput="upload_organization_lookbook"
+          imageUrl={organization?.lookbook_url || ''}
+          handleUpload={(file) => {
+            if (handleUploadOrganizationAttachment) {
+              handleUploadOrganizationAttachment(file, 'LOOKBOOK');
+            }
+          }}
+          acceptedFileTypes={['application/pdf']}
+          labelText="Lookbook | PDF only (25 MB max)"
+          className="mb-8"
+          disabled={isBrandUpload}
+        />
+        <FileUpload
+          idInput="upload_organization_linesheet"
+          imageUrl={organization?.linesheet_url || ''}
+          handleUpload={(file) => {
+            if (handleUploadOrganizationAttachment) {
+              handleUploadOrganizationAttachment(file, 'LINESHEET');
+            }
+          }}
+          acceptedFileTypes={['application/pdf']}
+          labelText="Linesheet | PDF only (25 MB max)"
+          className="mb-8"
+          disabled={isBrandUpload}
+        />
+      </div>
+      
       <h2 className="text-[24px] leading-10 font-light">Collections</h2>
       <p className="text-shades-black leading-8 text-[18px] mb-6">
         Choose a collection, and upload the desired content.
@@ -145,18 +163,32 @@ const Marketing: FC<MarketingProps> = ({ organization }) => {
             );
           })}
       </div>
-      <FileUpload
-        idInput="uploadCollectionAttachment"
-        handleUpload={(file) => {
-          if (handleUploadCollectionAttachment && activeCollectionId) {
-            handleUploadCollectionAttachment(activeCollectionId, file);
-          }
-        }}
-        disabled={isCollectionUpload}
-        acceptedFileTypes={['application/pdf']}
-        labelText="Lookbook | PDF only (25 MB max)"
-        className="mb-8"
-      />
+      <div className='flex gap-8'>
+        <FileUpload
+          idInput="upload_collection_lookbook"
+          handleUpload={(file) => {
+            if (handleUploadCollectionAttachment && activeCollectionId) {
+              handleUploadCollectionAttachment(activeCollectionId, file, 'LOOKBOOK');
+            }
+          }}
+          disabled={isCollectionUpload}
+          acceptedFileTypes={['application/pdf']}
+          labelText="Lookbook | PDF only (25 MB max)"
+          className="mb-8"
+        />
+        <FileUpload
+          idInput="upload_collection_linesheet"
+          handleUpload={(file) => {
+            if (handleUploadCollectionAttachment && activeCollectionId) {
+              handleUploadCollectionAttachment(activeCollectionId, file, 'LINESHEET');
+            }
+          }}
+          disabled={isCollectionUpload}
+          acceptedFileTypes={['application/pdf']}
+          labelText="Linesheet | PDF only (25 MB max)"
+          className="mb-8"
+        />
+      </div>
 
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>
