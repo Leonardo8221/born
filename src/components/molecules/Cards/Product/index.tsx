@@ -124,7 +124,7 @@ export const ProductCard: FC<ProductCardProps> = ({
           />
           {associated_prices?.map(
             (item) =>
-              (item?.landed || item?.exworks || item?.landed) && (
+              (item?.landed || item?.exworks || item?.landed) > -1 && (
                 <div
                   key={item?.currency}
                   className={clsProductCardPrices(size)}

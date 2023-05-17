@@ -122,8 +122,9 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
           />
           <Input
             label="landed"
-            value={item?.landed || ''}
+            value={!Number.isNaN(item?.landed) ? Number(item.landed) : ''}
             type="number"
+            min={0}
             onChange={(value: string) =>
               handleInputChange('landed', Number(value), index)
             }
@@ -132,8 +133,9 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
           />
           <Input
             label="Exworks"
-            value={item?.exworks || ''}
+            value={!Number.isNaN(item?.exworks) ? Number(item.exworks) : ''}
             type="number"
+            min={0}
             onChange={(value: string) =>
               handleInputChange('exworks', Number(value), index)
             }
@@ -143,7 +145,8 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
           <Input
             label="Retail"
             type="number"
-            value={item?.retail || ''}
+            min={0}
+            value={!Number.isNaN(item?.retail) ? Number(item.retail) : ''}
             onChange={(value: string) =>
               handleInputChange('retail', Number(value), index)
             }
