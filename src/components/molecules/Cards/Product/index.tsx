@@ -1,10 +1,13 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import clsx from 'clsx';
 import { StaticImageData } from 'next/image';
 import { Badge } from '../../Badge';
 import { Checkbox } from '../../Checkbox';
 import styles from './product.module.css';
-import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
+import {
+  ProductVariantGraphqlDto,
+  ProductWithCollectionsGraphqlDto,
+} from '@/generated/types';
 import {
   clsProductCard,
   clsProductCardId,
@@ -24,7 +27,15 @@ export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   imageUrl?: StaticImageData | string;
   isSelectable?: boolean;
   isSelected?: boolean;
-  onSelect?: () => void;
+  onSelect?: ({
+    id,
+    selectedVariant,
+  }: {
+    id: number;
+    selectedVariant: number;
+    isVariant?: boolean;
+  }) => void;
+  selectedVariants?: number[];
 }
 
 const ProductCardWrapper: FC<{
@@ -56,6 +67,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   onSelect = () => {},
   associated_prices,
   colour_families,
+  productVariants,
   collections,
   size_options,
   compositions,
@@ -63,15 +75,35 @@ export const ProductCard: FC<ProductCardProps> = ({
   id,
   delivery_window_start_date,
   delivery_window_end_date,
+  selectedVariants,
 }) => {
+  const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
+
+  const getSelectedVariantImageUrl = () => {
+    console.log(productVariants, selectedVariant, selectedVariants)
+    if (selectedVariant !== null) {
+      const images: any = productVariants?.filter(
+        (item) => item?.id === selectedVariant || selectedVariants?.includes(item?.id)
+      )?.[0]?.attachments?.[0];
+      return images?.[size === 'lg' ? 'large_image_url' : 'medium_image_url'];
+    } else {
+      return imageUrl;
+    }
+  };
+
   const renderCheckbox = isSelectable && (
     <div className={clsx(styles.productCardCheckbox, 'print:hidden')}>
-      <Checkbox checked={isSelected} onChange={onSelect} />
+      <Checkbox
+        checked={isSelected}
+        onChange={() => {
+          onSelect({ id, selectedVariant: selectedVariant || id });
+        }}
+      />
     </div>
   );
 
   return (
-    <ProductCardWrapper isSelectable={isSelectable} id={id}>
+    <ProductCardWrapper isSelectable={isSelectable} id={selectedVariant || id}>
       <div
         className={clsx(
           clsProductCard(size),
@@ -94,9 +126,13 @@ export const ProductCard: FC<ProductCardProps> = ({
             )}
           >
             <div className="absolute top-0 left-0 h-full w-full rounded-lg bg-[rgba(0,0,0,0.1)]" />
-            {imageUrl && (
+            {getSelectedVariantImageUrl() && (
               <img
-                src={typeof imageUrl === 'string' ? imageUrl : imageUrl.src}
+                src={
+                  typeof imageUrl === 'string'
+                    ? getSelectedVariantImageUrl()
+                    : imageUrl?.src
+                }
                 alt={style_name + 'image'}
                 className={clsx(
                   'rounded-lg object-cover',
@@ -107,9 +143,48 @@ export const ProductCard: FC<ProductCardProps> = ({
             {renderCheckbox}
           </div>
           <h3 className={clsProductCardTitle(size)}>{style_name}</h3>
-          <VariantColors
-            colors={!!colour_families ? (colour_families as string[]) : []}
-          />
+          <div className="flex items-center gap-2 flex-wrap">
+            <VariantColors
+              colors={!!colour_families ? (colour_families as string[]) : []}
+              type="card"
+              active={
+                selectedVariant ||
+                productVariants?.some((r) =>
+                  selectedVariants?.includes?.(r?.id)
+                )
+                  ? false
+                  : true || selectedVariants?.includes(id)
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                onSelect({
+                  id,
+                  selectedVariant: id,
+                  isVariant: true,
+                });
+                setSelectedVariant(null);
+              }}
+            />
+            {productVariants?.map((variant) => (
+              <VariantColors
+                key={variant?.id}
+                colors={(variant?.colour_families as string[]) || []}
+                type="card"
+                active={
+                  selectedVariant === variant?.id || selectedVariants?.includes(variant?.id)
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSelect({
+                    id,
+                    selectedVariant: variant?.id,
+                    isVariant: true,
+                  });
+                  setSelectedVariant(variant?.id);
+                }}
+              />
+            ))}
+          </div>
           <div className={clsx(clsProductCardTags(size), 'mt-4 flex-wrap')}>
             {collections?.map((collection: any) => (
               <div key={collection?.id} className="mb-1">

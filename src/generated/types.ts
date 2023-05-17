@@ -69,6 +69,10 @@ export type OrderGraphqlDto = {
   /** ISO-8601 */
   created_date?: Maybe<Scalars["DateTime"]>;
   delivery_address?: Maybe<Scalars["String"]>;
+  /** ISO-8601 */
+  delivery_window_end_date?: Maybe<Scalars["DateTime"]>;
+  /** ISO-8601 */
+  delivery_window_start_date?: Maybe<Scalars["DateTime"]>;
   discount?: Maybe<Scalars["BigDecimal"]>;
   email_address?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
@@ -79,6 +83,7 @@ export type OrderGraphqlDto = {
   note?: Maybe<Scalars["String"]>;
   order_details?: Maybe<Array<Maybe<OrderDetailGraphqlDto>>>;
   order_status?: Maybe<OrderStatus>;
+  order_type?: Maybe<Scalars["String"]>;
   payment_terms?: Maybe<Scalars["String"]>;
   pricing_condition?: Maybe<PricingCondition>;
   purchase_order?: Maybe<Scalars["String"]>;
@@ -189,6 +194,7 @@ export type ProductAttachmentGraphqlDto = {
 
 export type ProductVariantGraphqlDto = {
   __typename?: "ProductVariantGraphqlDTO";
+  attachments?: Maybe<Array<Maybe<ProductAttachmentGraphqlDto>>>;
   colour_code?: Maybe<Scalars["String"]>;
   colour_families?: Maybe<Array<Maybe<Scalars["String"]>>>;
   colour_name?: Maybe<Scalars["String"]>;
@@ -383,6 +389,7 @@ export type QueryProductByProductIdArgs = {
 /** Query root */
 export type QueryProductVariantsByStyleNumberArgs = {
   id: Scalars["BigInteger"];
+  organizationId: Scalars["BigInteger"];
   styleNumber: Scalars["String"];
 };
 
@@ -608,9 +615,17 @@ export type GetProductsByCollectionIdQuery = {
         __typename?: "ProductVariantGraphqlDTO";
         colour_code?: string | null;
         colour_name?: string | null;
+        colour_families?: Array<string | null> | null;
         id?: any | null;
         product_id?: string | null;
         style_number?: string | null;
+        attachments?: Array<{
+          __typename?: "ProductAttachmentGraphqlDTO";
+          id?: any | null;
+          small_image_url?: string | null;
+          medium_image_url?: string | null;
+          large_image_url?: string | null;
+        } | null> | null;
       } | null> | null;
     } | null> | null;
   } | null;
@@ -726,9 +741,11 @@ export type OrganizationGraphqlDtoFragment = {
   banner_url?: string | null;
   logo_url?: string | null;
   linesheet_name?: string | null;
+  linesheet_guid?: string | null;
   linesheet_url?: string | null;
   lookbook_name?: string | null;
   lookbook_url?: string | null;
+  lookbook_guid?: string | null;
   product_csv_url?: string | null;
   product_csv_guid?: string | null;
 };
@@ -786,9 +803,17 @@ export type ProductWithCollectionsGraphqlDtoFragment = {
     __typename?: "ProductVariantGraphqlDTO";
     colour_code?: string | null;
     colour_name?: string | null;
+    colour_families?: Array<string | null> | null;
     id?: any | null;
     product_id?: string | null;
     style_number?: string | null;
+    attachments?: Array<{
+      __typename?: "ProductAttachmentGraphqlDTO";
+      id?: any | null;
+      small_image_url?: string | null;
+      medium_image_url?: string | null;
+      large_image_url?: string | null;
+    } | null> | null;
   } | null> | null;
 };
 
@@ -823,6 +848,8 @@ export type GetOrderByIdQuery = {
     buyer_name?: string | null;
     created_date?: any | null;
     delivery_address?: string | null;
+    delivery_window_start_date?: any | null;
+    delivery_window_end_date?: any | null;
     discount?: any | null;
     total_price?: any | null;
     total_quantity?: number | null;
@@ -836,6 +863,7 @@ export type GetOrderByIdQuery = {
     purchase_order?: string | null;
     retailer?: string | null;
     order_status?: OrderStatus | null;
+    order_type?: string | null;
     size?: string | null;
     season?: string | null;
     order_details?: Array<{
@@ -1020,9 +1048,11 @@ export type GetOrganizationsQuery = {
       banner_url?: string | null;
       logo_url?: string | null;
       linesheet_name?: string | null;
+      linesheet_guid?: string | null;
       linesheet_url?: string | null;
       lookbook_name?: string | null;
       lookbook_url?: string | null;
+      lookbook_guid?: string | null;
       product_csv_url?: string | null;
       product_csv_guid?: string | null;
     } | null> | null;
@@ -1056,9 +1086,11 @@ export type GetOrganizationByIdQuery = {
       banner_url?: string | null;
       logo_url?: string | null;
       linesheet_name?: string | null;
+      linesheet_guid?: string | null;
       linesheet_url?: string | null;
       lookbook_name?: string | null;
       lookbook_url?: string | null;
+      lookbook_guid?: string | null;
       product_csv_url?: string | null;
       product_csv_guid?: string | null;
       collections?: Array<{
@@ -1106,9 +1138,11 @@ export type GetOrganizationQuery = {
     banner_url?: string | null;
     logo_url?: string | null;
     linesheet_name?: string | null;
+    linesheet_guid?: string | null;
     linesheet_url?: string | null;
     lookbook_name?: string | null;
     lookbook_url?: string | null;
+    lookbook_guid?: string | null;
     product_csv_url?: string | null;
     product_csv_guid?: string | null;
     collections?: Array<{
@@ -1207,9 +1241,17 @@ export type GetProductsQuery = {
         __typename?: "ProductVariantGraphqlDTO";
         colour_code?: string | null;
         colour_name?: string | null;
+        colour_families?: Array<string | null> | null;
         id?: any | null;
         product_id?: string | null;
         style_number?: string | null;
+        attachments?: Array<{
+          __typename?: "ProductAttachmentGraphqlDTO";
+          id?: any | null;
+          small_image_url?: string | null;
+          medium_image_url?: string | null;
+          large_image_url?: string | null;
+        } | null> | null;
       } | null> | null;
     } | null> | null;
   } | null;
@@ -1274,9 +1316,17 @@ export type GetProductByIdQuery = {
       __typename?: "ProductVariantGraphqlDTO";
       colour_code?: string | null;
       colour_name?: string | null;
+      colour_families?: Array<string | null> | null;
       id?: any | null;
       product_id?: string | null;
       style_number?: string | null;
+      attachments?: Array<{
+        __typename?: "ProductAttachmentGraphqlDTO";
+        id?: any | null;
+        small_image_url?: string | null;
+        medium_image_url?: string | null;
+        large_image_url?: string | null;
+      } | null> | null;
     } | null> | null;
   } | null;
 };
@@ -1355,9 +1405,17 @@ export type GetProductsBySearchAndCollectionIdQuery = {
         __typename?: "ProductVariantGraphqlDTO";
         colour_code?: string | null;
         colour_name?: string | null;
+        colour_families?: Array<string | null> | null;
         id?: any | null;
         product_id?: string | null;
         style_number?: string | null;
+        attachments?: Array<{
+          __typename?: "ProductAttachmentGraphqlDTO";
+          id?: any | null;
+          small_image_url?: string | null;
+          medium_image_url?: string | null;
+          large_image_url?: string | null;
+        } | null> | null;
       } | null> | null;
     } | null> | null;
   } | null;

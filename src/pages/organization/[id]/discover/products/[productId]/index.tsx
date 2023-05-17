@@ -138,6 +138,7 @@ const ProductPage = () => {
               description={currentProduct?.description}
               colors={currentProduct?.colour_families}
               colour_name={currentProduct?.colour_name}
+              productVariants={currentProduct?.productVariants || []}
               tags={[
                 {
                   title: 'Season',

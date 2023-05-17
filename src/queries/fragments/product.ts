@@ -50,9 +50,16 @@ export const PRODUCT_FRAGMENT = gql`
     productVariants {
       colour_code
       colour_name
+      colour_families
       id
       product_id
       style_number
+      attachments {
+        id
+        small_image_url
+        medium_image_url
+        large_image_url
+      }
     }
   }
 `;

@@ -98,7 +98,7 @@ const Filters: FC<FiltersProps> = ({
                   className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
                 >
                   Select{' '}
-                  {selectedItems && selectedItems?.length > 0 && (
+                  {isSelectable && selectedItems && selectedItems?.length > 0 && (
                     <span className="flex items-center justify-center ml-[-6px] mt-[-1px] bg-accent-a-200 h-3 w-3 text-shades-white text-[8px] leading-[9.99px] tracking-[0.06em] rounded-full">
                       {selectedItems.length}
                     </span>
