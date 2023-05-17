@@ -73,30 +73,34 @@ const ProductDetails: FC<ProductDetailsProps> = ({
       <div className="w-full max-w-[352px]">
         <div>
           {associated_prices?.map((item, index) => {
-            if (item?.landed || item?.exworks || item?.retail) {
-              return (
-                <ListPrices
-                  key={`${index} associated_prices`}
-                  items={
-                    [
-                      {
-                        label: 'Landed',
-                        price: item.landed,
-                      },
-                      {
-                        label: 'Exworks',
-                        price: item.exworks,
-                      },
-                      {
-                        label: 'MSRP',
-                        price: item.retail,
-                      },
-                    ] || []
-                  }
-                  currency={item?.currency || ''}
-                />
-              );
-            }
+            return (
+              <ListPrices
+                key={`${index} associated_prices`}
+                items={
+                  [
+                    {
+                      label: 'Landed',
+                      price: item?.landed,
+                    },
+                    {
+                      label: 'Exworks',
+                      price: item?.exworks,
+                    },
+                    {
+                      label: 'MSRP',
+                      price: item?.retail,
+                    },
+                  ] || []
+                }
+                currency={
+                  item?.landed !== null ||
+                  item?.exworks !== null ||
+                  item?.retail !== null
+                    ? item?.currency || ''
+                    : ''
+                }
+              />
+            );
           })}
         </div>
         <div className="flex items-center gap-2.5 mt-3">
@@ -145,7 +149,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
             if (!item.value || item.value?.length === 0) {
               return null;
             }
-            
+
             return (
               <div
                 key={`${item.value} ${item.label}`}
