@@ -33,7 +33,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   colors,
   tags,
   specifications,
-  variants,
+  productVariants,
   colour_name,
 }) => {
   const router = useRouter();
@@ -105,14 +105,14 @@ const ProductDetails: FC<ProductDetailsProps> = ({
         </div>
         <div className="flex items-center gap-2.5 mt-3">
           <ColorVariant colors={colors || []} label={colour_name || ''} />
-          {variants?.map((variant: any) => (
+          {productVariants?.map((variant: any) => (
             <Link
               key={variant?.id}
-              href={`/organization/${router.query.id}/discover/products/${variant?.product_id}`}
+              href={`/organization/${router.query.id}/discover/products/${variant?.id}`}
             >
               <ColorVariant
                 key={variant?.id}
-                colors={variant?.colourFamilies || []}
+                colors={variant?.colour_families || []}
               />
             </Link>
           ))}

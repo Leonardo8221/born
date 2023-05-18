@@ -1,4 +1,4 @@
-import { FC, useCallback, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/molecules/Button';
 import { Icon } from '@/components/molecules/Icon';
@@ -116,7 +116,7 @@ const AddProduct: FC<AddProductProps> = () => {
       </p>
       <div className="pb-[50px] flex flex-col items-center">
         <h2 className="text-[18px] pb-8 text-[#333333] font-normal leading-6">
-          Our latest CSV file format can be found here.
+          Our latest Excel file format can be found here.
         </h2>
         <Button
           variant="outlined"

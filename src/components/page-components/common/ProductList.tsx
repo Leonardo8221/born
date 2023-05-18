@@ -14,7 +14,14 @@ interface ProductListProps {
   gridType?: GridType;
   selectable: boolean;
   selectedProducts: Array<number | string>;
-  onSelect: (value: number) => void;
+  selectedVariants?: number[];
+  onSelect: ({
+    id,
+    selectedVariant,
+  }: {
+    id: number;
+    selectedVariant: number;
+  }) => void;
   hanldeAddToDraftOrder?: (id: number) => void;
   handleAddToCollection?: (id: number) => void;
   handleDeleteProduct?: (id: number) => void;
@@ -31,6 +38,7 @@ const ProductList: FC<ProductListProps> = ({
   handleDeleteProduct,
   hanldeAddToDraftOrder,
   type,
+  selectedVariants,
 }) => {
   if (!products?.length) {
     return (
@@ -60,6 +68,7 @@ const ProductList: FC<ProductListProps> = ({
           selectedProducts={selectedProducts}
           onSelect={onSelect}
           type={type}
+          selectedVariants={selectedVariants}
         />
       </div>
     );
@@ -78,7 +87,8 @@ const ProductList: FC<ProductListProps> = ({
           size={gridType === 'smallGrid' ? 'sm' : 'lg'}
           isSelectable={selectable}
           isSelected={!!selectedProducts?.includes(item.id)}
-          onSelect={() => onSelect(item.id)}
+          selectedVariants={selectedVariants}
+          onSelect={onSelect}
           imageUrl={
             (gridType === 'grid'
               ? item?.attachments?.[0]?.large_image_url

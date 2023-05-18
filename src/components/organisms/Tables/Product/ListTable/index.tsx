@@ -22,8 +22,16 @@ export interface ListTableProps {
   handleDeleteProduct?: (id: number) => void;
   isSelectable?: boolean;
   selectedProducts?: Array<number | string>;
-  onSelect?: (id: number) => void;
+  onSelect?: ({
+    id,
+    selectedVariant,
+  }: {
+    id: number;
+    selectedVariant: number;
+    isVariant?: boolean;
+  }) => void;
   type?: 'products' | 'collection';
+  selectedVariants?: number[];
 }
 
 const ListTable: FC<ListTableProps> = ({
@@ -31,10 +39,11 @@ const ListTable: FC<ListTableProps> = ({
   handleAddToCollection,
   handleDeleteProduct,
   hanldeAddToDraftOrder,
-  selectedProducts,
   isSelectable,
   onSelect,
   type = 'products',
+  selectedVariants,
+  selectedProducts,
 }) => {
   const columnHelper: any = createColumnHelper();
 
@@ -61,21 +70,43 @@ const ListTable: FC<ListTableProps> = ({
     columnHelper.accessor((row: any) => row, {
       size: 221,
       id: 'name',
-      cell: ({ row }: any) => (
-        <div className="min-w-[221px]">
-          <ImageText
-            isSelectable={isSelectable}
-            onSelect={() => onSelect?.(row?.original?.id)}
-            isSelected={selectedProducts?.includes(row?.original?.id)}
-            title={row?.original?.style_name || ''}
-            subTitle={row?.original?.style_number || ''}
-            altText={row?.original?.style_name + 'logo'}
-            imgSrc={row?.original?.attachments?.[0]?.medium_image_url || ''}
-            variant="product"
-            titleClassName="max-w-[125px] overflow-hidden text-ellipsis whitespace-nowrap"
-          />
-        </div>
-      ),
+      cell: ({ row }: any) => {
+        const getSelectedVariantImageUrl = () => {
+          if (
+            row?.original?.productVariants?.some((variant: any) =>
+              selectedVariants?.includes(variant?.id)
+            )
+          ) {
+            const images: any = row?.original?.productVariants?.filter(
+              (item: any) => selectedVariants?.includes(item?.id)
+            )?.[0]?.attachments?.[0];
+            return images?.medium_image_url;
+          } else {
+            return row?.original?.attachments?.[0]?.medium_image_url;
+          }
+        };
+
+        return (
+          <div className="min-w-[221px]">
+            <ImageText
+              isSelectable={isSelectable}
+              onSelect={() =>
+                onSelect?.({
+                  id: row?.original?.id,
+                  selectedVariant: row?.original?.id,
+                })
+              }
+              isSelected={selectedProducts?.includes(row?.original?.id)}
+              title={row?.original?.style_name || ''}
+              subTitle={row?.original?.style_number || ''}
+              altText={row?.original?.style_name + 'logo'}
+              imgSrc={getSelectedVariantImageUrl()}
+              variant="product"
+              titleClassName="max-w-[125px] overflow-hidden text-ellipsis whitespace-nowrap"
+            />
+          </div>
+        );
+      },
       header: () => 'Product name',
     }),
     columnHelper.accessor('colour_families', {
@@ -83,18 +114,77 @@ const ListTable: FC<ListTableProps> = ({
       id: 'colour_families',
       cell: (info: any) => {
         const colour_families = info.getValue();
+        const id = info?.row?.original?.id;
+        const variants = info?.row?.original?.productVariants || [];
         return (
-          <div className="flex items-center gap-2">
-            <VariantColors colors={colour_families || []} />
-            <div
-              className={clsx(
-                'text-shades-black tracking-[0.06em] max-w-[90px] text-ellipsis whitespace-nowrap overflow-hidden',
-                fonts.text.sm
-              )}
-              title={info?.row?.original?.colour_name}
-            >
-              {info?.row?.original?.colour_name}
+          <div>
+            <div className="flex items-center gap-2">
+              <div>
+                <VariantColors
+                  colors={colour_families || []}
+                  type="card"
+                  active={
+                    selectedVariants?.includes(info?.row?.original?.id) ||
+                    !variants.some((item: any) =>
+                      selectedVariants?.includes(item?.id)
+                    )
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelect?.({
+                      id,
+                      selectedVariant: id,
+                      isVariant: true,
+                    });
+                  }}
+                />
+              </div>
+              <div>
+                <div
+                  className={clsx(
+                    'text-shades-black tracking-[0.06em] max-w-[80px] break-words',
+                    fonts.text.sm
+                  )}
+                  title={info?.row?.original?.colour_name}
+                >
+                  {info?.row?.original?.colour_name}
+                </div>
+              </div>
             </div>
+            {info?.row?.original?.productVariants?.map((item: any) => (
+              <div className="flex items-center gap-2 mt-2" key={item?.id}>
+                <div>
+                  <VariantColors
+                    colors={item?.colour_families || []}
+                    type="card"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onSelect?.({
+                        id,
+                        selectedVariant: item?.id,
+                        isVariant:
+                          selectedVariants?.includes(id) ||
+                          selectedVariants?.includes(item?.id)
+                            ? true
+                            : false,
+                      });
+                    }}
+                    active={selectedVariants?.includes(item.id)}
+                  />
+                </div>
+                <div>
+                  <div
+                    className={clsx(
+                      'text-shades-black tracking-[0.06em] !max-w-[80px] break-words',
+                      fonts.text.sm
+                    )}
+                    title={item?.colour_name}
+                  >
+                    {item?.colour_name}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         );
       },

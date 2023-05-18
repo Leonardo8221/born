@@ -106,7 +106,8 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
               <button
                 key={option.value}
                 className="w-[calc(100%-16px)] text-left mx-2 py-2 my-1 rounded-[4px] text-shades-black hover:bg-neutral-200 focus:outline-none focus:bg-neutral-200"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   option.action();
                   setIsOpen(false);
                 }}

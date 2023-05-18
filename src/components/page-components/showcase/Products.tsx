@@ -22,11 +22,13 @@ import { Item } from '@/components/molecules/DropdownFilter';
 import { COLOUR_FAMILIES_QUERY } from '@/queries/colourFamiles';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { SEASONS_BY_ORGANIZATION_ID } from '@/queries/filters';
+import useVariantSelect from '../common/useVariantSelect';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const { selectedRows, selectedVariants, setSelectedRows, resetSelectedRows } =
+    useVariantSelect();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -58,7 +60,7 @@ const Products: FC = () => {
       collectionNames: selectedCollections,
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
-      rows: (pageNo + 1) * rows,
+      rows: rows,
       start: pageNo * rows,
     },
     notifyOnNetworkStatusChange: true,
@@ -205,17 +207,17 @@ const Products: FC = () => {
       const api = new CollectionResourceApi(config);
       await api.apiCollectionAssociateProductsPut(
         collectionId,
-        selectedProducts
+        selectedVariants
       );
       handleSuccessMesssage(
-        selectedProducts.length > 0
-          ? `Added ${selectedProducts.length} products to collection sucessfully!!`
+        selectedVariants.length > 0
+          ? `Added ${selectedVariants.length} products to collection sucessfully!!`
           : 'Added product to collection successfully!!'
       );
       setIsAddCollections(false);
       setIsCreateModal(false);
       setIsLoading(false);
-      setSelectedProducts([]);
+      resetSelectedRows();
     } catch (error: any) {
       setIsLoading(false);
       handleErrorMesssage(
@@ -246,19 +248,19 @@ const Products: FC = () => {
   const handleDeleteProducts = async (id?: number) => {
     setIsProductDelete(true);
     setIsLoading(true);
-    const productIds = id ? [id] : selectedProducts;
+    const productIds = id ? [id] : selectedVariants;
     try {
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
-      await api.apiProductDeleteProductsDelete(id ? [id] : selectedProducts);
+      await api.apiProductDeleteProductsDelete(id ? [id] : selectedVariants);
       // await refetch();
       setIsLoading(false);
       handleSuccessMesssage(
-        selectedProducts.length > 0
-          ? `Deleted ${selectedProducts.length} products successfully!`
+        selectedVariants.length > 0
+          ? `Deleted ${selectedVariants.length} products successfully!`
           : 'Deleted product successfully!'
       );
-      setSelectedProducts([]);
+      resetSelectedRows();
       setIsProductDelete(false);
       setProducts(products?.filter((item) => !productIds.includes(item.id)));
     } catch (error: any) {
@@ -274,28 +276,19 @@ const Products: FC = () => {
     {
       name: 'Add to draft order',
       action: () => setIsModalVisible(true),
-      disabled: isLoading || selectedProducts.length === 0,
+      disabled: isLoading || selectedRows.length === 0,
     },
     {
       name: 'Add to collection',
       action: () => setIsAddCollections(true),
-      disabled: isLoading || selectedProducts.length === 0,
+      disabled: isLoading || selectedRows.length === 0,
     },
     {
       name: 'Delete',
       action: () => handleDeleteProducts(),
-      disabled: isLoading || selectedProducts.length === 0,
+      disabled: isLoading || selectedRows.length === 0,
     },
   ];
-
-  const handleSelectedProducts = (id: number) => {
-    if (selectedProducts.includes(id)) {
-      const newProducts = [...selectedProducts];
-      setSelectedProducts(newProducts.filter((item) => item !== id));
-    } else {
-      setSelectedProducts([...selectedProducts, id]);
-    }
-  };
 
   if (error) {
     return <ErrorMessage errorMessage={error?.message} refetch={refetch} />;
@@ -317,7 +310,7 @@ const Products: FC = () => {
             isSelectable={isSelectable}
             filterTags={filterTags}
             actions={actions}
-            selectedItems={selectedProducts}
+            selectedItems={selectedRows}
           />
           {!products.length && loading ? (
             <div className="mt-6 min-h-[400px]">
@@ -341,19 +334,29 @@ const Products: FC = () => {
                 gridType={gridType}
                 products={products}
                 selectable={isSelectable}
-                selectedProducts={selectedProducts}
+                selectedProducts={selectedRows}
+                selectedVariants={selectedVariants}
                 hanldeAddToDraftOrder={(id) => {
-                  setSelectedProducts([id]);
+                  setSelectedRows({
+                    id,
+                    selectedVariant: id,
+                    isVariant: selectedRows.includes(id) ? true : false,
+                    isNew: true,
+                  })
                   setIsModalVisible(true);
                 }}
                 handleAddToCollection={(id) => {
-                  setSelectedProducts([id]);
+                  setSelectedRows({
+                    id,
+                    selectedVariant: id,
+                    isNew: true,
+                  });
                   setIsAddCollections(true);
                 }}
                 handleDeleteProduct={(id) => {
                   handleDeleteProducts(id);
                 }}
-                onSelect={handleSelectedProducts}
+                onSelect={setSelectedRows}
               />
             </InfiniteScroll>
           )}
@@ -388,8 +391,8 @@ const Products: FC = () => {
       <OrderList
         setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
         isModalVisible={isModalVisible}
-        productIds={selectedProducts}
-        resetProductIds={() => setSelectedProducts([])}
+        productIds={selectedVariants}
+        resetProductIds={resetSelectedRows}
         setSelectedOrder={setSelectedOrder}
         selectedOrder={selectedOrder}
       />
