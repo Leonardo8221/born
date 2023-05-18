@@ -230,7 +230,7 @@ const ListTable: FC<ListTableProps> = ({
       size: 271,
       id: 'associated_prices',
       cell: (info: any) => (
-        <div className="[&>div]:flex-wrap [&>div]:!justify-between">
+        <div className="[&>div]:flex-wrap [&>div]:!justify-center">
           {getPriceList?.(info.getValue() || []).map((item: any) => (
             <ListPrices key={item.currency} items={item?.items || []} isSmall />
           ))}
