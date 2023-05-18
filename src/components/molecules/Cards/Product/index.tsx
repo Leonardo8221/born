@@ -205,7 +205,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                   key={item?.currency}
                   className={clsProductCardPrices(size)}
                 >
-                  {item?.landed ? (
+                  {(item?.landed || item?.landed === 0) ? (
                     <>
                       <div>
                         <h5 className={clsProductCardPrice(size)}>
@@ -216,7 +216,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                       </div>
                     </>
                   ) : null}
-                  {item?.exworks ? (
+                  {(item?.exworks || item?.exworks === 0) ? (
                     <>
                       <div>
                         <h5 className={clsProductCardPrice(size)}>
@@ -227,7 +227,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                       </div>
                     </>
                   ) : null}
-                  {item?.retail ? (
+                  {(item?.retail || item?.retail === 0) ? (
                     <>
                       <div>
                         <h5 className={clsProductCardPrice(size)}>

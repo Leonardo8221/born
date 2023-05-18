@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import Toast from '../Toast';
 import { useQuery } from '@apollo/client';
 import { ORGANIZATION_QUERY } from '@/queries/organizations';
-import { downloadFile } from '@/utils/downloadFile';
+import { download, downloadFile } from '@/utils/downloadFile';
 
 export interface AddProductProps {}
 
@@ -77,6 +77,20 @@ const AddProduct: FC<AddProductProps> = () => {
       console.log(error);
     }
   };
+
+  const downloadProductInventory = async () => {
+    try {
+      const config = await apiConfig();
+      const api = new FileIngestionResourceApi(config);
+      if(organizationId) {
+        const res = await api.apiIngestionDownloadProductXlsGet(organizationId, { responseType: 'blob' });
+        const contentDisposition = res?.headers?.['content-disposition'];
+        download(res.data as any, contentDisposition);
+      }
+    } catch (error) {
+      handleErrorMesssage('Failed to download product inventory!');
+    }
+  }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   return (
@@ -158,9 +172,7 @@ const AddProduct: FC<AddProductProps> = () => {
           variant="outlined"
           className="h-[40px] w-[352px] !m-0"
           size="sm"
-          as="a"
-          href={`https://storage.googleapis.com/born-files-dev/product-csv/${productCsvGuid}`}
-          download
+          onClick={downloadProductInventory}
         >
           <Icon name="icon-document" /> Download product inventory CSV
         </Button>
