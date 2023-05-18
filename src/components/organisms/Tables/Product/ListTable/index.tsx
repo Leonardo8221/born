@@ -14,6 +14,7 @@ import {
 } from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import { VariantColors } from '@/components/molecules/ColorVariant';
+import { formatCurrency } from '@/utils/formatCurrency';
 
 export interface ListTableProps {
   products: ProductWithCollectionsGraphqlDto[];
@@ -51,13 +52,17 @@ const ListTable: FC<ListTableProps> = ({
     const items = prices?.map((item: any) => {
       const keys = Object.keys(item || {});
       const priceKeys = ['exworks', 'landed', 'retail'];
+      console.log(item.currency);
       return {
         currency: item?.currency,
         items: keys?.map(
           (i: any) =>
             (priceKeys.includes(i) && {
               label: i,
-              price: item?.[i] || '',
+              price:
+                item?.[i] || item?.[i] === 0
+                  ? formatCurrency(item.currency).format(item?.[i])
+                  : null,
             }) ||
             []
         ),
@@ -102,7 +107,7 @@ const ListTable: FC<ListTableProps> = ({
               altText={row?.original?.style_name + 'logo'}
               imgSrc={getSelectedVariantImageUrl()}
               variant="product"
-              titleClassName="max-w-[125px] overflow-hidden text-ellipsis whitespace-nowrap"
+              titleClassName="max-w-[125px]"
             />
           </div>
         );

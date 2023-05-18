@@ -80,15 +80,15 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                   [
                     {
                       label: 'Landed',
-                      price: item?.landed,
+                      price: item?.landed?.toFixed(2),
                     },
                     {
                       label: 'Exworks',
-                      price: item?.exworks,
+                      price: item?.exworks?.toFixed(2),
                     },
                     {
                       label: 'MSRP',
-                      price: item?.retail,
+                      price: item?.retail?.toFixed(2),
                     },
                   ] || []
                 }

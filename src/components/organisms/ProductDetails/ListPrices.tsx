@@ -60,7 +60,7 @@ const ListPrices: FC<ListPricesProps> = ({
             <>
               <List
                 key={index}
-                label={Number(item.price).toFixed(2)}
+                label={item.price}
                 value={item.label}
                 isSmall={isSmall}
               />
