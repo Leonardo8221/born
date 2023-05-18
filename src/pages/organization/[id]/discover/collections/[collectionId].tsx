@@ -28,13 +28,15 @@ import Notification from '@/components/page-components/order/Notification';
 import { COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, SEASONS_BY_COLLECTION_ID } from '@/queries/filters';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LinesheetUpload from '@/components/page-components/showcase/LinesheetUpload';
+import useVariantSelect from '@/components/page-components/common/useVariantSelect';
 
 const CollectionPage = () => {
   const router = useRouter();
   const collectionId = Number(router?.query?.collectionId);
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const { selectedRows, selectedVariants, setSelectedRows, resetSelectedRows, setSelectedVariants } =
+    useVariantSelect();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -104,7 +106,7 @@ const CollectionPage = () => {
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
       rows,
-      start: pageNo,
+      start: pageNo * rows,
     },
     fetchPolicy: 'network-only',
   });
@@ -219,17 +221,17 @@ const CollectionPage = () => {
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      const productIds = id ? [id] : selectedProducts;
+      const productIds = id ? [id] : selectedVariants;
       await api.apiCollectionDisassociateProductsPut(collectionId, productIds);
       setProducts(products.filter((item) => !productIds.includes(item.id)));
       handleSuccessMesssage(
         `Removed ${
-          selectedProducts.length || 1
+          selectedVariants.length || 1
         } products from collections sucessfully!!`
       );
       setIsLoading(false);
       setIsProductDelete(false);
-      setSelectedProducts([]);
+      resetSelectedRows();
     } catch (error: any) {
       setIsLoading(false);
       setIsProductDelete(false);
@@ -244,16 +246,16 @@ const CollectionPage = () => {
     setIsLoading(true);
     setIsProductDelete(true);
     try {
-      const ids = id ? [id] : selectedProducts;
+      const ids = id ? [id] : selectedVariants;
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductDeleteProductsDelete(ids);
       setProducts(products.filter((item) => !ids.includes(item.id)));
       setIsLoading(false);
       handleSuccessMesssage(
-        `Deleted ${selectedProducts.length || 1} products successfully!`
+        `Deleted ${selectedVariants.length || 1} products successfully!`
       );
-      setSelectedProducts([]);
+      resetSelectedRows();
     } catch (error: any) {
       setIsLoading(false);
       handleErrorMesssage(
@@ -313,28 +315,19 @@ const CollectionPage = () => {
     {
       name: 'Add to draft order',
       action: () => setIsAddToDraft(true),
-      disabled: isLoading || !selectedProducts.length,
+      disabled: isLoading || !selectedRows.length,
     },
     {
       name: 'Remove from collection',
       action: () => handleRemoveProducts(),
-      disabled: isLoading || !selectedProducts.length,
+      disabled: isLoading || !selectedRows.length,
     },
     {
       name: 'Delete',
       action: () => handleDeleteProducts(),
-      disabled: isLoading || !selectedProducts.length,
+      disabled: isLoading || !selectedRows.length,
     },
   ];
-
-  const handleSelectedProducts = (id: number) => {
-    if (selectedProducts.includes(id)) {
-      const newProducts = [...selectedProducts];
-      setSelectedProducts(newProducts.filter((item) => item !== id));
-    } else {
-      setSelectedProducts([...selectedProducts, id]);
-    }
-  };
 
   if (!collection && loading) {
     return <Loading message="Loading collections" />;
@@ -348,9 +341,9 @@ const CollectionPage = () => {
           setGrid(e);
         }}
         handleCreateOrder={() => {
-          setSelectedProducts(
-            productsCollection?.productsBySearchAndCollectionId?.content?.map(
-              (item: ProductWithCollectionsGraphqlDto) => item.id
+          setSelectedVariants(
+            products?.map(
+              (item: any) => ({ id: item.id, selectedVariant: item.id})
             )
           );
           setIsAddToDraft(true);
@@ -390,7 +383,7 @@ const CollectionPage = () => {
           filterTags={filterTags}
           actions={actions}
           isSelectable={isSelectable}
-          selectedItems={selectedProducts}
+          selectedItems={selectedRows}
           searchKeyword={searchKeyword}
           onSearch={setSearchKeyword}
         />
@@ -419,11 +412,12 @@ const CollectionPage = () => {
                 gridType={gridType}
                 products={products}
                 selectable={isSelectable}
-                selectedProducts={selectedProducts}
-                onSelect={handleSelectedProducts}
+                selectedVariants={selectedVariants}
+                selectedProducts={selectedRows}
+                onSelect={setSelectedRows}
                 type="collection"
                 hanldeAddToDraftOrder={(id) => {
-                  setSelectedProducts([id]);
+                  setSelectedRows({ id, selectedVariant: id });
                   setIsAddToDraft(true);
                 }}
                 handleAddToCollection={(id) => {
@@ -449,8 +443,8 @@ const CollectionPage = () => {
       <OrderList
         setModalIsVisible={() => setIsAddToDraft(!isAddToDraft)}
         isModalVisible={isAddToDraft}
-        productIds={selectedProducts}
-        resetProductIds={() => setSelectedProducts([])}
+        productIds={selectedVariants}
+        resetProductIds={() => resetSelectedRows()}
         selectedOrder={selectedOrder}
         setSelectedOrder={setSelectedOrder}
       />

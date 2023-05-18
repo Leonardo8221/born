@@ -80,10 +80,10 @@ export const ProductCard: FC<ProductCardProps> = ({
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
 
   const getSelectedVariantImageUrl = () => {
-    console.log(productVariants, selectedVariant, selectedVariants)
     if (selectedVariant !== null) {
       const images: any = productVariants?.filter(
-        (item) => item?.id === selectedVariant || selectedVariants?.includes(item?.id)
+        (item) =>
+          item?.id === selectedVariant || selectedVariants?.includes(item?.id)
       )?.[0]?.attachments?.[0];
       return images?.[size === 'lg' ? 'large_image_url' : 'medium_image_url'];
     } else {
@@ -171,7 +171,8 @@ export const ProductCard: FC<ProductCardProps> = ({
                 colors={(variant?.colour_families as string[]) || []}
                 type="card"
                 active={
-                  selectedVariant === variant?.id || selectedVariants?.includes(variant?.id)
+                  selectedVariant === variant?.id ||
+                  selectedVariants?.includes(variant?.id)
                 }
                 onClick={(e) => {
                   e.preventDefault();

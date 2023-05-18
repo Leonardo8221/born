@@ -27,7 +27,7 @@ import useVariantSelect from '../common/useVariantSelect';
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
-  const { selectedRows, selectedVariants, setSelectedRows, resetSelectedRows, setSelectedVariants } =
+  const { selectedRows, selectedVariants, setSelectedRows, resetSelectedRows } =
     useVariantSelect();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -60,7 +60,7 @@ const Products: FC = () => {
       collectionNames: selectedCollections,
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
-      rows: (pageNo + 1) * rows,
+      rows: rows,
       start: pageNo * rows,
     },
     notifyOnNetworkStatusChange: true,
