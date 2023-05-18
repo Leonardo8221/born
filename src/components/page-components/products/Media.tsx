@@ -56,7 +56,7 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch, loading }) => {
       setTimeout(async() => {
         await refetch();
         setIsSubmitted(false);
-      }, 1000)
+      }, 3000)
     } catch (error) {
       setIsSubmitted(false);
       setErrorMesage('Failed to upload product image!');
