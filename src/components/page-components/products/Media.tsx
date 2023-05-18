@@ -29,6 +29,7 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch, loading }) => {
 
   useEffect(() => {
     setAttachments(product?.attachments || []);
+    console.log(product);
   }, [product]);
 
   const handleUpload = async (e: any, index: number) => {
@@ -50,13 +51,10 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch, loading }) => {
       selectedAttachments.medium_image_url = URL.createObjectURL(file);
       updatedAttachments[index] = selectedAttachments;
       setAttachments(updatedAttachments);
-      // setTimeout(async() => {
-      //   await refetch();
-      //   setIsSubmitted(false);
-      // }, 3000);
-      setId(null);
       setSuccessMessage('Product Image uploaded successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
+      await refetch();
+      setIsSubmitted(false);
     } catch (error) {
       setIsSubmitted(false);
       setErrorMesage('Failed to upload product image!');
