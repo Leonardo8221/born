@@ -16,6 +16,8 @@ import PricingCondition from '@/components/page-components/order/PricingConditio
 import useDebounce from '@/utils/debounce';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { orderTypes, seasons } from '@/utils/constants';
+import moment from 'moment';
+import { formatDate } from '@/utils';
 
 function OrderPreview() {
   const router = useRouter();
@@ -43,7 +45,7 @@ function OrderPreview() {
 
   useEffect(() => {
     if (details) {
-      setDetails(details);
+      setDetails({ ...details });
     }
   }, [details]);
 
@@ -93,7 +95,9 @@ function OrderPreview() {
   const handleEditInputs = (key: any, val: any) => {
     let payload = { ...orderDetails };
     payload[key] = val;
-    setDetails(payload);
+    setTimeout(() => {
+      setDetails(payload);
+    }, 500)
   };
 
   const columnData = {
@@ -140,10 +144,10 @@ function OrderPreview() {
       },
       {
         name: 'Delivery lead time',
-        key: 'devlivery_window_start_date',
-        value: `${orderDetails?.delivery_window_start_date || ''} - ${
-          orderDetails?.delivery_window_end_end || ''
-        }`,
+        key: 'delivery_lead_time',
+        inputType: 'datepicker',
+        value: `${orderDetails?.delivery_window_start_date || ''
+        } - ${orderDetails?.delivery_window_end_date || ''}`,
       },
       {
         name: 'Last updated',

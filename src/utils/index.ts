@@ -15,13 +15,13 @@ export const flattenObject = (obj: any, prefix = '') => {
   return result;
 };
 
-export const formatDate = (date?: Date) => {
+export const formatDate = (date?: Date | null | undefined) => {
   if (!date) return;
   const formatedDate = new Date(date);
   // // Get the day, month, and year from the date object
   const day = formatedDate.getDate().toString().padStart(2, '0');
   const month = (formatedDate.getMonth() + 1).toString().padStart(2, '0');
-  const year = formatedDate.getFullYear().toString().substr(-2);
+  const year = formatedDate.getFullYear().toString();
 
   // Return the formatted date string
   return `${day}/${month}/${year}`;

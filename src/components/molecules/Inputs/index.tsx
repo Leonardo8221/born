@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { theme } from '@/config/theme';
 import styles from './Input.module.css';
 import { Icon } from '../Icon';
+import DateRangePicker from '../DateRangePicker';
 
 interface InputProps extends HTMLProps<HTMLInputElement> {
   label: string;
@@ -12,6 +13,9 @@ interface InputProps extends HTMLProps<HTMLInputElement> {
   className?: string;
   options?: string[];
   handleSelect?: (item: string) => void;
+  onDateChange?: (dates: any) => void;
+  handleStartDate?: (value: any) => void;
+  handleEndDate?: (value: any) => void;
 }
 
 const Input: FC<InputProps> = ({
@@ -22,6 +26,9 @@ const Input: FC<InputProps> = ({
   className,
   options,
   handleSelect,
+  onDateChange,
+  handleStartDate,
+  handleEndDate,
   ...props
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -34,6 +41,20 @@ const Input: FC<InputProps> = ({
       inputRef.current && inputRef?.current?.focus?.();
     }
   };
+
+  if(inputType === 'datepicker') {
+    return (
+      <DateRangePicker
+        value={value}
+        label={label}
+        editMode={editMode}
+        className={className}
+        onDateChange={onDateChange}
+        handleStartDate={handleStartDate}
+        handleEndDate={handleEndDate}
+      />
+    );
+  }
 
   return (
     <div className={clsx('flex-1', className)}>
