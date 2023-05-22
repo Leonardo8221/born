@@ -2,8 +2,7 @@ import { FC } from 'react';
 import clsx from 'clsx';
 import { theme } from '@/config/theme';
 import Input from '../Inputs';
-import DropdownFilter from '../DropdownFilter';
-import { seasons } from '@/utils/constants';
+import { formatDate } from '@/utils';
 
 type Column = {
   key: string;
@@ -30,6 +29,12 @@ const OrderDetails: FC<OrderDetailsProps> = ({
   handleEditInputs,
   loading,
 }) => {
+
+  const format = (date: any) => {
+    const dates: any = date?.split(' - ') || [];
+    return `${dates[0] ? formatDate(dates[0]) : ''} - ${dates[1] ? formatDate(dates[1]) : ''}`
+  }
+
   return (
     <div
       className={clsx(
@@ -99,10 +104,12 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                   editMode={editMode}
                   label={item.name}
                   value={item.value}
-                  inputType={item.options ? 'dropdown': 'text'}
+                  inputType={item.inputType || (item.options ? 'dropdown': 'text')}
                   options={item.options}
                   handleSelect={(value: string) => item.options ? handleEditInputs(item.key, value) : {}}
                   className="mb-2"
+                  handleStartDate={(date) => handleEditInputs('delivery_window_start_date', date)}
+                  handleEndDate={(date) => handleEditInputs('delivery_window_end_date', date)}
                   disabled={loading}
                   onChange={(event: any) =>
                     !item.options ? handleEditInputs(item.key, event.target.value) : {}
@@ -115,7 +122,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                   {item.name}
                 </div>
                 <div className="text-[12px] font-light leading-[16px] text-shades-black w-[188px] mx-2 my-2">
-                  {item.value}
+                  {item.inputType === 'datepicker' ? format(item.value) : item.value}
                 </div>
               </>
             )}
