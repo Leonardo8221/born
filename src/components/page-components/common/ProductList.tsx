@@ -89,6 +89,7 @@ const ProductList: FC<ProductListProps> = ({
           isSelected={!!selectedProducts?.includes(item.id)}
           selectedVariants={selectedVariants}
           onSelect={onSelect}
+          isCollection={type === 'collection'}
           imageUrl={
             (gridType === 'grid'
               ? item?.attachments?.[0]?.large_image_url

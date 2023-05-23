@@ -19,7 +19,7 @@ import {
 } from './utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { VariantColors } from '../../ColorVariant';
+import ColorVariant, { VariantColors } from '../../ColorVariant';
 import moment from 'moment';
 
 export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
@@ -36,6 +36,7 @@ export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
     isVariant?: boolean;
   }) => void;
   selectedVariants?: number[];
+  isCollection?: boolean;
 }
 
 const ProductCardWrapper: FC<{
@@ -67,6 +68,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   onSelect = () => {},
   associated_prices,
   colour_families,
+  colour_name,
   productVariants,
   collections,
   size_options,
@@ -76,6 +78,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   delivery_window_start_date,
   delivery_window_end_date,
   selectedVariants,
+  isCollection,
 }) => {
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
 
@@ -144,28 +147,35 @@ export const ProductCard: FC<ProductCardProps> = ({
           </div>
           <h3 className={clsProductCardTitle(size)}>{style_name}</h3>
           <div className="flex items-center gap-2 flex-wrap">
-            <VariantColors
-              colors={!!colour_families ? (colour_families as string[]) : []}
-              type="card"
-              active={
-                selectedVariant ||
-                productVariants?.some((r) =>
-                  selectedVariants?.includes?.(r?.id)
-                )
-                  ? false
-                  : true || selectedVariants?.includes(id)
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                onSelect({
-                  id,
-                  selectedVariant: id,
-                  isVariant: true,
-                });
-                setSelectedVariant(null);
-              }}
-            />
-            {productVariants?.map((variant) => (
+            {isCollection ? (
+              <ColorVariant
+                colors={!!colour_families ? (colour_families as string[]) : []}
+                label={colour_name || ''}
+              />
+            ) : (
+              <VariantColors
+                colors={!!colour_families ? (colour_families as string[]) : []}
+                type="card"
+                active={
+                  selectedVariant ||
+                  productVariants?.some((r) =>
+                    selectedVariants?.includes?.(r?.id)
+                  )
+                    ? false
+                    : true || selectedVariants?.includes(id)
+                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSelect({
+                    id,
+                    selectedVariant: id,
+                    isVariant: true,
+                  });
+                  setSelectedVariant(null);
+                }}
+              />
+            )}
+            {!isCollection && productVariants?.map((variant) => (
               <VariantColors
                 key={variant?.id}
                 colors={(variant?.colour_families as string[]) || []}
@@ -193,54 +203,64 @@ export const ProductCard: FC<ProductCardProps> = ({
               </div>
             ))}
           </div>
+          {isCollection && (
+            <ListView
+              label="Available Styles"
+              title={productVariants?.map(item => item?.colour_name)?.join(', ') || ''}
+              size={size}
+              isVisible={true}
+            />
+          )}
           <ListView
             label="Material"
             title={compositions?.join(', ') || ''}
             size={size}
           />
-          {associated_prices?.map(
-            (item) =>
-              (item?.landed || item?.exworks || item?.landed) > -1 && (
-                <div
-                  key={item?.currency}
-                  className={clsProductCardPrices(size)}
-                >
-                  {(item?.landed || item?.landed === 0) ? (
-                    <>
-                      <div>
-                        <h5 className={clsProductCardPrice(size)}>
-                          {item?.currency && currencies[item.currency]}
-                          {item.landed}
-                        </h5>
-                        <p className={styles.priceLabel}>Landed</p>
-                      </div>
-                    </>
-                  ) : null}
-                  {(item?.exworks || item?.exworks === 0) ? (
-                    <>
-                      <div>
-                        <h5 className={clsProductCardPrice(size)}>
-                          {item?.currency && currencies[item.currency]}
-                          {item.exworks}
-                        </h5>
-                        <p className={styles.priceLabel}>Exworks</p>
-                      </div>
-                    </>
-                  ) : null}
-                  {(item?.retail || item?.retail === 0) ? (
-                    <>
-                      <div>
-                        <h5 className={clsProductCardPrice(size)}>
-                          {item?.currency && currencies[item.currency]}
-                          {item.retail}
-                        </h5>
-                        <p className={styles.priceLabel}>MSRP</p>
-                      </div>
-                    </>
-                  ) : null}
-                </div>
-              )
-          )}
+          <div className={size === 'lg' ? 'mt-4' : 'mt-2'}>
+            {associated_prices?.map(
+              (item) =>
+                (item?.landed || item?.exworks || item?.landed) > -1 && (
+                  <div
+                    key={item?.currency}
+                    className={clsProductCardPrices(size)}
+                  >
+                    {item?.landed || item?.landed === 0 ? (
+                      <>
+                        <div>
+                          <h5 className={clsProductCardPrice(size)}>
+                            {item?.currency && currencies[item.currency]}
+                            {item.landed}
+                          </h5>
+                          <p className={styles.priceLabel}>Landed</p>
+                        </div>
+                      </>
+                    ) : null}
+                    {item?.exworks || item?.exworks === 0 ? (
+                      <>
+                        <div>
+                          <h5 className={clsProductCardPrice(size)}>
+                            {item?.currency && currencies[item.currency]}
+                            {item.exworks}
+                          </h5>
+                          <p className={styles.priceLabel}>Exworks</p>
+                        </div>
+                      </>
+                    ) : null}
+                    {item?.retail || item?.retail === 0 ? (
+                      <>
+                        <div>
+                          <h5 className={clsProductCardPrice(size)}>
+                            {item?.currency && currencies[item.currency]}
+                            {item.retail}
+                          </h5>
+                          <p className={styles.priceLabel}>MSRP</p>
+                        </div>
+                      </>
+                    ) : null}
+                  </div>
+                )
+            )}
+          </div>
           <ListView label="Category" title={third_category || ''} size={size} />
           <ListView
             label="Delivery Window"
@@ -266,15 +286,16 @@ export const ProductCard: FC<ProductCardProps> = ({
   );
 };
 
-const ListView: FC<{ title: string; label: string; size: 'lg' | 'sm' }> = ({
+const ListView: FC<{ title: string; label: string; size: 'lg' | 'sm', isVisible?: boolean }> = ({
   label,
   title,
   size,
+  isVisible,
 }) => {
   return (
     <>
       {title && (
-        <div className="hidden print:block mt-1">
+        <div className={clsx(!isVisible ? 'hidden print:block' : '', size === 'lg' ? 'mt-4' : 'mt-2')}>
           <h5 className={clsx(clsProductCardPrice(size))}>{title}</h5>
           <p className={styles.priceLabel}>{label}</p>
         </div>
