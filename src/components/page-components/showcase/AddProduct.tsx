@@ -119,7 +119,7 @@ const AddProduct: FC<AddProductProps> = () => {
             <p className="leading-10 text-[32px] font-light text-center max-w-xs">
               {isDragActive
                 ? 'Drop files here'
-                : 'Drag and Drop your CSV file here'}
+                : 'Drag and Drop your Excel file here'}
             </p>
           </div>
         )}
