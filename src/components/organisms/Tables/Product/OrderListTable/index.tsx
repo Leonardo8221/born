@@ -100,11 +100,11 @@ const OrderListTable: FC<OrderDetails> = ({
       ),
       header: () => 'Materials',
     }),
-    columnHelper.accessor('first_category', {
+    columnHelper.accessor('third_category', {
       size: 142,
       id: 'category',
       cell: ({ row }: any) => (
-        <Badges items={[row?.original?.product?.first_category]} />
+        <Badges items={[row?.original?.product?.third_category]} />
       ),
       header: () => 'Category',
     }),

@@ -7,6 +7,10 @@ import {
 } from '@/components/molecules/IconButtonGroup';
 import { SearchInput } from '@/components/molecules/SearchInput';
 import DropdownFilter from '@/components/molecules/DropdownFilter';
+import { apiConfig } from '@/utils/apiConfig';
+import { OrderReportResourceApi } from 'client/command';
+import { useRouter } from 'next/router';
+import { download } from '@/utils/downloadFile';
 
 type Action = {
   name: string;
@@ -47,6 +51,33 @@ const Filters: FC<FiltersProps> = ({
   onSearch,
   isOrder,
 }) => {
+  const router = useRouter();
+  const handleExportOrders = async() => {
+    try {
+      const organizationId: number = Number(router?.query?.id);
+      const status: any = router?.query?.tab
+      const config = await apiConfig();
+      const api = new OrderReportResourceApi(config);
+      let file: BlobPart;
+      const response = await api.apiOrderDownloadOrderTableReportAsExcelGet(
+        status,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        organizationId,
+        undefined,
+        undefined,
+        undefined,
+        { responseType: 'blob' },
+      );
+      file = response?.data as any;
+      download(response.data as any, response?.headers?.['content-disposition']);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='min-h-[66px]'>
       <div
@@ -83,6 +114,7 @@ const Filters: FC<FiltersProps> = ({
               variant="outlined"
               size="sm"
               className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
+              onClick={handleExportOrders}
             >
               Export
             </Button>

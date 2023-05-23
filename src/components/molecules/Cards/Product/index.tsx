@@ -71,7 +71,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   collections,
   size_options,
   compositions,
-  first_category,
+  third_category,
   id,
   delivery_window_start_date,
   delivery_window_end_date,
@@ -241,7 +241,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                 </div>
               )
           )}
-          <ListView label="Category" title={first_category || ''} size={size} />
+          <ListView label="Category" title={third_category || ''} size={size} />
           <ListView
             label="Delivery Window"
             title={
