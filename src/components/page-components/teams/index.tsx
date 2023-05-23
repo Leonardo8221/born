@@ -18,7 +18,7 @@ const Teams = () => {
 
   const { data, loading, refetch } = useQuery(USERS_QUERY, {
     variables: { organizationId },
-    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   const handleErrorMesssage = (message: string) => {
@@ -45,7 +45,7 @@ const Teams = () => {
         organizationId,
         userId
       );
-      refetch();
+      await refetch();
       handleSuccessMesssage('User removed successfully!');
     } catch (error: any) {
       handleErrorMesssage(error?.message || 'Failed to remove user!');
@@ -68,7 +68,6 @@ const Teams = () => {
         )
       );
       await Promise.all([arr]);
-      refetch();
       callback?.([
         {
           id: Date.now(),
@@ -77,6 +76,7 @@ const Teams = () => {
           user_id: '',
         },
       ]);
+      await refetch();
       handleSuccessMesssage(`Invited ${users?.length} users successfully!`);
     } catch (error) {
       handleErrorMesssage('Failed to invite users!');

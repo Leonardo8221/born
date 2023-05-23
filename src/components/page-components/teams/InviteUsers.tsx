@@ -58,17 +58,20 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
     id,
     name,
     value,
+    user_id,
   }: {
     id: number;
     name: 'email' | 'role' | 'user_id';
     value: any;
+    user_id?: string;
   }) => {
     const items = [...inviteUsers];
     const selectedItem = items.filter((item) => item.id === id)[0];
     selectedItem[name] = value;
-    setInviteUsers([
-      ...inviteUsers.map((item) => (item.id === id ? selectedItem : item)),
-    ]);
+    if(user_id) {
+      selectedItem['user_id'] = user_id;
+    }
+    setInviteUsers(inviteUsers.map((item) => (item.id === id ? selectedItem : item)));
   };
 
   return (
@@ -98,7 +101,7 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
                 leaveTo="opacity-0 scale-95"
                 className="z-10"
               >
-                <div className="absolute top-[5px] left-0 right-0 w-full bg-shades-white rounded shadow-extra">
+                <div className="absolute top-[5px] left-0 right-0 w-full bg-shades-white rounded shadow-extra z-10">
                   <div className="absolute right-1 -top-2">
                     <TriangleDecorator />
                   </div>
@@ -126,11 +129,7 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
                               id: item.id,
                               name: 'email',
                               value: option?.keycloak_email,
-                            });
-                            handleChange({
-                              id: item.id,
-                              name: 'user_id',
-                              value: option?.id,
+                              user_id: option?.id,
                             });
                             setIsOpen(null);
                           }}

@@ -1,13 +1,10 @@
 import { FC } from 'react';
 import { useRouter } from 'next/router';
-import { signOut } from 'next-auth/react';
-import BrandLogo from '@/assets/svgs/brand-logo.svg';
 import { icons } from '../atoms/Icons';
 import Sidebar from '../molecules/Sidebar';
 import TopBar from '../page-components/marketing/TopBar';
 import Footer from './Footer';
-import { useQuery } from '@apollo/client';
-import { ORGANIZATION_QUERY } from '@/queries/organizations';
+import logout from '@/utils/logout';
 
 type MenuItem = {
   url: string;
@@ -66,7 +63,7 @@ const ManageLayout: FC<ManageLayoutProps> = ({ children, name, logoUrl }) => {
                 title={name}
                 menuItems={menuItems}
                 logoUrl={logoUrl}
-                onSignOut={signOut}
+                onSignOut={logout}
               />
             </div>
           </div>

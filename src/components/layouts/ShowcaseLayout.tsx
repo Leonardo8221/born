@@ -4,6 +4,7 @@ import { Header } from "@/components/molecules/Header";
 import { Icon } from "@/components/molecules/Icon";
 import Footer from "./Footer";
 import { signOut } from "next-auth/react";
+import logout from "@/utils/logout";
 
 interface LayoutProps<T> {
   children: React.ReactNode;
@@ -20,8 +21,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
   ];
 
   const handleSignOut = () => {
-    signOut({ redirect: false });
-    router.push("/");
+    logout();
   };
 
   const returnRedirectManageLink = (tab: string) =>

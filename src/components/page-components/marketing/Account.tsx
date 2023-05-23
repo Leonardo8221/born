@@ -74,7 +74,10 @@ const Account: FC = () => {
       const payload = { ...queryInputs };
       const config = await apiConfig();
       const api = new UserResourceApi(config);
-      api.apiUserUpdateUserAndKcUserPut({ ...payload });
+      api.apiUserUpdateUserAndKcUserPut({
+        ...payload,
+        password: payload.password || undefined,
+      });
       handleSuccessMesssage('Account settings updated successfully!');
       setIsLoading(false);
     } catch (error) {
