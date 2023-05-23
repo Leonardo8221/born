@@ -49,6 +49,7 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
       setStartDate(date[0]);
       setEndDate(date[1]);
       handleEndDate?.(date[1])
+      setIsOpen(false);
       return;
     } else if ((!startDate && !endDate) || (startDate && endDate)) {
       setStartDate(date[0]);
