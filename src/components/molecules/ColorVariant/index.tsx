@@ -12,7 +12,7 @@ const ColorVariant: FC<ColorVariantProps> = ({ colors, label, onClick }) => {
   return (
     <div
       className={clsx(
-        'inline-flex h-8 items-center gap-[6px] rounded-[100px] border border-neutral-500 p-1',
+        'flex flex-wrap h-8 items-center gap-[6px] rounded-[100px] border border-neutral-500 p-1',
         label ? 'bg-neutral-200' : 'w-8 !border-netural-300 bg-shades-white'
       )}
       onClick={onClick}
@@ -21,7 +21,7 @@ const ColorVariant: FC<ColorVariantProps> = ({ colors, label, onClick }) => {
       {label && (
         <Paragraph
           size="md"
-          className="pr-2 max-w-[166px] text-ellipsis whitespace-nowrap overflow-hidden"
+          className="pr-2"
         >
           {label}
         </Paragraph>

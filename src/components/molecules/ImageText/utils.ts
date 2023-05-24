@@ -16,12 +16,12 @@ export const variantImageClasses = {
 
 export const variantTitleClasses = {
   brand: clsx(fonts.text.lg),
-  product: clsx(fonts.text.lg),
+  product: clsx(fonts.text.md),
   'brand-two': clsx(fonts.headings.md, 'text-center'),
 };
 
 export const variantSubTitleClasses = {
   brand: clsx(fonts.text.md),
-  product: clsx(fonts.text.md),
+  product: clsx(fonts.text.sm),
   'brand-two': clsx(fonts.text.xl, 'text-center'),
 };
