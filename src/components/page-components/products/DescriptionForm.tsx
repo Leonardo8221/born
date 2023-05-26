@@ -61,18 +61,11 @@ const DescriptionForm: FC<DescriptionFormProps> = ({ product, refetch }) => {
 
   return (
     <div className="max-w-[736px]">
-      <div className="flex gap-8">
+      <div className="max-w-[352px]">
         <Input
           label="Product name"
           value={productDetails?.style_name || ''}
           onChange={(value: string) => handleInputChange('style_name', value)}
-          isValid={false}
-          className="w-full"
-        />
-        <Input
-          label="Style ID"
-          value={product?.style_id || ''}
-          onChange={() => {}}
           isValid={false}
           className="w-full"
         />
