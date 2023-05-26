@@ -72,13 +72,13 @@ const Sidebar: FC<SidebarProps> = ({
                   )}
             </div>
           </div>
-          <h3 className={clsx(fonts.text.xl, 'text-shades-black mt-2  max-w-full text-ellipsis overflow-hidden whitespace-nowrap px-3')}>
+          <h3 className={clsx(fonts.text.xl, 'text-shades-black mt-2 px-3 text-center')}>
             {title}
           </h3>
           {subTitle && (
             <h4
               className={clsx(
-                'text-shades-black font-light mt-1 max-w-full text-ellipsis overflow-hidden whitespace-nowrap',
+                'text-shades-black font-light mt-1 max-w-full',
                 fonts.text.base
               )}
             >

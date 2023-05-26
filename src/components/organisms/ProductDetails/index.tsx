@@ -35,6 +35,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   specifications,
   productVariants,
   colour_name,
+  description,
 }) => {
   const router = useRouter();
   return (
@@ -103,7 +104,13 @@ const ProductDetails: FC<ProductDetailsProps> = ({
             );
           })}
         </div>
-        <div className="flex flex-wrap items-center gap-2.5 mt-3">
+        <Paragraph
+          size="base"
+          className="text-shades-black !leading-[24px] max-w-[352px] !font-light tracking-[0.06em] mt-3"
+        >
+          {description}
+        </Paragraph>
+        <div className="flex flex-wrap items-center gap-2.5 mt-6">
           <ColorVariant colors={colors || []} label={colour_name || ''} />
           {productVariants?.map((variant: any) => (
             <Link
