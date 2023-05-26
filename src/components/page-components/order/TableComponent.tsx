@@ -21,7 +21,7 @@ const TableComponent: React.FC<Props> = ({
         {orderDetailSizes?.map((item: any) => (
           <p
             key={item.id}
-            className="border-r border-[#D8D8D8] w-[110px] p-[10px] text-center"
+            className="border-r border-[#D8D8D8] !w-[110px] p-[10px] text-center"
           >
             {item.size}
           </p>
@@ -34,7 +34,7 @@ const TableComponent: React.FC<Props> = ({
         {orderDetailSizes?.map((item: any) => (
           <p
             key={item.id}
-            className="border-r border-[#D8D8D8] w-[110px] text-center overflow-hidden"
+            className="border-r border-[#D8D8D8] !w-[110px] text-center overflow-hidden"
           >
             <input
               type="number"
