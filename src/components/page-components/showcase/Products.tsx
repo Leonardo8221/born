@@ -232,10 +232,11 @@ const Products: FC = () => {
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      await api.apiCollectionCreateNewCollectionPost(
+      const res: any = await api.apiCollectionCreateNewCollectionPost(
         organizationId,
         newCollection
       );
+      await handleAddToCollection(res?.data?.id)
       setIsLoading(false);
       setIsCreateModal(false);
       handleSuccessMesssage('New collection added successfully!');
