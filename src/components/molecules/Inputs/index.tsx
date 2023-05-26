@@ -94,7 +94,7 @@ const Input: FC<InputProps> = ({
                   {...props}
                   className="w-full text-[#666666] font-light leading-tight focus:outline-none focus:shadow-outline h-full"
                   id="username"
-                  value={value}
+                  defaultValue={value}
                   ref={inputRef}
                   readOnly={inputType === 'dropdown'}
                 />
