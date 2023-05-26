@@ -61,7 +61,7 @@ const Collections: FC<CollectionsProps> = ({
         organizationId,
         newCollection
       );
-      refetch();
+      await refetch();
       toggleCollectionsModal?.(false);
       handleSuccessMesssage('New collection added successfully!');
     } catch (error) {
