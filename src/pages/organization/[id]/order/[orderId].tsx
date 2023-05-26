@@ -32,7 +32,7 @@ function OrderPreview() {
   const [isLoading, setIsLoading] = useState(false);
   const [discount, setDiscount] = useState(-1);
   const [surcharge, setSurchange] = useState(-1);
-  const [orderDetailId, setorderDetailId] = useState();
+  const [orderDetailId, setorderDetailId] = useState(null);
   const debouncedDiscount = useDebounce(discount, 500);
   const debouncedSurcharge = useDebounce(surcharge, 500);
 
@@ -224,6 +224,8 @@ function OrderPreview() {
       }
       await refetch();
       setIsAddNoteOpen(!isAddNoteOpen);
+      setOrderNote('');
+      setorderDetailId(null);
       handleSuccessMessage('Note added successfully');
     } catch (error: any) {
       handleErrorMessage(error?.response?.message || 'Failed to add note!');
@@ -280,8 +282,10 @@ function OrderPreview() {
         orderId,
         payload
       );
-      await refetch();
-      setIsLoading(false);
+      setTimeout(async() => {
+        await refetch();
+        setIsLoading(false);
+      })
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -418,10 +422,14 @@ function OrderPreview() {
         />
       </div>
       <AddNote
-        note={orderNote || orderDetails.note}
+        note={(orderDetailId ? orderNote : null) || (!orderDetailId ? orderDetails.note : null) || ''}
         handleSaveNote={handleSaveNote}
         isOpen={isAddNoteOpen}
-        onClose={() => setIsAddNoteOpen(!isAddNoteOpen)}
+        onClose={() => {
+          setIsAddNoteOpen(!isAddNoteOpen);
+          setOrderNote('');
+          setorderDetailId(null);
+        }}
         handleChange={setOrderNote}
       />
       <Toast errorMessage={errorMessage} successMessage={successMessage} />
