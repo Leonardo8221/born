@@ -8,9 +8,7 @@ import { apiConfig } from '@/utils/apiConfig';
 import { FileIngestionResourceApi } from 'client/command';
 import { useRouter } from 'next/router';
 import Toast from '../Toast';
-import { useQuery } from '@apollo/client';
-import { ORGANIZATION_QUERY } from '@/queries/organizations';
-import { download, downloadFile } from '@/utils/downloadFile';
+import { download } from '@/utils/downloadFile';
 
 export interface AddProductProps {}
 
@@ -27,12 +25,6 @@ const AddProduct: FC<AddProductProps> = () => {
   useEffect(() => {
     setOrganiationId(Number(router?.query?.id));
   }, [router?.isReady]);
-
-  const { data } = useQuery(ORGANIZATION_QUERY, {
-    variables: { organizationId },
-  });
-
-  const productCsvGuid = data?.organizationByOrganizationId?.product_csv_guid;
 
   const handleErrorMesssage = (message: string) => {
     setErrorMessage(message);
@@ -63,14 +55,18 @@ const AddProduct: FC<AddProductProps> = () => {
           acceptedFiles?.name,
           {
             onUploadProgress: ({ loaded, total }) => {
-              setProgress(Math.round((loaded * 100) / (total || 0)));
-              setShowProgress(false);
-              setSuccess(true);
-              setFile(acceptedFiles);
+              const percent = Math.round((loaded * 100) / (total || 0));
+              setProgress(percent);
+              if(percent >= 100) {
+                setShowProgress(false);
+                setSuccess(true);
+                setFile(acceptedFiles);
+                handleSuccessMesssage('File uploaded successfully!');
+              }
             },
+            
           }
         );
-        handleSuccessMesssage('File uploaded successfully!');
       }
     } catch (error) {
       handleErrorMesssage('Failed to upload file!');

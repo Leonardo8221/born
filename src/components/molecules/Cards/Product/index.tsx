@@ -72,7 +72,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   productVariants,
   collections,
   size_options,
-  compositions,
+  materials,
   third_category,
   id,
   delivery_window_start_date,
@@ -115,8 +115,7 @@ export const ProductCard: FC<ProductCardProps> = ({
       >
         <div
           className={clsx(
-            clsProductCardId(size),
-            'whitespace-nowrap text-ellipsis overflow-hidden'
+            clsProductCardId(size)
           )}
         >
           {style_number}
@@ -151,6 +150,7 @@ export const ProductCard: FC<ProductCardProps> = ({
               <ColorVariant
                 colors={!!colour_families ? (colour_families as string[]) : []}
                 label={colour_name || ''}
+                size={size}
               />
             ) : (
               <VariantColors
@@ -213,7 +213,21 @@ export const ProductCard: FC<ProductCardProps> = ({
           )}
           <ListView
             label="Material"
-            title={compositions?.join(', ') || ''}
+            title={materials?.join(', ') || ''}
+            size={size}
+          />
+          <ListView label="Category" title={third_category || ''} size={size} />
+          <ListView
+            label="Delivery Window"
+            title={
+              delivery_window_start_date && delivery_window_end_date
+                ? `${moment(delivery_window_start_date)?.format(
+                    'DD/MM/YYYY'
+                  )} - ${moment(delivery_window_end_date)?.format(
+                    'DD/MM/YYYY'
+                  )}`
+                : ''
+            }
             size={size}
           />
           <div className={size === 'lg' ? 'mt-4' : 'mt-2'}>
@@ -261,20 +275,6 @@ export const ProductCard: FC<ProductCardProps> = ({
                 )
             )}
           </div>
-          <ListView label="Category" title={third_category || ''} size={size} />
-          <ListView
-            label="Delivery Window"
-            title={
-              delivery_window_start_date && delivery_window_end_date
-                ? `${moment(delivery_window_start_date)?.format(
-                    'DD/MM/YYYY'
-                  )} - ${moment(delivery_window_end_date)?.format(
-                    'DD/MM/YYYY'
-                  )}`
-                : ''
-            }
-            size={size}
-          />
           <ListView
             label="Sizes"
             title={size_options?.join(', ') || ''}

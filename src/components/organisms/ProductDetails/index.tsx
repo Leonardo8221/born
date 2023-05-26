@@ -103,7 +103,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
             );
           })}
         </div>
-        <div className="flex items-center gap-2.5 mt-3">
+        <div className="flex flex-wrap items-center gap-2.5 mt-3">
           <ColorVariant colors={colors || []} label={colour_name || ''} />
           {productVariants?.map((variant: any) => (
             <Link
