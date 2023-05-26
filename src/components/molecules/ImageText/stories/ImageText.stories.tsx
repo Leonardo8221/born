@@ -14,7 +14,7 @@ const Template = (args: ImageTextProps) => <ImageText {...args} />;
 export const Brand: StoryFn<ImageTextProps> = Template.bind ({});
 Brand.args = {
   variant: 'brand',
-  imgSrc: LogoImage,
+  // imgSrc: LogoImage,
   title: 'Brand title',
   subTitle: 'Brand location',
   altText: 'Brand logo',
@@ -23,7 +23,7 @@ Brand.args = {
 export const Product: StoryFn<ImageTextProps> = Template.bind ({});
 Product.args = {
   variant: 'product',
-  imgSrc: ProductImage,
+  // imgSrc: ProductImage,
   title: 'UMI',
   subTitle: 'VEWSDE',
   altText: 'Product image',
@@ -32,7 +32,7 @@ Product.args = {
 export const BrandTwo: StoryFn<ImageTextProps> = Template.bind({});
 BrandTwo.args = {
   variant: 'brand-two',
-  imgSrc: LogoImage,
+  // imgSrc: LogoImage,
   title: 'Brand title',
   subTitle: 'Brand location',
   altText: 'Brand two logo',

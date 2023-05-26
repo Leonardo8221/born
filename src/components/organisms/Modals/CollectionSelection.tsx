@@ -12,11 +12,11 @@ const CollectionSelectionModal = () => {
   const collections = [
     {
       title: 'Spring summer',
-      url: ProductImage,
+      url: ProductImage.src,
     },
     {
       title: 'Winter',
-      url: ProductImage,
+      url: ProductImage.src,
     }
   ];
 
