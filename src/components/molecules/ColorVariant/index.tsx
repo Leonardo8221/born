@@ -6,23 +6,35 @@ interface ColorVariantProps {
   colors: string[];
   label?: string;
   onClick?: (event: any) => void;
+  size?: 'lg' | 'sm';
 }
 
-const ColorVariant: FC<ColorVariantProps> = ({ colors, label, onClick }) => {
+const ColorVariant: FC<ColorVariantProps> = ({
+  colors,
+  label,
+  onClick,
+  size,
+}) => {
   return (
     <div
       className={clsx(
-        'flex flex-wrap h-8 items-center gap-[6px] rounded-[100px] border border-neutral-500 p-1',
-        label ? 'bg-neutral-200' : 'w-8 !border-netural-300 bg-shades-white'
+        'flex max-w-full items-center gap-[6px] rounded-[100px] border border-neutral-500 p-1',
+        label ? 'bg-neutral-200' : 'w-8 !border-netural-300 bg-shades-white',
+        size === 'sm' ? 'py-0.5' : 'py-1'
       )}
       onClick={onClick}
     >
-      <VariantColors colors={colors} className="!h-6 !w-6 !p-1" />
+      <VariantColors
+        colors={colors}
+        className={clsx(
+          '!p-1',
+          size === 'sm'
+            ? '!min-h-[20px] !min-w-[20px]'
+            : '!min-h-[24px] !min-w-[24px]'
+        )}
+      />
       {label && (
-        <Paragraph
-          size="md"
-          className="pr-2"
-        >
+        <Paragraph size={size === 'lg' ? 'md' : 'xs'} className={clsx("pr-2", size === 'sm' ? '!leading-[14px]' : '')}>
           {label}
         </Paragraph>
       )}
