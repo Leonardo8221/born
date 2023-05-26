@@ -7,7 +7,6 @@ import { Paragraph } from "@/components/molecules/Paragraph";
 import ShowcaseLayout from "@/components/layouts/ShowcaseLayout";
 import { SearchInput } from "@/components/molecules/SearchInput";
 import { Badge } from "@/components/molecules/Badge";
-// import Logo from '@/assets/images/logo-image.png';
 
 const RetailerPage = () => {
   const data = [

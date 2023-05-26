@@ -6,7 +6,6 @@ import OrganizationCard, {
 import Header from '@/components/page-components/organization/Header';
 import { ORGANIZATIONS_QUERY } from '@/queries/organizations';
 import placeholderBgImage from '@/assets/images/placeholders/banner.png';
-import OrgLogoImg1 from '@/assets/images/logo-image.png';
 import ErrorMessage from '../Error/ErrorMessage';
 import Loading from '../Loading';
 
@@ -20,7 +19,7 @@ const SelectOrganization = () => {
           key={index}
           {...org}
           id={org.id}
-          logoUrl={org?.logo_url || OrgLogoImg1}
+          logoUrl={org?.logo_url || undefined}
           imgSrc={org?.banner_url || placeholderBgImage}
         />
       )
