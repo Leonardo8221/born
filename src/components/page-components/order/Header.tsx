@@ -129,7 +129,7 @@ const Header: FC<HeaderProps> = ({
           onClick={() => router.back()}
         />
         <Pill label={getStatus()} appearance={'outlined'} size={'sm'} />
-        <Heading fontWeight="light" size="sm" className="whitespace-nowrap text-ellipsis overflow-hidden">
+        <Heading fontWeight="light" size="sm">
           {heading}
         </Heading>
       </div>
@@ -207,7 +207,7 @@ const PrintHeader: FC<{ heading: string; }> = ({
   <div className='hidden print:flex items-center max-w-[1440px] mx-auto p-8'>
     <Logo variant='dark' />
     <div className='w-full text-center'>
-      <Heading fontWeight="light" size="sm" className="whitespace-nowrap text-ellipsis overflow-hidden">
+      <Heading fontWeight="light" size="sm">
         {heading}
       </Heading>
     </div>

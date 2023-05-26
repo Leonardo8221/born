@@ -81,7 +81,7 @@ const Description: FC<DescriptionProps> = ({
               </span>
               <p
                 className={clsx(
-                  'text-shades-black !leading-[16px] !max-w-[100px] whitespace-nowrap overflow-hidden text-ellipsis',
+                  'text-shades-black !leading-[16px] !max-w-[100px]',
                   fonts.text.lg
                 )}
               >
@@ -109,7 +109,7 @@ const Description: FC<DescriptionProps> = ({
               </span>
               <p
                 className={clsx(
-                  'text-shades-black !leading-[16px] !max-w-[100px] whitespace-nowrap overflow-hidden text-ellipsis',
+                  'text-shades-black !leading-[16px] !max-w-[100px]',
                   fonts.text.lg
                 )}
               >
