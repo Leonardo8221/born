@@ -111,12 +111,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
             <ImageText
               title={title || ""}
               titleClassName="text-[32px] whitespace-nowrap overflow-hidden text-ellipsis max-w-[700px]"
-              imgSrc={{
-                src: srcLogo || LogoImage.src,
-                height: 56,
-                width: 56,
-                blurDataURL: srcLogo || srcBlurDataURL || LogoImage.src,
-              }}
+              imgSrc={srcLogo}
               hideOverlay
               altText=" "
             />

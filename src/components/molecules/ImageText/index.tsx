@@ -13,7 +13,7 @@ export interface ImageTextProps {
   variant?: 'brand' | 'product' | 'brand-two';
   title: string;
   subTitle?: string;
-  imgSrc: StaticImageData | string;
+  imgSrc?: string;
   altText: string;
   titleClassName?: string;
   hideOverlay?: boolean;
@@ -56,7 +56,7 @@ const ImageText: FC<ImageTextProps> = ({
         )}
         {imgSrc && (
           <img
-            src={typeof imgSrc === 'string' ? imgSrc : imgSrc.src}
+            src={imgSrc}
             alt={altText}
             className={clsx('object-cover', variantImageClasses[variant])}
           />
