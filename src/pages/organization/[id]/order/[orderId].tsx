@@ -344,7 +344,7 @@ function OrderPreview() {
         handleErrorMessage={handleErrorMessage}
         addNote={() => {
           setIsAddNoteOpen(!isAddNoteOpen);
-          setOrderNote('');
+          setOrderNote(orderDetails?.note);
         }}
         setSuccessMessage={handleSuccessMessage}
         setErrorMessage={handleErrorMessage}
@@ -422,7 +422,7 @@ function OrderPreview() {
         />
       </div>
       <AddNote
-        note={(orderDetailId ? orderNote : null) || (!orderDetailId ? orderDetails.note : null) || ''}
+        note={orderNote}
         handleSaveNote={handleSaveNote}
         isOpen={isAddNoteOpen}
         onClose={() => {
