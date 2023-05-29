@@ -52,11 +52,10 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
         >
           <textarea
             disabled={disabled}
-            defaultValue={value}
+            value={value}
             onChange={handleChange}
             placeholder={placeholder}
             readOnly={readOnly}
-            key={value}
             className={clsx(
               styles.textarea,
               `h-[188px] print:!h-[138px] !w-full p-4 'text-shades-black' rounded focus:outline-none`,
