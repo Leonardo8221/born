@@ -74,7 +74,7 @@ const OrderListTable: FC<OrderDetails> = ({
             </div>
             <span
               className={clsx(
-                'text-shades-black tracking-[0.06em] text-center print:w-[60px]',
+                'text-shades-black tracking-[0.06em] text-center print:w-[60px] break-all',
                 fonts.text.md
               )}
             >
