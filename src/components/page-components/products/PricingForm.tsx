@@ -18,12 +18,12 @@ interface PricingFormProps {
 }
 
 const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
-  const [pricings, setPricings] = useState<PriceRequestDTO[]>([
+  const [pricings, setPricings] = useState<any[]>([
     {
       currency: '',
-      exworks: undefined,
-      landed: undefined,
-      retail: undefined,
+      exworks: null,
+      landed: null,
+      retail: null,
     },
   ]);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -85,9 +85,9 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
       ...pricings,
       {
         currency: '',
-        exworks: undefined,
-        landed: undefined,
-        retail: undefined,
+        exworks: null,
+        landed: null,
+        retail: null,
       },
     ]);
   };
