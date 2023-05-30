@@ -54,17 +54,16 @@ const AddProduct: FC<AddProductProps> = () => {
           acceptedFiles,
           acceptedFiles?.name,
           {
-            onUploadProgress: ({loaded, total, progress, bytes, estimated, rate, upload = true}) => {
-              console.log({loaded, total, progress, bytes, estimated, rate, upload});
-              // setProgress(percent);
-              // if(percent > 100) {
-              //   setShowProgress(false);
-              //   setSuccess(true);
-              //   setFile(acceptedFiles);
-              //   handleSuccessMesssage('File uploaded successfully!');
-              // }
+            onUploadProgress: ({ loaded, total }) => {
+              const percent = Math.round((loaded * 100) / (total || 0));
+              setProgress(percent);
+              if(percent > 100) {
+                setShowProgress(false);
+                setSuccess(true);
+                setFile(acceptedFiles);
+                handleSuccessMesssage('File uploaded successfully!');
+              }
             },
-            
           }
         );
       }
