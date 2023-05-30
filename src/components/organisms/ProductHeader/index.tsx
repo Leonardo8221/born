@@ -110,7 +110,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
           <div className="mr-auto">
             <ImageText
               title={title || ""}
-              titleClassName="text-[32px] max-w-[700px]"
+              titleClassName="text-[32px] max-w-[700px] !leading-[32px] pr-[15px]"
               imgSrc={srcLogo}
               hideOverlay
               altText=" "
