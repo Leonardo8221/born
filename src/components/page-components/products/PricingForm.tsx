@@ -1,9 +1,6 @@
 import Dropdown, { Option } from '@/components/molecules/Dropdown';
 import { Paragraph } from '@/components/molecules/Paragraph';
-import {
-  PriceGraphqlDto,
-  ProductWithCollectionsGraphqlDto,
-} from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { FC, useEffect, useState } from 'react';
 import Input from '@/components/molecules/Inputs/Input';
 import { Button } from '@/components/molecules/Button';
@@ -56,7 +53,7 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
   ) => {
     const items = [...pricings];
     const selectedItem: any = items[index];
-    selectedItem[name] = value;
+    selectedItem[name] = value || null;
     items[index] = selectedItem;
     setPricings(items);
   };
@@ -122,7 +119,7 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
           />
           <Input
             label="landed"
-            value={item?.landed || (item?.landed == 0 ? 0 : '')}
+            value={item?.landed || ''}
             type="number"
             min={0}
             onChange={(value: string) =>
@@ -133,7 +130,7 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
           />
           <Input
             label="Exworks"
-            value={item?.exworks || (item?.exworks == 0 ? 0 : '')}
+            value={item?.exworks || ''}
             type="number"
             min={0}
             onChange={(value: string) =>
@@ -146,7 +143,7 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
             label="Retail"
             type="number"
             min={0}
-            value={item?.retail || (item?.retail == 0 ? 0 : '')}
+            value={item?.retail || ''}
             onChange={(value: string) =>
               handleInputChange('retail', Number(value), index)
             }

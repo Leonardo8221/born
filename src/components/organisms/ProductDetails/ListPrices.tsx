@@ -56,7 +56,7 @@ const ListPrices: FC<ListPricesProps> = ({
       {currency && <List label={currency} value="currency" isSmall={isSmall} />}
       {items?.map(
         (item, index) =>
-          item?.price !== null && item?.price !== undefined && (
+          item?.price && (
             <>
               <List
                 key={index}
