@@ -81,22 +81,22 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                   [
                     {
                       label: 'Landed',
-                      price: item?.landed?.toFixed(2),
+                      price: item?.landed && item.landed.toFixed(2) || null,
                     },
                     {
                       label: 'Exworks',
-                      price: item?.exworks?.toFixed(2),
+                      price: item?.exworks && item.exworks.toFixed(2) || null,
                     },
                     {
                       label: 'MSRP',
-                      price: item?.retail?.toFixed(2),
+                      price: item?.retail && item.retail.toFixed(2) || null,
                     },
                   ] || []
                 }
                 currency={
-                  item?.landed !== null ||
-                  item?.exworks !== null ||
-                  item?.retail !== null
+                  (item?.landed ||
+                  item?.exworks ||
+                  item?.retail)
                     ? item?.currency || ''
                     : ''
                 }
