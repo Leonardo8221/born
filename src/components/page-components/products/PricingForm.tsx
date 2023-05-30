@@ -21,9 +21,9 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
   const [pricings, setPricings] = useState<PriceRequestDTO[]>([
     {
       currency: '',
-      exworks: 0,
-      landed: 0,
-      retail: 0,
+      exworks: undefined,
+      landed: undefined,
+      retail: undefined,
     },
   ]);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -42,9 +42,9 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
     setPricings(
       (product?.associated_prices?.map((item) => ({
         currency: item?.currency || '',
-        landed: item?.landed || 0,
-        exworks: item?.exworks || 0,
-        retail: item?.retail || 0,
+        landed: item?.landed,
+        exworks: item?.exworks,
+        retail: item?.retail,
       })) as any) || []
     );
   }, [product]);
@@ -85,9 +85,9 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
       ...pricings,
       {
         currency: '',
-        exworks: 0,
-        landed: 0,
-        retail: 0,
+        exworks: undefined,
+        landed: undefined,
+        retail: undefined,
       },
     ]);
   };
@@ -122,7 +122,7 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
           />
           <Input
             label="landed"
-            value={!Number.isNaN(item?.landed) ? Number(item.landed) : ''}
+            value={item?.landed || (item?.landed == 0 ? 0 : '')}
             type="number"
             min={0}
             onChange={(value: string) =>
@@ -133,7 +133,7 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
           />
           <Input
             label="Exworks"
-            value={!Number.isNaN(item?.exworks) ? Number(item.exworks) : ''}
+            value={item?.exworks || (item?.exworks == 0 ? 0 : '')}
             type="number"
             min={0}
             onChange={(value: string) =>
@@ -146,7 +146,7 @@ const PricingForm: FC<PricingFormProps> = ({ product, refetch }) => {
             label="Retail"
             type="number"
             min={0}
-            value={!Number.isNaN(item?.retail) ? Number(item.retail) : ''}
+            value={item?.retail || (item?.retail == 0 ? 0 : '')}
             onChange={(value: string) =>
               handleInputChange('retail', Number(value), index)
             }
