@@ -15,7 +15,7 @@ const TableComponent: React.FC<Props> = ({
   return (
     <div className="text-[12px] text-[#333333]">
       <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t">
-        <h2 className="border-r border-[#D8D8D8] px-[55px] py-[10px] pr-[169px] pl-[10px]">
+        <h2 className="border-r border-[#D8D8D8] w-[200px] py-[10px] px-[10px]">
           Sizes
         </h2>
         {orderDetailSizes?.map((item: any) => (
@@ -28,7 +28,7 @@ const TableComponent: React.FC<Props> = ({
         ))}
       </div>
       <div className="flex items-center border border-[#D8D8D8] border-t-0 h-[39px] rounded-b">
-        <h2 className="border-r border-[#D8D8D8] px-[55px] py-[10px] pr-[141px] pl-[10px]">
+        <h2 className="border-r border-[#D8D8D8] w-[200px] py-[10px] px-[10px]">
           Quantities
         </h2>
         {orderDetailSizes?.map((item: any) => (
