@@ -116,7 +116,7 @@ export const ProductCard: FC<ProductCardProps> = ({
         <div
           className={clsx(
             clsProductCardId(size),
-            'break-all'
+            'break-anywhere'
           )}
         >
           {style_number}
@@ -145,7 +145,7 @@ export const ProductCard: FC<ProductCardProps> = ({
             )}
             {renderCheckbox}
           </div>
-          <h3 className={clsx(clsProductCardTitle(size), 'break-all')}>{style_name}</h3>
+          <h3 className={clsx(clsProductCardTitle(size), 'break-anywhere')}>{style_name}</h3>
           <div className="flex items-center gap-2 flex-wrap">
             {isCollection ? (
               <ColorVariant

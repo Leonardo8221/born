@@ -68,7 +68,7 @@ const ImageText: FC<ImageTextProps> = ({
           className={clsx(
             variantTitleClasses[variant],
             titleClassName,
-            'text-shades-black tracking-[0.06em] break-all'
+            'text-shades-black tracking-[0.06em] break-anywhere'
           )}
         >
           {title}
@@ -77,7 +77,7 @@ const ImageText: FC<ImageTextProps> = ({
           <h4
             className={clsx(
               variantSubTitleClasses[variant],
-              'text-neutral-700 font-light tracking-[0.06em] break-all'
+              'text-neutral-700 font-light tracking-[0.06em] break-anywhere'
             )}
           >
             {subTitle}

@@ -43,3 +43,7 @@ body {
       zoom: 35%;
   }
 }
+
+.break-anywhere {
+  overflow-wrap: anywhere;
+}

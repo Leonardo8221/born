@@ -147,7 +147,7 @@ const ListTable: FC<ListTableProps> = ({
               <div>
                 <div
                   className={clsx(
-                    'text-shades-black tracking-[0.06em] max-w-[80px] break-all',
+                    'text-shades-black tracking-[0.06em] max-w-[80px] break-anywhere',
                     fonts.text.sm
                   )}
                   title={info?.row?.original?.colour_name}
@@ -180,7 +180,7 @@ const ListTable: FC<ListTableProps> = ({
                 <div>
                   <div
                     className={clsx(
-                      'text-shades-black tracking-[0.06em] !max-w-[80px] break-all',
+                      'text-shades-black tracking-[0.06em] !max-w-[80px] break-anywhere',
                       fonts.text.sm
                     )}
                     title={item?.colour_name}
