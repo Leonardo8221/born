@@ -16,7 +16,11 @@ import Loading from '@/components/page-components/Loading';
 import { useRouter } from 'next/router';
 import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
-import { AttachmentResourceApi, CollectionResourceApi, ProductResourceApi } from 'client/command';
+import {
+  AttachmentResourceApi,
+  CollectionResourceApi,
+  ProductResourceApi,
+} from 'client/command';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
@@ -25,7 +29,10 @@ import {
   ProductWithCollectionsGraphqlDto,
 } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
-import { COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, SEASONS_BY_COLLECTION_ID } from '@/queries/filters';
+import {
+  COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY,
+  SEASONS_BY_COLLECTION_ID,
+} from '@/queries/filters';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LinesheetUpload from '@/components/page-components/showcase/LinesheetUpload';
 import useVariantSelect from '@/components/page-components/common/useVariantSelect';
@@ -35,8 +42,13 @@ const CollectionPage = () => {
   const collectionId = Number(router?.query?.collectionId);
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
-  const { selectedRows, selectedVariants, setSelectedRows, resetSelectedRows, setSelectedVariants } =
-    useVariantSelect();
+  const {
+    selectedRows,
+    selectedVariants,
+    setSelectedRows,
+    resetSelectedRows,
+    setSelectedVariants,
+  } = useVariantSelect();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -48,7 +60,7 @@ const CollectionPage = () => {
     null
   );
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
-  const [selectedSeasons, setSelectedSeasons] = useState<string[]>([])
+  const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [pageNo, setPageNo] = useState(0);
   const [rows] = useState(24);
   const [products, setProducts] = useState<any[]>([]);
@@ -56,6 +68,7 @@ const CollectionPage = () => {
   const collectionDetailRef = useRef<any>(null);
   const [gridPrevState, setGridPrevState] = useState<GridType>('grid');
   const [isProductDelete, setIsProductDelete] = useState(false);
+  const [isPdf, setIsPdf] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
 
   const handleScroll = () => {
@@ -111,6 +124,18 @@ const CollectionPage = () => {
     fetchPolicy: 'network-only',
   });
 
+  const { data: allProducts } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
+    variables: {
+      collectionId,
+      rows: 1000,
+      start: 0,
+    },
+    fetchPolicy: 'network-only',
+  });
+
+  const collectionProducts =
+    allProducts?.productsBySearchAndCollectionId?.content || [];
+
   useEffect(() => {
     const newProducts: any[] =
       productsCollection?.productsBySearchAndCollectionId?.content || [];
@@ -138,6 +163,7 @@ const CollectionPage = () => {
   useEffect(() => {
     window.onafterprint = () => {
       setGrid(gridPrevState);
+      setIsPdf(false);
     };
   }, []);
 
@@ -145,7 +171,6 @@ const CollectionPage = () => {
     variables: { collectionId },
     notifyOnNetworkStatusChange: true,
   });
-
 
   const { data: seasons } = useQuery(SEASONS_BY_COLLECTION_ID, {
     variables: { collectionId },
@@ -289,8 +314,7 @@ const CollectionPage = () => {
         const payload = {
           ...collection,
           linesheet_name:
-            (fileType === 'LINESHEET' ? name : collection.linesheet_name) ||
-            '',
+            (fileType === 'LINESHEET' ? name : collection.linesheet_name) || '',
           lookbook_name:
             (fileType === 'LOOKBOOK' ? name : collection.lookbook_name) || '',
         };
@@ -339,12 +363,14 @@ const CollectionPage = () => {
         handlePrint={(e: GridType) => {
           setGridPrevState(gridType);
           setGrid(e);
+          setIsPdf(true);
         }}
         handleCreateOrder={() => {
           setSelectedVariants(
-            products?.map(
-              (item: any) => ({ id: item.id, selectedVariant: item.id})
-            )
+            products?.map((item: any) => ({
+              id: item.id,
+              selectedVariant: item.id,
+            }))
           );
           setIsAddToDraft(true);
         }}
@@ -394,7 +420,7 @@ const CollectionPage = () => {
         ) : (
           <>
             <InfiniteScroll
-              dataLength={products.length}
+              dataLength={isPdf ? collectionProducts?.length : products.length}
               next={async () => {
                 const start = pageNo + 1;
                 totalPages && start <= totalPages && setPageNo(start);
@@ -410,7 +436,7 @@ const CollectionPage = () => {
             >
               <ProductList
                 gridType={gridType}
-                products={products}
+                products={isPdf ? collectionProducts : products}
                 selectable={isSelectable}
                 selectedVariants={selectedVariants}
                 selectedProducts={selectedRows}
@@ -457,7 +483,11 @@ const CollectionPage = () => {
           onCancel={() => setSelectedOrder(null)}
         />
       )}
-      <LinesheetUpload isOpen={isUpload} setIsOpen={setIsUpload} handleSubmit={handleUploadFile}/>
+      <LinesheetUpload
+        isOpen={isUpload}
+        setIsOpen={setIsUpload}
+        handleSubmit={handleUploadFile}
+      />
     </div>
   );
 };
