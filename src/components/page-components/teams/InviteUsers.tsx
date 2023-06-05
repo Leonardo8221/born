@@ -79,7 +79,7 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
       <div className="mt-4">
         {inviteUsers.map((item) => (
           <div key={item.id} className="flex items-center gap-x-4">
-            <div className="relative w-[279px]">
+            <div className="relative w-[279px] z-1">
               <Input
                 value={item.email}
                 label="Email"

@@ -357,6 +357,28 @@ const CollectionPage = () => {
     return <Loading message="Loading collections" />;
   }
 
+  const renderProducts = (productList: any) => (
+    <ProductList
+      gridType={gridType}
+      products={productList}
+      selectable={isSelectable}
+      selectedVariants={selectedVariants}
+      selectedProducts={selectedRows}
+      onSelect={setSelectedRows}
+      type="collection"
+      hanldeAddToDraftOrder={(id) => {
+        setSelectedRows({ id, selectedVariant: id });
+        setIsAddToDraft(true);
+      }}
+      handleAddToCollection={(id) => {
+        handleRemoveProducts(id);
+      }}
+      handleDeleteProduct={(id) => {
+        handleDeleteProducts(id);
+      }}
+    />
+  );
+
   return (
     <div>
       <Header
@@ -420,7 +442,7 @@ const CollectionPage = () => {
         ) : (
           <>
             <InfiniteScroll
-              dataLength={isPdf ? collectionProducts?.length : products.length}
+              dataLength={products.length}
               next={async () => {
                 const start = pageNo + 1;
                 totalPages && start <= totalPages && setPageNo(start);
@@ -433,27 +455,13 @@ const CollectionPage = () => {
                   <Loading message="Loading more products..." />
                 )
               }
+              className="print:hidden"
             >
-              <ProductList
-                gridType={gridType}
-                products={isPdf ? collectionProducts : products}
-                selectable={isSelectable}
-                selectedVariants={selectedVariants}
-                selectedProducts={selectedRows}
-                onSelect={setSelectedRows}
-                type="collection"
-                hanldeAddToDraftOrder={(id) => {
-                  setSelectedRows({ id, selectedVariant: id });
-                  setIsAddToDraft(true);
-                }}
-                handleAddToCollection={(id) => {
-                  handleRemoveProducts(id);
-                }}
-                handleDeleteProduct={(id) => {
-                  handleDeleteProducts(id);
-                }}
-              />
+              {renderProducts(products)}
             </InfiniteScroll>
+            <div className="h-[0px] overflow-hidden opacity-0 invisible print:h-auto print:overflow-auto print:opacity-100 print:visible">
+              {renderProducts(collectionProducts)}
+            </div>
           </>
         )}
       </div>
