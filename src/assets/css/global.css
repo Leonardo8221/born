@@ -1,11 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("../fonts/font-styles.css");
+@import url('../fonts/font-styles.css');
 
 :root {
-  --font-family: "Untitled Sans";
-  --var-background-color: "#D8D8D8";
+  --font-family: 'Untitled Sans';
+  --var-background-color: '#D8D8D8';
 }
 
 html,
@@ -28,22 +28,26 @@ body {
 
 @media print and (max-width: 874px) {
   .order__page {
-      zoom: 75%;
+    zoom: 75%;
   }
 }
 
 @media print and (max-width: 560px) {
   .order__page {
-      zoom: 50%;
+    zoom: 50%;
   }
 }
 
 @media print and (max-width: 421px) {
   .order__page {
-      zoom: 35%;
+    zoom: 35%;
   }
 }
 
 .break-anywhere {
   overflow-wrap: anywhere;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }

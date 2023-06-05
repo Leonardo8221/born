@@ -70,6 +70,7 @@ const ImageText: FC<ImageTextProps> = ({
             titleClassName,
             'text-shades-black tracking-[0.06em] break-anywhere'
           )}
+          lang="es"
         >
           {title}
         </h3>
@@ -79,6 +80,7 @@ const ImageText: FC<ImageTextProps> = ({
               variantSubTitleClasses[variant],
               'text-neutral-700 font-light tracking-[0.06em] break-anywhere'
             )}
+            lang="es"
           >
             {subTitle}
           </h4>

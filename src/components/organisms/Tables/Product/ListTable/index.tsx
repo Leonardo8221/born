@@ -150,6 +150,7 @@ const ListTable: FC<ListTableProps> = ({
                     'text-shades-black tracking-[0.06em] max-w-[80px] break-anywhere',
                     fonts.text.sm
                   )}
+                  lang="es"
                   title={info?.row?.original?.colour_name}
                 >
                   {info?.row?.original?.colour_name}
@@ -183,6 +184,7 @@ const ListTable: FC<ListTableProps> = ({
                       'text-shades-black tracking-[0.06em] !max-w-[80px] break-anywhere',
                       fonts.text.sm
                     )}
+                    lang="es"
                     title={item?.colour_name}
                   >
                     {item?.colour_name}

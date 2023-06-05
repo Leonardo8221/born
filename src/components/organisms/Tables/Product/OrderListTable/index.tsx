@@ -77,6 +77,7 @@ const OrderListTable: FC<OrderDetails> = ({
                 'text-shades-black tracking-[0.06em] text-center print:w-[60px] break-anywhere',
                 fonts.text.md
               )}
+              lang="es"
             >
               {row?.original?.product?.colour_name}
             </span>

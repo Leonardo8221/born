@@ -114,10 +114,8 @@ export const ProductCard: FC<ProductCardProps> = ({
         )}
       >
         <div
-          className={clsx(
-            clsProductCardId(size),
-            'break-anywhere'
-          )}
+          className={clsx(clsProductCardId(size), 'break-anywhere')}
+          lang="es"
         >
           {style_number}
         </div>
@@ -145,7 +143,12 @@ export const ProductCard: FC<ProductCardProps> = ({
             )}
             {renderCheckbox}
           </div>
-          <h3 className={clsx(clsProductCardTitle(size), 'break-anywhere')}>{style_name}</h3>
+          <h3
+            className={clsx(clsProductCardTitle(size), 'break-anywhere')}
+            lang="es"
+          >
+            {style_name}
+          </h3>
           <div className="flex items-center gap-2 flex-wrap">
             {isCollection ? (
               <ColorVariant
@@ -176,26 +179,27 @@ export const ProductCard: FC<ProductCardProps> = ({
                 }}
               />
             )}
-            {!isCollection && productVariants?.map((variant) => (
-              <VariantColors
-                key={variant?.id}
-                colors={(variant?.colour_families as string[]) || []}
-                type="card"
-                active={
-                  selectedVariant === variant?.id ||
-                  selectedVariants?.includes(variant?.id)
-                }
-                onClick={(e) => {
-                  e.preventDefault();
-                  onSelect({
-                    id,
-                    selectedVariant: variant?.id,
-                    isVariant: true,
-                  });
-                  setSelectedVariant(variant?.id);
-                }}
-              />
-            ))}
+            {!isCollection &&
+              productVariants?.map((variant) => (
+                <VariantColors
+                  key={variant?.id}
+                  colors={(variant?.colour_families as string[]) || []}
+                  type="card"
+                  active={
+                    selectedVariant === variant?.id ||
+                    selectedVariants?.includes(variant?.id)
+                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelect({
+                      id,
+                      selectedVariant: variant?.id,
+                      isVariant: true,
+                    });
+                    setSelectedVariant(variant?.id);
+                  }}
+                />
+              ))}
           </div>
           <div className={clsx(clsProductCardTags(size), 'mt-4 flex-wrap')}>
             {collections?.map((collection: any) => (
@@ -207,7 +211,10 @@ export const ProductCard: FC<ProductCardProps> = ({
           {isCollection && (
             <ListView
               label="Available Styles"
-              title={productVariants?.map(item => item?.colour_name)?.join(', ') || ''}
+              title={
+                productVariants?.map((item) => item?.colour_name)?.join(', ') ||
+                ''
+              }
               size={size}
               isVisible={true}
             />
@@ -287,16 +294,21 @@ export const ProductCard: FC<ProductCardProps> = ({
   );
 };
 
-const ListView: FC<{ title: string; label: string; size: 'lg' | 'sm', isVisible?: boolean }> = ({
-  label,
-  title,
-  size,
-  isVisible,
-}) => {
+const ListView: FC<{
+  title: string;
+  label: string;
+  size: 'lg' | 'sm';
+  isVisible?: boolean;
+}> = ({ label, title, size, isVisible }) => {
   return (
     <>
       {title && (
-        <div className={clsx(!isVisible ? 'hidden print:block' : '', size === 'lg' ? 'mt-4' : 'mt-2')}>
+        <div
+          className={clsx(
+            !isVisible ? 'hidden print:block' : '',
+            size === 'lg' ? 'mt-4' : 'mt-2'
+          )}
+        >
           <h5 className={clsx(clsProductCardPrice(size))}>{title}</h5>
           <p className={styles.priceLabel}>{label}</p>
         </div>

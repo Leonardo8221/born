@@ -63,7 +63,7 @@ const Products: FC = () => {
       rows: rows,
       start: pageNo * rows,
     },
-    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
   });
 
   useEffect(() => {
@@ -236,7 +236,7 @@ const Products: FC = () => {
         organizationId,
         newCollection
       );
-      await handleAddToCollection(res?.data?.id)
+      await handleAddToCollection(res?.data?.id);
       setIsLoading(false);
       setIsCreateModal(false);
       handleSuccessMesssage('New collection added successfully!');
@@ -343,7 +343,7 @@ const Products: FC = () => {
                     selectedVariant: id,
                     isVariant: selectedRows.includes(id) ? true : false,
                     isNew: true,
-                  })
+                  });
                   setIsModalVisible(true);
                 }}
                 handleAddToCollection={(id) => {
