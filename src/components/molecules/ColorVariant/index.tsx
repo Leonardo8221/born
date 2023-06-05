@@ -34,7 +34,14 @@ const ColorVariant: FC<ColorVariantProps> = ({
         )}
       />
       {label && (
-        <Paragraph size={size === 'lg' ? 'md' : 'xs'} className={clsx("pr-2 break-all", size === 'sm' ? '!leading-[14px]' : '')}>
+        <Paragraph
+          size={size === 'lg' ? 'md' : 'xs'}
+          className={clsx(
+            'pr-2 break-anywhere',
+            size === 'sm' ? '!leading-[14px]' : ''
+          )}
+          lang="es"
+        >
           {label}
         </Paragraph>
       )}

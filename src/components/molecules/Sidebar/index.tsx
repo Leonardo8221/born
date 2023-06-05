@@ -35,10 +35,8 @@ const Sidebar: FC<SidebarProps> = ({
   menuItems,
   onSignOut,
 }) => {
-  const {
-    wrapperClasses,
-    className: classNameLogo,
-  } = variantLogoStyles[variant];
+  const { wrapperClasses, className: classNameLogo } =
+    variantLogoStyles[variant];
 
   const router = useRouter();
   const getActiveLink: any = useCallback(
@@ -56,23 +54,25 @@ const Sidebar: FC<SidebarProps> = ({
       <div className="flex flex-col h-full">
         <div className="flex w-full flex-col items-center flex-1">
           <div className="[&>svg]:h-[80px] [&>svg]:w-[80px] [&>svg]:rounded-full">
-            <div
-              className={wrapperClasses}
-            >
+            <div className={wrapperClasses}>
               {logo
                 ? logo
                 : logoUrl && (
                     <img
                       src={typeof logoUrl === 'string' ? logoUrl : logoUrl?.src}
                       alt={`${title} logo`}
-                      className={clsx(
-                        classNameLogo,
-                      )}
+                      className={clsx(classNameLogo)}
                     />
                   )}
             </div>
           </div>
-          <h3 className={clsx(fonts.text.xl, 'text-shades-black mt-2 px-3 text-center')}>
+          <h3
+            className={clsx(
+              fonts.text.xl,
+              'text-shades-black mt-2 px-3 text-center break-anywhere'
+            )}
+            lang="es"
+          >
             {title}
           </h3>
           {subTitle && (
