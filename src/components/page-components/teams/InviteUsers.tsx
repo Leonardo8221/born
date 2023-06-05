@@ -79,9 +79,10 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
       <div className="mt-4">
         {inviteUsers.map((item) => (
           <div key={item.id} className="flex items-center gap-x-4">
-            <div className="relative w-[279px]">
+            <div className="w-[279px]">
               <Input
                 value={item.email}
+                inputProps={{ value: item.email }}
                 label="Email"
                 onChange={(value: string) => {
                   setKeyword(value);
@@ -91,65 +92,67 @@ const InviteUsers: FC<InviteUsersProps> = ({ handleInviteUsers }) => {
                 inputWrapperClasses="!h-[48px] w-[279px]"
                 isValid={!!item.email}
               />
-              <Transition
-                show={isOpen === item.id}
-                enter="transition ease-out duration-100 transform"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="transition ease-in duration-75 transform"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-                className="z-10"
-              >
-                <div className="absolute top-[5px] left-0 right-0 w-full bg-shades-white rounded shadow-extra z-10">
-                  <div className="absolute right-1 -top-2">
-                    <TriangleDecorator />
-                  </div>
-                  {!loading && !emails?.length && (
-                    <Paragraph
-                      size="base"
-                      className="!text-shades-black !font-light !px-4 py-2"
-                    >
-                      No data found!
-                    </Paragraph>
-                  )}
-                  {loading ? (
-                    <div className="flex px-4 py-2 items-center [&>div]:!mt-0">
-                      <Loading message="Loading..." />
+              <div className='relative w-full z-10'>
+                <Transition
+                  show={isOpen === item.id}
+                  enter="transition ease-out duration-100 transform"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="transition ease-in duration-75 transform"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                  className="z-10"
+                >
+                  <div className="absolute top-[5px] left-0 right-0 w-full bg-shades-white rounded shadow-extra z-10">
+                    <div className="absolute right-1 -top-2">
+                      <TriangleDecorator />
                     </div>
-                  ) : (
-                    emails?.map((option: any) => (
-                      <>
-                        <button
-                          key={option?.keycloak_email}
-                          className="w-[calc(100%-16px)] text-left mx-2 py-2 my-1 rounded-[4px] text-shades-black hover:bg-neutral-200 focus:outline-none focus:bg-neutral-200"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleChange({
-                              id: item.id,
-                              name: 'email',
-                              value: option?.keycloak_email,
-                              user_id: option?.id,
-                            });
-                            setIsOpen(null);
-                          }}
-                          role="menuitem"
-                        >
-                          <div
-                            className={clsx(
-                              'px-2',
-                              fonts.text.md,
-                              fonts.fontWeights.regular
-                            )}
+                    {!loading && !emails?.length && (
+                      <Paragraph
+                        size="base"
+                        className="!text-shades-black !font-light !px-4 py-2"
+                      >
+                        No data found!
+                      </Paragraph>
+                    )}
+                    {loading ? (
+                      <div className="flex px-4 py-2 items-center [&>div]:!mt-0">
+                        <Loading message="Loading..." />
+                      </div>
+                    ) : (
+                      emails?.map((option: any) => (
+                        <>
+                          <button
+                            key={option?.keycloak_email}
+                            className="w-[calc(100%-16px)] text-left mx-2 py-2 my-1 rounded-[4px] text-shades-black hover:bg-neutral-200 focus:outline-none focus:bg-neutral-200"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleChange({
+                                id: item.id,
+                                name: 'email',
+                                value: option?.keycloak_email,
+                                user_id: option?.id,
+                              });
+                              setIsOpen(null);
+                            }}
+                            role="menuitem"
                           >
-                            {option?.keycloak_email}
-                          </div>
-                        </button>
-                      </>
-                    ))
-                  )}
-                </div>
-              </Transition>
+                            <div
+                              className={clsx(
+                                'px-2',
+                                fonts.text.md,
+                                fonts.fontWeights.regular
+                              )}
+                            >
+                              {option?.keycloak_email}
+                            </div>
+                          </button>
+                        </>
+                      ))
+                    )}
+                  </div>
+                </Transition>
+              </div>
             </div>
             <Dropdown
               label="Role"

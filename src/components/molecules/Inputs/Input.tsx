@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, InputHTMLAttributes } from 'react';
 import clsx from 'clsx';
 import styles from './Input.module.css';
 import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
@@ -19,6 +19,7 @@ export interface InputProps {
   inputWrapperClasses?: string;
   disabled?: boolean;
   min?: number;
+  inputProps?: InputHTMLAttributes<HTMLInputElement>;
 }
 
 const Input: FC<InputProps> = ({
@@ -37,6 +38,7 @@ const Input: FC<InputProps> = ({
   inputWrapperClasses,
   disabled,
   min,
+  inputProps = {},
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -90,6 +92,7 @@ const Input: FC<InputProps> = ({
                 )}
                 onChange={handleChange}
                 disabled={disabled}
+                {...inputProps}
               />
               <div className="flex items-center ml-3 mr-4 my-[15px] w-6">
                 {!isError &&
