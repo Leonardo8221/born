@@ -379,6 +379,11 @@ const CollectionPage = () => {
     />
   );
 
+  const handleSearch = (e: string) => {
+    setPageNo(0);
+    setSearchKeyword(e);
+  }
+
   return (
     <div>
       <Header
@@ -433,7 +438,7 @@ const CollectionPage = () => {
           isSelectable={isSelectable}
           selectedItems={selectedRows}
           searchKeyword={searchKeyword}
-          onSearch={setSearchKeyword}
+          onSearch={handleSearch}
         />
         {!products.length && productsCollectionLoading ? (
           <div className="my-10 min-h-[400px]">
