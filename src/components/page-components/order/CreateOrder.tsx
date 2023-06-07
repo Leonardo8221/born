@@ -43,7 +43,12 @@ const initialState: OrderDetails = {
   season: '',
 };
 
-type StateKeys = 'name' | 'buyer_name' | 'purchase_order' | 'retailer' | 'season';
+type StateKeys =
+  | 'name'
+  | 'buyer_name'
+  | 'purchase_order'
+  | 'retailer'
+  | 'season';
 
 export const CreateOrder: FC<CreatOrderProps> = ({
   showModal,
@@ -51,7 +56,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({
   closeModal,
   setSelectedOrder,
   resetProductIds,
-  handleCloseModal
+  handleCloseModal,
 }) => {
   const router = useRouter();
   const client = useApolloClient();
@@ -75,6 +80,9 @@ export const CreateOrder: FC<CreatOrderProps> = ({
       );
       handleCloseModal();
       setSelectedOrder?.(response?.data);
+      setTimeout(() => {
+        setSelectedOrder?.(null);
+      }, 3000);
       closeModal();
       setDetails(initialState);
       await client.refetchQueries({
@@ -137,7 +145,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({
             <Dropdown
               label="Season"
               selectedOption={{ name: details.season, value: details.season }}
-              options={seasons.map(item => ({ name: item, value: item }))}
+              options={seasons.map((item) => ({ name: item, value: item }))}
               isValid={false}
               onChange={({ value, name }: any) => handleChange('season', value)}
               className="m-2 text-[14px] w-[324px]"
