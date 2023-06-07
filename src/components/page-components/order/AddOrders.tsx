@@ -86,6 +86,9 @@ const AddOrders = ({
         productIds
       );
       setSelectedOrder?.(orderDetails || null);
+      setTimeout(() => {
+        setSelectedOrder?.(null);
+      }, 3000);
       handleSuccessMesssage(
         productIds?.length > 0
           ? `Added ${productIds?.length} products to order successfully!`
