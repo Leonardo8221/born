@@ -17,10 +17,12 @@ import { useState } from 'react';
 import { OrderGraphqlDto } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
 import moment from 'moment';
+import { ORGANIZATION_QUERY } from '@/queries/organizations';
 
 const ProductPage = () => {
   const router = useRouter();
-  const productIdQuery = router?.query?.productId || '';
+  const productIdQuery = router?.query?.productId || null;
+  const organizationId = router?.query?.id || null;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
@@ -36,6 +38,15 @@ const ProductPage = () => {
       productId: Number(productIdQuery),
     },
     fetchPolicy: 'network-only',
+    skip: productIdQuery === null,
+  });
+
+  const { data: currentOrganization } = useQuery(ORGANIZATION_QUERY, {
+    variables: {
+      organizationId: Number(organizationId),
+    },
+    skip: organizationId === null,
+    fetchPolicy: 'cache-and-network',
   });
 
   const currentProduct = product?.productByProductId;
@@ -124,7 +135,9 @@ const ProductPage = () => {
         onDraftOrder={() => setIsModalVisible(true)}
         hrefBack={`/organization/${router.query.id}/discover?tab=products`}
         containerClassName="mt-[42px] mb-[64px]"
-        srcLogo={currentProduct?.attachments?.[0]?.medium_image_url || ''}
+        srcLogo={
+          currentOrganization?.organizationByOrganizationId?.logo_url || null
+        }
       />
       <div className="min-h-[calc(100vh-225px)]">
         <div className="max-w-[1200px] mx-auto">
