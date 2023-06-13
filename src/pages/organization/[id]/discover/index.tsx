@@ -21,6 +21,7 @@ const StoryPage = () => {
   const { data, loading, refetch } = useQuery(ORGANIZATION_QUERY, {
     variables: { organizationId: Number(router?.query?.id) },
     fetchPolicy: 'cache-and-network',
+    skip: !router?.query?.id
   });
   const organization = data?.organizationByOrganizationId || {};
 

@@ -26,7 +26,6 @@ import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
 import {
   OrderGraphqlDto,
-  ProductWithCollectionsGraphqlDto,
 } from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
 import {
@@ -39,7 +38,7 @@ import useVariantSelect from '@/components/page-components/common/useVariantSele
 
 const CollectionPage = () => {
   const router = useRouter();
-  const collectionId = Number(router?.query?.collectionId);
+  const collectionId = router?.query?.collectionId ? Number(router?.query?.collectionId) : null;
   const [gridType, setGrid] = useState<GridType>('grid');
   const [isSelectable, setIsSelectable] = useState(false);
   const {
@@ -114,7 +113,7 @@ const CollectionPage = () => {
     refetch,
   } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
     variables: {
-      collectionId,
+      collectionId: collectionId,
       search: debouncedValue,
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
@@ -122,15 +121,17 @@ const CollectionPage = () => {
       start: pageNo * rows,
     },
     fetchPolicy: 'network-only',
+    skip: collectionId === null,
   });
 
   const { data: allProducts } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
     variables: {
-      collectionId,
+      collectionId: collectionId,
       rows: 1000,
       start: 0,
     },
     fetchPolicy: 'network-only',
+    skip: collectionId === null,
   });
 
   const collectionProducts =
@@ -170,11 +171,13 @@ const CollectionPage = () => {
   const { data: colours } = useQuery(COLOUR_FAMILIES_BY_COLLECTION_ID_QUERY, {
     variables: { collectionId },
     notifyOnNetworkStatusChange: true,
+    skip: collectionId === null
   });
 
   const { data: seasons } = useQuery(SEASONS_BY_COLLECTION_ID, {
     variables: { collectionId },
     notifyOnNetworkStatusChange: true,
+    skip: collectionId === null,
   });
 
   const filterTags = [
@@ -247,7 +250,7 @@ const CollectionPage = () => {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
       const productIds = id ? [id] : selectedVariants;
-      await api.apiCollectionDisassociateProductsPut(collectionId, productIds);
+      await api.apiCollectionDisassociateProductsPut(Number(collectionId), productIds);
       setProducts(products.filter((item) => !productIds.includes(item.id)));
       handleSuccessMesssage(
         `Removed ${
