@@ -18,14 +18,15 @@ import { useEffect, useState } from 'react';
 const ProductEdit = () => {
   const [activeTab, setActiveTab] = useState<string | number>('description');
   const router = useRouter();
-  const productId = router?.query?.productId || '';
+  const productId = router?.query?.productId || null;
   const [path, setPath] = useState('');
 
   const { data, loading, refetch } = useQuery(GET_PRODUCT_BY_ID, {
     variables: {
       productId: Number(productId),
     },
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
+    skip: productId === null,
   });
 
   const product = data?.productByProductId || {};
