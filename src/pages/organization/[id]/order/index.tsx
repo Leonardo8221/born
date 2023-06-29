@@ -40,7 +40,7 @@ const OrderPage = () => {
       season: selectedSeasons,
       orderStatus: tabState,
       start: 0,
-      rows: 100,
+      rows: 300,
       search: debounceValue,
     },
     notifyOnNetworkStatusChange: true,
