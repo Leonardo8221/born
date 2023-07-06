@@ -250,13 +250,13 @@ function OrderPreview() {
     }
   };
 
-  const debounce = (func: Function, delay: number) => {
+  const debounce = (func: Function, delay?: number) => {
     let timerId: any;
     return (...args: any[]) => {
       clearTimeout(timerId);
       timerId = setTimeout(() => {
         func.apply(null, args);
-      }, 600);
+      }, delay || 1000);
     };
   };
 
@@ -292,7 +292,7 @@ function OrderPreview() {
     }
   };
 
-  const debouncedHandleQuantities = debounce(handleQuantities, 500);
+  const debouncedHandleQuantities = debounce(handleQuantities, 1000);
 
   const handleChange = async (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
