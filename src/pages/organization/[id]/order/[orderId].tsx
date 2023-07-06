@@ -250,13 +250,13 @@ function OrderPreview() {
     }
   };
 
-  const debounce = (func: Function, delay?: number) => {
+  const debounce = (func: Function) => {
     let timerId: any;
     return (...args: any[]) => {
       clearTimeout(timerId);
       timerId = setTimeout(() => {
         func.apply(null, args);
-      }, delay || 1000);
+      }, 600);
     };
   };
 
@@ -265,7 +265,6 @@ function OrderPreview() {
     orderDetailId: number,
     id: number
   ) => {
-    setIsLoading(true);
     try {
       const payload = {
         order_detail_sizes: [
@@ -282,17 +281,13 @@ function OrderPreview() {
         orderId,
         payload
       );
-      setTimeout(async() => {
-        await refetch();
-        setIsLoading(false);
-      })
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
   };
 
-  const debouncedHandleQuantities = debounce(handleQuantities, 1000);
+  const debouncedHandleQuantities = debounce(handleQuantities);
 
   const handleChange = async (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
