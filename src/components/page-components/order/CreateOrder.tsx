@@ -5,10 +5,12 @@ import Input from '@/components/molecules/Inputs/Input';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import { useRouter } from 'next/router';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
 import { ORDER_LIST, seasons } from '@/utils/constants';
 import { OrderGraphqlDto } from '@/generated/types';
+import DropdownFilter from './Dropdown';
 import Dropdown from '@/components/molecules/Dropdown';
+import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
 
 interface CreatOrderProps {
   showModal: boolean;
@@ -26,8 +28,8 @@ interface CreatOrderProps {
 interface OrderDetails {
   name: string;
   purchase_order: string;
-  retailer: string;
-  buyer_name: string;
+  retailer_id: null | string;
+  buyer_id: null | string;
   discount: number;
   surcharge: number;
   season: string;
@@ -36,8 +38,8 @@ interface OrderDetails {
 const initialState: OrderDetails = {
   name: '',
   purchase_order: '',
-  retailer: '',
-  buyer_name: '',
+  retailer_id: null,
+  buyer_id: null,
   discount: 0,
   surcharge: 0,
   season: '',
@@ -45,9 +47,9 @@ const initialState: OrderDetails = {
 
 type StateKeys =
   | 'name'
-  | 'buyer_name'
+  | 'buyer_id'
   | 'purchase_order'
-  | 'retailer'
+  | 'retailer_id'
   | 'season';
 
 export const CreateOrder: FC<CreatOrderProps> = ({
@@ -63,6 +65,27 @@ export const CreateOrder: FC<CreatOrderProps> = ({
   const [details, setDetails] = useState<OrderDetails>(initialState);
   const id = router?.query?.id || '';
   const organizationId: number = +id;
+
+  const { data, loading } = useQuery(BUYERS_QUERY, {
+    variables: {
+      organizationId,
+      retailerId: details.retailer_id
+    },
+    skip: !id,
+  });
+
+  const { data: retailers, loading: isLoadingRetailers } = useQuery(
+    RETAILERS_QUERY,
+    {
+      variables: {
+        organizationId,
+      },
+      skip: !id,
+    }
+  );
+
+  console.log(retailers, data)
+
   const handleChange = (key: StateKeys, value: string) => {
     setDetails((prevState) => ({
       ...prevState,
@@ -124,21 +147,20 @@ export const CreateOrder: FC<CreatOrderProps> = ({
             />
           </div>
           <div className="flex w-full">
-            <Input
-              value={details.retailer}
+            <DropdownFilter
+              items={retailers?.retailersByOrganizationId?.map((item: any) => ({
+                id: item?.id,
+                label: item?.store_name,
+              }))}
               label="Retailer name"
-              type="text"
-              name="retailer"
-              onChange={(val) => handleChange('retailer', val)}
-              className="m-2 text-[14px] w-[324px]"
+              loading={isLoadingRetailers}
             />
-            <Input
-              value={details.buyer_name}
-              label="Client name"
-              type="text"
-              name="buyer_name"
-              onChange={(val) => handleChange('buyer_name', val)}
-              className="m-2 text-[14px] w-[324px]"
+            <DropdownFilter
+              items={data?.buyersByOrganizationAndRetailerId?.map(
+                (item: any) => ({ id: item?.id, label: item?.buyer_name })
+              )}
+              label="Customer name"
+              loading={loading}
             />
           </div>
           <div>
@@ -147,7 +169,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({
               selectedOption={{ name: details.season, value: details.season }}
               options={seasons.map((item) => ({ name: item, value: item }))}
               isValid={false}
-              onChange={({ value, name }: any) => handleChange('season', value)}
+              onChange={({ value }: any) => handleChange('season', value)}
               className="m-2 text-[14px] w-[324px]"
             />
           </div>

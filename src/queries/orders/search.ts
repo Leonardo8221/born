@@ -20,7 +20,10 @@ export const ORDER_BY_SEARCH = gql`
         name
         total_price
         billing_address
-        buyer_name
+        buyer_data {
+          id
+          buyer_name
+        }
         pricing_condition
       }
       total_pages
