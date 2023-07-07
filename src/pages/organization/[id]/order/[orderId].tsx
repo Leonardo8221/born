@@ -16,8 +16,6 @@ import PricingCondition from '@/components/page-components/order/PricingConditio
 import useDebounce from '@/utils/debounce';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { orderTypes, seasons } from '@/utils/constants';
-import moment from 'moment';
-import { formatDate } from '@/utils';
 
 function OrderPreview() {
   const router = useRouter();
@@ -40,12 +38,17 @@ function OrderPreview() {
     variables: { orderId },
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
+    skip: !orderId,
   });
   const details = data?.orderByOrderId;
 
   useEffect(() => {
     if (details) {
-      setDetails({ ...details });
+      setDetails({
+        ...details,
+        buyer_id: details?.buyer_data?.id || undefined,
+        retailer_id: details?.retailer_data?.id || undefined,
+      });
     }
   }, [details]);
 
@@ -97,7 +100,7 @@ function OrderPreview() {
     payload[key] = val;
     setTimeout(() => {
       setDetails(payload);
-    }, 500)
+    }, 500);
   };
 
   const columnData = {
@@ -109,13 +112,14 @@ function OrderPreview() {
       },
       {
         name: 'Retailer',
-        key: 'retailer',
-        value: orderDetails?.retailer,
+        key: 'retailer_id',
+        value: orderDetails?.retailer_data?.store_name,
       },
       {
         name: 'Buyer name',
-        key: 'buyer_name',
-        value: orderDetails?.buyer_name,
+        key: 'buyer_id',
+        value: orderDetails?.buyer_data?.buyer_name,
+        retailer_id: orderDetails?.retailer_data?.retailer_id
       },
       {
         name: 'Email Address',
@@ -146,8 +150,9 @@ function OrderPreview() {
         name: 'Delivery lead time',
         key: 'delivery_lead_time',
         inputType: 'datepicker',
-        value: `${orderDetails?.delivery_window_start_date || ''
-        } - ${orderDetails?.delivery_window_end_date || ''}`,
+        value: `${orderDetails?.delivery_window_start_date || ''} - ${
+          orderDetails?.delivery_window_end_date || ''
+        }`,
       },
       {
         name: 'Last updated',

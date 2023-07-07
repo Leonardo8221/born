@@ -26,7 +26,10 @@ export const GET_ORDERS = gql`
         name
         total_price
         billing_address
-        buyer_name
+        buyer_data {
+          id
+          buyer_name
+        }
         created_date
         delivery_address
         discount
@@ -37,10 +40,12 @@ export const GET_ORDERS = gql`
         payment_terms
         pricing_condition
         purchase_order
-        retailer
         order_status
         size
-        retailer
+        retailer_data {
+          id
+          store_name
+        }
         season
         total_price
         total_quantity

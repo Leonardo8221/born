@@ -6,7 +6,10 @@ export const GET_ORDER_BY_ID = gql`
       id
       name
       billing_address
-      buyer_name
+      buyer_data {
+        id
+        buyer_name
+      }
       created_date
       delivery_address
       delivery_window_start_date
@@ -22,11 +25,13 @@ export const GET_ORDER_BY_ID = gql`
       payment_terms
       pricing_condition
       purchase_order
-      retailer
+      retailer_data {
+        id
+        store_name
+      }
       order_status
       order_type
       size
-      retailer
       season
       order_details {
         id

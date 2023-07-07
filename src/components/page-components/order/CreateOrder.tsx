@@ -5,10 +5,13 @@ import Input from '@/components/molecules/Inputs/Input';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
 import { useRouter } from 'next/router';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
 import { ORDER_LIST, seasons } from '@/utils/constants';
 import { OrderGraphqlDto } from '@/generated/types';
+import DropdownFilter, { Item } from './Dropdown';
 import Dropdown from '@/components/molecules/Dropdown';
+import { GET_BUYERS, GET_RETAILERS } from '@/queries/filters';
+import useDebounce from '@/utils/debounce';
 
 interface CreatOrderProps {
   showModal: boolean;
@@ -26,8 +29,8 @@ interface CreatOrderProps {
 interface OrderDetails {
   name: string;
   purchase_order: string;
-  retailer: string;
-  buyer_name: string;
+  retailer_id: undefined | number;
+  buyer_id: undefined | number;
   discount: number;
   surcharge: number;
   season: string;
@@ -36,8 +39,8 @@ interface OrderDetails {
 const initialState: OrderDetails = {
   name: '',
   purchase_order: '',
-  retailer: '',
-  buyer_name: '',
+  retailer_id: undefined,
+  buyer_id: undefined,
   discount: 0,
   surcharge: 0,
   season: '',
@@ -45,9 +48,9 @@ const initialState: OrderDetails = {
 
 type StateKeys =
   | 'name'
-  | 'buyer_name'
+  | 'buyer_id'
   | 'purchase_order'
-  | 'retailer'
+  | 'retailer_id'
   | 'season';
 
 export const CreateOrder: FC<CreatOrderProps> = ({
@@ -61,9 +64,31 @@ export const CreateOrder: FC<CreatOrderProps> = ({
   const router = useRouter();
   const client = useApolloClient();
   const [details, setDetails] = useState<OrderDetails>(initialState);
+  const [storeName, setStoreName] = useState('');
+  const [buyerName, setBuyerName] = useState('');
   const id = router?.query?.id || '';
   const organizationId: number = +id;
-  const handleChange = (key: StateKeys, value: string) => {
+
+  const debounceStoreName = useDebounce(storeName, 300);
+  const debouncedBuyerName = useDebounce(buyerName, 300);
+
+  const { data, loading } = useQuery(GET_BUYERS, {
+    variables: {
+      retailerId: details.retailer_id,
+      buyerName: debouncedBuyerName,
+    },
+  });
+
+  const { data: retailers, loading: isLoadingRetailers } = useQuery(
+    GET_RETAILERS,
+    {
+      variables: {
+        storeName: debounceStoreName,
+      },
+    }
+  );
+
+  const handleChange = (key: StateKeys, value: string | number | null) => {
     setDetails((prevState) => ({
       ...prevState,
       [key]: value,
@@ -102,7 +127,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({
         isOpen={showModal}
         onClose={closeModal}
         title={'Add Order Details'}
-        className="!max-h-[417px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
+        className="!max-h-[500px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
       >
         <div>
           <div className="flex w-full">
@@ -124,21 +149,36 @@ export const CreateOrder: FC<CreatOrderProps> = ({
             />
           </div>
           <div className="flex w-full">
-            <Input
-              value={details.retailer}
+            <DropdownFilter
+              items={retailers?.retailersByStoreName?.map((item: any) => ({
+                id: item?.id,
+                label: item?.store_name,
+              }))}
               label="Retailer name"
-              type="text"
-              name="retailer"
-              onChange={(val) => handleChange('retailer', val)}
-              className="m-2 text-[14px] w-[324px]"
+              loading={isLoadingRetailers}
+              value={storeName}
+              onChange={(e: string) => {
+                setStoreName(e);
+                handleChange('retailer_id', null);
+              }}
+              onSelect={(item: Item) => {
+                handleChange('retailer_id', item?.id);
+                setStoreName(item?.label);
+              }}
             />
-            <Input
-              value={details.buyer_name}
-              label="Client name"
-              type="text"
-              name="buyer_name"
-              onChange={(val) => handleChange('buyer_name', val)}
-              className="m-2 text-[14px] w-[324px]"
+            <DropdownFilter
+              items={data?.buyersByRetailerIdAndName?.map((item: any) => ({
+                id: item?.id,
+                label: item?.buyer_name,
+              }))}
+              label="Customer name"
+              loading={loading}
+              value={buyerName}
+              onChange={(e: string) => setBuyerName(e)}
+              onSelect={(item: Item) => {
+                handleChange('buyer_id', item?.id);
+                setBuyerName(item.label);
+              }}
             />
           </div>
           <div>
@@ -147,7 +187,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({
               selectedOption={{ name: details.season, value: details.season }}
               options={seasons.map((item) => ({ name: item, value: item }))}
               isValid={false}
-              onChange={({ value, name }: any) => handleChange('season', value)}
+              onChange={({ value }: any) => handleChange('season', value)}
               className="m-2 text-[14px] w-[324px]"
             />
           </div>

@@ -73,13 +73,15 @@ const OrderPage = () => {
     }
   };
 
+  console.log(retailers)
+
   const filterTags: Tags[] = [
     {
       label: 'Retailers',
       options:
-        retailers?.retailersByOrganizationId?.map((item: string) => ({
-          id: item,
-          label: item,
+        retailers?.retailersByOrganizationIdAndStoreName?.map((item: any) => ({
+          id: item?.id,
+          label: item.store_name,
         })) || [],
       selectedItems: selectedRetailers,
       action: handleRetailersAction,
@@ -88,9 +90,9 @@ const OrderPage = () => {
     {
       label: 'Buyers',
       options:
-        buyers?.buyersByOrganizationId?.map((item: string) => ({
-          id: item,
-          label: item,
+        buyers?.buyersByOrganizationAndRetailerIdAndName?.map((item: any) => ({
+          id: item?.id,
+          label: item?.buyer_name,
         })) || [],
       selectedItems: selectedBuyers,
       action: handleBuyersAction,

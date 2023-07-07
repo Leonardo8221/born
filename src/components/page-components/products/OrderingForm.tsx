@@ -42,16 +42,17 @@ const OrderingForm: FC<OrderingFormProps> = ({ product }) => {
   const handleSave = async () => {
     setIsSubmitted(true);
     try {
+      console.log(productDetails)
       const config = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductUpdateProductPut(product?.id, {
         ...productDetails,
-        delivery_window_start_date: moment(
-          productDetails.delivery_window_start_date || ''
-        ).format(),
-        delivery_window_end_date: moment(
-          productDetails.delivery_window_end_date || ''
-        ).format(),
+        delivery_window_start_date: productDetails.delivery_window_start_date
+          ? moment(productDetails.delivery_window_start_date).format()
+          : '',
+        delivery_window_end_date: productDetails.delivery_window_end_date
+          ? moment(productDetails.delivery_window_end_date).format()
+          : '',
       });
       setIsSubmitted(false);
       setSuccessMessage('Product updated successfully!');
@@ -103,7 +104,7 @@ const OrderingForm: FC<OrderingFormProps> = ({ product }) => {
             }
             minDate={new Date()}
             onChange={(date: any) =>
-              handleInputChange('delivery_window_start_date', date)
+              handleInputChange('delivery_window_start_date', date !== 'Invalid date' ? date : null)
             }
             className="px-3 my-4 rounded h-[48px] w-full border border-neutral-500"
           />
@@ -125,7 +126,7 @@ const OrderingForm: FC<OrderingFormProps> = ({ product }) => {
             }
             minDate={new Date()}
             onChange={(date: any) =>
-              handleInputChange('delivery_window_end_date', date)
+              handleInputChange('delivery_window_end_date', date !== 'Invalid date' ? date : null)
             }
             className="px-3 my-4 rounded h-[48px] w-full border border-neutral-500"
           />

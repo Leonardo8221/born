@@ -23,6 +23,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
 }) => {
   const { data } = useQuery(PRICING_CONDITIONS_QUERY, {
     variables: { orderId: details?.id },
+    skip: !details?.id
   });
   const dropdownmenu =
     data?.pricingConditionsByOrderId?.map((item: any) => ({

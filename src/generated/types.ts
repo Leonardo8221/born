@@ -26,6 +26,14 @@ export enum AttachmentType {
   Video = "VIDEO",
 }
 
+export type BuyerGraphqlDto = {
+  __typename?: "BuyerGraphqlDTO";
+  buyer_name?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["BigInteger"]>;
+  phone_number?: Maybe<Scalars["String"]>;
+};
+
 export type CollectionGraphqlDto = {
   __typename?: "CollectionGraphqlDTO";
   banner_guid?: Maybe<Scalars["String"]>;
@@ -64,7 +72,7 @@ export type OrderDetailSizeGraphqlDto = {
 export type OrderGraphqlDto = {
   __typename?: "OrderGraphqlDTO";
   billing_address?: Maybe<Scalars["String"]>;
-  buyer_name?: Maybe<Scalars["String"]>;
+  buyer_data?: Maybe<BuyerGraphqlDto>;
   created_by?: Maybe<Scalars["String"]>;
   /** ISO-8601 */
   created_date?: Maybe<Scalars["DateTime"]>;
@@ -87,7 +95,7 @@ export type OrderGraphqlDto = {
   payment_terms?: Maybe<Scalars["String"]>;
   pricing_condition?: Maybe<PricingCondition>;
   purchase_order?: Maybe<Scalars["String"]>;
-  retailer?: Maybe<Scalars["String"]>;
+  retailer_data?: Maybe<RetailerGraphqlDto>;
   season?: Maybe<Scalars["String"]>;
   size?: Maybe<Scalars["String"]>;
   surcharge?: Maybe<Scalars["BigDecimal"]>;
@@ -198,6 +206,7 @@ export type ProductVariantGraphqlDto = {
   colour_code?: Maybe<Scalars["String"]>;
   colour_families?: Maybe<Array<Maybe<Scalars["String"]>>>;
   colour_name?: Maybe<Scalars["String"]>;
+  displayed_attachment_index?: Maybe<Scalars["Int"]>;
   id?: Maybe<Scalars["BigInteger"]>;
   product_id?: Maybe<Scalars["String"]>;
   style_number?: Maybe<Scalars["String"]>;
@@ -219,6 +228,7 @@ export type ProductWithCollectionsGraphqlDto = {
   /** ISO-8601 */
   delivery_window_start_date?: Maybe<Scalars["DateTime"]>;
   description?: Maybe<Scalars["String"]>;
+  displayed_attachment_index?: Maybe<Scalars["Int"]>;
   first_category?: Maybe<Scalars["String"]>;
   fourth_category?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
@@ -227,6 +237,7 @@ export type ProductWithCollectionsGraphqlDto = {
   measurements?: Maybe<Array<Maybe<Scalars["String"]>>>;
   min_order_quantity?: Maybe<Scalars["Int"]>;
   min_order_value?: Maybe<Scalars["Int"]>;
+  position?: Maybe<Scalars["Int"]>;
   productVariants?: Maybe<Array<Maybe<ProductVariantGraphqlDto>>>;
   product_id?: Maybe<Scalars["String"]>;
   season?: Maybe<Scalars["String"]>;
@@ -256,6 +267,7 @@ export type ProductWithoutCollectionsGraphqlDto = {
   /** ISO-8601 */
   delivery_window_start_date?: Maybe<Scalars["DateTime"]>;
   description?: Maybe<Scalars["String"]>;
+  displayed_attachment_index?: Maybe<Scalars["Int"]>;
   first_category?: Maybe<Scalars["String"]>;
   fourth_category?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
@@ -264,6 +276,7 @@ export type ProductWithoutCollectionsGraphqlDto = {
   measurements?: Maybe<Array<Maybe<Scalars["String"]>>>;
   min_order_quantity?: Maybe<Scalars["Int"]>;
   min_order_value?: Maybe<Scalars["Int"]>;
+  position?: Maybe<Scalars["Int"]>;
   product_id?: Maybe<Scalars["String"]>;
   season?: Maybe<Scalars["String"]>;
   second_category?: Maybe<Scalars["String"]>;
@@ -280,8 +293,8 @@ export type ProductWithoutCollectionsGraphqlDto = {
 /** Query root */
 export type Query = {
   __typename?: "Query";
-  /** Return list of buyer names by name and organizationId */
-  buyersByOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  /** Return list of buyers by  retailer and organizationId */
+  buyersByOrganizationAndRetailerId?: Maybe<Array<Maybe<BuyerGraphqlDto>>>;
   /** Return collection by collection id */
   collectionByCollectionId?: Maybe<CollectionGraphqlDto>;
   /** Return list of organization's collections */
@@ -309,7 +322,7 @@ export type Query = {
   /** Return list of filtered product's by organization id */
   productsBySearchAndOrganizationId?: Maybe<PageWrapper_ProductWithCollectionsGraphqlDto>;
   /** Return list of retailer names by name and organizationId */
-  retailersByOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  retailersByOrganizationId?: Maybe<Array<Maybe<RetailerGraphqlDto>>>;
   /** Return list of seasons by collectionId */
   seasonsByCollectionId?: Maybe<Array<Maybe<Scalars["String"]>>>;
   /** Return list of seasons by organizationId */
@@ -327,8 +340,9 @@ export type Query = {
 };
 
 /** Query root */
-export type QueryBuyersByOrganizationIdArgs = {
+export type QueryBuyersByOrganizationAndRetailerIdArgs = {
   organizationId: Scalars["BigInteger"];
+  retailerId?: InputMaybe<Scalars["BigInteger"]>;
 };
 
 /** Query root */
@@ -442,6 +456,37 @@ export type QueryUsersByKeycloakEmailArgs = {
 /** Query root */
 export type QueryUsersOrganizationsByOrganizationIdArgs = {
   organizationId: Scalars["BigInteger"];
+};
+
+export type RetailerGraphqlDto = {
+  __typename?: "RetailerGraphqlDTO";
+  banner?: Maybe<Scalars["String"]>;
+  billing_store_address_line_1?: Maybe<Scalars["String"]>;
+  billing_store_address_line_2?: Maybe<Scalars["String"]>;
+  billing_store_address_line_3?: Maybe<Scalars["String"]>;
+  billing_store_city?: Maybe<Scalars["String"]>;
+  billing_store_country?: Maybe<Scalars["String"]>;
+  billing_store_postal_code?: Maybe<Scalars["String"]>;
+  billing_store_state_province?: Maybe<Scalars["String"]>;
+  buyers?: Maybe<Array<Maybe<BuyerGraphqlDto>>>;
+  gallery_assets_ready?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["BigInteger"]>;
+  instagram_url?: Maybe<Scalars["String"]>;
+  logo?: Maybe<Scalars["String"]>;
+  shipping_store_address_line_1?: Maybe<Scalars["String"]>;
+  shipping_store_address_line_2?: Maybe<Scalars["String"]>;
+  shipping_store_address_line_3?: Maybe<Scalars["String"]>;
+  shipping_store_city?: Maybe<Scalars["String"]>;
+  shipping_store_country?: Maybe<Scalars["String"]>;
+  shipping_store_postal_code_zip?: Maybe<Scalars["String"]>;
+  shipping_store_state_province?: Maybe<Scalars["String"]>;
+  status?: Maybe<Scalars["String"]>;
+  store_description?: Maybe<Scalars["String"]>;
+  store_name?: Maybe<Scalars["String"]>;
+  store_type?: Maybe<Scalars["String"]>;
+  team?: Maybe<Scalars["String"]>;
+  territory?: Maybe<Scalars["String"]>;
+  website_url?: Maybe<Scalars["String"]>;
 };
 
 export enum RoleType {
@@ -662,24 +707,6 @@ export type ColourFamiliesByCollectionIdQueryQuery = {
   colourFamiliesByCollectionId?: Array<string | null> | null;
 };
 
-export type BuyersQueryQueryVariables = Exact<{
-  organizationId: Scalars["BigInteger"];
-}>;
-
-export type BuyersQueryQuery = {
-  __typename?: "Query";
-  buyersByOrganizationId?: Array<string | null> | null;
-};
-
-export type RetailersQueryQueryVariables = Exact<{
-  organizationId: Scalars["BigInteger"];
-}>;
-
-export type RetailersQueryQuery = {
-  __typename?: "Query";
-  retailersByOrganizationId?: Array<string | null> | null;
-};
-
 export type SeasonsByCollectionIdQueryVariables = Exact<{
   collectionId: Scalars["BigInteger"];
 }>;
@@ -696,6 +723,34 @@ export type SeasonsByOrganizationIdQueryVariables = Exact<{
 export type SeasonsByOrganizationIdQuery = {
   __typename?: "Query";
   seasonsByOrganizationId?: Array<string | null> | null;
+};
+
+export type RetailersByOrganizationIdQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+}>;
+
+export type RetailersByOrganizationIdQuery = {
+  __typename?: "Query";
+  retailersByOrganizationId?: Array<{
+    __typename?: "RetailerGraphqlDTO";
+    id?: any | null;
+    store_name?: string | null;
+  } | null> | null;
+};
+
+export type BuyersByOrganizationAndRetailerIdQueryVariables = Exact<{
+  organizationId: Scalars["BigInteger"];
+  retailerId?: InputMaybe<Scalars["BigInteger"]>;
+}>;
+
+export type BuyersByOrganizationAndRetailerIdQuery = {
+  __typename?: "Query";
+  buyersByOrganizationAndRetailerId?: Array<{
+    __typename?: "BuyerGraphqlDTO";
+    id?: any | null;
+    buyer_name?: string | null;
+    email?: string | null;
+  } | null> | null;
 };
 
 export type CollectionGraphqlDtoFragment = {
@@ -845,7 +900,6 @@ export type GetOrderByIdQuery = {
     id?: any | null;
     name?: string | null;
     billing_address?: string | null;
-    buyer_name?: string | null;
     created_date?: any | null;
     delivery_address?: string | null;
     delivery_window_start_date?: any | null;
@@ -861,11 +915,20 @@ export type GetOrderByIdQuery = {
     payment_terms?: string | null;
     pricing_condition?: PricingCondition | null;
     purchase_order?: string | null;
-    retailer?: string | null;
     order_status?: OrderStatus | null;
     order_type?: string | null;
     size?: string | null;
     season?: string | null;
+    buyer_data?: {
+      __typename?: "BuyerGraphqlDTO";
+      id?: any | null;
+      buyer_name?: string | null;
+    } | null;
+    retailer_data?: {
+      __typename?: "RetailerGraphqlDTO";
+      id?: any | null;
+      store_name?: string | null;
+    } | null;
     order_details?: Array<{
       __typename?: "OrderDetailGraphqlDTO";
       id?: any | null;
@@ -976,7 +1039,6 @@ export type GetOrdersQuery = {
       name?: string | null;
       total_price?: any | null;
       billing_address?: string | null;
-      buyer_name?: string | null;
       created_date?: any | null;
       delivery_address?: string | null;
       discount?: any | null;
@@ -987,11 +1049,20 @@ export type GetOrdersQuery = {
       payment_terms?: string | null;
       pricing_condition?: PricingCondition | null;
       purchase_order?: string | null;
-      retailer?: string | null;
       order_status?: OrderStatus | null;
       size?: string | null;
       season?: string | null;
       total_quantity?: number | null;
+      buyer_data?: {
+        __typename?: "BuyerGraphqlDTO";
+        id?: any | null;
+        buyer_name?: string | null;
+      } | null;
+      retailer_data?: {
+        __typename?: "RetailerGraphqlDTO";
+        id?: any | null;
+        store_name?: string | null;
+      } | null;
     } | null> | null;
   } | null;
 };
@@ -1018,8 +1089,12 @@ export type OrderBySearchQuery = {
       name?: string | null;
       total_price?: any | null;
       billing_address?: string | null;
-      buyer_name?: string | null;
       pricing_condition?: PricingCondition | null;
+      buyer_data?: {
+        __typename?: "BuyerGraphqlDTO";
+        id?: any | null;
+        buyer_name?: string | null;
+      } | null;
     } | null> | null;
   } | null;
 };
