@@ -15,7 +15,7 @@ const TableComponent: React.FC<Props> = ({
 
   return (
     <div className="text-[12px] text-[#333333]">
-      <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t flex-nowrap w-max">
+      <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t flex-nowrap w-max min-w-full">
         <h2 className="border-r border-[#D8D8D8] min-w-[200px] max-w-[200px] py-[10px] px-[10px]">
           Sizes
         </h2>
@@ -28,7 +28,7 @@ const TableComponent: React.FC<Props> = ({
           </p>
         ))}
       </div>
-      <div className="flex items-center border border-[#D8D8D8] border-t-0 h-[39px] rounded-b flex-nowrap w-max">
+      <div className="flex items-center border border-[#D8D8D8] border-t-0 h-[39px] rounded-b flex-nowrap w-max min-w-full">
         <h2 className="border-r border-[#D8D8D8] min-w-[200px] max-w-[200px] py-[10px] px-[10px]">
           Quantities
         </h2>
