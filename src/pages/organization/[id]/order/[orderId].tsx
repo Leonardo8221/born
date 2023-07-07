@@ -405,7 +405,7 @@ function OrderPreview() {
           />
         </div>
       </div>
-      <div className="max-w-[1376px] mx-auto pb-16">
+      <div className="max-w-[1376px] mx-auto pb-16 overflow-x-auto">
         <OrderListTable
           handleQuantities={debouncedHandleQuantities}
           handleOrderNote={(id, note) => {

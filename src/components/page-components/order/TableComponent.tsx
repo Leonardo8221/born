@@ -8,33 +8,78 @@ interface Props {
 }
 
 const TableComponent: React.FC<Props> = ({
-  orderDetailSizes,
+  // orderDetailSizes,
   handleQuantities,
   editMode,
 }) => {
+
+  const orderDetailSizes = [
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+    { id: 1652, quantity: 0, size: "23"},
+  ]
+
   return (
     <div className="text-[12px] text-[#333333]">
-      <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t">
-        <h2 className="border-r border-[#D8D8D8] w-[200px] py-[10px] px-[10px]">
+      <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t flex-nowrap w-max">
+        <h2 className="border-r border-[#D8D8D8] min-w-[200px] max-w-[200px] py-[10px] px-[10px]">
           Sizes
         </h2>
         {orderDetailSizes?.map((item: any) => (
           <p
             key={item.id}
-            className="border-r border-[#D8D8D8] !w-[110px] p-[10px] text-center"
+            className="border-r border-[#D8D8D8] !min-w-[110px] !max-w-[110px] p-[10px] text-center"
           >
             {item.size}
           </p>
         ))}
       </div>
-      <div className="flex items-center border border-[#D8D8D8] border-t-0 h-[39px] rounded-b">
-        <h2 className="border-r border-[#D8D8D8] w-[200px] py-[10px] px-[10px]">
+      <div className="flex items-center border border-[#D8D8D8] border-t-0 h-[39px] rounded-b flex-nowrap w-max">
+        <h2 className="border-r border-[#D8D8D8] min-w-[200px] max-w-[200px] py-[10px] px-[10px]">
           Quantities
         </h2>
         {orderDetailSizes?.map((item: any) => (
           <p
             key={item.id}
-            className="border-r border-[#D8D8D8] !w-[110px] text-center overflow-hidden"
+            className="border-r border-[#D8D8D8] !min-w-[110px] !max-w-[110px] text-center overflow-hidden"
           >
             <input
               type="number"
