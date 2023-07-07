@@ -13,7 +13,7 @@ export default function HorizontaOrderLists({
   id,
   billing_address,
   total_price,
-  buyer_name,
+  buyer_data,
   pricing_condition,
   isActive,
   onSelect,
@@ -29,7 +29,7 @@ export default function HorizontaOrderLists({
           {name}
         </Paragraph>
         <Paragraph size="md" className="!text-shades-black">
-          {buyer_name}
+          {buyer_data?.buyer_name}
         </Paragraph>
         <Paragraph size="md" className="!text-shades-black">
           {billing_address}
