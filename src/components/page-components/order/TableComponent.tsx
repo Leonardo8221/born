@@ -8,54 +8,10 @@ interface Props {
 }
 
 const TableComponent: React.FC<Props> = ({
-  // orderDetailSizes,
+  orderDetailSizes,
   handleQuantities,
   editMode,
 }) => {
-
-  const orderDetailSizes = [
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-    { id: 1652, quantity: 0, size: "23"},
-  ]
 
   return (
     <div className="text-[12px] text-[#333333]">
