@@ -162,19 +162,7 @@ export interface OrderRequestDTO {
      * @type {string}
      * @memberof OrderRequestDTO
      */
-    'retailer'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderRequestDTO
-     */
     'season'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderRequestDTO
-     */
-    'buyer_name'?: string;
     /**
      * 
      * @type {string}
@@ -235,6 +223,18 @@ export interface OrderRequestDTO {
      * @memberof OrderRequestDTO
      */
     'pricing_condition'?: PricingCondition;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderRequestDTO
+     */
+    'retailer_id'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderRequestDTO
+     */
+    'buyer_id'?: number;
     /**
      * 
      * @type {string}
@@ -289,19 +289,7 @@ export interface OrderWithProductsRequestDTO {
      * @type {string}
      * @memberof OrderWithProductsRequestDTO
      */
-    'retailer'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderWithProductsRequestDTO
-     */
     'season'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof OrderWithProductsRequestDTO
-     */
-    'buyer_name'?: string;
     /**
      * 
      * @type {string}
@@ -362,6 +350,18 @@ export interface OrderWithProductsRequestDTO {
      * @memberof OrderWithProductsRequestDTO
      */
     'pricing_condition'?: PricingCondition;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderWithProductsRequestDTO
+     */
+    'retailer_id'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderWithProductsRequestDTO
+     */
+    'buyer_id'?: number;
     /**
      * 
      * @type {string}
@@ -686,6 +686,18 @@ export interface ProductRequestDTO {
      * @memberof ProductRequestDTO
      */
     'delivery_window_end_date'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductRequestDTO
+     */
+    'displayed_attachment_index'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductRequestDTO
+     */
+    'position'?: number;
     /**
      * 
      * @type {string}

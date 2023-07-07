@@ -41,22 +41,22 @@ const OrderListTable: FC<OrderListTableProps> = ({
       ),
       header: () => 'Order name',
     }),
-    columnHelper.accessor('retailer', {
+    columnHelper.accessor('retailer_data', {
       size: 120,
       id: 'retailerName',
       cell: (info: any) => (
         <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
-          {info.getValue()}
+          {info.getValue()?.store_name}
         </div>
       ),
       header: () => 'Retailer name',
     }),
-    columnHelper.accessor('buyer_name', {
+    columnHelper.accessor('buyer_data', {
       size: 120,
       id: 'buyerName',
       cell: (info: any) => (
         <div className={clsx('text-[#333333] text-center', fonts.text.md)}>
-          {info.getValue()}
+          {info.getValue()?.buyer_name}
         </div>
       ),
       header: () => 'Buyer name',

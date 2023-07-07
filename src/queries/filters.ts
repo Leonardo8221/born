@@ -25,8 +25,8 @@ export const SEASONS_BY_ORGANIZATION_ID = gql`
 `;
 
 export const RETAILERS_QUERY = gql`
-  query retailersByOrganizationId ($organizationId: BigInteger!) {
-    retailersByOrganizationId (organizationId: $organizationId) {
+  query retailersByOrganizationIdAndStoreName($organizationId: BigInteger!, $storeName: String) {
+    retailersByOrganizationIdAndStoreName(organizationId: $organizationId, storeName: $storeName) {
       id
       store_name
     }
@@ -34,17 +34,43 @@ export const RETAILERS_QUERY = gql`
 `;
 
 export const BUYERS_QUERY = gql`
-  query buyersByOrganizationAndRetailerId (
+  query buyersByOrganizationAndRetailerIdAndName (
     $organizationId: BigInteger!
     $retailerId: BigInteger
+    $buyerName: String
   ) {
-    buyersByOrganizationAndRetailerId (
+    buyersByOrganizationAndRetailerIdAndName (
       organizationId: $organizationId
       retailerId: $retailerId
+      buyerName: $buyerName
     ) {
       id
       buyer_name
       email
+    }
+  }
+`;
+
+export const GET_RETAILERS = gql`
+  query retailersByStoreName($storeName: String) {
+    retailersByStoreName(storeName: $storeName) {
+      id
+      store_name
+    }
+  }
+`;
+
+export const GET_BUYERS = gql`
+  query  (
+    $retailerId: BigInteger
+    $buyerName: String
+  ) {
+    buyersByRetailerIdAndName (
+      retailerId: $retailerId
+      buyerName: $buyerName
+    ) {
+      id
+      buyer_name
     }
   }
 `;

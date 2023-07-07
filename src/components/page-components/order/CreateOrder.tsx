@@ -8,9 +8,10 @@ import { useRouter } from 'next/router';
 import { useApolloClient, useQuery } from '@apollo/client';
 import { ORDER_LIST, seasons } from '@/utils/constants';
 import { OrderGraphqlDto } from '@/generated/types';
-import DropdownFilter from './Dropdown';
+import DropdownFilter, { Item } from './Dropdown';
 import Dropdown from '@/components/molecules/Dropdown';
-import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
+import { GET_BUYERS, GET_RETAILERS } from '@/queries/filters';
+import useDebounce from '@/utils/debounce';
 
 interface CreatOrderProps {
   showModal: boolean;
@@ -28,8 +29,8 @@ interface CreatOrderProps {
 interface OrderDetails {
   name: string;
   purchase_order: string;
-  retailer_id: null | string;
-  buyer_id: null | string;
+  retailer_id: undefined | number;
+  buyer_id: undefined | number;
   discount: number;
   surcharge: number;
   season: string;
@@ -38,8 +39,8 @@ interface OrderDetails {
 const initialState: OrderDetails = {
   name: '',
   purchase_order: '',
-  retailer_id: null,
-  buyer_id: null,
+  retailer_id: undefined,
+  buyer_id: undefined,
   discount: 0,
   surcharge: 0,
   season: '',
@@ -63,30 +64,31 @@ export const CreateOrder: FC<CreatOrderProps> = ({
   const router = useRouter();
   const client = useApolloClient();
   const [details, setDetails] = useState<OrderDetails>(initialState);
+  const [storeName, setStoreName] = useState('');
+  const [buyerName, setBuyerName] = useState('');
   const id = router?.query?.id || '';
   const organizationId: number = +id;
 
-  const { data, loading } = useQuery(BUYERS_QUERY, {
+  const debounceStoreName = useDebounce(storeName, 300);
+  const debouncedBuyerName = useDebounce(buyerName, 300);
+
+  const { data, loading } = useQuery(GET_BUYERS, {
     variables: {
-      organizationId,
-      retailerId: details.retailer_id
+      retailerId: details.retailer_id,
+      buyerName: debouncedBuyerName,
     },
-    skip: !id,
   });
 
   const { data: retailers, loading: isLoadingRetailers } = useQuery(
-    RETAILERS_QUERY,
+    GET_RETAILERS,
     {
       variables: {
-        organizationId,
+        storeName: debounceStoreName,
       },
-      skip: !id,
     }
   );
 
-  console.log(retailers, data)
-
-  const handleChange = (key: StateKeys, value: string) => {
+  const handleChange = (key: StateKeys, value: string | number | null) => {
     setDetails((prevState) => ({
       ...prevState,
       [key]: value,
@@ -125,7 +127,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({
         isOpen={showModal}
         onClose={closeModal}
         title={'Add Order Details'}
-        className="!max-h-[417px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
+        className="!max-h-[500px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
       >
         <div>
           <div className="flex w-full">
@@ -148,19 +150,35 @@ export const CreateOrder: FC<CreatOrderProps> = ({
           </div>
           <div className="flex w-full">
             <DropdownFilter
-              items={retailers?.retailersByOrganizationId?.map((item: any) => ({
+              items={retailers?.retailersByStoreName?.map((item: any) => ({
                 id: item?.id,
                 label: item?.store_name,
               }))}
               label="Retailer name"
               loading={isLoadingRetailers}
+              value={storeName}
+              onChange={(e: string) => {
+                setStoreName(e);
+                handleChange('retailer_id', null);
+              }}
+              onSelect={(item: Item) => {
+                handleChange('retailer_id', item?.id);
+                setStoreName(item?.label);
+              }}
             />
             <DropdownFilter
-              items={data?.buyersByOrganizationAndRetailerId?.map(
-                (item: any) => ({ id: item?.id, label: item?.buyer_name })
-              )}
+              items={data?.buyersByRetailerIdAndName?.map((item: any) => ({
+                id: item?.id,
+                label: item?.buyer_name,
+              }))}
               label="Customer name"
               loading={loading}
+              value={buyerName}
+              onChange={(e: string) => setBuyerName(e)}
+              onSelect={(item: Item) => {
+                handleChange('buyer_id', item?.id);
+                setBuyerName(item.label);
+              }}
             />
           </div>
           <div>

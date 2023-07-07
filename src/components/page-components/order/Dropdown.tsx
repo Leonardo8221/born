@@ -6,15 +6,17 @@ import { fonts } from '@/config/fonts';
 import Loading from '../Loading';
 
 export type Item = {
-  id: string | number;
+  id: number;
   label: string;
 };
 
 interface DropdownFilterProps {
   label: string;
   items?: Item[];
-  onChange?: (item: Item) => void;
+  onChange?: (event: any) => void;
+  onSelect?: (item: Item) => void;
   loading?: boolean;
+  value: string;
 }
 
 const DropdownFilter: FC<DropdownFilterProps> = ({
@@ -22,6 +24,8 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
   items,
   onChange,
   loading,
+  value,
+  onSelect,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<any>(null);
@@ -49,7 +53,8 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
                 fonts.text.md
               )}
               onClick={() => {
-                onChange?.(item);
+                onSelect?.(item);
+                setIsOpen(false);
               }}
             >
               {item.label}
@@ -66,11 +71,12 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
   return (
     <div className="relative z-[1] w-full" ref={dropdownRef}>
       <Input
-        value=""
-        onChange={() => {}}
+        value={value}
+        onChange={(e) => onChange?.(e)}
         label={label}
         inputProps={{
           onFocus: () => setIsOpen(true),
+          value,
         }}
         className="m-2"
       />
@@ -85,7 +91,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
         className="z-20"
       >
         <div className="absolute w-[calc(100%-18px)] mt-[-8px] !left-[50%] !translate-x-[-50%] right-0 mx-auto shadow-extra bg-shades-white z-50 rounded p-3">
-          <div className="max-h-[250px] overflow-x-hidden">
+          <div className="max-h-[120px] overflow-x-hidden">
             {loading ? <Loading message="loading..." /> : renderItems()}
           </div>
         </div>
