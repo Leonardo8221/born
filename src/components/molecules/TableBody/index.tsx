@@ -71,14 +71,16 @@ export const TableBody: FC<TableBodyProps> = ({
             </tr>
             {size && (
               <tr>
-                <td colSpan={row.getAllCells().length}>
-                  <TableComponent
-                    editMode={editMode}
-                    handleQuantities={(val: string, id: number) => handleQuantities?.(val, Number(row?.original?.id), id)}
-                    orderDetailSizes={
-                      row?.getVisibleCells()[0]?.row?.original?.order_detail_sizes
-                    }
-                  />
+                <td colSpan={row.getAllCells().length} className="!overflow-x-auto">
+                  <div className='w-full'>
+                    <TableComponent
+                      editMode={editMode}
+                      handleQuantities={(val: string, id: number) => handleQuantities?.(val, Number(row?.original?.id), id)}
+                      orderDetailSizes={
+                        row?.getVisibleCells()[0]?.row?.original?.order_detail_sizes
+                      }
+                    />
+                  </div>
                   {row.getVisibleCells()[0].row.original.note && (
                     <DescriptionField
                       disabled={true}
