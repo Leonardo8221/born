@@ -98,9 +98,7 @@ function OrderPreview() {
   const handleEditInputs = (key: any, val: any) => {
     let payload = { ...orderDetails };
     payload[key] = val;
-    setTimeout(() => {
-      setDetails(payload);
-    }, 500);
+    setDetails(payload);
   };
 
   const columnData = {
@@ -261,7 +259,7 @@ function OrderPreview() {
       clearTimeout(timerId);
       timerId = setTimeout(() => {
         func.apply(null, args);
-      }, 600);
+      }, 0);
     };
   };
 
