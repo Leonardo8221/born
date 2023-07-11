@@ -2,8 +2,7 @@ import { FC, HTMLProps, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Icon } from '@/components/molecules/Icon';
 import { useQuery } from '@apollo/client';
-import { BUYERS_QUERY, GET_BUYERS } from '@/queries/filters';
-import { useRouter } from 'next/router';
+import { GET_BUYERS } from '@/queries/filters';
 import Loading from '../Loading';
 import { fonts } from '@/config/fonts';
 import useDebounce from '@/utils/debounce';
@@ -26,9 +25,7 @@ const BuyersSearchDropdown: FC<BuyersSearchDropdownProps> = ({
   const [searchKeyword, setSearchKeyword] = useState<any>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const debouncedValue = useDebounce(searchKeyword, 500)
-  const router = useRouter();
   const inputRef = useRef<any>(null);
-  const organizationId = Number(router?.query?.id);
 
   const ref = useRef<any>(null);
 
@@ -47,19 +44,20 @@ const BuyersSearchDropdown: FC<BuyersSearchDropdownProps> = ({
   useEffect(() => {
     setSearchKeyword(!searchKeyword ? value : searchKeyword);
   }, [value]);
+ 
+  console.log(retailerId);
   
   const { data, loading } = useQuery(
-    BUYERS_QUERY,
+    GET_BUYERS,
     {
       variables: {
-        organizationId,
         retailerId,
         buyerName: debouncedValue || null,
       },
     }
   );
 
-  const options = data?.buyersByOrganizationAndRetailerIdAndName?.map((item: any) => ({ id: item?.id, label: item.buyer_name})) || []
+  const options = data?.buyersByRetailerIdAndName?.map((item: any) => ({ id: item?.id, label: item.buyer_name})) || []
 
   const focusInput = () => {
     setIsDropdownOpen(true);
