@@ -41,13 +41,12 @@ function OrderPreview() {
     skip: !orderId,
   });
   const details = data?.orderByOrderId;
-
   useEffect(() => {
     if (details) {
       setDetails({
+        buyer_id: details?.buyer_data?.id,
+        retailer_id: details?.retailer_data?.id,
         ...details,
-        buyer_id: details?.buyer_data?.id || undefined,
-        retailer_id: details?.retailer_data?.id || undefined,
       });
     }
   }, [details]);
@@ -117,7 +116,7 @@ function OrderPreview() {
         name: 'Buyer name',
         key: 'buyer_id',
         value: orderDetails?.buyer_data?.buyer_name,
-        retailer_id: orderDetails?.retailer_data?.retailer_id
+        retailer_id: orderDetails?.retailer_id,
       },
       {
         name: 'Email Address',
