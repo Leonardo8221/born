@@ -121,7 +121,7 @@ function OrderPreview() {
       {
         name: 'Email Address',
         key: 'email_address',
-        value: orderDetails?.email_address,
+        value: orderDetails?.buyer_data?.email,
       },
     ],
     column2: [
