@@ -9,6 +9,7 @@ export const GET_ORDER_BY_ID = gql`
       buyer_data {
         id
         buyer_name
+        email
       }
       created_date
       delivery_address
