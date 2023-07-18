@@ -43,7 +43,6 @@ const OrderPage = () => {
       rows: 500,
       search: debounceValue,
     },
-    notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
   });
 
@@ -72,8 +71,6 @@ const OrderPage = () => {
       setSelectedRetailers([...selectedRetailers, e.label]);
     }
   };
-
-  console.log(retailers)
 
   const filterTags: Tags[] = [
     {

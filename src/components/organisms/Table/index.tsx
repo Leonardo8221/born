@@ -27,9 +27,8 @@ export const Table: FC<TableProps> = ({
 }) => {
   const [data, setData] = useState([...tableData]);
 
-  console.log(data)
   useEffect(() => {
-    if (tableData && Array.isArray(tableData) && tableData.length) {
+    if (tableData && Array.isArray(tableData)) {
       setData(tableData);
     }
   }, [tableData]);
