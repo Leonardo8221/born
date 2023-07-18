@@ -110,7 +110,7 @@ function OrderPreview() {
       {
         name: 'Retailer',
         key: 'retailer_id',
-        value: orderDetails?.retailer_data?.store_name,
+        value: `${orderDetails?.retailer_data?.store_name} ${orderDetails?.retailer_data?.billing_store_address_line_1}`,
       },
       {
         name: 'Buyer name',

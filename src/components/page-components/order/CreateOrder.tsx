@@ -152,7 +152,9 @@ export const CreateOrder: FC<CreatOrderProps> = ({
             <DropdownFilter
               items={retailers?.retailersByStoreName?.map((item: any) => ({
                 id: item?.id,
-                label: item?.store_name,
+                label: `${item?.store_name || ''} ${
+                  item?.billing_store_address_line_1 || ''
+                }`,
               }))}
               label="Retailer name"
               loading={isLoadingRetailers}

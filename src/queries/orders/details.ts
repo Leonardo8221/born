@@ -29,6 +29,7 @@ export const GET_ORDER_BY_ID = gql`
       retailer_data {
         id
         store_name
+        billing_store_address_line_1
       }
       order_status
       order_type

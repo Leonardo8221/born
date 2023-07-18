@@ -45,6 +45,7 @@ export const GET_ORDERS = gql`
         retailer_data {
           id
           store_name
+          billing_store_address_line_1
         }
         season
         total_price

@@ -22,7 +22,7 @@ const RetailersSearchDropdown: FC<RetailersSearchDropdownProps> = ({
 }) => {
   const [searchKeyword, setSearchKeyword] = useState<any>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const debouncedValue = useDebounce(searchKeyword, 500)
+  const debouncedValue = useDebounce(searchKeyword, 500);
   const inputRef = useRef<any>(null);
 
   const ref = useRef<any>(null);
@@ -38,21 +38,23 @@ const RetailersSearchDropdown: FC<RetailersSearchDropdownProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-
   useEffect(() => {
     setSearchKeyword(!searchKeyword ? value : searchKeyword);
   }, [value]);
-  
-  const { data, loading } = useQuery(
-    GET_RETAILERS,
-    {
-      variables: {
-        storeName: debouncedValue || null,
-      },
-    }
-  );
 
-  const options = data?.retailersByStoreName?.map((item: any) => ({ id: item?.id, label: item.store_name})) || []
+  const { data, loading } = useQuery(GET_RETAILERS, {
+    variables: {
+      storeName: debouncedValue || null,
+    },
+  });
+
+  const options =
+    data?.retailersByStoreName?.map((item: any) => ({
+      id: item?.id,
+      label: `${item.store_name || ''} ${
+        item?.billing_store_address_line_1 || ''
+      }`,
+    })) || [];
 
   const focusInput = () => {
     setIsDropdownOpen(true);
@@ -104,8 +106,8 @@ const RetailersSearchDropdown: FC<RetailersSearchDropdownProps> = ({
                   No items found!
                 </div>
               )
-            ): (
-              <Loading message='Loading data...' />
+            ) : (
+              <Loading message="Loading data..." />
             )}
           </div>
         )}

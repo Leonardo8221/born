@@ -56,6 +56,7 @@ export const GET_RETAILERS = gql`
     retailersByStoreName(storeName: $storeName) {
       id
       store_name
+      billing_store_address_line_1
     }
   }
 `;
