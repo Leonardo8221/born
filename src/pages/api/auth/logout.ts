@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react';
 
 export default async function logout(req: any, res: any) {
-  const session: any = await getSession({ req });
+  const session: any = await getSession();
   let path = `${
     process.env.NEXT_PUBLIC_CLIENT_ISSUER
   }/protocol/openid-connect/logout?post_logout_redirect_uri=${encodeURIComponent(
