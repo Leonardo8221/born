@@ -40,6 +40,8 @@ interface FiltersProps {
   className?: string;
   selectBtnText?: string;
   hideSelectBtn?: boolean;
+  isAllOrdersSelected?: boolean;
+  onDeselect?: () => void;
 }
 
 const Filters: FC<FiltersProps> = ({
@@ -56,6 +58,8 @@ const Filters: FC<FiltersProps> = ({
   className,
   selectBtnText,
   hideSelectBtn,
+  isAllOrdersSelected,
+  onDeselect,
 }) => {
   const router = useRouter();
   const handleExportOrders = async () => {
@@ -133,9 +137,10 @@ const Filters: FC<FiltersProps> = ({
                 <Button
                   variant="outlined"
                   size="sm"
-                  className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3 !bg-neutral-300 hover:!bg-neutral-300 hover:!text-shades-black !rounded-[100px] !cursor-auto"
+                  className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3 !bg-neutral-300 hover:!bg-neutral-300 hover:!text-shades-black !rounded-[100px]"
+                  onClick={onDeselect}
                 >
-                  {'Selected'}{' '}
+                  {isAllOrdersSelected ? 'All selected' : 'Selected'}{' '}
                   {isSelectable && selectedItems && selectedItems?.length > 0 && (
                     <span className="flex items-center justify-center ml-[-6px] mt-[-1px] bg-accent-a-200 h-3 w-3 text-shades-white text-[8px] leading-[9.99px] tracking-[0.06em] rounded-full">
                       {selectedItems.length}

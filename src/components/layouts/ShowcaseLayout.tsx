@@ -61,6 +61,11 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
     },
   ];
 
+  const handlePreviousRoute = () => {
+    localStorage.setItem('previous_route', router.asPath);
+    router.push(`/organization/${router.query.id}/order`)
+  }
+
   const rightNavNode = (
     <div className="flex items-center gap-x-4">
       <div className="h-10 w-10 flex items-center justify-center">
@@ -69,7 +74,7 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
           height={20}
           width={20}
           className="cursor-pointer text-shades-black"
-          onClick={() => router.push(`/organization/${router.query.id}/order`)}
+          onClick={handlePreviousRoute}
         />
       </div>
       <DropdownMenu options={dropdownMenus} />
