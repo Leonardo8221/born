@@ -48,7 +48,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
     <div className="relative z-[1]" ref={dropdownRef}>
       <Badge
         className={clsx(
-          'cursor-pointer !h-[32px] border !border-neutral-600 !text-[12px] !px-4',
+          'cursor-pointer !h-[32px] border !border-neutral-400 !text-[12px] !px-4',
           selectedItems?.length && selectedItems.length > 0
             ? '!bg-neutral-300'
             : '!bg-shades-white'
@@ -91,26 +91,29 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
               />
             </div>
           )}
-          <div className='max-h-[250px] overflow-x-hidden'>
+          <div className="max-h-[250px] overflow-x-hidden">
             {items?.length ? (
-              items?.map((item: Item) => item.label && (
-                <div
-                  key={item.id}
-                  className={clsx(
-                    'flex justify-between items-center text-shades-black h-[24px] mb-1 cursor-pointer pl-1',
-                    fonts.text.md,
-                    selectedItems?.includes(item?.label) && 'font-medium'
-                  )}
-                  onClick={() => {
-                    onChange?.(item);
-                  }}
-                >
-                  {item.label}
-                  {selectedItems?.includes(item?.label) && (
-                    <Icon name="icon-check-circle" />
-                  )}
-                </div>
-              ))
+              items?.map(
+                (item: Item) =>
+                  item.label && (
+                    <div
+                      key={item.id}
+                      className={clsx(
+                        'flex justify-between items-center text-shades-black h-[24px] mb-1 cursor-pointer pl-1',
+                        fonts.text.md,
+                        selectedItems?.includes(item?.label) && 'font-medium'
+                      )}
+                      onClick={() => {
+                        onChange?.(item);
+                      }}
+                    >
+                      {item.label}
+                      {selectedItems?.includes(item?.label) && (
+                        <Icon name="icon-check-circle" />
+                      )}
+                    </div>
+                  )
+              )
             ) : (
               <div className={clsx('text-shades-black', fonts.text.md)}>
                 No items found!
@@ -118,7 +121,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
             )}
           </div>
 
-          <div className='mt-3'>
+          <div className="mt-3">
             <Button
               variant="outlined"
               className="!h-[32px] !rounded !mr-0 !border-neutral-600 !text-[12px]"

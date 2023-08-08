@@ -12,9 +12,18 @@ interface TabsProps {
   className?: string;
   onTabChange?: (tabId: number | string) => void;
   active?: string | number;
+  bordered?: boolean;
+  tabListClasses?: string;
 }
 
-function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
+function Tabs({
+  tabs,
+  className,
+  onTabChange,
+  active,
+  bordered,
+  tabListClasses,
+}: TabsProps) {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   const handleTabClick = (tabId: number | string) => {
@@ -29,18 +38,25 @@ function Tabs({ tabs, className, onTabChange, active }: TabsProps) {
 
   return (
     <div>
-      <div className='min-h-[56px]'>
+      <div
+        className={clsx(
+          'min-h-[56px]',
+          bordered && 'border-b border-b-neutral-300'
+        )}
+      >
         <div className="mx-auto w-full bg-shades-white z-[9]" id="tab-menu">
           <div className={clsx('flex gap-2', className)}>
             {tabs.map((tab, index) => (
               <div key={index} className="cursor-pointer">
                 <span
                   onClick={() => handleTabClick(tab.id)}
-                  className={`inline-flex justify-center py-4 px-2 text-base tracking-[.08em] h-[56px] font-light ${
+                  className={clsx(
+                    'inline-flex justify-center py-4 px-2 text-base tracking-[.08em] h-[56px] font-light',
                     tab.id === activeTab
                       ? 'border-b-2 text-shades-black'
-                      : 'text-neutral-700'
-                  }`}
+                      : 'text-neutral-700',
+                    tabListClasses || ''
+                  )}
                 >
                   {tab.label}
                 </span>

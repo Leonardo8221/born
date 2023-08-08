@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DraftTable } from '@/components/page-components/order/DraftsTable';
 import Tabs from '@/components/molecules/Tab/Tabs';
-import { Heading } from '@/components/molecules/Heading';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import ShowcaseLayout from '@/components/layouts/ShowcaseLayout';
 import { GET_ORDERS } from '@/queries/orders/orders';
 import { OrderResourceApi } from 'client/command';
 import { apiConfig } from '@/utils/apiConfig';
@@ -13,7 +11,9 @@ import { GET_ORDERS_LIST, seasons } from '@/utils/constants';
 import useDebounce from '@/utils/debounce';
 import { OrderStatus } from '@/generated/types';
 import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
-import { Tags } from '@/components/page-components/common/Filters';
+import { Action, Tags } from '@/components/page-components/common/Filters';
+import Footer from '@/components/layouts/Footer';
+import TopBar from '@/components/page-components/marketing/TopBar';
 
 const OrderPage = () => {
   const router: any = useRouter();
@@ -28,6 +28,7 @@ const OrderPage = () => {
   const [selectedBuyers, setSelectedBuyers] = useState<string[]>([]);
   const [selectedRetailers, setSelectedRetailers] = useState<string[]>([]);
   const [selectedSeasons, setSelectedSeasons] = useState<string | null>(null);
+  const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
 
   const debounceValue = useDebounce(searchKeyword, 600);
 
@@ -105,7 +106,15 @@ const OrderPage = () => {
       onReset: () => {
         setSelectedSeasons(null);
       },
-    }
+    },
+  ];
+
+  const actions: Action[] = [
+    {
+      name: 'Delete',
+      action: () => handleDeleteOrder(),
+      disabled: isLoading,
+    },
   ];
 
   const handleTabChange = (id: string | number) => {
@@ -120,6 +129,26 @@ const OrderPage = () => {
   }, [router.isReady]);
 
   const ordersBySearch = data?.ordersBySearch?.content || [];
+
+  const handleOnSelect = useCallback(() => {
+    if (selectedOrders.length !== ordersBySearch.length) {
+      setSelectedOrders(ordersBySearch.map((item: any) => item.id));
+    } else {
+      setSelectedOrders([]);
+    }
+  }, [selectedOrders]);
+
+  const handleOnOrderSelect = useCallback(
+    (id: number) => {
+      if (!selectedOrders.includes(id)) {
+        setSelectedOrders([...selectedOrders, id]);
+      } else {
+        const newOrders = [...selectedOrders];
+        setSelectedOrders(newOrders.filter((item: number) => item !== id));
+      }
+    },
+    [selectedOrders]
+  );
 
   const handleActions = async (action: string, id: number) => {
     const config: any = await apiConfig();
@@ -151,23 +180,40 @@ const OrderPage = () => {
     }
   };
 
-  const handleDeleteOrder = async (id: number) => {
+  const handleDeleteOrder = async (id?: number) => {
+    setIsLoading(true);
     try {
       const config = await apiConfig();
       const api = new OrderResourceApi(config);
-      await api.apiOrderDeleteOrderDelete(id);
-      setSuccessMessage('Order Deleted successfully!');
+      if (!id) {
+        const promises = selectedOrders.map((item) =>
+          api.apiOrderDeleteOrderDelete(item)
+        );
+        await Promise.all(promises);
+        setSelectedOrders([]);
+        setSuccessMessage(
+          selectedOrders.length <= 1
+            ? 'Order Deleted Successfully!'
+            : `${selectedOrders.length} Orders Deleted successfully!`
+        );
+      } else {
+        await api.apiOrderDeleteOrderDelete(id);
+        setSuccessMessage('Order deleted successfully!');
+      }
+      await refetch();
+      setIsLoading(false);
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
     } catch (error: any) {
+      setIsLoading(false);
       setErrorMessage(error?.message ?? 'Failed to delete order!');
       setTimeout(() => {
         setErrorMessage('');
       }, 3000);
       console.log(error);
     }
-  }
+  };
 
   const tabs = [
     {
@@ -184,6 +230,10 @@ const OrderPage = () => {
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
           handleDelete={handleDeleteOrder}
+          selectedOrders={selectedOrders}
+          handleOnSelect={handleOnSelect}
+          handleOnOrderSelect={handleOnOrderSelect}
+          actions={actions}
         />
       ),
     },
@@ -201,6 +251,10 @@ const OrderPage = () => {
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
           handleDelete={handleDeleteOrder}
+          selectedOrders={selectedOrders}
+          handleOnSelect={handleOnSelect}
+          handleOnOrderSelect={handleOnOrderSelect}
+          actions={actions}
         />
       ),
     },
@@ -218,6 +272,10 @@ const OrderPage = () => {
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
           handleDelete={handleDeleteOrder}
+          selectedOrders={selectedOrders}
+          handleOnSelect={handleOnSelect}
+          handleOnOrderSelect={handleOnOrderSelect}
+          actions={actions}
         />
       ),
     },
@@ -235,21 +293,51 @@ const OrderPage = () => {
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
           handleDelete={handleDeleteOrder}
+          selectedOrders={selectedOrders}
+          handleOnSelect={handleOnSelect}
+          handleOnOrderSelect={handleOnOrderSelect}
+          actions={actions}
         />
       ),
     },
+    // {
+    //   id: 'ARCHIVE',
+    //   label: 'Archive',
+    //   content: (
+    //     <DraftTable
+    //       handleActions={handleActions}
+    //       actionsLoading={isLoading}
+    //       loading={loading}
+    //       type="archieved"
+    //       content={ordersBySearch}
+    //       searchKeyword={searchKeyword}
+    //       setSearchKeyword={setSearchKeyword}
+    //       filterTags={filterTags}
+    //       handleDelete={handleDeleteOrder}
+    //       selectedOrders={selectedOrders}
+    //       handleOnSelect={handleOnSelect}
+    //     />
+    //   ),
+    // },
   ];
 
   return (
-    <ShowcaseLayout>
-      <div className="max-w-[1120px] mt-6 mx-auto">
-        <Heading fontWeight="light" size={'sm'} className="">
-          Order Management
-        </Heading>
-        <Tabs tabs={tabs} active={activeTab} onTabChange={handleTabChange} />
+    <>
+      <TopBar title="Order Management" />
+      <div className="min-h-[calc(100vh-72px)] pt-[72px] mt-2">
+        <div className="max-w-[1120px] mx-auto">
+          <Tabs
+            tabs={tabs}
+            active={activeTab}
+            onTabChange={handleTabChange}
+            bordered
+            tabListClasses="!w-[124px]"
+          />
+        </div>
+        <Toast successMessage={successMessage} errorMessage={errorMessage} />
       </div>
-      <Toast successMessage={successMessage} errorMessage={errorMessage} />
-    </ShowcaseLayout>
+      <Footer />
+    </>
   );
 };
 

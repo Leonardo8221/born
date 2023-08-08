@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import OrderListTable from '../../organisms/Tables/OrderList';
 import { OrderGraphqlDto } from '@/generated/types';
-import Filters, { Tags } from '../common/Filters';
+import Filters, { Action, Tags } from '../common/Filters';
 
 export interface DraftTableProps {
   content: OrderGraphqlDto[];
@@ -13,6 +13,10 @@ export interface DraftTableProps {
   setSearchKeyword?: (value: string) => void;
   filterTags?: Tags[];
   handleDelete?: (id: number) => void;
+  selectedOrders: number[];
+  handleOnSelect: () => void;
+  handleOnOrderSelect: (id: number) => void;
+  actions?: Action[];
 }
 
 export const DraftTable: FC<DraftTableProps> = ({
@@ -25,15 +29,26 @@ export const DraftTable: FC<DraftTableProps> = ({
   setSearchKeyword,
   filterTags,
   handleDelete,
+  selectedOrders,
+  handleOnSelect,
+  handleOnOrderSelect,
+  actions,
 }) => {
   return (
     <div>
-      <div className='pb-4'>
+      <div className="pb-4">
         <Filters
           searchKeyword={searchKeyword}
           onSearch={setSearchKeyword}
           isOrder
           filterTags={filterTags}
+          className="!py-0"
+          selectBtnText={'Select All'}
+          selectedItems={selectedOrders}
+          onSelect={handleOnSelect}
+          isSelectable={!!selectedOrders.length}
+          hideSelectBtn={selectedOrders.length === content.length}
+          actions={actions}
         />
       </div>
       <OrderListTable
@@ -43,6 +58,8 @@ export const DraftTable: FC<DraftTableProps> = ({
         orderType={type}
         orders={content}
         handleDelete={handleDelete}
+        selectedItems={selectedOrders}
+        handleOnOrderSelect={handleOnOrderSelect}
       />
     </div>
   );
