@@ -234,6 +234,7 @@ const OrderPage = () => {
           handleOnSelect={handleOnSelect}
           handleOnOrderSelect={handleOnOrderSelect}
           actions={actions}
+          onDeselect={() => setSelectedOrders([])}
         />
       ),
     },
@@ -255,6 +256,7 @@ const OrderPage = () => {
           handleOnSelect={handleOnSelect}
           handleOnOrderSelect={handleOnOrderSelect}
           actions={actions}
+          onDeselect={() => setSelectedOrders([])}
         />
       ),
     },
@@ -276,6 +278,7 @@ const OrderPage = () => {
           handleOnSelect={handleOnSelect}
           handleOnOrderSelect={handleOnOrderSelect}
           actions={actions}
+          onDeselect={() => setSelectedOrders([])}
         />
       ),
     },
@@ -297,33 +300,22 @@ const OrderPage = () => {
           handleOnSelect={handleOnSelect}
           handleOnOrderSelect={handleOnOrderSelect}
           actions={actions}
+          onDeselect={() => setSelectedOrders([])}
         />
       ),
     },
-    // {
-    //   id: 'ARCHIVE',
-    //   label: 'Archive',
-    //   content: (
-    //     <DraftTable
-    //       handleActions={handleActions}
-    //       actionsLoading={isLoading}
-    //       loading={loading}
-    //       type="archieved"
-    //       content={ordersBySearch}
-    //       searchKeyword={searchKeyword}
-    //       setSearchKeyword={setSearchKeyword}
-    //       filterTags={filterTags}
-    //       handleDelete={handleDeleteOrder}
-    //       selectedOrders={selectedOrders}
-    //       handleOnSelect={handleOnSelect}
-    //     />
-    //   ),
-    // },
   ];
+
+  const onBack = () => {
+    const path = localStorage.getItem('previous_route');
+    if (path) {
+      router.push(path);
+    }
+  }
 
   return (
     <>
-      <TopBar title="Order Management" />
+      <TopBar title="Order Management" onBack={onBack} />
       <div className="min-h-[calc(100vh-72px)] pt-[72px] mt-2">
         <div className="max-w-[1120px] mx-auto">
           <Tabs

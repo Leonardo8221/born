@@ -6,9 +6,10 @@ import { Heading } from '@/components/molecules/Heading';
 
 interface TopBarProps {
   title?: string;
+  onBack?: () => void;
 }
 
-const TopBar: FC<TopBarProps> = ({ title }) => {
+const TopBar: FC<TopBarProps> = ({ title, onBack }) => {
   const router = useRouter();
 
   return (
@@ -16,7 +17,7 @@ const TopBar: FC<TopBarProps> = ({ title }) => {
       <div className="flex items-center gap-4">
         <div
           className="flex h-10 w-10 cursor-pointer items-center justify-center"
-          onClick={router.back}
+          onClick={onBack || router.back}
         >
           <ArrowIconLeft height={40} width={40} />
         </div>

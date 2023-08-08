@@ -17,6 +17,7 @@ export interface DraftTableProps {
   handleOnSelect: () => void;
   handleOnOrderSelect: (id: number) => void;
   actions?: Action[];
+  onDeselect?: () => void;
 }
 
 export const DraftTable: FC<DraftTableProps> = ({
@@ -33,6 +34,7 @@ export const DraftTable: FC<DraftTableProps> = ({
   handleOnSelect,
   handleOnOrderSelect,
   actions,
+  onDeselect,
 }) => {
   return (
     <div>
@@ -46,9 +48,11 @@ export const DraftTable: FC<DraftTableProps> = ({
           selectBtnText={'Select All'}
           selectedItems={selectedOrders}
           onSelect={handleOnSelect}
+          isAllOrdersSelected={selectedOrders.length === content.length}
           isSelectable={!!selectedOrders.length}
           hideSelectBtn={selectedOrders.length === content.length}
           actions={actions}
+          onDeselect={onDeselect}
         />
       </div>
       <OrderListTable
