@@ -10,6 +10,7 @@ import { formatDate } from '@/utils';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import { DropdownMenu } from '@/components/molecules/DropdownMenu';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { Checkbox } from '@/components/molecules/Checkbox';
 export interface OrderListTableProps {
   orders: OrderGraphqlDto[];
   orderType: string;
@@ -17,6 +18,8 @@ export interface OrderListTableProps {
   handleActions: (action: string, id: number) => void;
   actionsLoading?: boolean;
   handleDelete?: (id: number) => void;
+  selectedItems?: number[];
+  handleOnOrderSelect: (id: number) => void;
 }
 
 const OrderListTable: FC<OrderListTableProps> = ({
@@ -25,6 +28,8 @@ const OrderListTable: FC<OrderListTableProps> = ({
   loading,
   handleActions,
   handleDelete,
+  selectedItems,
+  handleOnOrderSelect,
 }) => {
   const columnHelper: any = createColumnHelper();
 
@@ -32,13 +37,30 @@ const OrderListTable: FC<OrderListTableProps> = ({
     columnHelper.accessor('name', {
       size: 341,
       id: 'name',
-      cell: (info: any) => (
-        <Link href={`${location.pathname}/${info.row.original.id}`}>
-          <div className={clsx('text-[#333333] pl-4', fonts.text.lg)}>
-            {info.getValue()}
+      cell: (info: any) => {
+        const id: number = info?.row?.original?.id;
+        return (
+          <div className="flex items-center">
+            <div className="flex items-center justify-center px-2">
+              <Checkbox
+                variant="accent"
+                checked={selectedItems?.includes(id)}
+                onChange={() => handleOnOrderSelect(id)}
+              />
+            </div>
+            <Link href={`${location.pathname}/${info.row.original.id}`}>
+              <div
+                className={clsx(
+                  'text-[#333333] pl-4 hover:text-accent-b-200',
+                  fonts.text.lg
+                )}
+              >
+                {info.getValue()}
+              </div>
+            </Link>
           </div>
-        </Link>
-      ),
+        );
+      },
       header: () => 'Order name',
     }),
     columnHelper.accessor('retailer_data', {

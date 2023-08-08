@@ -2,21 +2,31 @@ import { FC } from 'react';
 import { Icon } from '@/components/molecules/Icon';
 import ArrowIconLeft from '@/assets/svgs/arrow-left.svg';
 import { useRouter } from 'next/router';
+import { Heading } from '@/components/molecules/Heading';
 
-const TopBar: FC = () => {
+interface TopBarProps {
+  title?: string;
+}
+
+const TopBar: FC<TopBarProps> = ({ title }) => {
   const router = useRouter();
 
   return (
-    <div className="flex h-[72px] justify-between items-center bg-white w-full px-[32px] shadow-medium">
-      <div
-        className="flex h-10 w-10 cursor-pointer items-center justify-center"
-        onClick={router.back}
-      >
-        <ArrowIconLeft height={40} width={40} />
+    <div className="fixed top-0 left-0 right-0 flex h-[72px] justify-between items-center bg-white w-full px-[32px] shadow-medium">
+      <div className="flex items-center gap-4">
+        <div
+          className="flex h-10 w-10 cursor-pointer items-center justify-center"
+          onClick={router.back}
+        >
+          <ArrowIconLeft height={40} width={40} />
+        </div>
+        {title && <Heading size="xs">{title}</Heading>}
       </div>
       <div
         className="flex h-10 w-10 cursor-pointer items-center justify-center"
-        onClick={() => router.push(`/organization/${router?.query?.id}/discover`)}
+        onClick={() =>
+          router.push(`/organization/${router?.query?.id}/discover`)
+        }
       >
         <Icon name="icon-close" height={20} width={20} />
       </div>

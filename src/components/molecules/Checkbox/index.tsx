@@ -8,6 +8,7 @@ export interface CheckboxProps {
   iconFirst?: boolean;
   checked?: boolean;
   onChange?: (value: boolean) => void;
+  variant?: 'accent'
 }
 
 export const Checkbox: FC<CheckboxProps> = ({
@@ -15,6 +16,7 @@ export const Checkbox: FC<CheckboxProps> = ({
   iconFirst = true,
   checked,
   onChange,
+  variant,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -36,12 +38,12 @@ export const Checkbox: FC<CheckboxProps> = ({
         !iconFirst && 'flex-row-reverse'
       )}
     >
-      <StyledCheckbox checked={isChecked}>
+      <StyledCheckbox checked={isChecked} variant={variant}>
         <input
           type="checkbox"
           className="absolute top-0 left-0 h-full w-full opacity-0 z-[1] cursor-pointer m-0"
           checked={isChecked}
-          onClick={handleChecked}
+          onChange={handleChecked}
         />
       </StyledCheckbox>
       {label && (

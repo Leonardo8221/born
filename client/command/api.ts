@@ -722,6 +722,31 @@ export type RoleType = typeof RoleType[keyof typeof RoleType];
 /**
  * 
  * @export
+ * @interface SectionRequestDTO
+ */
+export interface SectionRequestDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof SectionRequestDTO
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SectionRequestDTO
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof SectionRequestDTO
+     */
+    'product_ids'?: Array<number>;
+}
+/**
+ * 
+ * @export
  * @interface UserOrganizationRequestDTO
  */
 export interface UserOrganizationRequestDTO {
@@ -2479,21 +2504,22 @@ export const OrderReportResourceApiAxiosParamCreator = function (configuration?:
         },
         /**
          * 
-         * @param {OrderStatus} orderStatus 
+         * @param {number} organizationId 
          * @param {Array<string>} [buyers] 
          * @param {string} [createdBy] 
          * @param {string} [dateFrom] 
          * @param {string} [dateTo] 
-         * @param {number} [organizationId] 
+         * @param {Array<number>} [orderIds] 
+         * @param {OrderStatus} [orderStatus] 
          * @param {Array<string>} [retailers] 
          * @param {string} [search] 
          * @param {string} [season] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiOrderDownloadOrderTableReportAsExcelGet: async (orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'orderStatus' is not null or undefined
-            assertParamExists('apiOrderDownloadOrderTableReportAsExcelGet', 'orderStatus', orderStatus)
+        apiOrderDownloadOrderTableReportAsExcelGet: async (organizationId: number, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, orderIds?: Array<number>, orderStatus?: OrderStatus, retailers?: Array<string>, search?: string, season?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationId' is not null or undefined
+            assertParamExists('apiOrderDownloadOrderTableReportAsExcelGet', 'organizationId', organizationId)
             const localVarPath = `/api/order/download-order-table-report-as-excel`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2528,6 +2554,10 @@ export const OrderReportResourceApiAxiosParamCreator = function (configuration?:
                 localVarQueryParameter['date_to'] = (dateTo as any instanceof Date) ?
                     (dateTo as any).toISOString().substr(0,10) :
                     dateTo;
+            }
+
+            if (orderIds) {
+                localVarQueryParameter['order_ids'] = orderIds;
             }
 
             if (orderStatus !== undefined) {
@@ -2593,20 +2623,21 @@ export const OrderReportResourceApiFp = function(configuration?: Configuration) 
         },
         /**
          * 
-         * @param {OrderStatus} orderStatus 
+         * @param {number} organizationId 
          * @param {Array<string>} [buyers] 
          * @param {string} [createdBy] 
          * @param {string} [dateFrom] 
          * @param {string} [dateTo] 
-         * @param {number} [organizationId] 
+         * @param {Array<number>} [orderIds] 
+         * @param {OrderStatus} [orderStatus] 
          * @param {Array<string>} [retailers] 
          * @param {string} [search] 
          * @param {string} [season] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiOrderDownloadOrderTableReportAsExcelGet(orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderDownloadOrderTableReportAsExcelGet(orderStatus, buyers, createdBy, dateFrom, dateTo, organizationId, retailers, search, season, options);
+        async apiOrderDownloadOrderTableReportAsExcelGet(organizationId: number, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, orderIds?: Array<number>, orderStatus?: OrderStatus, retailers?: Array<string>, search?: string, season?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiOrderDownloadOrderTableReportAsExcelGet(organizationId, buyers, createdBy, dateFrom, dateTo, orderIds, orderStatus, retailers, search, season, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -2639,20 +2670,21 @@ export const OrderReportResourceApiFactory = function (configuration?: Configura
         },
         /**
          * 
-         * @param {OrderStatus} orderStatus 
+         * @param {number} organizationId 
          * @param {Array<string>} [buyers] 
          * @param {string} [createdBy] 
          * @param {string} [dateFrom] 
          * @param {string} [dateTo] 
-         * @param {number} [organizationId] 
+         * @param {Array<number>} [orderIds] 
+         * @param {OrderStatus} [orderStatus] 
          * @param {Array<string>} [retailers] 
          * @param {string} [search] 
          * @param {string} [season] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiOrderDownloadOrderTableReportAsExcelGet(orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options?: any): AxiosPromise<void> {
-            return localVarFp.apiOrderDownloadOrderTableReportAsExcelGet(orderStatus, buyers, createdBy, dateFrom, dateTo, organizationId, retailers, search, season, options).then((request) => request(axios, basePath));
+        apiOrderDownloadOrderTableReportAsExcelGet(organizationId: number, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, orderIds?: Array<number>, orderStatus?: OrderStatus, retailers?: Array<string>, search?: string, season?: string, options?: any): AxiosPromise<void> {
+            return localVarFp.apiOrderDownloadOrderTableReportAsExcelGet(organizationId, buyers, createdBy, dateFrom, dateTo, orderIds, orderStatus, retailers, search, season, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2688,12 +2720,13 @@ export class OrderReportResourceApi extends BaseAPI {
 
     /**
      * 
-     * @param {OrderStatus} orderStatus 
+     * @param {number} organizationId 
      * @param {Array<string>} [buyers] 
      * @param {string} [createdBy] 
      * @param {string} [dateFrom] 
      * @param {string} [dateTo] 
-     * @param {number} [organizationId] 
+     * @param {Array<number>} [orderIds] 
+     * @param {OrderStatus} [orderStatus] 
      * @param {Array<string>} [retailers] 
      * @param {string} [search] 
      * @param {string} [season] 
@@ -2701,8 +2734,8 @@ export class OrderReportResourceApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof OrderReportResourceApi
      */
-    public apiOrderDownloadOrderTableReportAsExcelGet(orderStatus: OrderStatus, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, organizationId?: number, retailers?: Array<string>, search?: string, season?: string, options?: AxiosRequestConfig) {
-        return OrderReportResourceApiFp(this.configuration).apiOrderDownloadOrderTableReportAsExcelGet(orderStatus, buyers, createdBy, dateFrom, dateTo, organizationId, retailers, search, season, options).then((request) => request(this.axios, this.basePath));
+    public apiOrderDownloadOrderTableReportAsExcelGet(organizationId: number, buyers?: Array<string>, createdBy?: string, dateFrom?: string, dateTo?: string, orderIds?: Array<number>, orderStatus?: OrderStatus, retailers?: Array<string>, search?: string, season?: string, options?: AxiosRequestConfig) {
+        return OrderReportResourceApiFp(this.configuration).apiOrderDownloadOrderTableReportAsExcelGet(organizationId, buyers, createdBy, dateFrom, dateTo, orderIds, orderStatus, retailers, search, season, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -3795,6 +3828,526 @@ export class RegistrationResourceApi extends BaseAPI {
      */
     public apiUserRegisterPost(userOrganizationRequestDTO?: UserOrganizationRequestDTO, options?: AxiosRequestConfig) {
         return RegistrationResourceApiFp(this.configuration).apiUserRegisterPost(userOrganizationRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * SectionReportResourceApi - axios parameter creator
+ * @export
+ */
+export const SectionReportResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionDownloadSectionReportAsExcelGet: async (sectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sectionId' is not null or undefined
+            assertParamExists('apiSectionDownloadSectionReportAsExcelGet', 'sectionId', sectionId)
+            const localVarPath = `/api/section/download-section-report-as-excel`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (sectionId !== undefined) {
+                localVarQueryParameter['section_id'] = sectionId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SectionReportResourceApi - functional programming interface
+ * @export
+ */
+export const SectionReportResourceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SectionReportResourceApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSectionDownloadSectionReportAsExcelGet(sectionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionDownloadSectionReportAsExcelGet(sectionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * SectionReportResourceApi - factory interface
+ * @export
+ */
+export const SectionReportResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SectionReportResourceApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionDownloadSectionReportAsExcelGet(sectionId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionDownloadSectionReportAsExcelGet(sectionId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SectionReportResourceApi - object-oriented interface
+ * @export
+ * @class SectionReportResourceApi
+ * @extends {BaseAPI}
+ */
+export class SectionReportResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} sectionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SectionReportResourceApi
+     */
+    public apiSectionDownloadSectionReportAsExcelGet(sectionId: number, options?: AxiosRequestConfig) {
+        return SectionReportResourceApiFp(this.configuration).apiSectionDownloadSectionReportAsExcelGet(sectionId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * SectionResourceApi - axios parameter creator
+ * @export
+ */
+export const SectionResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionAssociateProductsPut: async (sectionId: number, requestBody?: Array<number>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sectionId' is not null or undefined
+            assertParamExists('apiSectionAssociateProductsPut', 'sectionId', sectionId)
+            const localVarPath = `/api/section/associate-products`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (sectionId !== undefined) {
+                localVarQueryParameter['section_id'] = sectionId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [sectionId] 
+         * @param {SectionRequestDTO} [sectionRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionCreateNewSectionPost: async (sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/section/create-new-section`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (sectionId !== undefined) {
+                localVarQueryParameter['section_id'] = sectionId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sectionRequestDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionDeleteSectionDelete: async (sectionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sectionId' is not null or undefined
+            assertParamExists('apiSectionDeleteSectionDelete', 'sectionId', sectionId)
+            const localVarPath = `/api/section/delete-section`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (sectionId !== undefined) {
+                localVarQueryParameter['section_id'] = sectionId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionDisassociateProductsPut: async (sectionId: number, requestBody?: Array<number>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sectionId' is not null or undefined
+            assertParamExists('apiSectionDisassociateProductsPut', 'sectionId', sectionId)
+            const localVarPath = `/api/section/disassociate-products`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (sectionId !== undefined) {
+                localVarQueryParameter['section_id'] = sectionId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} [sectionId] 
+         * @param {SectionRequestDTO} [sectionRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionUpdateSectionPut: async (sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/section/update-section`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (sectionId !== undefined) {
+                localVarQueryParameter['section_id'] = sectionId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(sectionRequestDTO, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SectionResourceApi - functional programming interface
+ * @export
+ */
+export const SectionResourceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SectionResourceApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSectionAssociateProductsPut(sectionId: number, requestBody?: Array<number>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionAssociateProductsPut(sectionId, requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} [sectionId] 
+         * @param {SectionRequestDTO} [sectionRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSectionCreateNewSectionPost(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionCreateNewSectionPost(sectionId, sectionRequestDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSectionDeleteSectionDelete(sectionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionDeleteSectionDelete(sectionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSectionDisassociateProductsPut(sectionId: number, requestBody?: Array<number>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionDisassociateProductsPut(sectionId, requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} [sectionId] 
+         * @param {SectionRequestDTO} [sectionRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSectionUpdateSectionPut(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionUpdateSectionPut(sectionId, sectionRequestDTO, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * SectionResourceApi - factory interface
+ * @export
+ */
+export const SectionResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SectionResourceApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionAssociateProductsPut(sectionId: number, requestBody?: Array<number>, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionAssociateProductsPut(sectionId, requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [sectionId] 
+         * @param {SectionRequestDTO} [sectionRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionCreateNewSectionPost(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionCreateNewSectionPost(sectionId, sectionRequestDTO, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionDeleteSectionDelete(sectionId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionDeleteSectionDelete(sectionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} sectionId 
+         * @param {Array<number>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionDisassociateProductsPut(sectionId: number, requestBody?: Array<number>, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionDisassociateProductsPut(sectionId, requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [sectionId] 
+         * @param {SectionRequestDTO} [sectionRequestDTO] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionUpdateSectionPut(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionUpdateSectionPut(sectionId, sectionRequestDTO, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SectionResourceApi - object-oriented interface
+ * @export
+ * @class SectionResourceApi
+ * @extends {BaseAPI}
+ */
+export class SectionResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} sectionId 
+     * @param {Array<number>} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SectionResourceApi
+     */
+    public apiSectionAssociateProductsPut(sectionId: number, requestBody?: Array<number>, options?: AxiosRequestConfig) {
+        return SectionResourceApiFp(this.configuration).apiSectionAssociateProductsPut(sectionId, requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [sectionId] 
+     * @param {SectionRequestDTO} [sectionRequestDTO] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SectionResourceApi
+     */
+    public apiSectionCreateNewSectionPost(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig) {
+        return SectionResourceApiFp(this.configuration).apiSectionCreateNewSectionPost(sectionId, sectionRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} sectionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SectionResourceApi
+     */
+    public apiSectionDeleteSectionDelete(sectionId: number, options?: AxiosRequestConfig) {
+        return SectionResourceApiFp(this.configuration).apiSectionDeleteSectionDelete(sectionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} sectionId 
+     * @param {Array<number>} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SectionResourceApi
+     */
+    public apiSectionDisassociateProductsPut(sectionId: number, requestBody?: Array<number>, options?: AxiosRequestConfig) {
+        return SectionResourceApiFp(this.configuration).apiSectionDisassociateProductsPut(sectionId, requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} [sectionId] 
+     * @param {SectionRequestDTO} [sectionRequestDTO] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SectionResourceApi
+     */
+    public apiSectionUpdateSectionPut(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig) {
+        return SectionResourceApiFp(this.configuration).apiSectionUpdateSectionPut(sectionId, sectionRequestDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
