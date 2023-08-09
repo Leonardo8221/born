@@ -118,6 +118,7 @@ const OrderPage = () => {
   ];
 
   const handleTabChange = (id: string | number) => {
+    setSelectedOrders([]);
     if (!organizationId) return;
     router.push(`/organization/${organizationId}/order?tab=${id}`);
     setActiveTab(id as OrderStatus);
@@ -131,12 +132,12 @@ const OrderPage = () => {
   const ordersBySearch = data?.ordersBySearch?.content || [];
 
   const handleOnSelect = useCallback(() => {
-    if (selectedOrders.length !== ordersBySearch.length) {
+    if (!selectedOrders.length || selectedOrders.length !== ordersBySearch.length) {
       setSelectedOrders(ordersBySearch.map((item: any) => item.id));
     } else {
       setSelectedOrders([]);
     }
-  }, [selectedOrders]);
+  }, [selectedOrders, ordersBySearch]);
 
   const handleOnOrderSelect = useCallback(
     (id: number) => {
