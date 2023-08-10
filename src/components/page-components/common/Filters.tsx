@@ -185,7 +185,7 @@ const Filters: FC<FiltersProps> = ({
                     className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
                     onClick={handleExportOrders}
                   >
-                    Export {isAllOrdersSelected ? 'Selection' : ''}
+                    Export {selectedItems?.length ? 'Selection' : ''}
                   </Button>
                 </div>
               )}
