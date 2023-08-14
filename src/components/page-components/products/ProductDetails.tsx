@@ -9,12 +9,16 @@ import ErrorMessage from '@/components/page-components/Error/ErrorMessage';
 import Loading from '@/components/page-components/Loading';
 import { OrderList } from '@/components/page-components/order/OrdersList';
 import { useEffect, useState } from 'react';
-import { OrderGraphqlDto, ProductWithCollectionsGraphqlDto } from '@/generated/types';
+import {
+  OrderGraphqlDto,
+  ProductWithCollectionsGraphqlDto,
+} from '@/generated/types';
 import Notification from '@/components/page-components/order/Notification';
 import moment from 'moment';
 import { ORGANIZATION_QUERY } from '@/queries/organizations';
 import ProductListItem from './ProductListItem';
 import ProductHeader from '@/components/organisms/ProductHeader/ProductHeader';
+import ProductInfo from './ProductInfo';
 
 const ProductDetailsPage = () => {
   const router = useRouter();
@@ -29,8 +33,8 @@ const ProductDetailsPage = () => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'auto';
-    }
-  }, [])
+    };
+  }, []);
 
   const {
     data: product,
@@ -132,8 +136,8 @@ const ProductDetailsPage = () => {
 
   return (
     <div>
-      <div className='fixed left-0 top-0 h-screen w-full bg-[rgba(30,30,30,0.58)] z-[990]'></div>
-      <div className='fixed top-0 right-0 h-screen w-full max-w-[806px] z-[999] bg-shades-white overflow-y-auto'>
+      <div className="fixed left-0 top-0 h-screen w-full bg-[rgba(30,30,30,0.58)] z-[990]"></div>
+      <div className="fixed top-0 right-0 h-screen w-full max-w-[806px] z-[999] bg-shades-white overflow-y-auto">
         <ProductHeader
           productRefectch={productRefectch}
           currentProduct={currentProduct}
@@ -145,37 +149,48 @@ const ProductDetailsPage = () => {
             {loading ? (
               <Loading message="Loading product details..." />
             ) : (
-              <ProductDetails
-                attachments={currentProduct?.attachments || []}
-                productImages={currentProduct?.attachments?.splice(0, 2) || []}
-                associated_prices={currentProduct?.associated_prices}
-                description={currentProduct?.description}
-                colors={currentProduct?.colour_families}
-                colour_name={currentProduct?.colour_name}
-                productVariants={currentProduct?.productVariants || []}
-                tags={[
-                  {
-                    title: 'Season',
-                    list: [currentProduct?.season],
-                  },
-                  {
-                    title: 'Collections',
-                    list:
-                      currentProduct?.collections?.map(
-                        (collection: any) => collection.name
-                      ) || [],
-                  },
-                  {
-                    title: 'Keywords',
-                    list: currentProduct?.keywords || [],
-                  },
-                ]}
-                specifications={specifications}
-              />
+              <>
+                <ProductInfo
+                  style_name={currentProduct?.style_name}
+                  associated_prices={currentProduct?.associated_prices}
+                  colour_families={currentProduct?.colour_families}
+                  colour_name={currentProduct?.colour_name}
+                  productVariants={currentProduct?.productVariants}
+                />
+                <ProductDetails
+                  attachments={currentProduct?.attachments?.slice(0, 2) || []}
+                  productImages={currentProduct?.attachments || []}
+                  associated_prices={currentProduct?.associated_prices}
+                  description={currentProduct?.description}
+                  colors={currentProduct?.colour_families}
+                  colour_name={currentProduct?.colour_name}
+                  productVariants={currentProduct?.productVariants || []}
+                  tags={[
+                    {
+                      title: 'Season',
+                      list: [currentProduct?.season],
+                    },
+                    {
+                      title: 'Collections',
+                      list:
+                        currentProduct?.collections?.map(
+                          (collection: any) => collection.name
+                        ) || [],
+                    },
+                    {
+                      title: 'Keywords',
+                      list: currentProduct?.keywords || [],
+                    },
+                  ]}
+                  specifications={specifications}
+                />
+              </>
             )}
-            <div className='h-[1px] w-full bg-neutral-400 mt-10'></div>
+            <div className="h-[1px] w-full bg-neutral-400 mt-10"></div>
             <div className="flex justify-between mt-8 mb-5">
-              <h2 className="text-[24px] leading-[40px] font-normal">From this collection</h2>
+              <h2 className="text-[24px] leading-[40px] font-normal">
+                From this collection
+              </h2>
             </div>
             {!content && collectionProductsLoading ? (
               <Loading message="Loading collecitons" />

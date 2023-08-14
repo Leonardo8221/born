@@ -11,7 +11,6 @@ import { OrderReportResourceApi } from 'client/command';
 import { useRouter } from 'next/router';
 import { download } from '@/utils/downloadFile';
 import clsx from 'clsx';
-import ToggleCollectionSection from './ToggleCollectionSection';
 
 export type Action = {
   name: string;
@@ -91,16 +90,14 @@ const Filters: FC<FiltersProps> = ({
     }
   };
 
-  console.log(onDeselect);
-
   return (
-    <div className="min-h-[32px]">
+    <div className="w-full min-h-[32px] z-[2] bg-shades-white" id="filters">
       <div
         className={clsx(
-          'w-full max-w-[1120px] mx-auto print:hidden py-4 flex items-center justify-between bg-shades-white z-[2]',
+          'w-full max-w-[1120px] mx-auto print:hidden py-4 flex items-center justify-between bg-shades-white',
           className
         )}
-        id="filters"
+        
       >
         <div className="flex items-center gap-2">
           <SearchInput

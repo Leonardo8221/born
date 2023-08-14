@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const CollectionPage = () => {
   const router = useRouter();
-  const [isCollectionSection, setIsCollectionSection] = useState(false);
+  const [isCollectionSection, setIsCollectionSection] = useState(true);
   const [gridType, setGrid] = useState<GridType>('grid');
   const [productId, setProductId] = useState<null | number>(null);
 

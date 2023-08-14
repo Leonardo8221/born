@@ -37,11 +37,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   colour_name,
   description,
 }) => {
-  const router = useRouter();
-  const handleVariant = (id: number) => {
-    router.query.product_id = id as any;
-    router.push(router, undefined, { shallow: true });
-  }
+
   return (
     <div>
       <div className="flex-1 h-fit">
@@ -76,55 +72,15 @@ const ProductDetails: FC<ProductDetailsProps> = ({
         </div>
       </div>
       <div className="w-full mt-8">
-        <div>
-          {associated_prices?.map((item, index) => {
-            return (
-              <ListPrices
-                key={`${index} associated_prices`}
-                items={
-                  [
-                    {
-                      label: 'Landed',
-                      price: item?.landed && item.landed.toFixed(2) || null,
-                    },
-                    {
-                      label: 'Exworks',
-                      price: item?.exworks && item.exworks.toFixed(2) || null,
-                    },
-                    {
-                      label: 'MSRP',
-                      price: item?.retail && item.retail.toFixed(2) || null,
-                    },
-                  ] || []
-                }
-                currency={
-                  (item?.landed ||
-                  item?.exworks ||
-                  item?.retail)
-                    ? item?.currency || ''
-                    : ''
-                }
-              />
-            );
-          })}
-        </div>
-        <Paragraph
-          size="xl"
-          className="text-shades-black !leading-[32px] !font-light tracking-[0.06em] mt-3"
-        >
-          {description}
-        </Paragraph>
-        <div className="flex flex-wrap items-center gap-2.5 mt-6">
-          <ColorVariant colors={colors || []} label={colour_name || ''} />
-          {productVariants?.map((variant: any) => (
-            <div key={variant?.id} onClick={() => handleVariant(variant?.id)}>
-              <ColorVariant
-                key={variant?.id}
-                colors={variant?.colour_families || []}
-              />
-            </div>
-          ))}
-        </div>
+        {description && 
+          <Paragraph
+            size="xl"
+            className="text-shades-black !leading-[32px] !font-light tracking-[0.06em] mt-3"
+          >
+            {description}
+          </Paragraph>
+
+        }
         <div>
           {tags?.map((tag: any) => (
             <div

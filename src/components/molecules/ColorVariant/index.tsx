@@ -18,9 +18,8 @@ const ColorVariant: FC<ColorVariantProps> = ({
   return (
     <div
       className={clsx(
-        'flex max-w-full items-center gap-[6px] rounded-[100px] border border-neutral-500 p-1',
+        'flex max-w-full items-center gap-[6px] rounded-[100px] border border-neutral-500 justify-center h-8 cursor-pointer',
         label ? 'bg-neutral-200' : 'w-8 !border-netural-300 bg-shades-white',
-        size === 'sm' ? 'py-0.5' : 'py-1'
       )}
       onClick={onClick}
     >
@@ -29,8 +28,9 @@ const ColorVariant: FC<ColorVariantProps> = ({
         className={clsx(
           '!p-1',
           size === 'sm'
-            ? '!min-h-[20px] !min-w-[20px]'
-            : '!min-h-[24px] !min-w-[24px]'
+            ? '!h-[20px] !w-[20px]'
+            : '!h-[24px] !w-[24px]',
+          label ? 'ml-1' : '',
         )}
       />
       {label && (

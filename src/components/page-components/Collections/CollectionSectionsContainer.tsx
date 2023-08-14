@@ -82,7 +82,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [pageNo, setPageNo] = useState(0);
-  const [rows] = useState(100);
+  const [rows] = useState(1000);
   const [products, setProducts] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(null);
   const collectionDetailRef = useRef<any>(null);
@@ -102,8 +102,13 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       ) {
         filters.style.position = 'fixed';
         filters.style.top = '114px';
+        filters.style.left = '0px';
+        filters.style.right = '0px';
       } else {
         filters.style.position = '';
+        filters.style.top = '';
+        filters.style.left = '';
+        filters.style.right = '';
       }
     }
   };
@@ -355,16 +360,6 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       action: () => setIsAddToDraft(true),
       disabled: isLoading || !selectedRows.length,
     },
-    {
-      name: 'Remove from collection',
-      action: () => handleRemoveProducts(),
-      disabled: isLoading || !selectedRows.length,
-    },
-    {
-      name: 'Delete',
-      action: () => handleDeleteProducts(),
-      disabled: isLoading || !selectedRows.length,
-    },
   ];
 
   if (!collection && loading) {
@@ -396,7 +391,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
         handleErrorMessage={handleErrorMesssage}
       />
       <div
-        className="min-h-[calc(100vh-185px)] max-w-[1120px] mx-auto"
+        className="min-h-[calc(100vh-185px)] max-w-[1234px] mx-auto"
         id="collection"
       >
         <div className="mb-[64px]" ref={collectionDetailRef}>
@@ -442,7 +437,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
           </div>
         ) : products?.length ? products?.map(section => (
           <>
-            <div className="border rounded-2xl p-[57px] border-neutral-400">
+            <div className="border rounded-2xl p-[57px] pb-0 mb-8 border-neutral-400">
               <div className="text-center mb-4">
                 <Heading size="sm" className="text-shades-black">{section?.name}</Heading>
                 <Paragraph>{section?.description}</Paragraph>
