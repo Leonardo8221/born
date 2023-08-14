@@ -26,6 +26,8 @@ import IconInfoCircle from '@/assets/svgs/dark/info-circle.svg';
 import IconChevronDown from '@/assets/svgs/dark/chevron-down.svg';
 import IconTrash from '@/assets/svgs/dark/icon-trash.svg';
 import IconCheckCircle from '@/assets/svgs/dark/icon-check.svg';
+import IconScale from '@/assets/svgs/collection/scale.svg';
+import IconUnScale from '@/assets/svgs/collection/no-scale.svg';
 
 export const icons = {
   "icon-arrow-left": IconArrowLeft,
@@ -56,6 +58,8 @@ export const icons = {
   'icon-chevron-down': IconChevronDown,
   'icon-trash': IconTrash,
   'icon-check-circle': IconCheckCircle,
+  'icon-scale': IconScale,
+  'icon-unscale': IconUnScale,
 };
 
 export type Icons = keyof typeof icons;

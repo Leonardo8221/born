@@ -37,30 +37,30 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   colour_name,
   description,
 }) => {
-  const router = useRouter();
+
   return (
-    <div className="flex flex-wrap gap-8">
+    <div>
       <div className="flex-1 h-fit">
-        <div className="flex w-full max-w-[736px] flex-wrap gap-8">
+        <div className="flex w-full flex-wrap gap-6">
           {attachments?.length ? (
             attachments?.map(
               (item, index) =>
                 item?.medium_image_url && (
                   <div
                     key={`${index} product image`}
-                    className="relative h-full max-h-[352px] w-[352px]"
+                    className="relative h-full max-h-[343px] w-[343px]"
                   >
                     <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.1)] rounded" />
                     <img
                       src={item?.medium_image_url}
                       alt="products"
-                      className="h-[352px] w-[352px] object-cover rounded"
+                      className="h-[343px] w-[343px] object-cover rounded"
                     />
                   </div>
                 )
             )
           ) : (
-            <div className="relative flex items-center justify-center h-[352px] w-[352px] bg-[rgba(0,0,0,0.1)] rounded">
+            <div className="relative flex items-center justify-center h-[343px] w-[343px] bg-[rgba(0,0,0,0.1)] rounded">
               <div className="text-center">
                 <Icon name="icon-info-circle" className="mx-auto mb-4" />
                 <Paragraph size="lg" className="text-center">
@@ -71,59 +71,16 @@ const ProductDetails: FC<ProductDetailsProps> = ({
           )}
         </div>
       </div>
-      <div className="w-full max-w-[352px]">
-        <div>
-          {associated_prices?.map((item, index) => {
-            return (
-              <ListPrices
-                key={`${index} associated_prices`}
-                items={
-                  [
-                    {
-                      label: 'Landed',
-                      price: item?.landed && item.landed.toFixed(2) || null,
-                    },
-                    {
-                      label: 'Exworks',
-                      price: item?.exworks && item.exworks.toFixed(2) || null,
-                    },
-                    {
-                      label: 'MSRP',
-                      price: item?.retail && item.retail.toFixed(2) || null,
-                    },
-                  ] || []
-                }
-                currency={
-                  (item?.landed ||
-                  item?.exworks ||
-                  item?.retail)
-                    ? item?.currency || ''
-                    : ''
-                }
-              />
-            );
-          })}
-        </div>
-        <Paragraph
-          size="base"
-          className="text-shades-black !leading-[24px] max-w-[352px] !font-light tracking-[0.06em] mt-3"
-        >
-          {description}
-        </Paragraph>
-        <div className="flex flex-wrap items-center gap-2.5 mt-6">
-          <ColorVariant colors={colors || []} label={colour_name || ''} />
-          {productVariants?.map((variant: any) => (
-            <Link
-              key={variant?.id}
-              href={`/organization/${router.query.id}/discover/products/${variant?.id}`}
-            >
-              <ColorVariant
-                key={variant?.id}
-                colors={variant?.colour_families || []}
-              />
-            </Link>
-          ))}
-        </div>
+      <div className="w-full mt-8">
+        {description && 
+          <Paragraph
+            size="xl"
+            className="text-shades-black !leading-[32px] !font-light tracking-[0.06em] mt-3"
+          >
+            {description}
+          </Paragraph>
+
+        }
         <div>
           {tags?.map((tag: any) => (
             <div

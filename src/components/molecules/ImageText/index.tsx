@@ -37,20 +37,20 @@ const ImageText: FC<ImageTextProps> = ({
   deliveryLeadTime,
 }) => {
   const renderCheckbox = isSelectable && (
-    <div className="absolute top-3 left-3">
+    <div>
       <Checkbox checked={isSelected} onChange={onSelect} />
     </div>
   );
 
   return (
     <div className={clsx(variantClasses[variant], 'relative items-center')}>
+      {renderCheckbox}
       <div
         className={clsx(
           variantImageClasses[variant],
           'relative overflow-hidden'
         )}
       >
-        {renderCheckbox}
         {!hideOverlay && (
           <div className="absolute left-0 right-0 w-full h-full bg-[rgba(0,0,0,0.1)]" />
         )}

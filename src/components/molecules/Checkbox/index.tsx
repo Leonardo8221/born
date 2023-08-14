@@ -7,7 +7,7 @@ export interface CheckboxProps {
   label?: string;
   iconFirst?: boolean;
   checked?: boolean;
-  onChange?: (value: boolean) => void;
+  onChange?: (value: boolean, e: any) => void;
   variant?: 'accent'
 }
 
@@ -26,8 +26,8 @@ export const Checkbox: FC<CheckboxProps> = ({
     }
   }, [checked]);
 
-  const handleChecked = () => {
-    onChange && onChange(!isChecked);
+  const handleChecked = (e: any) => {
+    onChange && onChange(!isChecked, e);
     setIsChecked(!isChecked);
   };
 

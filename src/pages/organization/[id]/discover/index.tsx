@@ -43,8 +43,13 @@ const StoryPage = () => {
       if(doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= 220) {
         filters.style.position = 'fixed';
         filters.style.top = '128px';
+        filters.style.left = '0px';
+        filters.style.right = '0px';
       } else {
         filters.style.position = '';
+        filters.style.top = '';
+        filters.style.left = '';
+        filters.style.right = '';
       }
     }
   }

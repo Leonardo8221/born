@@ -42,24 +42,22 @@ interface FiltersProps {
   hideSelectBtn?: boolean;
   isAllOrdersSelected?: boolean;
   onDeselect?: () => void;
+  children?: JSX.Element;
 }
 
 const Filters: FC<FiltersProps> = ({
   gridType,
   onGridChange,
-  onSelect,
   filterTags,
   actions,
-  isSelectable,
   selectedItems,
   searchKeyword,
   onSearch,
   isOrder,
   className,
-  selectBtnText,
-  hideSelectBtn,
   isAllOrdersSelected,
   onDeselect,
+  children,
 }) => {
   const router = useRouter();
   const handleExportOrders = async () => {
@@ -93,13 +91,13 @@ const Filters: FC<FiltersProps> = ({
   };
 
   return (
-    <div className="min-h-[32px]">
+    <div className="w-full min-h-[32px] z-[2] bg-shades-white" id="filters">
       <div
         className={clsx(
-          'w-full max-w-[1120px] mx-auto print:hidden py-4 flex items-center justify-between bg-shades-white z-[2]',
+          'w-full max-w-[1120px] mx-auto print:hidden py-4 flex items-center justify-between bg-shades-white',
           className
         )}
-        id="filters"
+        
       >
         <div className="flex items-center gap-2">
           <SearchInput
@@ -133,37 +131,22 @@ const Filters: FC<FiltersProps> = ({
                 !isOrder ? 'pr-4 mr-4 border-r gap-2' : 'gap-4'
               )}
             >
-              {isOrder && !!selectedItems?.length && (
+              {!!selectedItems?.length && (
                 <Button
                   variant="outlined"
                   size="sm"
                   className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3 !bg-neutral-300 hover:!bg-neutral-300 hover:!text-shades-black !rounded-[100px]"
-                  onClick={onDeselect}
+                  onClick={() => onDeselect?.()}
                 >
                   {isAllOrdersSelected ? 'All selected' : 'Selected'}{' '}
-                  {isSelectable && selectedItems && selectedItems?.length > 0 && (
+                  {selectedItems && selectedItems?.length > 0 && (
                     <span className="flex items-center justify-center ml-[-6px] mt-[-1px] bg-accent-a-200 h-3 w-3 text-shades-white text-[8px] leading-[9.99px] tracking-[0.06em] rounded-full">
                       {selectedItems.length}
                     </span>
                   )}
                 </Button>
               )}
-              {!hideSelectBtn && (
-                <Button
-                  variant="outlined"
-                  size="sm"
-                  onClick={onSelect && onSelect}
-                  className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
-                >
-                  {selectBtnText || 'Select'}{' '}
-                  {!isOrder && isSelectable && selectedItems && selectedItems?.length > 0 && (
-                    <span className="flex items-center justify-center ml-[-6px] mt-[-1px] bg-accent-a-200 h-3 w-3 text-shades-white text-[8px] leading-[9.99px] tracking-[0.06em] rounded-full">
-                      {selectedItems.length}
-                    </span>
-                  )}
-                </Button>
-              )}
-              {isSelectable &&
+              {!!selectedItems?.length &&
                 actions?.map((item) => (
                   <Button
                     key={item.name}
@@ -176,7 +159,6 @@ const Filters: FC<FiltersProps> = ({
                     {item.name}
                   </Button>
                 ))}
-
               {isOrder && (
                 <div>
                   <Button
@@ -190,6 +172,7 @@ const Filters: FC<FiltersProps> = ({
                 </div>
               )}
             </div>
+            {children}
             {!isOrder && (
               <div>
                 <IconButtonGroup
