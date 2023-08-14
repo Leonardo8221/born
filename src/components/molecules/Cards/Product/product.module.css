@@ -6,7 +6,6 @@
 
 .lgProductCardId {
   @apply text-[12px] leading-[16px];
-  margin-bottom: 8px;
 }
 
 .lgProductCardTitle {
@@ -34,7 +33,6 @@
 
 .smProductCardId {
   @apply text-[10px] leading-[16px];
-  margin-bottom: 4px;
 }
 
 .smProductCardTitle {
@@ -96,9 +94,6 @@
 }
 
 .productCardCheckbox {
-  position: absolute;
-  top: 12px;
-  left: 12px;
   height: 20px;
   width: 20px;
   cursor: pointer;

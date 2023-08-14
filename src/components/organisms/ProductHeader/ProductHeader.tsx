@@ -16,7 +16,6 @@ import Toast from "@/components/page-components/Toast";
 import { ProductWithCollectionsGraphqlDto } from "@/generated/types";
 
 export interface ProductHeaderProps {
-  srcLogo?: string;
   title?: string;
   srcBlurDataURL?: string;
   onEdit?: () => void;
@@ -28,12 +27,7 @@ export interface ProductHeaderProps {
 }
 
 const ProductHeader: FC<ProductHeaderProps> = ({
-  title,
-  srcLogo,
-  srcBlurDataURL,
-  // onEdit,
   onDraftOrder,
-  hrefBack = "/",
   containerClassName,
   currentProduct,
   productRefectch,
@@ -101,40 +95,40 @@ const ProductHeader: FC<ProductHeaderProps> = ({
     }
   };
 
+  const back = () => {
+    const { pathname, query } = router
+    delete router.query.product_id;
+    router.replace({ pathname, query }, undefined, { shallow: true })
+  }
+
   return (
     <>
-      <div className={clsx("mx-auto", containerClassName)}>
-        <div className="flex items-center">
-          <div className="cursor-pointer" onClick={() => router.back()}>
-            <Icon className="mt-[12px] mr-[26px]" name="icon-arrow-left" />
+      <div className={clsx("sticky top-0 z-[10] bg-shades-white mx-auto p-6", containerClassName)}>
+        <div className="flex items-center justify-between">
+          <div className="cursor-pointer" onClick={() => back()}>
+            <Icon className="mt-[12px] mr-[26px]" name="icon-arrow-left" height={32} width={32} />
           </div>
-          <div className="mr-auto">
-            <ImageText
-              title={title || ""}
-              titleClassName="text-[32px] max-w-[700px] !leading-[32px] pr-[15px]"
-              imgSrc={srcLogo}
-              hideOverlay
-              altText=" "
-            />
+          <div className="flex items-center">
+            <Button
+              onClick={() => router.push(`/organization/${organizationId}/discover/products/${productId}/edit`)}
+              className={clsx(styles.toolButton, '!px-3 !text-[12px]')}
+              variant="outlined"
+              size="sm"
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => setIsAddCollections(true)}
+              className={clsx(styles.toolButton, styles.addToCollection, '!px-3 !text-[12px]')}
+              variant="outlined"
+              size="sm"
+            >
+              Add to collection
+            </Button>
+            <Button onClick={onDraftOrder} className={clsx(styles.toolButton, '!px-3 !text-[12px]')} size="sm">
+              Add to draft order
+            </Button>
           </div>
-          <Button
-            onClick={() => router.push(`/organization/${organizationId}/discover/products/${productId}/edit`)}
-            className={styles.toolButton}
-            variant="outlined"
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={() => setIsAddCollections(true)}
-            className={clsx(styles.toolButton, styles.addToCollection)}
-            variant="outlined"
-          >
-            Add to collection
-          </Button>
-          <Button onClick={onDraftOrder} className={styles.toolButton}>
-            <Icon name="icon-add" />
-            Add to draft order
-          </Button>
         </div>
       </div>
       <Modal

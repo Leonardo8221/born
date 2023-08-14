@@ -23,6 +23,7 @@ import { COLOUR_FAMILIES_QUERY } from '@/queries/colourFamiles';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { SEASONS_BY_ORGANIZATION_ID } from '@/queries/filters';
 import useVariantSelect from '../common/useVariantSelect';
+import ProductDetailsPage from '../products/ProductDetails';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -48,10 +49,16 @@ const Products: FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(null);
   const [isProductDelete, setIsProductDelete] = useState(false);
+  const [productId, setProductId] = useState<null | number>(null);
 
   const router = useRouter();
   const id = router?.query?.id || '';
   const organizationId: number = +id;
+
+  useEffect(() => {
+    const product_id: any = router?.query?.product_id || null;
+    setProductId(product_id);
+  }, [router]);
 
   const { data, error, loading, refetch }: any = useQuery(PRODUCTS_QUERY, {
     variables: {
@@ -312,6 +319,7 @@ const Products: FC = () => {
             filterTags={filterTags}
             actions={actions}
             selectedItems={selectedRows}
+            onDeselect={resetSelectedRows}
           />
           {!products.length && loading ? (
             <div className="mt-6 min-h-[400px]">
@@ -404,6 +412,7 @@ const Products: FC = () => {
           onCancel={() => setSelectedOrder(null)}
         />
       )}
+      {productId && <ProductDetailsPage />}
     </div>
   );
 };

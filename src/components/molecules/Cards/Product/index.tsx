@@ -39,31 +39,11 @@ export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   isCollection?: boolean;
 }
 
-const ProductCardWrapper: FC<{
-  id: unknown;
-  children: JSX.Element;
-  isSelectable?: boolean;
-}> = ({ id, isSelectable, children }) => {
-  const router = useRouter();
-  if (!isSelectable && (typeof id === 'number' || typeof id === 'string')) {
-    return (
-      <Link
-        href={`/organization/${router.query.id || '1'}/discover/products/${id}`}
-        className="print:h-full"
-      >
-        {children}
-      </Link>
-    );
-  }
-  return children;
-};
-
 export const ProductCard: FC<ProductCardProps> = ({
   size = 'lg',
   style_number,
   style_name,
   imageUrl,
-  isSelectable,
   isSelected,
   onSelect = () => {},
   associated_prices,
@@ -80,6 +60,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   selectedVariants,
   isCollection,
 }) => {
+  const router = useRouter();
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
 
   const getSelectedVariantImageUrl = () => {
@@ -94,32 +75,42 @@ export const ProductCard: FC<ProductCardProps> = ({
     }
   };
 
-  const renderCheckbox = isSelectable && (
+  const renderCheckbox = (
     <div className={clsx(styles.productCardCheckbox, 'print:hidden')}>
       <Checkbox
         checked={isSelected}
-        onChange={() => {
+        onChange={(_, e: any) => {
           onSelect({ id, selectedVariant: selectedVariant || id });
         }}
       />
     </div>
   );
 
+  const handleCardPreview = (e: any) => {
+    router.query.product_id = selectedVariant || id;
+    router.push(router, undefined, { shallow: true });
+  }
+
   return (
-    <ProductCardWrapper isSelectable={isSelectable} id={selectedVariant || id}>
+    <div className='cursor-pointer'>
       <div
         className={clsx(
           clsProductCard(size),
           'print:break-inside-avoid-page print:h-full'
         )}
+        
       >
         <div
-          className={clsx(clsProductCardId(size), 'break-anywhere')}
+          className={clsx(
+            clsProductCardId(size),
+            'break-anywhere flex gap-2 items-center'
+          )}
           lang="es"
         >
-          {style_number}
+          <div>{renderCheckbox}</div>
+          <div className='flex-1' onClick={handleCardPreview}>{style_number}</div>
         </div>
-        <div>
+        <div onClick={handleCardPreview} className={clsx(size === 'lg' ? 'pt-3' : 'pt-2')}>
           <div
             className={clsx(
               styles.productCardImageWrapper,
@@ -141,7 +132,6 @@ export const ProductCard: FC<ProductCardProps> = ({
                 )}
               />
             )}
-            {renderCheckbox}
           </div>
           <h3
             className={clsx(clsProductCardTitle(size), 'break-anywhere')}
@@ -290,7 +280,7 @@ export const ProductCard: FC<ProductCardProps> = ({
           />
         </div>
       </div>
-    </ProductCardWrapper>
+    </div>
   );
 };
 
