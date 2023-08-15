@@ -114,10 +114,12 @@ export const ProductCard: FC<ProductCardProps> = ({
           <div
             className={clsx(
               styles.productCardImageWrapper,
-              size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]'
+              'rounded-lg',
+              size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]',
+              isSelected ? 'border border-neutral-400 shadow-large' : 'border !border-[transparent]',
             )}
           >
-            <div className="absolute top-0 left-0 h-full w-full rounded-lg bg-[rgba(0,0,0,0.1)]" />
+            <div className="absolute top-0 left-0 h-full w-full bg-[rgba(0,0,0,0.1)]" />
             {getSelectedVariantImageUrl() && (
               <img
                 src={
@@ -127,8 +129,8 @@ export const ProductCard: FC<ProductCardProps> = ({
                 }
                 alt={style_name + 'image'}
                 className={clsx(
-                  'rounded-lg object-cover',
-                  size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]'
+                  'object-cover',
+                  size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]',
                 )}
               />
             )}

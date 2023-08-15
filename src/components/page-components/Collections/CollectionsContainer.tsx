@@ -40,6 +40,13 @@ interface CollectionsContainerProps {
   setIsCollectionSection: (value: boolean) => void;
   gridType: GridType;
   setGrid: (value: GridType) => void;
+  debouncedValue: string | number;
+  selectedColours: string[];
+  setSelectedColours: (value: string[]) => void;
+  selectedSeasons: string[];
+  setSelectedSeasons: (value: string[]) => void;
+  searchKeyword: string;
+  setSearchKeyword: (value: string) => void;
 }
 
 const CollectionsContainer: FC<CollectionsContainerProps> = ({
@@ -47,6 +54,13 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   setIsCollectionSection,
   gridType,
   setGrid,
+  debouncedValue,
+  selectedColours,
+  selectedSeasons,
+  setSelectedColours,
+  setSelectedSeasons,
+  searchKeyword,
+  setSearchKeyword
 }) => {
   const router = useRouter();
   const collectionId = router?.query?.collectionId
@@ -63,15 +77,11 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const debouncedValue = useDebounce(searchKeyword, 600);
   const [isEditModal, setIsEditModal] = useState(false);
   const [isAddToDraft, setIsAddToDraft] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
-  const [selectedColours, setSelectedColours] = useState<string[]>([]);
-  const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [pageNo, setPageNo] = useState(0);
   const [rows] = useState(24);
   const [products, setProducts] = useState<any[]>([]);
@@ -462,6 +472,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
           selectedItems={selectedRows}
           searchKeyword={searchKeyword}
           onSearch={handleSearch}
+          onDeselect={resetSelectedRows}
         >
           {gridType !== 'list' ? (
             <div className="flex items-center border-neutral-400 pr-4 mr-4 border-r gap-2">

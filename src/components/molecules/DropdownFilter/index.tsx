@@ -45,7 +45,7 @@ const DropdownFilter: FC<DropdownFilterProps> = ({
   }, []);
 
   return (
-    <div className="relative z-[1]" ref={dropdownRef}>
+    <div className="relative z-[2]" ref={dropdownRef}>
       <Badge
         className={clsx(
           'cursor-pointer !h-[32px] border !border-neutral-400 !text-[12px] !px-4',

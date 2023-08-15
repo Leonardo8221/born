@@ -94,7 +94,7 @@ const Filters: FC<FiltersProps> = ({
     <div className="w-full min-h-[32px] z-[2] bg-shades-white" id="filters">
       <div
         className={clsx(
-          'w-full max-w-[1120px] mx-auto print:hidden py-4 flex items-center justify-between bg-shades-white',
+          'w-full max-w-[1120px] mx-auto print:hidden pt-4 pb-6 flex items-center justify-between bg-shades-white',
           className
         )}
         
