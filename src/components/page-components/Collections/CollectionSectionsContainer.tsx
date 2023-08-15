@@ -19,7 +19,6 @@ import { apiConfig } from '@/utils/apiConfig';
 import {
   AttachmentResourceApi,
   CollectionResourceApi,
-  ProductResourceApi,
 } from 'client/command';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
@@ -48,6 +47,13 @@ interface CollectionSectionsContainerProps {
   setIsCollectionSection: (value: boolean) => void;
   gridType: GridType;
   setGrid: (value: GridType) => void;
+  debouncedValue: string | number;
+  selectedColours: string[];
+  setSelectedColours: (value: string[]) => void;
+  selectedSeasons: string[];
+  setSelectedSeasons: (value: string[]) => void;
+  searchKeyword: string;
+  setSearchKeyword: (value: string) => void;
 }
 
 const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
@@ -55,6 +61,13 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   setIsCollectionSection,
   gridType,
   setGrid,
+  debouncedValue,
+  selectedColours,
+  selectedSeasons,
+  setSelectedColours,
+  setSelectedSeasons,
+  searchKeyword,
+  setSearchKeyword,
 }) => {
   const router = useRouter();
   const collectionId = router?.query?.collectionId
@@ -72,15 +85,11 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const debouncedValue = useDebounce(searchKeyword, 600);
   const [isEditModal, setIsEditModal] = useState(false);
   const [isAddToDraft, setIsAddToDraft] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
-  const [selectedColours, setSelectedColours] = useState<string[]>([]);
-  const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
   const [pageNo, setPageNo] = useState(0);
   const [rows] = useState(1000);
   const [products, setProducts] = useState<any[]>([]);
@@ -256,58 +265,6 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
     }, 3000);
   };
 
-  const handleRemoveProducts = async (id?: number) => {
-    setIsLoading(true);
-    setIsProductDelete(true);
-    try {
-      const config: any = await apiConfig();
-      const api = new CollectionResourceApi(config);
-      const productIds = id ? [id] : selectedVariants;
-      await api.apiCollectionDisassociateProductsPut(
-        Number(collectionId),
-        productIds
-      );
-      setProducts(products.filter((item) => !productIds.includes(item.id)));
-      handleSuccessMesssage(
-        `Removed ${
-          selectedVariants.length || 1
-        } products from collections sucessfully!!`
-      );
-      setIsLoading(false);
-      setIsProductDelete(false);
-      resetSelectedRows();
-    } catch (error: any) {
-      setIsLoading(false);
-      setIsProductDelete(false);
-      handleErrorMesssage(
-        error?.message || 'Failed to removed products, please try again!'
-      );
-      console.error(error);
-    }
-  };
-
-  const handleDeleteProducts = async (id?: number) => {
-    setIsLoading(true);
-    setIsProductDelete(true);
-    try {
-      const ids = id ? [id] : selectedVariants;
-      const config: any = await apiConfig();
-      const api = new ProductResourceApi(config);
-      await api.apiProductDeleteProductsDelete(ids);
-      setProducts(products.filter((item) => !ids.includes(item.id)));
-      setIsLoading(false);
-      handleSuccessMesssage(
-        `Deleted ${selectedVariants.length || 1} products successfully!`
-      );
-      resetSelectedRows();
-    } catch (error: any) {
-      setIsLoading(false);
-      handleErrorMesssage(
-        error?.message || 'Failed to delete produts, please try again!'
-      );
-    }
-  };
-
   const handleUploadFile = async ({
     fileType,
     file,
@@ -426,6 +383,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
           selectedItems={selectedRows}
           searchKeyword={searchKeyword}
           onSearch={handleSearch}
+          onDeselect={resetSelectedRows}
           >
             <div className='flex items-center border-neutral-400 pr-4 mr-4 border-r gap-2'>
               <ToggleCollectionSection showSection={isCollectionSection} onChange={setIsCollectionSection} />
@@ -438,7 +396,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
         ) : products?.length ? products?.map(section => (
           <>
             <div className="border rounded-2xl p-[57px] pb-0 mb-8 border-neutral-400">
-              <div className="text-center mb-4">
+              <div className="text-center mb-8">
                 <Heading size="sm" className="text-shades-black">{section?.name}</Heading>
                 <Paragraph>{section?.description}</Paragraph>
               </div>
