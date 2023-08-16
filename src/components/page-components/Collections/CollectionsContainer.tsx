@@ -141,7 +141,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
     variables: {
       collectionId: collectionId,
-      search: debouncedValue,
+      search: debouncedValue.toString().toLowerCase(),
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
       rows,
