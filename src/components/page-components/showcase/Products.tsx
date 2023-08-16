@@ -63,7 +63,7 @@ const Products: FC = () => {
   const { data, error, loading, refetch }: any = useQuery(PRODUCTS_QUERY, {
     variables: {
       organizationId,
-      search: debouncedValue,
+      search: debouncedValue.toString().toLowerCase(),
       collectionNames: selectedCollections,
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
