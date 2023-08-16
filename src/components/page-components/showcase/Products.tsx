@@ -76,6 +76,8 @@ const Products: FC = () => {
   useEffect(() => {
     const newProducts: any[] =
       data?.productsBySearchAndOrganizationId?.content || [];
+    const pages = data?.productsBySearchAndOrganizationId?.total_pages;
+      setTotalPages(pages ? pages : totalPages);
     if (!isProductDelete) {
       if (
         !!searchKeyword ||
@@ -91,8 +93,7 @@ const Products: FC = () => {
         const newProducts: any[] =
           data?.productsBySearchAndOrganizationId?.content || [];
         setProducts(pageNo !== 0 ? [...products, ...newProducts] : newProducts);
-        !totalPages &&
-          setTotalPages(data?.productsBySearchAndOrganizationId?.total_pages);
+        
       }
     }
   }, [data]);
@@ -302,6 +303,8 @@ const Products: FC = () => {
     return <ErrorMessage errorMessage={error?.message} refetch={refetch} />;
   }
 
+  console.log(totalPages, pageNo)
+
   return (
     <div>
       <div className="relative max-w-[1120px] mx-auto">
@@ -334,7 +337,7 @@ const Products: FC = () => {
               }}
               hasMore={!!totalPages && pageNo < totalPages}
               loader={
-                pageNo + 1 !== totalPages && (
+                (pageNo + 1) < (totalPages || 0) && (
                   <Loading message="Loading more products..." />
                 )
               }

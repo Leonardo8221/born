@@ -167,6 +167,8 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   useEffect(() => {
     const newProducts: any[] =
       productsCollection?.productsBySearchAndCollectionId?.content || [];
+    const pages = productsCollection?.productsBySearchAndCollectionId?.total_pages;
+    setTotalPages(pages ? pages : totalPages);
     if (!isProductDelete) {
       if (!!searchKeyword || !!selectedColours.length) {
         setProducts(
@@ -180,10 +182,6 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
             ? [...products, ...newProducts]
             : newProducts
         );
-        !totalPages &&
-          setTotalPages(
-            productsCollection?.productsBySearchAndCollectionId?.total_pages
-          );
       }
     }
   }, [productsCollection]);
