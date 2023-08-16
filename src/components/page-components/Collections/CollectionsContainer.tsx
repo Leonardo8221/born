@@ -482,7 +482,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
           ) : undefined}
         </Filters>
         {!products.length && productsCollectionLoading ? (
-          <div className="my-10 min-h-[400px]">
+          <div className="mb-20 min-h-[400px]">
             <Loading message="Loading collecton products" />
           </div>
         ) : (
@@ -495,9 +495,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
               }}
               hasMore={!!totalPages && pageNo < totalPages}
               loader={
-                pageNo > 1 &&
-                totalPages &&
-                pageNo < totalPages && (
+                (pageNo + 1) < (totalPages || 0) && (
                   <Loading message="Loading more products..." />
                 )
               }
