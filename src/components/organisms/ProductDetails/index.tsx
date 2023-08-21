@@ -20,7 +20,7 @@ export interface ProductDetailsProps extends ProductWithCollectionsGraphqlDto {
   description: string;
   colors: string[];
   tags: {
-    title: string;
+    title?: string;
     list?: string[];
   }[];
   specifications: { label: string; value: string }[];
@@ -37,7 +37,6 @@ const ProductDetails: FC<ProductDetailsProps> = ({
   colour_name,
   description,
 }) => {
-
   return (
     <div>
       <div className="flex-1 h-fit">
@@ -72,15 +71,14 @@ const ProductDetails: FC<ProductDetailsProps> = ({
         </div>
       </div>
       <div className="w-full mt-8">
-        {description && 
+        {description && (
           <Paragraph
             size="xl"
             className="text-shades-black !leading-[32px] !font-light tracking-[0.06em] mt-3"
           >
             {description}
           </Paragraph>
-
-        }
+        )}
         <div>
           {tags?.map((tag: any) => (
             <div
@@ -90,14 +88,16 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                 tag?.list?.length > 1 ? '' : 'items-center'
               )}
             >
-              <h4
-                className={clsx(
-                  'w-[100px] text-shades-black font-light tracking-[0.06em]',
-                  fonts.text.sm
-                )}
-              >
-                {tag.title}
-              </h4>
+              {tag?.title && (
+                <h4
+                  className={clsx(
+                    'w-[100px] text-shades-black font-light tracking-[0.06em]',
+                    fonts.text.md
+                  )}
+                >
+                  {tag.title}
+                </h4>
+              )}
               <div className="flex flex-col gap-x-3 gap-y-2">
                 {tag?.list?.map((item: string, index: number) => (
                   <div key={`${item} ${index}`}>
@@ -122,7 +122,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                 <h4
                   className={clsx(
                     'w-full max-w-[116px] text-neutral-600 font-light',
-                    fonts.text.sm
+                    fonts.text.md
                   )}
                 >
                   {item.label}
@@ -130,7 +130,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                 <p
                   className={clsx(
                     'max-w-[205px] text-shades-black font-light tracking-[0.08em]',
-                    fonts.text.sm
+                    fonts.text.md
                   )}
                 >
                   {item.value}

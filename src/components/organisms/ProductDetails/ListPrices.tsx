@@ -22,7 +22,7 @@ const List: FC<ListProps> = ({ label, value, isSmall }) => {
       <p
         className={clsx(
           "text-neutral-600 tracking-[0.06em] font-light",
-          fonts.text[isSmall ? "xs" : "sm"],
+          fonts.text[isSmall ? "xs" : "md"],
           !isSmall && "mt-1"
         )}
       >
