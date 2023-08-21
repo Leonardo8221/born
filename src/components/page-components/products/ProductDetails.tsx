@@ -178,7 +178,6 @@ const ProductDetailsPage = () => {
                         ) || [],
                     },
                     {
-                      title: 'Keywords',
                       list: currentProduct?.keywords || [],
                     },
                   ]}
