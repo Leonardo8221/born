@@ -58,6 +58,7 @@ const Filters: FC<FiltersProps> = ({
   isAllOrdersSelected,
   onDeselect,
   children,
+  onSelect,
 }) => {
   const router = useRouter();
   const handleExportOrders = async () => {
@@ -160,7 +161,15 @@ const Filters: FC<FiltersProps> = ({
                   </Button>
                 ))}
               {isOrder && (
-                <div>
+                <div className='flex items-center gap-2'>
+                  {!selectedItems?.length && <Button
+                    variant="outlined"
+                    size="sm"
+                    className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3"
+                    onClick={onSelect}
+                  >
+                    Select All
+                  </Button>}
                   <Button
                     variant="outlined"
                     size="sm"
