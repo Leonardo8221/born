@@ -17,7 +17,6 @@ import {
   clsProductCardTitle,
   currencies,
 } from './utils';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ColorVariant, { VariantColors } from '../../ColorVariant';
 import moment from 'moment';
