@@ -7,6 +7,7 @@ interface ColorVariantProps {
   label?: string;
   onClick?: (event: any) => void;
   size?: 'lg' | 'sm';
+  url?: string;
 }
 
 const ColorVariant: FC<ColorVariantProps> = ({
@@ -14,6 +15,7 @@ const ColorVariant: FC<ColorVariantProps> = ({
   label,
   onClick,
   size,
+  url,
 }) => {
   return (
     <div
@@ -32,6 +34,7 @@ const ColorVariant: FC<ColorVariantProps> = ({
             : '!h-[24px] !w-[24px]',
           label ? 'ml-1' : '',
         )}
+        url={url}
       />
       {label && (
         <Paragraph
@@ -55,13 +58,16 @@ export const VariantColors = ({
   type,
   active,
   onClick,
+  url,
 }: {
   colors?: string[];
   className?: string;
   type?: 'card';
   active?: boolean;
   onClick?: (e: any) => void;
+  url?: string;
 }) => {
+  console.log(url);
   return (
     <div
       className={clsx(
@@ -83,7 +89,9 @@ export const VariantColors = ({
       }}
     >
       <div className="flex h-full w-full rounded-full rounded-full overflow-hidden bg-shades-white">
-        {colors?.map((col) => (
+        {url ? (
+          <img src={url} className="w-full h-full bg-cover" />
+        ) : colors?.map((col) => (
           <div
             key={col}
             className={clsx('flex-1 min-h-full bg-neutral-200')}
