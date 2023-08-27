@@ -51,3 +51,15 @@ body {
   -ms-hyphens: auto;
   hyphens: auto;
 }
+
+.image__preview__slider .slick-next {
+  right: -5px;
+}
+
+.image__preview__slider .slick-next::before {
+  display: none;
+}
+
+.image__preview__slider .slick-prev::before {
+  display: none;
+}

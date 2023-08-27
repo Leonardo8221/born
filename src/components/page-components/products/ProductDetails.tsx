@@ -19,6 +19,7 @@ import { ORGANIZATION_QUERY } from '@/queries/organizations';
 import ProductListItem from './ProductListItem';
 import ProductHeader from '@/components/organisms/ProductHeader/ProductHeader';
 import ProductInfo from './ProductInfo';
+import ProductImagePreview from './ProductImagePreview';
 
 const ProductDetailsPage = () => {
   const router = useRouter();
@@ -28,6 +29,7 @@ const ProductDetailsPage = () => {
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
+  const [isAttachmentsPreivew, setIsAttachmentsPreivew] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -79,7 +81,7 @@ const ProductDetailsPage = () => {
     },
     {
       label: 'Sizing',
-      value: currentProduct?.size_options.join(', '),
+      value: currentProduct?.size_options?.join(', '),
     },
     {
       label: 'Composition',
@@ -165,6 +167,7 @@ const ProductDetailsPage = () => {
                   colors={currentProduct?.colour_families}
                   colour_name={currentProduct?.colour_name}
                   productVariants={currentProduct?.productVariants || []}
+                  onAttachmentClick={() => setIsAttachmentsPreivew(true)}
                   tags={[
                     {
                       title: 'Season',
@@ -199,6 +202,18 @@ const ProductDetailsPage = () => {
               ))
             )}
           </div>
+          {isAttachmentsPreivew && (
+          <ProductImagePreview
+            attachments={currentProduct?.attachments || []}
+            productRefectch={productRefectch}
+            currentProduct={currentProduct}
+            title={currentProduct?.style_name}
+            onDraftOrder={() => setIsModalVisible(true)}
+            onClose={() => setIsAttachmentsPreivew(false)}
+            styleId={currentProduct?.product_id}
+            styleName={currentProduct?.style_name}
+          />
+        )}
           <OrderList
             setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
             isModalVisible={isModalVisible}
@@ -215,6 +230,7 @@ const ProductDetailsPage = () => {
             />
           )}
         </div>
+        
       </div>
     </div>
   );

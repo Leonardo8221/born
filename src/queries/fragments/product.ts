@@ -61,5 +61,11 @@ export const PRODUCT_FRAGMENT = gql`
         large_image_url
       }
     }
+    swatchImage {
+      id
+      large_image_url
+      medium_image_url
+      small_image_url
+    }
   }
 `;
