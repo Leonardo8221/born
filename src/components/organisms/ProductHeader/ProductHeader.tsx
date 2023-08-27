@@ -24,6 +24,7 @@ export interface ProductHeaderProps {
   hrefBack?: string;
   currentProduct: ProductWithCollectionsGraphqlDto | null;
   productRefectch: () => void;
+  children?: any;
 }
 
 const ProductHeader: FC<ProductHeaderProps> = ({
@@ -31,6 +32,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
   containerClassName,
   currentProduct,
   productRefectch,
+  children
 }) => {
   const [isAddCollections, setIsAddCollections] = useState(false);
   const [isCreateModal, setIsCreateModal] = useState(false);
@@ -105,9 +107,9 @@ const ProductHeader: FC<ProductHeaderProps> = ({
     <>
       <div className={clsx("sticky top-0 z-[10] bg-shades-white mx-auto p-6", containerClassName)}>
         <div className="flex items-center justify-between">
-          <div className="cursor-pointer" onClick={() => back()}>
+          {!children ? <div className="cursor-pointer" onClick={() => back()}>
             <Icon className="mt-[12px] mr-[26px]" name="icon-arrow-left" height={32} width={32} />
-          </div>
+          </div> : <div />}
           <div className="flex items-center">
             <Button
               onClick={() => router.push(`/organization/${organizationId}/discover/products/${productId}/edit`)}
@@ -128,6 +130,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
             <Button onClick={onDraftOrder} className={clsx(styles.toolButton, '!px-3 !text-[12px]')} size="sm">
               Add to draft order
             </Button>
+            {children}
           </div>
         </div>
       </div>

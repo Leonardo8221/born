@@ -2,18 +2,13 @@ import React, { FC } from 'react';
 import clsx from 'clsx';
 import Image, { StaticImageData } from 'next/image';
 import { fonts } from '../../../config/fonts';
-// import { Button } from '../../molecules/Button';
 import { Icon } from '../../molecules/Icon';
 import { Badge } from '../../molecules/Badge';
-import ListPrices from './ListPrices';
 import {
   ProductVariantGraphqlDto,
   ProductWithCollectionsGraphqlDto,
 } from '@/generated/types';
 import { Paragraph } from '@/components/molecules/Paragraph';
-import ColorVariant from '@/components/molecules/ColorVariant';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 export interface ProductDetailsProps extends ProductWithCollectionsGraphqlDto {
   productImages: StaticImageData[] | string[];
@@ -25,17 +20,15 @@ export interface ProductDetailsProps extends ProductWithCollectionsGraphqlDto {
   }[];
   specifications: { label: string; value: string }[];
   variants?: ProductVariantGraphqlDto[];
+  onAttachmentClick?: () => void;
 }
 
 const ProductDetails: FC<ProductDetailsProps> = ({
   attachments,
-  associated_prices,
-  colors,
   tags,
   specifications,
-  productVariants,
-  colour_name,
   description,
+  onAttachmentClick,
 }) => {
   return (
     <div>
@@ -48,6 +41,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({
                   <div
                     key={`${index} product image`}
                     className="relative h-full max-h-[343px] w-[343px]"
+                    onClick={onAttachmentClick}
                   >
                     <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.1)] rounded" />
                     <img

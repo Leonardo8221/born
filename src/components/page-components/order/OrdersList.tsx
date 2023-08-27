@@ -27,7 +27,7 @@ export const OrderList: FC<OrderListProps> = ({
         setModalIsVisible(false);
       }}
       title={'Choose order'}
-      className="!max-h-[600px] !max-w-[736px] overflow-x-hidden overflow-y-auto"
+      className="!max-h-[600px] !max-w-[736px] overflow-x-hidden overflow-y-auto !z-[999]"
     >
       <AddOrders
         handleCloseModal={() => setModalIsVisible(!isModalVisible)}
