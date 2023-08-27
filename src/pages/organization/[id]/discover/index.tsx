@@ -94,7 +94,12 @@ const StoryPage = () => {
 
   const handleTabChange = (id: string | number) => {
     if (!router?.query?.id) return;
-    router.push(`/organization/${router?.query?.id}/discover?tab=${id}`);
+    const productId = router?.query?.product_id;
+    let url = `/organization/${router?.query?.id}/discover?tab=${id}`;
+    if(productId) {
+      url += `&product_id=${productId}`;
+    }
+    router.push(url);
     setActiveTab(id);
   };
 
