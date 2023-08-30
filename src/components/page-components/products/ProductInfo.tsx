@@ -83,7 +83,7 @@ const ProductInfo: FC<ProductInfoProps> = ({
               <ColorVariant
                 key={variant?.id}
                 colors={variant?.colour_families || []}
-                url={variant?.swatchImage?.swatch_image_url}
+                url={variant?.swatchImage?.small_image_url}
                 label={variant?.id === id ? variant?.colour_name : ''}
               />
             </div>
