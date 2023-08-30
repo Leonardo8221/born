@@ -60,6 +60,12 @@ export const PRODUCT_FRAGMENT = gql`
         medium_image_url
         large_image_url
       }
+      swatchImage {
+        id
+        large_image_url
+        medium_image_url
+        small_image_url
+      }
     }
     swatchImage {
       id

@@ -67,7 +67,6 @@ export const VariantColors = ({
   onClick?: (e: any) => void;
   url?: string;
 }) => {
-  console.log(url);
   return (
     <div
       className={clsx(
@@ -85,6 +84,7 @@ export const VariantColors = ({
             : '',
       }}
       onClick={(e) => {
+        e.preventDefault();
         onClick?.(e);
       }}
     >

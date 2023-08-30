@@ -303,8 +303,6 @@ const Products: FC = () => {
     return <ErrorMessage errorMessage={error?.message} refetch={refetch} />;
   }
 
-  console.log(totalPages, pageNo)
-
   return (
     <div>
       <div className="relative max-w-[1120px] mx-auto">
