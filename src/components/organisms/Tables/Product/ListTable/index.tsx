@@ -52,7 +52,7 @@ const ListTable: FC<ListTableProps> = ({
     const items = prices?.map((item: any) => {
       const keys = Object.keys(item || {});
       const priceKeys = ['exworks', 'landed', 'retail'];
-      console.log(item.currency);
+
       return {
         currency: item?.currency,
         items: keys?.map(

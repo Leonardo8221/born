@@ -21,7 +21,6 @@ const ColoursForm: FC<ColoursFormProps> = ({ product }) => {
   const [errorMessage, setErrorMesage] = useState('');
 
   useEffect(() => {
-    console.log(product)
     setProductDetails({
       colour_name: product?.colour_name || '',
       colour_code: product?.colour_code || '',

@@ -42,7 +42,6 @@ const OrderingForm: FC<OrderingFormProps> = ({ product }) => {
   const handleSave = async () => {
     setIsSubmitted(true);
     try {
-      console.log(productDetails)
       const config = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductUpdateProductPut(product?.id, {

@@ -36,6 +36,8 @@ export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   }) => void;
   selectedVariants?: number[];
   isCollection?: boolean;
+  swatchImage?: any;
+  productVariants?: any;
 }
 
 export const ProductCard: FC<ProductCardProps> = ({
@@ -58,6 +60,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   delivery_window_end_date,
   selectedVariants,
   isCollection,
+  swatchImage,
 }) => {
   const router = useRouter();
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
@@ -65,7 +68,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   const getSelectedVariantImageUrl = () => {
     if (selectedVariant !== null) {
       const images: any = productVariants?.filter(
-        (item) =>
+        (item: any) =>
           item?.id === selectedVariant || selectedVariants?.includes(item?.id)
       )?.[0]?.attachments?.[0];
       return images?.[size === 'lg' ? 'large_image_url' : 'medium_image_url'];
@@ -146,40 +149,20 @@ export const ProductCard: FC<ProductCardProps> = ({
                 colors={!!colour_families ? (colour_families as string[]) : []}
                 label={colour_name || ''}
                 size={size}
+                url={swatchImage?.small_image_url}
               />
-            ) : (
-              <VariantColors
-                colors={!!colour_families ? (colour_families as string[]) : []}
-                type="card"
-                active={
-                  selectedVariant ||
-                  productVariants?.some((r) =>
-                    selectedVariants?.includes?.(r?.id)
-                  )
-                    ? false
-                    : true || selectedVariants?.includes(id)
-                }
-                onClick={(e) => {
-                  e.preventDefault();
-                  onSelect({
-                    id,
-                    selectedVariant: id,
-                    isVariant: true,
-                  });
-                  setSelectedVariant(null);
-                }}
-              />
-            )}
+            ) : null}
             {!isCollection &&
-              productVariants?.map((variant) => (
+              productVariants?.map((variant: any, index: number) => (
                 <VariantColors
                   key={variant?.id}
                   colors={(variant?.colour_families as string[]) || []}
                   type="card"
                   active={
-                    selectedVariant === variant?.id ||
-                    selectedVariants?.includes(variant?.id)
+                    (selectedVariant === variant?.id ||
+                    selectedVariants?.includes(variant?.id)) || !selectedVariants?.length && !selectedVariant && index === 0
                   }
+                  url={variant?.swatchImage?.small_image_url}
                   onClick={(e) => {
                     e.preventDefault();
                     onSelect({
@@ -203,7 +186,7 @@ export const ProductCard: FC<ProductCardProps> = ({
             <ListView
               label="Available Styles"
               title={
-                productVariants?.map((item) => item?.colour_name)?.join(', ') ||
+                productVariants?.map((item: any) => item?.colour_name)?.join(', ') ||
                 ''
               }
               size={size}

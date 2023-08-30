@@ -18,6 +18,8 @@ interface ProductInfoProps {
   productVariants?: Maybe<Array<ProductWithCollectionsGraphqlDto['productVariants']>>;
   colour_families?: string[];
   colour_name?: Maybe<Scalars["String"]>;
+  swatchImage?: any;
+  id?: number;
 }
 
 const ProductInfo: FC<ProductInfoProps> = ({
@@ -26,6 +28,8 @@ const ProductInfo: FC<ProductInfoProps> = ({
   colour_families,
   productVariants,
   colour_name,
+  swatchImage,
+  id,
 }) => {
   const router = useRouter();
   
@@ -73,12 +77,14 @@ const ProductInfo: FC<ProductInfoProps> = ({
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2.5 mb-10">
-          <ColorVariant colors={colour_families || []} label={colour_name || ''} />
+          {/* <ColorVariant colors={colour_families || []} label={colour_name || ''} url={swatchImage?.small_image_url} /> */}
           {productVariants?.map((variant: any) => (
             <div key={variant?.id} onClick={() => handleVariant(variant?.id)}>
               <ColorVariant
                 key={variant?.id}
                 colors={variant?.colour_families || []}
+                url={variant?.swatchImage?.swatch_image_url}
+                label={variant?.id === id ? variant?.colour_name : ''}
               />
             </div>
           ))}

@@ -29,7 +29,6 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch, loading }) => {
 
   useEffect(() => {
     setAttachments(product?.attachments || []);
-    console.log(product);
   }, [product]);
 
   const handleUpload = async (e: any, index: number) => {

@@ -45,8 +45,6 @@ const BuyersSearchDropdown: FC<BuyersSearchDropdownProps> = ({
     setSearchKeyword(!searchKeyword ? value : searchKeyword);
   }, [value]);
  
-  console.log(retailerId);
-  
   const { data, loading } = useQuery(
     GET_BUYERS,
     {

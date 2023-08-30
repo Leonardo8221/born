@@ -158,6 +158,8 @@ const ProductDetailsPage = () => {
                   colour_families={currentProduct?.colour_families}
                   colour_name={currentProduct?.colour_name}
                   productVariants={currentProduct?.productVariants}
+                  swatchImage={currentProduct?.swatchImage}
+                  id={currentProduct?.id}
                 />
                 <ProductDetails
                   attachments={currentProduct?.attachments?.slice(0, 2) || []}
