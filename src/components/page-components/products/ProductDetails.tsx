@@ -205,17 +205,17 @@ const ProductDetailsPage = () => {
             )}
           </div>
           {isAttachmentsPreivew && (
-          <ProductImagePreview
-            attachments={currentProduct?.attachments || []}
-            productRefectch={productRefectch}
-            currentProduct={currentProduct}
-            title={currentProduct?.style_name}
-            onDraftOrder={() => setIsModalVisible(true)}
-            onClose={() => setIsAttachmentsPreivew(false)}
-            styleId={currentProduct?.product_id}
-            styleName={currentProduct?.style_name}
-          />
-        )}
+            <ProductImagePreview
+              attachments={currentProduct?.attachments || []}
+              productRefectch={productRefectch}
+              currentProduct={currentProduct}
+              title={currentProduct?.style_name}
+              onDraftOrder={() => setIsModalVisible(true)}
+              onClose={() => setIsAttachmentsPreivew(false)}
+              styleId={currentProduct?.product_id}
+              styleName={currentProduct?.style_name}
+            />
+          )}
           <OrderList
             setModalIsVisible={() => setIsModalVisible(!isModalVisible)}
             isModalVisible={isModalVisible}
@@ -232,7 +232,6 @@ const ProductDetailsPage = () => {
             />
           )}
         </div>
-        
       </div>
     </div>
   );

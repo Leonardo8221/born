@@ -9,6 +9,7 @@ import CreatableSelect from 'react-select/creatable';
 import { fonts } from '@/config/fonts';
 import clsx from 'clsx';
 import { createableSelectStyles } from './utils';
+import { FileUpload } from '@/components/molecules/FileUpload';
 
 interface ColoursFormProps {
   product: ProductWithCollectionsGraphqlDto;
@@ -53,56 +54,67 @@ const ColoursForm: FC<ColoursFormProps> = ({ product }) => {
 
   return (
     <div className="max-w-[736px]">
-      <div className="max-w-[352px]">
-        <Input
-          label="Colour name"
-          value={productDetails?.colour_name || ''}
-          onChange={(value: string) => handleInputChange('colour_name', value)}
-          isValid={false}
-          className="w-full"
-        />
-        <Input
-          label="Colour code"
-          value={productDetails?.colour_code || ''}
-          onChange={(value: string) => handleInputChange('colour_code', value)}
-          isValid={false}
-          className="w-full"
-        />
-        <div className="my-3 relative">
-          <label
-            className={clsx(
-              'absolute top-[-8px] left-4 z-[2] bg-shades-white font-light px-1',
-              fonts.text.md
-            )}
-          >
-            Colour Families
-          </label>
-          <CreatableSelect
-            id="colour_families"
-            value={productDetails?.colour_families?.map((item) => ({
-              label: item,
-              value: item,
-            }))}
-            placeholder=""
-            options={productDetails.colour_families?.map((item) => ({
-              label: item,
-              value: item,
-            }))}
-            isMulti
-            styles={createableSelectStyles}
-            onChange={(e: any) =>
-              handleInputChange(
-                'colour_families',
-                e?.map((item: { label: string; value: string }) => item.value)
-              )
-            }
+      <div className='flex gap-x-8'>
+        <div className="max-w-[352px]">
+          <Input
+            label="Colour name"
+            value={productDetails?.colour_name || ''}
+            onChange={(value: string) => handleInputChange('colour_name', value)}
+            isValid={false}
+            className="w-full"
+          />
+          <Input
+            label="Colour code"
+            value={productDetails?.colour_code || ''}
+            onChange={(value: string) => handleInputChange('colour_code', value)}
+            isValid={false}
+            className="w-full"
+          />
+          <div className="my-3 relative">
+            <label
+              className={clsx(
+                'absolute top-[-8px] left-4 z-[2] bg-shades-white font-light px-1',
+                fonts.text.md
+              )}
+            >
+              Colour Families
+            </label>
+            <CreatableSelect
+              id="colour_families"
+              value={productDetails?.colour_families?.map((item) => ({
+                label: item,
+                value: item,
+              }))}
+              placeholder=""
+              options={productDetails.colour_families?.map((item) => ({
+                label: item,
+                value: item,
+              }))}
+              isMulti
+              styles={createableSelectStyles}
+              onChange={(e: any) =>
+                handleInputChange(
+                  'colour_families',
+                  e?.map((item: { label: string; value: string }) => item.value)
+                )
+              }
+            />
+          </div>
+          <div className="mt-5 inline-flex">
+            <Button onClick={handleSave} disabled={isSubmitted}>
+              Save
+            </Button>
+        </div>
+        </div>
+        <div className="max-w-[352px] mx-auto mt-3">
+          <FileUpload
+            idInput='fabricationSwatch'
+            labelText="Fabrication swatch"
+            imageUrl={''}
+            disabled={false}
+            handleUpload={() => {}}
           />
         </div>
-      </div>
-      <div className="mt-5 inline-flex">
-        <Button onClick={handleSave} disabled={isSubmitted}>
-          Save
-        </Button>
       </div>
       <Toast successMessage={successMessage} errorMessage={errorMessage} />
     </div>

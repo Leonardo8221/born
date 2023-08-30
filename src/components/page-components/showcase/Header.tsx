@@ -12,10 +12,15 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ heading = '', href = '', onClose }) => {
   const router = useRouter();
+  const onBack = () => {
+    const backPath = localStorage.getItem('edit_product_back_link');
+    console.log(backPath)
+    backPath ? router.push(backPath) : router.back();
+  };
   return (
     <div className="flex w-full mx-auto items-center justify-between px-6 py-4 bg-[#fff] shadow-sm">
       <div className="flex items-center">
-        <div onClick={() => (href ? router.push(href) : router?.back())}>
+        <div onClick={onBack}>
           <ArrowIconLeft height={40} width={40} className="cursor-pointer" />
         </div>
         <Heading className="ml-3" fontWeight="light" size="xs">
@@ -25,7 +30,7 @@ const Header: FC<HeaderProps> = ({ heading = '', href = '', onClose }) => {
       <div className="flex items-center gap-x-4">
         <Icon
           name="icon-close"
-          onClick={() => onClose ? onClose() : router?.back()}
+          onClick={() => (onClose ? onClose() : router?.back())}
           className="flex h-6 w-6 cursor-pointer items-center justify-center text-[#333333]"
         />
       </div>

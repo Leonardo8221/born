@@ -64,10 +64,10 @@ export const ProductImagePreview: FC<ProductImagePreviewProps> = ({
 
   return (
     <div
-      className="fixed z-[980] bg-shades-white w-screen h-screen left-0 top-0 bg-fixed bg-cover bg-top bg-no-repeat"
+      className="fixed z-[980] bg-shades-white w-screen h-screen left-0 top-0 bg-fixed bg-cover bg-top bg-no-repeat overflow-y-auto"
       style={{ backgroundImage: `url(${BgImage.src})` }}
     >
-      <div className="max-w-[1440px] flex items-center justify-end h-[72px]">
+      <div className="flex items-center justify-end h-[72px] [&>div]:!pr-0">
         <ProductHeader
           productRefectch={productRefectch}
           currentProduct={currentProduct}
