@@ -91,16 +91,15 @@ export const ProductCard: FC<ProductCardProps> = ({
   const handleCardPreview = (e: any) => {
     router.query.product_id = selectedVariant || id;
     router.push(router, undefined, { shallow: true });
-  }
+  };
 
   return (
-    <div className='cursor-pointer'>
+    <div className="cursor-pointer">
       <div
         className={clsx(
           clsProductCard(size),
           'print:break-inside-avoid-page print:h-full'
         )}
-        
       >
         <div
           className={clsx(
@@ -110,15 +109,22 @@ export const ProductCard: FC<ProductCardProps> = ({
           lang="es"
         >
           <div>{renderCheckbox}</div>
-          <div className='flex-1' onClick={handleCardPreview}>{style_number}</div>
+          <div className="flex-1" onClick={handleCardPreview}>
+            {style_number}
+          </div>
         </div>
-        <div onClick={handleCardPreview} className={clsx(size === 'lg' ? 'pt-3' : 'pt-2')}>
+        <div
+          onClick={handleCardPreview}
+          className={clsx(size === 'lg' ? 'pt-3' : 'pt-2')}
+        >
           <div
             className={clsx(
               styles.productCardImageWrapper,
               'rounded-lg',
               size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]',
-              isSelected ? 'border border-neutral-400 shadow-large' : 'border !border-[transparent]',
+              isSelected
+                ? 'border border-neutral-400 shadow-large'
+                : 'border !border-[transparent]'
             )}
           >
             <div className="absolute top-0 left-0 h-full w-full bg-[rgba(0,0,0,0.1)]" />
@@ -132,7 +138,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                 alt={style_name + 'image'}
                 className={clsx(
                   'object-cover',
-                  size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]',
+                  size === 'lg' ? 'w-[320px] h-[320px]' : 'w-[144px] h-[144px]'
                 )}
               />
             )}
@@ -159,8 +165,11 @@ export const ProductCard: FC<ProductCardProps> = ({
                   colors={(variant?.colour_families as string[]) || []}
                   type="card"
                   active={
-                    (selectedVariant === variant?.id ||
-                    selectedVariants?.includes(variant?.id)) || !selectedVariants?.length && !selectedVariant && index === 0
+                    selectedVariant === variant?.id ||
+                    selectedVariants?.includes(variant?.id) ||
+                    (!selectedVariants?.length &&
+                      !selectedVariant &&
+                      index === 0)
                   }
                   url={variant?.swatchImage?.small_image_url}
                   onClick={(e) => {
@@ -186,8 +195,9 @@ export const ProductCard: FC<ProductCardProps> = ({
             <ListView
               label="Available Styles"
               title={
-                productVariants?.map((item: any) => item?.colour_name)?.join(', ') ||
-                ''
+                productVariants
+                  ?.map((item: any) => item?.colour_name)
+                  ?.join(', ') || ''
               }
               size={size}
               isVisible={true}
