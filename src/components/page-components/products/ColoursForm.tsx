@@ -3,13 +3,14 @@ import Input from '@/components/molecules/Inputs/Input';
 import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { Button } from '@/components/molecules/Button';
 import { apiConfig } from '@/utils/apiConfig';
-import { ProductRequestDTO, ProductResourceApi } from 'client/command';
+import { AttachmentResourceApi, ProductRequestDTO, ProductResourceApi } from 'client/command';
 import Toast from '../Toast';
 import CreatableSelect from 'react-select/creatable';
 import { fonts } from '@/config/fonts';
 import clsx from 'clsx';
 import { createableSelectStyles } from './utils';
 import { FileUpload } from '@/components/molecules/FileUpload';
+import { useRouter } from 'next/router';
 
 interface ColoursFormProps {
   product: ProductWithCollectionsGraphqlDto;
@@ -20,6 +21,10 @@ const ColoursForm: FC<ColoursFormProps> = ({ product }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMesage] = useState('');
+
+  const router = useRouter();
+  const id = router?.query?.id || '';
+  const organizationId: number = Number(id);
 
   useEffect(() => {
     setProductDetails({
@@ -51,6 +56,20 @@ const ColoursForm: FC<ColoursFormProps> = ({ product }) => {
       console.error(error);
     }
   };
+
+  const handleUpload = async (file: File) => {
+    setIsSubmitted(true);
+    try {
+      const config = await apiConfig();
+      const api = new AttachmentResourceApi(config);
+      await api.apiAttachmentUploadProductSwatchImagePost(organizationId, product.id, file, file.name);
+      setIsSubmitted(false);
+      setSuccessMessage('Swatch image uploaded successfully!');
+    } catch (error: any) {
+      setIsSubmitted(false);
+      setErrorMesage(error?.message || 'Failed to upload swatch image!')
+    }
+  }
 
   return (
     <div className="max-w-[736px]">
@@ -111,8 +130,8 @@ const ColoursForm: FC<ColoursFormProps> = ({ product }) => {
             idInput='fabricationSwatch'
             labelText="Fabrication swatch"
             imageUrl={''}
-            disabled={false}
-            handleUpload={() => {}}
+            disabled={isSubmitted}
+            handleUpload={handleUpload}
           />
         </div>
       </div>

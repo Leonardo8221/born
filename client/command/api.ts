@@ -743,6 +743,12 @@ export interface SectionRequestDTO {
      * @memberof SectionRequestDTO
      */
     'product_ids'?: Array<number>;
+    /**
+     * 
+     * @type {number}
+     * @memberof SectionRequestDTO
+     */
+    'position'?: number;
 }
 /**
  * 
@@ -1224,6 +1230,67 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {File} [file] 
+         * @param {string} [fileName] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUploadProductSwatchImagePost: async (organizationId: number, productId: number, file?: File, fileName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationId' is not null or undefined
+            assertParamExists('apiAttachmentUploadProductSwatchImagePost', 'organizationId', organizationId)
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('apiAttachmentUploadProductSwatchImagePost', 'productId', productId)
+            const localVarPath = `/api/attachment/upload-product-swatch-image`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (organizationId !== undefined) {
+                localVarQueryParameter['organization_id'] = organizationId;
+            }
+
+            if (productId !== undefined) {
+                localVarQueryParameter['product_id'] = productId;
+            }
+
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+            if (fileName !== undefined) { 
+                localVarFormParams.append('fileName', fileName as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1315,6 +1382,19 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {File} [file] 
+         * @param {string} [fileName] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAttachmentUploadProductSwatchImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadProductSwatchImagePost(organizationId, productId, file, fileName, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -1398,6 +1478,18 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
          */
         apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: any): AxiosPromise<void> {
             return localVarFp.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {File} [file] 
+         * @param {string} [fileName] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUploadProductSwatchImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: any): AxiosPromise<void> {
+            return localVarFp.apiAttachmentUploadProductSwatchImagePost(organizationId, productId, file, fileName, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1495,6 +1587,20 @@ export class AttachmentResourceApi extends BaseAPI {
      */
     public apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig) {
         return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} organizationId 
+     * @param {number} productId 
+     * @param {File} [file] 
+     * @param {string} [fileName] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AttachmentResourceApi
+     */
+    public apiAttachmentUploadProductSwatchImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig) {
+        return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadProductSwatchImagePost(organizationId, productId, file, fileName, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -3992,12 +4098,12 @@ export const SectionResourceApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
-         * @param {number} [sectionId] 
+         * @param {number} [collectionId] 
          * @param {SectionRequestDTO} [sectionRequestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiSectionCreateNewSectionPost: async (sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiSectionCreateNewSectionPost: async (collectionId?: number, sectionRequestDTO?: SectionRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/section/create-new-section`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4014,8 +4120,8 @@ export const SectionResourceApiAxiosParamCreator = function (configuration?: Con
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
 
-            if (sectionId !== undefined) {
-                localVarQueryParameter['section_id'] = sectionId;
+            if (collectionId !== undefined) {
+                localVarQueryParameter['collection_id'] = collectionId;
             }
 
 
@@ -4118,12 +4224,56 @@ export const SectionResourceApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
-         * @param {number} [sectionId] 
+         * @param {number} [collectionId] 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionUpdateSectionPositionsPut: async (collectionId?: number, requestBody?: { [key: string]: number; }, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/section/update-section-positions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (collectionId !== undefined) {
+                localVarQueryParameter['collection_id'] = collectionId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} sectionId 
          * @param {SectionRequestDTO} [sectionRequestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiSectionUpdateSectionPut: async (sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiSectionUpdateSectionPut: async (sectionId: number, sectionRequestDTO?: SectionRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sectionId' is not null or undefined
+            assertParamExists('apiSectionUpdateSectionPut', 'sectionId', sectionId)
             const localVarPath = `/api/section/update-section`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4181,13 +4331,13 @@ export const SectionResourceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {number} [sectionId] 
+         * @param {number} [collectionId] 
          * @param {SectionRequestDTO} [sectionRequestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiSectionCreateNewSectionPost(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionCreateNewSectionPost(sectionId, sectionRequestDTO, options);
+        async apiSectionCreateNewSectionPost(collectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionCreateNewSectionPost(collectionId, sectionRequestDTO, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4213,12 +4363,23 @@ export const SectionResourceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {number} [sectionId] 
+         * @param {number} [collectionId] 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiSectionUpdateSectionPositionsPut(collectionId?: number, requestBody?: { [key: string]: number; }, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionUpdateSectionPositionsPut(collectionId, requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} sectionId 
          * @param {SectionRequestDTO} [sectionRequestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiSectionUpdateSectionPut(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async apiSectionUpdateSectionPut(sectionId: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiSectionUpdateSectionPut(sectionId, sectionRequestDTO, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -4244,13 +4405,13 @@ export const SectionResourceApiFactory = function (configuration?: Configuration
         },
         /**
          * 
-         * @param {number} [sectionId] 
+         * @param {number} [collectionId] 
          * @param {SectionRequestDTO} [sectionRequestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiSectionCreateNewSectionPost(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: any): AxiosPromise<void> {
-            return localVarFp.apiSectionCreateNewSectionPost(sectionId, sectionRequestDTO, options).then((request) => request(axios, basePath));
+        apiSectionCreateNewSectionPost(collectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionCreateNewSectionPost(collectionId, sectionRequestDTO, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4273,12 +4434,22 @@ export const SectionResourceApiFactory = function (configuration?: Configuration
         },
         /**
          * 
-         * @param {number} [sectionId] 
+         * @param {number} [collectionId] 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiSectionUpdateSectionPositionsPut(collectionId?: number, requestBody?: { [key: string]: number; }, options?: any): AxiosPromise<void> {
+            return localVarFp.apiSectionUpdateSectionPositionsPut(collectionId, requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} sectionId 
          * @param {SectionRequestDTO} [sectionRequestDTO] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiSectionUpdateSectionPut(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: any): AxiosPromise<void> {
+        apiSectionUpdateSectionPut(sectionId: number, sectionRequestDTO?: SectionRequestDTO, options?: any): AxiosPromise<void> {
             return localVarFp.apiSectionUpdateSectionPut(sectionId, sectionRequestDTO, options).then((request) => request(axios, basePath));
         },
     };
@@ -4305,14 +4476,14 @@ export class SectionResourceApi extends BaseAPI {
 
     /**
      * 
-     * @param {number} [sectionId] 
+     * @param {number} [collectionId] 
      * @param {SectionRequestDTO} [sectionRequestDTO] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SectionResourceApi
      */
-    public apiSectionCreateNewSectionPost(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig) {
-        return SectionResourceApiFp(this.configuration).apiSectionCreateNewSectionPost(sectionId, sectionRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    public apiSectionCreateNewSectionPost(collectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig) {
+        return SectionResourceApiFp(this.configuration).apiSectionCreateNewSectionPost(collectionId, sectionRequestDTO, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4340,13 +4511,25 @@ export class SectionResourceApi extends BaseAPI {
 
     /**
      * 
-     * @param {number} [sectionId] 
+     * @param {number} [collectionId] 
+     * @param {{ [key: string]: number; }} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SectionResourceApi
+     */
+    public apiSectionUpdateSectionPositionsPut(collectionId?: number, requestBody?: { [key: string]: number; }, options?: AxiosRequestConfig) {
+        return SectionResourceApiFp(this.configuration).apiSectionUpdateSectionPositionsPut(collectionId, requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} sectionId 
      * @param {SectionRequestDTO} [sectionRequestDTO] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SectionResourceApi
      */
-    public apiSectionUpdateSectionPut(sectionId?: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig) {
+    public apiSectionUpdateSectionPut(sectionId: number, sectionRequestDTO?: SectionRequestDTO, options?: AxiosRequestConfig) {
         return SectionResourceApiFp(this.configuration).apiSectionUpdateSectionPut(sectionId, sectionRequestDTO, options).then((request) => request(this.axios, this.basePath));
     }
 }
