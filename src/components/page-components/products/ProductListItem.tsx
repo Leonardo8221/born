@@ -3,13 +3,15 @@ import ImageText from '@/components/molecules/ImageText';
 import ListPrices from '@/components/organisms/ProductDetails/ListPrices';
 import Badges from '@/components/organisms/Tables/Product/Badges';
 import { fonts } from '@/config/fonts';
-import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto, Maybe, ProductAttachmentGraphqlDto } from '@/generated/types';
 import { formatCurrency } from '@/utils/formatCurrency';
 import clsx from 'clsx';
 import { FC } from 'react';
 
 interface ProductListProps {
-  product: ProductWithCollectionsGraphqlDto;
+  product: ProductWithCollectionsGraphqlDto & {
+    swatchImage?: Maybe<ProductAttachmentGraphqlDto>;
+  };
 }
 
 const ProductListItem: FC<ProductListProps> = ({ product }) => {
@@ -56,11 +58,12 @@ const ProductListItem: FC<ProductListProps> = ({ product }) => {
                 item?.toLowerCase()
               ) || []
             }
+            url={product?.swatchImage?.small_image_url || undefined}
           />
         </div>
         <span
           className={clsx(
-            'text-shades-black tracking-[0.06em] text-center print:w-[60px] break-anywhere',
+            'text-shades-black tracking-[0.06em] print:w-[60px] break-anywhere ml-2',
             fonts.text.md
           )}
           lang="es"

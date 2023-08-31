@@ -118,46 +118,11 @@ const ListTable: FC<ListTableProps> = ({
       size: 122,
       id: 'colour_families',
       cell: (info: any) => {
-        const colour_families = info.getValue();
         const id = info?.row?.original?.id;
         const variants = info?.row?.original?.productVariants || [];
         return (
           <div>
-            <div className="flex items-center gap-2">
-              <div>
-                <VariantColors
-                  colors={colour_families || []}
-                  type="card"
-                  active={
-                    selectedVariants?.includes(info?.row?.original?.id) ||
-                    !variants.some((item: any) =>
-                      selectedVariants?.includes(item?.id)
-                    )
-                  }
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onSelect?.({
-                      id,
-                      selectedVariant: id,
-                      isVariant: true,
-                    });
-                  }}
-                />
-              </div>
-              <div>
-                <div
-                  className={clsx(
-                    'text-shades-black tracking-[0.06em] max-w-[80px] break-anywhere',
-                    fonts.text.sm
-                  )}
-                  lang="es"
-                  title={info?.row?.original?.colour_name}
-                >
-                  {info?.row?.original?.colour_name}
-                </div>
-              </div>
-            </div>
-            {info?.row?.original?.productVariants?.map((item: any) => (
+            {variants?.map((item: any, index: number) => (
               <div className="flex items-center gap-2 mt-2" key={item?.id}>
                 <div>
                   <VariantColors
@@ -175,7 +140,12 @@ const ListTable: FC<ListTableProps> = ({
                             : false,
                       });
                     }}
-                    active={selectedVariants?.includes(item.id)}
+                    active={
+                      !selectedVariants?.length
+                        ? index === 0
+                        : selectedVariants?.includes(item.id)
+                    }
+                    url={item?.swatchImage?.small_image_url}
                   />
                 </div>
                 <div>
