@@ -40,6 +40,7 @@ function OrderPreview() {
     fetchPolicy: 'network-only',
     skip: !orderId,
   });
+
   const details = data?.orderByOrderId;
   useEffect(() => {
     if (details) {
@@ -47,9 +48,10 @@ function OrderPreview() {
         buyer_id: details?.buyer_data?.id,
         retailer_id: details?.retailer_data?.id,
         ...details,
+        total_quantity: details?.total_quantity,
       });
     }
-  }, [details]);
+  }, [data]);
 
   useEffect(() => {
     const oId = Number(router?.query?.orderId);

@@ -110,7 +110,7 @@
 }
 
 .priceLabel {
-  @apply text-neutral-400 text-[8px] leading-[16px] font-normal;
+  @apply text-neutral-400 text-[8px] font-normal;
   letter-spacing: 0.06em;
   margin: 0;
   margin-bottom: 4px;

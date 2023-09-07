@@ -59,6 +59,7 @@ export const VariantColors = ({
   active,
   onClick,
   url,
+  backgroundColor,
 }: {
   colors?: string[];
   className?: string;
@@ -66,31 +67,34 @@ export const VariantColors = ({
   active?: boolean;
   onClick?: (e: any) => void;
   url?: string;
+  backgroundColor?: string;
 }) => {
   return (
     <div
       className={clsx(
-        'h-4 w-4 opacity-[0.7]',
+        'h-4 w-4 opacity-[0.7] rounded-full',
         className,
         type === 'card' && active && '!border-0 !p-0.5',
         type === 'card'
           ? 'cursor-pointer rounded-full border-2 border-neutral-100 p-0 bg-shades-white'
-          : 'p-0.5'
+          : 'p-0.5',
+        backgroundColor ? '!p-[2.5px]' : '',
       )}
       style={{
         filter:
           type === 'card' && active
             ? 'drop-shadow(0px 1px 4px rgba(0,0,0,0.4))'
             : '',
+        backgroundColor: backgroundColor || '',
       }}
       onClick={(e) => {
         e.preventDefault();
         onClick?.(e);
       }}
     >
-      <div className="flex h-full w-full rounded-full rounded-full overflow-hidden bg-shades-white">
+      <div className="flex items-center justify-center h-full w-full rounded-full overflow-hidden bg-shades-white">
         {url ? (
-          <img src={url} className="w-full h-full bg-cover" />
+          <img src={url} className="w-full h-full" />
         ) : colors?.map((col) => (
           <div
             key={col}

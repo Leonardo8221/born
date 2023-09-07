@@ -329,7 +329,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   };
 
   return (
-    <div>
+    <div className='order__page'>
       <Header
         handlePrint={(e: GridType) => {
           setGridPrevState(gridType);
@@ -348,7 +348,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
         handleErrorMessage={handleErrorMesssage}
       />
       <div
-        className="min-h-[calc(100vh-185px)] max-w-[1234px] mx-auto"
+        className="min-h-[calc(100vh-185px)] max-w-[1234px] pint:!max-w-full mx-auto"
         id="collection"
       >
         <div className="mb-[64px]" ref={collectionDetailRef}>
@@ -400,10 +400,9 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
                 <Heading size="sm" className="text-shades-black">{section?.name}</Heading>
                 <Paragraph>{section?.description}</Paragraph>
               </div>
-
               <div
                 className={clsx(
-                  'grid mb-8 gap-8 pint:mb-4 print:gap-2 print:place-items-center print:!grid-cols-3 print:sm:!grid-cols-4',
+                  'grid mb-8 gap-8 pint:mb-4 print:gap-2 print:!grid-cols-6 print:sm:!grid-cols-6',
                   gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
                 )}
               >
@@ -415,7 +414,8 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
                     isSelected={!!selectedRows?.includes(item.id)}
                     selectedVariants={selectedVariants}
                     onSelect={setSelectedRows}
-                    isCollection={true}
+                    isCollection={!isPdf}
+                    isPdf={true}
                     imageUrl={
                       (gridType === 'grid'
                         ? item?.attachments?.[0]?.large_image_url

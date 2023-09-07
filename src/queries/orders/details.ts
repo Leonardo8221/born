@@ -41,6 +41,9 @@ export const GET_ORDER_BY_ID = gql`
         total_quantity
         wholesale_price
         wholesale_total_price
+        eur_retail_price
+        gbp_retail_price
+        usd_retail_price
         product {
           id
           description

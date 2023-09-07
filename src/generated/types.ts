@@ -31,7 +31,6 @@ export type BuyerGraphqlDto = {
   buyer_name?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
-  phone_number?: Maybe<Scalars["String"]>;
 };
 
 export type CollectionGraphqlDto = {
@@ -51,13 +50,23 @@ export type CollectionGraphqlDto = {
   products?: Maybe<Array<Maybe<ProductWithoutCollectionsGraphqlDto>>>;
 };
 
+export type CollectionSectionGraphqlDto = {
+  __typename?: "CollectionSectionGraphqlDTO";
+  id?: Maybe<Scalars["BigInteger"]>;
+  name?: Maybe<Scalars["String"]>;
+  organization?: Maybe<OrganizationGraphqlDto>;
+};
+
 export type OrderDetailGraphqlDto = {
   __typename?: "OrderDetailGraphqlDTO";
+  eur_retail_price?: Maybe<Scalars["BigDecimal"]>;
+  gbp_retail_price?: Maybe<Scalars["BigDecimal"]>;
   id?: Maybe<Scalars["BigInteger"]>;
   note?: Maybe<Scalars["String"]>;
   order_detail_sizes?: Maybe<Array<Maybe<OrderDetailSizeGraphqlDto>>>;
   product?: Maybe<ProductWithCollectionsGraphqlDto>;
   total_quantity?: Maybe<Scalars["Int"]>;
+  usd_retail_price?: Maybe<Scalars["BigDecimal"]>;
   wholesale_price?: Maybe<Scalars["BigDecimal"]>;
   wholesale_total_price?: Maybe<Scalars["BigDecimal"]>;
 };
@@ -164,6 +173,16 @@ export type PageWrapper_ProductWithCollectionsGraphqlDto = {
   total_pages: Scalars["Int"];
 };
 
+export type PageWrapper_SectionProductsGraphqlDto = {
+  __typename?: "PageWrapper_SectionProductsGraphqlDTO";
+  content?: Maybe<Array<Maybe<SectionProductsGraphqlDto>>>;
+  number: Scalars["Int"];
+  number_of_elements: Scalars["Int"];
+  size: Scalars["Int"];
+  total_elements: Scalars["BigInteger"];
+  total_pages: Scalars["Int"];
+};
+
 export type PriceGraphqlDto = {
   __typename?: "PriceGraphqlDTO";
   currency?: Maybe<Scalars["String"]>;
@@ -210,6 +229,7 @@ export type ProductVariantGraphqlDto = {
   id?: Maybe<Scalars["BigInteger"]>;
   product_id?: Maybe<Scalars["String"]>;
   style_number?: Maybe<Scalars["String"]>;
+  swatchImage?: Maybe<SwatchImageGraphqlDto>;
 };
 
 export type ProductWithCollectionsGraphqlDto = {
@@ -242,12 +262,14 @@ export type ProductWithCollectionsGraphqlDto = {
   product_id?: Maybe<Scalars["String"]>;
   season?: Maybe<Scalars["String"]>;
   second_category?: Maybe<Scalars["String"]>;
+  sections?: Maybe<Array<Maybe<SectionGraphqlDto>>>;
   size_category?: Maybe<Scalars["String"]>;
   size_options?: Maybe<Array<Maybe<Scalars["String"]>>>;
   size_type?: Maybe<Scalars["String"]>;
   style_id?: Maybe<Scalars["String"]>;
   style_name?: Maybe<Scalars["String"]>;
   style_number?: Maybe<Scalars["String"]>;
+  swatchImage?: Maybe<SwatchImageGraphqlDto>;
   third_category?: Maybe<Scalars["String"]>;
   upc?: Maybe<Scalars["String"]>;
 };
@@ -286,6 +308,7 @@ export type ProductWithoutCollectionsGraphqlDto = {
   style_id?: Maybe<Scalars["String"]>;
   style_name?: Maybe<Scalars["String"]>;
   style_number?: Maybe<Scalars["String"]>;
+  swatchImage?: Maybe<SwatchImageGraphqlDto>;
   third_category?: Maybe<Scalars["String"]>;
   upc?: Maybe<Scalars["String"]>;
 };
@@ -293,8 +316,20 @@ export type ProductWithoutCollectionsGraphqlDto = {
 /** Query root */
 export type Query = {
   __typename?: "Query";
-  /** Return list of buyers by  retailer and organizationId */
-  buyersByOrganizationAndRetailerId?: Maybe<Array<Maybe<BuyerGraphqlDto>>>;
+  /** Return all product's by collection id */
+  allProductsByCollectionId?: Maybe<
+    Array<Maybe<ProductWithCollectionsGraphqlDto>>
+  >;
+  /** Return all product's by section id */
+  allProductsBySectionId?: Maybe<
+    Array<Maybe<ProductWithCollectionsGraphqlDto>>
+  >;
+  /** Return list of buyers by  retailer and organizationId and buyer name */
+  buyersByOrganizationAndRetailerIdAndName?: Maybe<
+    Array<Maybe<BuyerGraphqlDto>>
+  >;
+  /** Return list of buyers by retailer and buyer name */
+  buyersByRetailerIdAndName?: Maybe<Array<Maybe<BuyerGraphqlDto>>>;
   /** Return collection by collection id */
   collectionByCollectionId?: Maybe<CollectionGraphqlDto>;
   /** Return list of organization's collections */
@@ -321,12 +356,24 @@ export type Query = {
   productsBySearchAndCollectionId?: Maybe<PageWrapper_ProductWithCollectionsGraphqlDto>;
   /** Return list of filtered product's by organization id */
   productsBySearchAndOrganizationId?: Maybe<PageWrapper_ProductWithCollectionsGraphqlDto>;
-  /** Return list of retailer names by name and organizationId */
-  retailersByOrganizationId?: Maybe<Array<Maybe<RetailerGraphqlDto>>>;
+  /** Return list of filtered product's by section id */
+  productsBySearchAndSectionId?: Maybe<PageWrapper_ProductWithCollectionsGraphqlDto>;
+  /** Return list of retailer names by organizationId and store name */
+  retailersByOrganizationIdAndStoreName?: Maybe<
+    Array<Maybe<RetailerGraphqlDto>>
+  >;
+  /** Return list of retailer names by store name */
+  retailersByStoreName?: Maybe<Array<Maybe<RetailerGraphqlDto>>>;
   /** Return list of seasons by collectionId */
   seasonsByCollectionId?: Maybe<Array<Maybe<Scalars["String"]>>>;
   /** Return list of seasons by organizationId */
   seasonsByOrganizationId?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  /** Return section by section id */
+  sectionBySectionId?: Maybe<SectionGraphqlDto>;
+  /** Return list of filtered products section by collection id */
+  sectionProductsBySearchAndCollectionId?: Maybe<PageWrapper_SectionProductsGraphqlDto>;
+  /** Return list of sections */
+  sectionsByCollectionId?: Maybe<Array<Maybe<SectionGraphqlDto>>>;
   /** Return user with its organization data */
   userOrganizationByOrganizationId?: Maybe<UserOrganizationGraphqlDto>;
   /** Return user with list of user organizations and update last logged in date */
@@ -340,8 +387,25 @@ export type Query = {
 };
 
 /** Query root */
-export type QueryBuyersByOrganizationAndRetailerIdArgs = {
+export type QueryAllProductsByCollectionIdArgs = {
+  collectionId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QueryAllProductsBySectionIdArgs = {
+  sectionId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QueryBuyersByOrganizationAndRetailerIdAndNameArgs = {
+  buyerName?: InputMaybe<Scalars["String"]>;
   organizationId: Scalars["BigInteger"];
+  retailerId?: InputMaybe<Scalars["BigInteger"]>;
+};
+
+/** Query root */
+export type QueryBuyersByRetailerIdAndNameArgs = {
+  buyerName?: InputMaybe<Scalars["String"]>;
   retailerId?: InputMaybe<Scalars["BigInteger"]>;
 };
 
@@ -402,7 +466,6 @@ export type QueryProductByProductIdArgs = {
 
 /** Query root */
 export type QueryProductVariantsByStyleNumberArgs = {
-  id: Scalars["BigInteger"];
   organizationId: Scalars["BigInteger"];
   styleNumber: Scalars["String"];
 };
@@ -429,8 +492,24 @@ export type QueryProductsBySearchAndOrganizationIdArgs = {
 };
 
 /** Query root */
-export type QueryRetailersByOrganizationIdArgs = {
+export type QueryProductsBySearchAndSectionIdArgs = {
+  colourFamilies?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  rows?: InputMaybe<Scalars["Int"]>;
+  search?: InputMaybe<Scalars["String"]>;
+  seasons?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  sectionId: Scalars["BigInteger"];
+  start?: InputMaybe<Scalars["Int"]>;
+};
+
+/** Query root */
+export type QueryRetailersByOrganizationIdAndStoreNameArgs = {
   organizationId: Scalars["BigInteger"];
+  storeName?: InputMaybe<Scalars["String"]>;
+};
+
+/** Query root */
+export type QueryRetailersByStoreNameArgs = {
+  storeName?: InputMaybe<Scalars["String"]>;
 };
 
 /** Query root */
@@ -441,6 +520,27 @@ export type QuerySeasonsByCollectionIdArgs = {
 /** Query root */
 export type QuerySeasonsByOrganizationIdArgs = {
   organizationId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QuerySectionBySectionIdArgs = {
+  sectionId: Scalars["BigInteger"];
+};
+
+/** Query root */
+export type QuerySectionProductsBySearchAndCollectionIdArgs = {
+  collectionId: Scalars["BigInteger"];
+  collectionIds?: InputMaybe<Array<InputMaybe<Scalars["BigInteger"]>>>;
+  colourFamilies?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  rows?: InputMaybe<Scalars["Int"]>;
+  search?: InputMaybe<Scalars["String"]>;
+  seasons?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  start?: InputMaybe<Scalars["Int"]>;
+};
+
+/** Query root */
+export type QuerySectionsByCollectionIdArgs = {
+  collectionId: Scalars["BigInteger"];
 };
 
 /** Query root */
@@ -460,7 +560,6 @@ export type QueryUsersOrganizationsByOrganizationIdArgs = {
 
 export type RetailerGraphqlDto = {
   __typename?: "RetailerGraphqlDTO";
-  banner?: Maybe<Scalars["String"]>;
   billing_store_address_line_1?: Maybe<Scalars["String"]>;
   billing_store_address_line_2?: Maybe<Scalars["String"]>;
   billing_store_address_line_3?: Maybe<Scalars["String"]>;
@@ -468,11 +567,9 @@ export type RetailerGraphqlDto = {
   billing_store_country?: Maybe<Scalars["String"]>;
   billing_store_postal_code?: Maybe<Scalars["String"]>;
   billing_store_state_province?: Maybe<Scalars["String"]>;
+  born_name?: Maybe<Scalars["String"]>;
   buyers?: Maybe<Array<Maybe<BuyerGraphqlDto>>>;
-  gallery_assets_ready?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["BigInteger"]>;
-  instagram_url?: Maybe<Scalars["String"]>;
-  logo?: Maybe<Scalars["String"]>;
   shipping_store_address_line_1?: Maybe<Scalars["String"]>;
   shipping_store_address_line_2?: Maybe<Scalars["String"]>;
   shipping_store_address_line_3?: Maybe<Scalars["String"]>;
@@ -480,19 +577,42 @@ export type RetailerGraphqlDto = {
   shipping_store_country?: Maybe<Scalars["String"]>;
   shipping_store_postal_code_zip?: Maybe<Scalars["String"]>;
   shipping_store_state_province?: Maybe<Scalars["String"]>;
-  status?: Maybe<Scalars["String"]>;
-  store_description?: Maybe<Scalars["String"]>;
   store_name?: Maybe<Scalars["String"]>;
-  store_type?: Maybe<Scalars["String"]>;
-  team?: Maybe<Scalars["String"]>;
   territory?: Maybe<Scalars["String"]>;
-  website_url?: Maybe<Scalars["String"]>;
 };
 
 export enum RoleType {
   Manager = "MANAGER",
   Owner = "OWNER",
 }
+
+export type SectionGraphqlDto = {
+  __typename?: "SectionGraphqlDTO";
+  collection?: Maybe<CollectionGraphqlDto>;
+  description?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["BigInteger"]>;
+  name?: Maybe<Scalars["String"]>;
+  position?: Maybe<Scalars["Int"]>;
+  products?: Maybe<Array<Maybe<ProductWithoutCollectionsGraphqlDto>>>;
+};
+
+export type SectionProductsGraphqlDto = {
+  __typename?: "SectionProductsGraphqlDTO";
+  collection?: Maybe<CollectionSectionGraphqlDto>;
+  description?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["BigInteger"]>;
+  name?: Maybe<Scalars["String"]>;
+  position?: Maybe<Scalars["Int"]>;
+  products?: Maybe<Array<Maybe<ProductWithCollectionsGraphqlDto>>>;
+};
+
+export type SwatchImageGraphqlDto = {
+  __typename?: "SwatchImageGraphqlDTO";
+  id?: Maybe<Scalars["BigInteger"]>;
+  large_image_url?: Maybe<Scalars["String"]>;
+  medium_image_url?: Maybe<Scalars["String"]>;
+  small_image_url?: Maybe<Scalars["String"]>;
+};
 
 export type UserGraphqlDto = {
   __typename?: "UserGraphqlDTO";
@@ -671,7 +791,21 @@ export type GetProductsByCollectionIdQuery = {
           medium_image_url?: string | null;
           large_image_url?: string | null;
         } | null> | null;
+        swatchImage?: {
+          __typename?: "SwatchImageGraphqlDTO";
+          id?: any | null;
+          large_image_url?: string | null;
+          medium_image_url?: string | null;
+          small_image_url?: string | null;
+        } | null;
       } | null> | null;
+      swatchImage?: {
+        __typename?: "SwatchImageGraphqlDTO";
+        id?: any | null;
+        large_image_url?: string | null;
+        medium_image_url?: string | null;
+        small_image_url?: string | null;
+      } | null;
     } | null> | null;
   } | null;
 };
@@ -696,61 +830,6 @@ export type ColourFamiliesQueryQueryVariables = Exact<{
 export type ColourFamiliesQueryQuery = {
   __typename?: "Query";
   colourFamiliesByOrganizationId?: Array<string | null> | null;
-};
-
-export type ColourFamiliesByCollectionIdQueryQueryVariables = Exact<{
-  collectionId: Scalars["BigInteger"];
-}>;
-
-export type ColourFamiliesByCollectionIdQueryQuery = {
-  __typename?: "Query";
-  colourFamiliesByCollectionId?: Array<string | null> | null;
-};
-
-export type SeasonsByCollectionIdQueryVariables = Exact<{
-  collectionId: Scalars["BigInteger"];
-}>;
-
-export type SeasonsByCollectionIdQuery = {
-  __typename?: "Query";
-  seasonsByCollectionId?: Array<string | null> | null;
-};
-
-export type SeasonsByOrganizationIdQueryVariables = Exact<{
-  organizationId: Scalars["BigInteger"];
-}>;
-
-export type SeasonsByOrganizationIdQuery = {
-  __typename?: "Query";
-  seasonsByOrganizationId?: Array<string | null> | null;
-};
-
-export type RetailersByOrganizationIdQueryVariables = Exact<{
-  organizationId: Scalars["BigInteger"];
-}>;
-
-export type RetailersByOrganizationIdQuery = {
-  __typename?: "Query";
-  retailersByOrganizationId?: Array<{
-    __typename?: "RetailerGraphqlDTO";
-    id?: any | null;
-    store_name?: string | null;
-  } | null> | null;
-};
-
-export type BuyersByOrganizationAndRetailerIdQueryVariables = Exact<{
-  organizationId: Scalars["BigInteger"];
-  retailerId?: InputMaybe<Scalars["BigInteger"]>;
-}>;
-
-export type BuyersByOrganizationAndRetailerIdQuery = {
-  __typename?: "Query";
-  buyersByOrganizationAndRetailerId?: Array<{
-    __typename?: "BuyerGraphqlDTO";
-    id?: any | null;
-    buyer_name?: string | null;
-    email?: string | null;
-  } | null> | null;
 };
 
 export type CollectionGraphqlDtoFragment = {
@@ -869,7 +948,21 @@ export type ProductWithCollectionsGraphqlDtoFragment = {
       medium_image_url?: string | null;
       large_image_url?: string | null;
     } | null> | null;
+    swatchImage?: {
+      __typename?: "SwatchImageGraphqlDTO";
+      id?: any | null;
+      large_image_url?: string | null;
+      medium_image_url?: string | null;
+      small_image_url?: string | null;
+    } | null;
   } | null> | null;
+  swatchImage?: {
+    __typename?: "SwatchImageGraphqlDTO";
+    id?: any | null;
+    large_image_url?: string | null;
+    medium_image_url?: string | null;
+    small_image_url?: string | null;
+  } | null;
 };
 
 export type UserGraphqlDtoFragment = {
@@ -923,11 +1016,13 @@ export type GetOrderByIdQuery = {
       __typename?: "BuyerGraphqlDTO";
       id?: any | null;
       buyer_name?: string | null;
+      email?: string | null;
     } | null;
     retailer_data?: {
       __typename?: "RetailerGraphqlDTO";
       id?: any | null;
       store_name?: string | null;
+      billing_store_address_line_1?: string | null;
     } | null;
     order_details?: Array<{
       __typename?: "OrderDetailGraphqlDTO";
@@ -936,6 +1031,9 @@ export type GetOrderByIdQuery = {
       total_quantity?: number | null;
       wholesale_price?: any | null;
       wholesale_total_price?: any | null;
+      eur_retail_price?: any | null;
+      gbp_retail_price?: any | null;
+      usd_retail_price?: any | null;
       product?: {
         __typename?: "ProductWithCollectionsGraphqlDTO";
         id?: any | null;
@@ -1062,6 +1160,7 @@ export type GetOrdersQuery = {
         __typename?: "RetailerGraphqlDTO";
         id?: any | null;
         store_name?: string | null;
+        billing_store_address_line_1?: string | null;
       } | null;
     } | null> | null;
   } | null;
@@ -1327,7 +1426,21 @@ export type GetProductsQuery = {
           medium_image_url?: string | null;
           large_image_url?: string | null;
         } | null> | null;
+        swatchImage?: {
+          __typename?: "SwatchImageGraphqlDTO";
+          id?: any | null;
+          large_image_url?: string | null;
+          medium_image_url?: string | null;
+          small_image_url?: string | null;
+        } | null;
       } | null> | null;
+      swatchImage?: {
+        __typename?: "SwatchImageGraphqlDTO";
+        id?: any | null;
+        large_image_url?: string | null;
+        medium_image_url?: string | null;
+        small_image_url?: string | null;
+      } | null;
     } | null> | null;
   } | null;
 };
@@ -1402,7 +1515,21 @@ export type GetProductByIdQuery = {
         medium_image_url?: string | null;
         large_image_url?: string | null;
       } | null> | null;
+      swatchImage?: {
+        __typename?: "SwatchImageGraphqlDTO";
+        id?: any | null;
+        large_image_url?: string | null;
+        medium_image_url?: string | null;
+        small_image_url?: string | null;
+      } | null;
     } | null> | null;
+    swatchImage?: {
+      __typename?: "SwatchImageGraphqlDTO";
+      id?: any | null;
+      large_image_url?: string | null;
+      medium_image_url?: string | null;
+      small_image_url?: string | null;
+    } | null;
   } | null;
 };
 
@@ -1491,6 +1618,130 @@ export type GetProductsBySearchAndCollectionIdQuery = {
           medium_image_url?: string | null;
           large_image_url?: string | null;
         } | null> | null;
+        swatchImage?: {
+          __typename?: "SwatchImageGraphqlDTO";
+          id?: any | null;
+          large_image_url?: string | null;
+          medium_image_url?: string | null;
+          small_image_url?: string | null;
+        } | null;
+      } | null> | null;
+      swatchImage?: {
+        __typename?: "SwatchImageGraphqlDTO";
+        id?: any | null;
+        large_image_url?: string | null;
+        medium_image_url?: string | null;
+        small_image_url?: string | null;
+      } | null;
+    } | null> | null;
+  } | null;
+};
+
+export type GetSectionsQueryVariables = Exact<{
+  collectionId: Scalars["BigInteger"];
+  search?: InputMaybe<Scalars["String"]>;
+  colourFamilies?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  seasons?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]>> | InputMaybe<Scalars["String"]>
+  >;
+  start?: InputMaybe<Scalars["Int"]>;
+  rows?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetSectionsQuery = {
+  __typename?: "Query";
+  sectionProductsBySearchAndCollectionId?: {
+    __typename?: "PageWrapper_SectionProductsGraphqlDTO";
+    total_pages: number;
+    total_elements: any;
+    number_of_elements: number;
+    size: number;
+    content?: Array<{
+      __typename?: "SectionProductsGraphqlDTO";
+      id?: any | null;
+      name?: string | null;
+      description?: string | null;
+      products?: Array<{
+        __typename?: "ProductWithCollectionsGraphqlDTO";
+        id?: any | null;
+        product_id?: string | null;
+        description?: string | null;
+        colour_code?: string | null;
+        colour_name?: string | null;
+        colour_families?: Array<string | null> | null;
+        keywords?: Array<string | null> | null;
+        first_category?: string | null;
+        second_category?: string | null;
+        third_category?: string | null;
+        fourth_category?: string | null;
+        compositions?: Array<string | null> | null;
+        country_of_origin?: string | null;
+        delivery_lead_time?: number | null;
+        delivery_window_end_date?: any | null;
+        delivery_window_start_date?: any | null;
+        upc?: string | null;
+        style_name?: string | null;
+        style_number?: string | null;
+        style_id?: string | null;
+        size_type?: string | null;
+        size_options?: Array<string | null> | null;
+        size_category?: string | null;
+        season?: string | null;
+        min_order_value?: number | null;
+        min_order_quantity?: number | null;
+        measurements?: Array<string | null> | null;
+        materials?: Array<string | null> | null;
+        attachments?: Array<{
+          __typename?: "ProductAttachmentGraphqlDTO";
+          id?: any | null;
+          small_image_url?: string | null;
+          medium_image_url?: string | null;
+          large_image_url?: string | null;
+        } | null> | null;
+        associated_prices?: Array<{
+          __typename?: "PriceGraphqlDTO";
+          currency?: string | null;
+          exworks?: any | null;
+          landed?: any | null;
+          retail?: any | null;
+        } | null> | null;
+        collections?: Array<{
+          __typename?: "CollectionGraphqlDTO";
+          id?: any | null;
+          name?: string | null;
+        } | null> | null;
+        productVariants?: Array<{
+          __typename?: "ProductVariantGraphqlDTO";
+          colour_code?: string | null;
+          colour_name?: string | null;
+          colour_families?: Array<string | null> | null;
+          id?: any | null;
+          product_id?: string | null;
+          style_number?: string | null;
+          attachments?: Array<{
+            __typename?: "ProductAttachmentGraphqlDTO";
+            id?: any | null;
+            small_image_url?: string | null;
+            medium_image_url?: string | null;
+            large_image_url?: string | null;
+          } | null> | null;
+          swatchImage?: {
+            __typename?: "SwatchImageGraphqlDTO";
+            id?: any | null;
+            large_image_url?: string | null;
+            medium_image_url?: string | null;
+            small_image_url?: string | null;
+          } | null;
+        } | null> | null;
+        swatchImage?: {
+          __typename?: "SwatchImageGraphqlDTO";
+          id?: any | null;
+          large_image_url?: string | null;
+          medium_image_url?: string | null;
+          small_image_url?: string | null;
+        } | null;
       } | null> | null;
     } | null> | null;
   } | null;
