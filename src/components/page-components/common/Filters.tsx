@@ -92,7 +92,7 @@ const Filters: FC<FiltersProps> = ({
   };
 
   return (
-    <div className="w-full min-h-[32px] z-[2] bg-shades-white" id="filters">
+    <div className="w-full min-h-[32px] z-[2] bg-shades-white print:hidden" id="filters">
       <div
         className={clsx(
           'w-full max-w-[1120px] mx-auto print:hidden pt-4 pb-6 flex items-center justify-between bg-shades-white',

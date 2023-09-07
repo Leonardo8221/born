@@ -4,10 +4,7 @@ import { StaticImageData } from 'next/image';
 import { Badge } from '../../Badge';
 import { Checkbox } from '../../Checkbox';
 import styles from './product.module.css';
-import {
-  ProductVariantGraphqlDto,
-  ProductWithCollectionsGraphqlDto,
-} from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import {
   clsProductCard,
   clsProductCardId,
@@ -20,6 +17,8 @@ import {
 import { useRouter } from 'next/router';
 import ColorVariant, { VariantColors } from '../../ColorVariant';
 import moment from 'moment';
+import { fonts } from '@/config/fonts';
+import ProductColors from './ProductColors';
 
 export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   size?: 'lg' | 'sm';
@@ -38,6 +37,7 @@ export interface ProductCardProps extends ProductWithCollectionsGraphqlDto {
   isCollection?: boolean;
   swatchImage?: any;
   productVariants?: any;
+  isPdf?: boolean;
 }
 
 export const ProductCard: FC<ProductCardProps> = ({
@@ -61,6 +61,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   selectedVariants,
   isCollection,
   swatchImage,
+  isPdf,
 }) => {
   const router = useRouter();
   const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
@@ -150,7 +151,15 @@ export const ProductCard: FC<ProductCardProps> = ({
             {style_name}
           </h3>
           <div className="flex items-center gap-2 flex-wrap">
-            {isCollection ? (
+            {isPdf && (
+              <ProductColors
+                colour_families={colour_families || []}
+                swatchImage={swatchImage?.small_image_url}
+                colour_name={colour_name || ''}
+                isHideLabel={true}
+              />
+            )}
+            {!isPdf && isCollection ? (
               <ColorVariant
                 colors={!!colour_families ? (colour_families as string[]) : []}
                 label={colour_name || ''}
@@ -158,7 +167,8 @@ export const ProductCard: FC<ProductCardProps> = ({
                 url={swatchImage?.small_image_url}
               />
             ) : null}
-            {!isCollection &&
+            {!isPdf &&
+              !isCollection &&
               productVariants?.map((variant: any, index: number) => (
                 <VariantColors
                   key={variant?.id}
@@ -184,14 +194,20 @@ export const ProductCard: FC<ProductCardProps> = ({
                 />
               ))}
           </div>
-          <div className={clsx(clsProductCardTags(size), 'mt-4 flex-wrap')}>
+          <div
+            className={clsx(
+              clsProductCardTags(size),
+              'print:!mt-2 flex-wrap',
+              size === 'lg' ? 'mt-4' : 'mt-2'
+            )}
+          >
             {collections?.map((collection: any) => (
               <div key={collection?.id} className="mb-1">
                 <Badge size={size}>{collection?.name}</Badge>
               </div>
             ))}
           </div>
-          {isCollection && (
+          {!isPdf && isCollection && (
             <ListView
               label="Available Styles"
               title={
@@ -200,7 +216,7 @@ export const ProductCard: FC<ProductCardProps> = ({
                   ?.join(', ') || ''
               }
               size={size}
-              isVisible={true}
+              isVisible={!isPdf}
             />
           )}
           <ListView
@@ -237,7 +253,14 @@ export const ProductCard: FC<ProductCardProps> = ({
                             {item?.currency && currencies[item.currency]}
                             {item.landed}
                           </h5>
-                          <p className={styles.priceLabel}>Landed</p>
+                          <p
+                            className={clsx(
+                              styles.priceLabel,
+                              size === 'lg' ? 'leading-[16px]' : 'leading-[8px]'
+                            )}
+                          >
+                            Landed
+                          </p>
                         </div>
                       </>
                     ) : null}
@@ -248,7 +271,14 @@ export const ProductCard: FC<ProductCardProps> = ({
                             {item?.currency && currencies[item.currency]}
                             {item.exworks}
                           </h5>
-                          <p className={styles.priceLabel}>Exworks</p>
+                          <p
+                            className={clsx(
+                              styles.priceLabel,
+                              size === 'lg' ? 'leading-[16px]' : 'leading-[8px]'
+                            )}
+                          >
+                            Exworks
+                          </p>
                         </div>
                       </>
                     ) : null}
@@ -259,7 +289,14 @@ export const ProductCard: FC<ProductCardProps> = ({
                             {item?.currency && currencies[item.currency]}
                             {item.retail}
                           </h5>
-                          <p className={styles.priceLabel}>MSRP</p>
+                          <p
+                            className={clsx(
+                              styles.priceLabel,
+                              size === 'lg' ? 'leading-[16px]' : 'leading-[8px]'
+                            )}
+                          >
+                            MSRP
+                          </p>
                         </div>
                       </>
                     ) : null}
@@ -272,6 +309,26 @@ export const ProductCard: FC<ProductCardProps> = ({
             title={size_options?.join(', ') || ''}
             size={size}
           />
+          {isPdf && (
+            <div
+              className={clsx(
+                '',
+                size === 'lg' ? 'mt-4' : 'mt-2'
+              )}
+            >
+              {productVariants?.map(
+                (item: any) =>
+                  item.id !== id && (
+                    <ProductColors
+                      key={item.id}
+                      swatchImage={item?.swatchImage?.small_image_url}
+                      colour_families={item?.colour_families || []}
+                      colour_name={item?.colour_name || ''}
+                    />
+                  )
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -294,7 +351,14 @@ const ListView: FC<{
           )}
         >
           <h5 className={clsx(clsProductCardPrice(size))}>{title}</h5>
-          <p className={styles.priceLabel}>{label}</p>
+          <p
+            className={clsx(
+              styles.priceLabel,
+              size === 'sm' ? '!leading-[8px]' : ''
+            )}
+          >
+            {label}
+          </p>
         </div>
       )}
     </>
