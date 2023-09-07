@@ -330,7 +330,7 @@ function OrderPreview() {
     !['DRAFT'].includes(orderDetails?.order_status);
 
   return (
-    <div className="mx-auto overflow-x-hidden order__page">
+    <div className="mx-auto overflow-x-hidden pdf_view">
       <Header
         id={orderDetails?.id}
         heading={orderDetails?.name}

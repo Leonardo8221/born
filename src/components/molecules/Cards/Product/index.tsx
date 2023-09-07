@@ -151,7 +151,7 @@ export const ProductCard: FC<ProductCardProps> = ({
             {style_name}
           </h3>
           <div className="flex items-center gap-2 flex-wrap">
-            {isPdf && (
+            {(isPdf || isCollection) && (
               <ProductColors
                 colour_families={colour_families || []}
                 swatchImage={swatchImage?.small_image_url}
@@ -159,14 +159,6 @@ export const ProductCard: FC<ProductCardProps> = ({
                 isHideLabel={true}
               />
             )}
-            {!isPdf && isCollection ? (
-              <ColorVariant
-                colors={!!colour_families ? (colour_families as string[]) : []}
-                label={colour_name || ''}
-                size={size}
-                url={swatchImage?.small_image_url}
-              />
-            ) : null}
             {!isPdf &&
               !isCollection &&
               productVariants?.map((variant: any, index: number) => (
@@ -207,18 +199,6 @@ export const ProductCard: FC<ProductCardProps> = ({
               </div>
             ))}
           </div>
-          {!isPdf && isCollection && (
-            <ListView
-              label="Available Styles"
-              title={
-                productVariants
-                  ?.map((item: any) => item?.colour_name)
-                  ?.join(', ') || ''
-              }
-              size={size}
-              isVisible={!isPdf}
-            />
-          )}
           <ListView
             label="Material"
             title={materials?.join(', ') || ''}
@@ -309,13 +289,8 @@ export const ProductCard: FC<ProductCardProps> = ({
             title={size_options?.join(', ') || ''}
             size={size}
           />
-          {isPdf && (
-            <div
-              className={clsx(
-                '',
-                size === 'lg' ? 'mt-4' : 'mt-2'
-              )}
-            >
+          {(isPdf || isCollection) && (
+            <div className={clsx(size === 'lg' ? 'mt-4' : 'mt-2')}>
               {productVariants?.map(
                 (item: any) =>
                   item.id !== id && (

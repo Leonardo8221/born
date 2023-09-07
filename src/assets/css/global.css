@@ -27,19 +27,19 @@ body {
 }
 
 @media print and (max-width: 874px) {
-  .order__page {
+  .pdf_view {
     zoom: 75%;
   }
 }
 
 @media print and (max-width: 560px) {
-  .order__page {
+  .pdf_view {
     zoom: 50%;
   }
 }
 
 @media print and (max-width: 421px) {
-  .order__page {
+  .pdf_view {
     zoom: 35%;
   }
 }

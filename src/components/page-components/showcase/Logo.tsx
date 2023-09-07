@@ -1,13 +1,15 @@
 import { FC, useState } from 'react';
 import LogoImage from '@/assets/images/placeholders/user.png';
 import { Heading } from '@/components/molecules/Heading';
+import { theme } from '@/config/theme';
 
 interface ShowcaseLogoProps {
   logoUrl?: string;
   name: string;
+  headingSize?: keyof typeof theme.fonts.headings;
 }
 
-const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl, name }) => {
+const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl, name, headingSize }) => {
   return (
     <div className="mt-8 text-center">
       <div className="relative flex items-center justify-center mx-auto h-[88px] w-[88px] rounded-full p-[7.33px] border border-neutral-200">
@@ -28,7 +30,7 @@ const ShowcaseLogo: FC<ShowcaseLogoProps> = ({ logoUrl, name }) => {
         )}
       </div>
       <Heading
-        size="md"
+        size={headingSize || "md"}
         as="h2"
         className="mt-4 mb-4 text-shades-black tracking-[0.06em]"
       >
