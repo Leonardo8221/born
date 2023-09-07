@@ -9,9 +9,7 @@ import clsx from 'clsx';
 import { FC } from 'react';
 
 interface ProductListProps {
-  product: ProductWithCollectionsGraphqlDto & {
-    swatchImage?: Maybe<ProductAttachmentGraphqlDto>;
-  };
+  product: ProductWithCollectionsGraphqlDto;
 }
 
 const ProductListItem: FC<ProductListProps> = ({ product }) => {
