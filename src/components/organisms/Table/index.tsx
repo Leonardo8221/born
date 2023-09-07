@@ -16,7 +16,7 @@ export interface TableProps {
 }
 
 export const Table: FC<TableProps> = ({
-  tableData = [],
+  tableData,
   columns,
   className = '',
   loading = false,
@@ -25,10 +25,10 @@ export const Table: FC<TableProps> = ({
   handleQuantities,
   handleOrderNote,
 }) => {
-  const [data, setData] = useState([...tableData]);
+  const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    if (tableData && Array.isArray(tableData) && tableData?.toString() !== data?.toString()) {
+    if (tableData && Array.isArray(tableData)) {
       setData(tableData);
     }
   }, [tableData]);

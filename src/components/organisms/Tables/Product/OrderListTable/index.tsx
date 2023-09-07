@@ -7,11 +7,16 @@ import { Table } from '../../../Table';
 import Badges from '../Badges';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Icon } from '@/components/molecules/Icon';
-import ColorVairant, {
+import {
   VariantColors,
 } from '@/components/molecules/ColorVariant';
 import moment from 'moment';
 
+enum retailPrices {
+  USD = 'usd_retail_price',
+  GBP = 'gbp_retail_price',
+  EUR = 'eur_retail_price',
+}
 export interface OrderDetails {
   products: any[];
   quantity?: number;
@@ -121,10 +126,8 @@ const OrderListTable: FC<OrderDetails> = ({
       size: 108,
       id: 'msrp',
       cell: (info: any) => {
-        const currency = pricing_condition?.split('_')?.[0];
-        const price = info?.row?.original?.product?.associated_prices?.filter(
-          (item: any) => item?.currency === currency
-        )?.[0]?.retail;
+        const currency: keyof typeof retailPrices = pricing_condition?.split('_')?.[0];
+        const price = info?.row?.original?.[retailPrices[currency]]
         return (
           <div
             className={clsx(
