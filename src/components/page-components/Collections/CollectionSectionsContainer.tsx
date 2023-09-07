@@ -329,7 +329,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   };
 
   return (
-    <div className='order__page'>
+    <div className='pdf_view'>
       <Header
         handlePrint={(e: GridType) => {
           setGridPrevState(gridType);
@@ -402,7 +402,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
               </div>
               <div
                 className={clsx(
-                  'grid mb-8 gap-8 pint:mb-4 print:gap-2 print:!grid-cols-6 print:sm:!grid-cols-6',
+                  'grid mb-8 gap-8 pint:mb-4 print:gap-8 print:justify-center print:!grid-cols-6 print:sm:!grid-cols-6',
                   gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
                 )}
               >

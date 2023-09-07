@@ -21,7 +21,7 @@ export interface CollectionCardProps {
 
 const clsVariations = {
   lg: {
-    cardSize: 'w-full max-w-[1120px] h-[436px]',
+    cardSize: 'w-full max-w-[1120px] h-[436px] print:max-w-none',
     innerImageSize: 'w-[92px] h-[92px]',
     clsLabel: clsx(
       fonts.text['2xl'],
@@ -72,7 +72,7 @@ export const CollectionCard: FC<CollectionCardProps> = ({
   editButtonText,
 }) => {
   return (
-    <div className="m-5 flex flex-col items-center">
+    <div className="m-5 flex flex-col items-center print:!mx-0">
       <div
         className={clsx(
           clsVariations[size].cardSize,

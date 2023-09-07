@@ -60,7 +60,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   setSelectedColours,
   setSelectedSeasons,
   searchKeyword,
-  setSearchKeyword
+  setSearchKeyword,
 }) => {
   const router = useRouter();
   const collectionId = router?.query?.collectionId
@@ -167,7 +167,8 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   useEffect(() => {
     const newProducts: any[] =
       productsCollection?.productsBySearchAndCollectionId?.content || [];
-    const pages = productsCollection?.productsBySearchAndCollectionId?.total_pages;
+    const pages =
+      productsCollection?.productsBySearchAndCollectionId?.total_pages;
     setTotalPages(pages ? pages : totalPages);
     if (!isProductDelete) {
       if (!!searchKeyword || !!selectedColours.length) {
@@ -416,7 +417,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   };
 
   return (
-    <div>
+    <div className='pdf_view'>
       <Header
         handlePrint={(e: GridType) => {
           setGridPrevState(gridType);
@@ -495,7 +496,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
               }}
               hasMore={!!totalPages && pageNo < totalPages}
               loader={
-                (pageNo + 1) < (totalPages || 0) && (
+                pageNo + 1 < (totalPages || 0) && (
                   <Loading message="Loading more products..." />
                 )
               }

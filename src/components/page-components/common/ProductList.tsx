@@ -77,7 +77,7 @@ const ProductList: FC<ProductListProps> = ({
   return (
     <div
       className={clsx(
-        'grid mb-8 gap-8 pint:mb-4 print:gap-2 print:place-items-center print:!grid-cols-3 print:sm:!grid-cols-4',
+        'grid mb-8 gap-8 pint:mb-4 print:gap-5 print:justify-center print:!grid-cols-6',
         gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
       )}
     >
