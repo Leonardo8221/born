@@ -14,6 +14,8 @@ import { BUYERS_QUERY, RETAILERS_QUERY } from '@/queries/filters';
 import { Action, Tags } from '@/components/page-components/common/Filters';
 import Footer from '@/components/layouts/Footer';
 import TopBar from '@/components/page-components/marketing/TopBar';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Loading from '@/components/page-components/Loading';
 
 const OrderPage = () => {
   const router: any = useRouter();
@@ -29,6 +31,11 @@ const OrderPage = () => {
   const [selectedRetailers, setSelectedRetailers] = useState<string[]>([]);
   const [selectedSeasons, setSelectedSeasons] = useState<string | null>(null);
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
+  const [pageNo, setPageNo] = useState(0);
+  const [rows] = useState(24);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState(null);
+  const [isOrderDelete, setIsOrderDelete] = useState(false);
 
   const debounceValue = useDebounce(searchKeyword, 600);
 
@@ -40,12 +47,33 @@ const OrderPage = () => {
       buyers: selectedBuyers,
       season: selectedSeasons,
       orderStatus: tabState,
-      start: 0,
-      rows: 500,
+      start: pageNo * rows,
+      rows,
       search: debounceValue,
     },
     fetchPolicy: 'network-only',
   });
+
+  const ordersBySearch = data?.ordersBySearch?.content || [];
+
+  useEffect(() => {
+    const newOrders = data?.ordersBySearch?.content || [];
+    const pages = data?.ordersBySearch?.total_pages;
+    setTotalPages(pages ? pages : totalPages);
+    if (!isOrderDelete) {
+      if (
+        !!selectedRetailers.length ||
+        !!selectedBuyers.length ||
+        !!selectedSeasons
+      ) {
+        setOrders(
+          pageNo !== 0 && pageNo > 0 ? [...orders, ...newOrders] : newOrders
+        );
+      } else if (!!newOrders.length) {
+        setOrders(pageNo !== 0 ? [...orders, ...newOrders] : newOrders);
+      }
+    }
+  }, [data]);
 
   const { data: buyers } = useQuery(BUYERS_QUERY, {
     variables: {
@@ -58,6 +86,7 @@ const OrderPage = () => {
   });
 
   const handleBuyersAction = (e: { id: number | string; label: string }) => {
+    setPageNo(0);
     if (selectedBuyers.includes(e.label)) {
       setSelectedBuyers(selectedBuyers?.filter((c) => c !== e.label));
     } else {
@@ -66,6 +95,7 @@ const OrderPage = () => {
   };
 
   const handleRetailersAction = (e: { id: number | string; label: string }) => {
+    setPageNo(0);
     if (selectedRetailers.includes(e.label)) {
       setSelectedRetailers(selectedRetailers?.filter((c) => c !== e.label));
     } else {
@@ -83,7 +113,10 @@ const OrderPage = () => {
         })) || [],
       selectedItems: selectedRetailers,
       action: handleRetailersAction,
-      onReset: () => setSelectedRetailers([]),
+      onReset: () => {
+        setSelectedRetailers([]);
+        setPageNo(0);
+      },
     },
     {
       label: 'Buyers',
@@ -94,16 +127,21 @@ const OrderPage = () => {
         })) || [],
       selectedItems: selectedBuyers,
       action: handleBuyersAction,
-      onReset: () => setSelectedBuyers([]),
+      onReset: () => {
+        setPageNo(0);
+        setSelectedBuyers([]);
+      },
     },
     {
       label: 'Season',
       options: seasons.map((s: string) => ({ id: s, label: s })),
       selectedItems: selectedSeasons ? [selectedSeasons] : [],
       action: (e: { id: string | number; label: string }) => {
+        setPageNo(0);
         setSelectedSeasons(e.label);
       },
       onReset: () => {
+        setPageNo(0);
         setSelectedSeasons(null);
       },
     },
@@ -129,10 +167,11 @@ const OrderPage = () => {
     handleTabChange(status);
   }, [router.isReady]);
 
-  const ordersBySearch = data?.ordersBySearch?.content || [];
-
   const handleOnSelect = useCallback(() => {
-    if (!selectedOrders.length || selectedOrders.length !== ordersBySearch.length) {
+    if (
+      !selectedOrders.length ||
+      selectedOrders.length !== ordersBySearch.length
+    ) {
       setSelectedOrders(ordersBySearch.map((item: any) => item.id));
     } else {
       setSelectedOrders([]);
@@ -183,6 +222,7 @@ const OrderPage = () => {
 
   const handleDeleteOrder = async (id?: number) => {
     setIsLoading(true);
+    setIsOrderDelete(true);
     try {
       const config = await apiConfig();
       const api = new OrderResourceApi(config);
@@ -191,6 +231,7 @@ const OrderPage = () => {
           api.apiOrderDeleteOrderDelete(item)
         );
         await Promise.all(promises);
+        setOrders(orders.filter((item) => !selectedOrders.includes(item.id)));
         setSelectedOrders([]);
         setSuccessMessage(
           selectedOrders.length <= 1
@@ -199,10 +240,12 @@ const OrderPage = () => {
         );
       } else {
         await api.apiOrderDeleteOrderDelete(id);
+        setOrders(orders.filter((item) => item.id !== id));
         setSuccessMessage('Order deleted successfully!');
       }
       await refetch();
       setIsLoading(false);
+      setIsOrderDelete(false);
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
@@ -212,98 +255,64 @@ const OrderPage = () => {
       setTimeout(() => {
         setErrorMessage('');
       }, 3000);
-      console.log(error);
+      setIsOrderDelete(false);
     }
+  };
+
+  const renderTabContent = (type: OrderStatus) => {
+    return (
+      <InfiniteScroll
+        dataLength={orders.length}
+        next={async () => {
+          const start = pageNo + 1;
+          totalPages && start < totalPages && setPageNo(start);
+        }}
+        hasMore={!!totalPages && pageNo < totalPages}
+        loader={
+          pageNo + 1 < (totalPages || 0) &&
+          orders.length && <Loading message="Loading more items..." />
+        }
+      >
+        <DraftTable
+          handleActions={handleActions}
+          actionsLoading={isLoading}
+          loading={!orders.length && loading}
+          type={type.toLowerCase()}
+          content={orders}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
+          filterTags={filterTags}
+          handleDelete={handleDeleteOrder}
+          selectedOrders={selectedOrders}
+          handleOnSelect={handleOnSelect}
+          handleOnOrderSelect={handleOnOrderSelect}
+          actions={actions}
+          onDeselect={() => setSelectedOrders([])}
+        />
+      </InfiniteScroll>
+    );
   };
 
   const tabs = [
     {
       id: 'DRAFT',
       label: 'Draft',
-      content: (
-        <DraftTable
-          handleActions={handleActions}
-          actionsLoading={isLoading}
-          loading={loading}
-          type="draft"
-          content={ordersBySearch}
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-          filterTags={filterTags}
-          handleDelete={handleDeleteOrder}
-          selectedOrders={selectedOrders}
-          handleOnSelect={handleOnSelect}
-          handleOnOrderSelect={handleOnOrderSelect}
-          actions={actions}
-          onDeselect={() => setSelectedOrders([])}
-        />
-      ),
+      content: renderTabContent(OrderStatus.Draft),
     },
     {
       id: 'CONFIRMED',
       label: 'Confirmed',
-      content: (
-        <DraftTable
-          handleActions={handleActions}
-          actionsLoading={isLoading}
-          loading={loading}
-          type="confirmed"
-          content={ordersBySearch}
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-          filterTags={filterTags}
-          handleDelete={handleDeleteOrder}
-          selectedOrders={selectedOrders}
-          handleOnSelect={handleOnSelect}
-          handleOnOrderSelect={handleOnOrderSelect}
-          actions={actions}
-          onDeselect={() => setSelectedOrders([])}
-        />
-      ),
+      content: renderTabContent(OrderStatus.Confirmed),
     },
     {
       id: 'APPROVED',
       label: 'Approved',
-      content: (
-        <DraftTable
-          handleActions={handleActions}
-          actionsLoading={isLoading}
-          loading={loading}
-          type="approved"
-          content={ordersBySearch}
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-          filterTags={filterTags}
-          handleDelete={handleDeleteOrder}
-          selectedOrders={selectedOrders}
-          handleOnSelect={handleOnSelect}
-          handleOnOrderSelect={handleOnOrderSelect}
-          actions={actions}
-          onDeselect={() => setSelectedOrders([])}
-        />
-      ),
+      content: renderTabContent(OrderStatus.Approved),
     },
     {
       id: 'CANCELLED',
       label: 'Cancelled',
-      content: (
-        <DraftTable
-          handleActions={handleActions}
-          actionsLoading={isLoading}
-          loading={loading}
-          type="cancelled"
-          content={ordersBySearch}
-          searchKeyword={searchKeyword}
-          setSearchKeyword={setSearchKeyword}
-          filterTags={filterTags}
-          handleDelete={handleDeleteOrder}
-          selectedOrders={selectedOrders}
-          handleOnSelect={handleOnSelect}
-          handleOnOrderSelect={handleOnOrderSelect}
-          actions={actions}
-          onDeselect={() => setSelectedOrders([])}
-        />
-      ),
+      content: renderTabContent(OrderStatus.Draft),
     },
   ];
 
@@ -312,7 +321,7 @@ const OrderPage = () => {
     if (path) {
       router.push(path);
     }
-  }
+  };
 
   return (
     <>
