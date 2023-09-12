@@ -13,7 +13,7 @@ const TopBar: FC<TopBarProps> = ({ title, onBack }) => {
   const router = useRouter();
 
   return (
-    <div className="fixed top-0 left-0 right-0 flex h-[72px] justify-between items-center bg-white w-full px-[32px] shadow-medium">
+    <div className="fixed top-0 left-0 right-0 flex h-[72px] justify-between items-center bg-shades-white w-full px-[32px] shadow-medium z-[10]">
       <div className="flex items-center gap-4">
         <div
           className="flex h-10 w-10 cursor-pointer items-center justify-center"

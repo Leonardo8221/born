@@ -1,7 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { CollectionCard } from '@/components/molecules/CollectionCard';
 import Header from '@/components/page-components/Collections/Header';
-import ProductList from '@/components/page-components/common/ProductList';
 import placeholderImage from '@/assets/images/placeholders/collection-preview.png';
 import Description from '@/components/page-components/Collections/Description';
 import Filters from '@/components/page-components/common/Filters';
@@ -10,16 +9,11 @@ import Footer from '@/components/layouts/Footer';
 import { useQuery } from '@apollo/client';
 import {
   COLLECTION_QUERY,
-  PRODUCTS_BY_COLLECTION_ID_QUERY,
 } from '@/queries/collecitons';
 import Loading from '@/components/page-components/Loading';
 import { useRouter } from 'next/router';
-import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
-import {
-  AttachmentResourceApi,
-  CollectionResourceApi,
-} from 'client/command';
+import { AttachmentResourceApi, CollectionResourceApi } from 'client/command';
 import EditCollection from '@/components/page-components/Collections/EditCollection';
 import Toast from '@/components/page-components/Toast';
 import { OrderList } from '@/components/page-components/order/OrdersList';
@@ -41,6 +35,7 @@ import { SECTIONS_BY_COLLECTION_ID_QUERY } from '@/queries/sections';
 import { Heading } from '@/components/molecules/Heading';
 import { Paragraph } from '@/components/molecules/Paragraph';
 import { Icon } from '@/components/molecules/Icon';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 interface CollectionSectionsContainerProps {
   isCollectionSection: boolean;
@@ -91,8 +86,8 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
     null
   );
   const [pageNo, setPageNo] = useState(0);
-  const [rows] = useState(1000);
-  const [products, setProducts] = useState<any[]>([]);
+  const [rows] = useState(5);
+  const [sections, setSections] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(null);
   const collectionDetailRef = useRef<any>(null);
   const [gridPrevState, setGridPrevState] = useState<GridType>('grid');
@@ -143,8 +138,8 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   const collection = collecitonData?.collectionByCollectionId;
 
   const {
-    data: productsCollection,
-    loading: productsCollectionLoading,
+    data: collectionSections,
+    loading: collectionSectionsLoading,
     refetch,
   } = useQuery(SECTIONS_BY_COLLECTION_ID_QUERY, {
     variables: {
@@ -160,28 +155,27 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   });
 
   useEffect(() => {
-    const newProducts: any[] =
-      productsCollection?.sectionProductsBySearchAndCollectionId?.content || [];
+    const newSections: any[] =
+      collectionSections?.sectionProductsBySearchAndCollectionId?.content || [];
+      const pages = collectionSections?.sectionProductsBySearchAndCollectionId?.total_pages;
+
+    setTotalPages(pages ? pages : totalPages);
     if (!isProductDelete) {
       if (!!searchKeyword || !!selectedColours.length) {
-        setProducts(
+        setSections(
           pageNo !== 0 && pageNo > 0
-            ? [...products, ...newProducts]
-            : newProducts
+            ? [...newSections, ...newSections]
+            : newSections
         );
-      } else if (!!newProducts.length) {
-        setProducts(
+      } else if (!!newSections.length) {
+        setSections(
           pageNo !== 0 && pageNo > 0
-            ? [...products, ...newProducts]
-            : newProducts
+            ? [...newSections, ...newSections]
+            : newSections
         );
-        !totalPages &&
-          setTotalPages(
-            productsCollection?.sectionProductsBySearchAndCollectionId?.total_pages
-          );
       }
     }
-  }, [productsCollection]);
+  }, [collectionSections]);
 
   useEffect(() => {
     window.onafterprint = () => {
@@ -211,7 +205,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       })),
       selectedItems: selectedColours,
       action: (e: { id: string | number; label: string }) => {
-        setProducts([]);
+        setSections([]);
         setPageNo(0);
         if (selectedColours.includes(e.label)) {
           setSelectedColours(selectedColours?.filter((c) => c !== e.label));
@@ -222,7 +216,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       onReset: () => {
         setSelectedColours([]);
         setPageNo(0);
-        setProducts([]);
+        setSections([]);
       },
     },
     {
@@ -233,7 +227,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       })),
       selectedItems: selectedSeasons,
       action: (e: { id: string | number; label: string }) => {
-        setProducts([]);
+        setSections([]);
         setPageNo(0);
         if (selectedSeasons.includes(e.label)) {
           setSelectedSeasons(selectedSeasons?.filter((c) => c !== e.label));
@@ -244,7 +238,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       onReset: () => {
         setSelectedSeasons([]);
         setPageNo(0);
-        setProducts([]);
+        setSections([]);
       },
     },
   ];
@@ -328,8 +322,79 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
     setSearchKeyword(e);
   };
 
+  const getProductIds = () => {
+    const productIds: any = [];
+    sections.forEach((item) => {
+      item.products.forEach((product: any) => {
+        productIds.push({
+          id: product.id,
+          selectedVariant: product.id,
+        });
+      });
+    });
+
+    return productIds;
+  };
+
+  const renderSections = (
+    <InfiniteScroll
+      dataLength={sections.length}
+      next={async () => {
+        const start = pageNo + 1;
+        totalPages && start <= totalPages && setPageNo(start);
+      }}
+      hasMore={!!totalPages && pageNo < totalPages}
+      loader={
+        pageNo + 1 < (totalPages || 0) && (
+          <Loading message="Loading more sections..." />
+        )
+      }
+      className="print:hidden"
+    >
+      {sections?.map((section) => (
+        <>
+          <div className="border rounded-2xl p-[57px] pb-0 mb-8 border-neutral-400">
+            <div className="text-center mb-8">
+              <Heading size="sm" className="text-shades-black">
+                {section?.name}
+              </Heading>
+              <Paragraph>{section?.description}</Paragraph>
+            </div>
+            <div
+              className={clsx(
+                'grid mb-8 gap-8 pint:mb-4 print:gap-8 print:justify-center print:!grid-cols-6 print:sm:!grid-cols-6',
+                gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
+              )}
+            >
+              {section?.products?.map(
+                (item: ProductWithCollectionsGraphqlDto) => (
+                  <ProductCard
+                    key={`${item?.id}`}
+                    size={gridType === 'smallGrid' ? 'sm' : 'lg'}
+                    isSelectable={isSelectable}
+                    isSelected={!!selectedRows?.includes(item.id)}
+                    selectedVariants={selectedVariants}
+                    onSelect={setSelectedRows}
+                    isCollection={!isPdf}
+                    isPdf={true}
+                    imageUrl={
+                      (gridType === 'grid'
+                        ? item?.attachments?.[0]?.large_image_url
+                        : item?.attachments?.[0]?.medium_image_url) || ''
+                    }
+                    {...item}
+                  />
+                )
+              )}
+            </div>
+          </div>
+        </>
+      ))}
+    </InfiniteScroll>
+  );
+
   return (
-    <div className='pdf_view'>
+    <div className="pdf_view">
       <Header
         handlePrint={(e: GridType) => {
           setGridPrevState(gridType);
@@ -337,12 +402,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
           setIsPdf(true);
         }}
         handleCreateOrder={() => {
-          setSelectedVariants(
-            products?.map((item: any) => ({
-              id: item.id,
-              selectedVariant: item.id,
-            }))
-          );
+          setSelectedVariants(getProductIds());
           setIsAddToDraft(true);
         }}
         handleErrorMessage={handleErrorMesssage}
@@ -384,60 +444,33 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
           searchKeyword={searchKeyword}
           onSearch={handleSearch}
           onDeselect={resetSelectedRows}
-          >
-            <div className='flex items-center border-neutral-400 pr-4 mr-4 border-r gap-2'>
-              <ToggleCollectionSection showSection={isCollectionSection} onChange={setIsCollectionSection} />
-            </div>
+        >
+          <div className="flex items-center border-neutral-400 pr-4 mr-4 border-r gap-2">
+            <ToggleCollectionSection
+              showSection={isCollectionSection}
+              onChange={setIsCollectionSection}
+            />
+          </div>
         </Filters>
-        {!products.length && productsCollectionLoading ? (
+        {!sections.length && collectionSectionsLoading ? (
           <div className="my-10 min-h-[400px]">
             <Loading message="Loading sections" />
           </div>
-        ) : products?.length ? products?.map(section => (
-          <>
-            <div className="border rounded-2xl p-[57px] pb-0 mb-8 border-neutral-400">
-              <div className="text-center mb-8">
-                <Heading size="sm" className="text-shades-black">{section?.name}</Heading>
-                <Paragraph>{section?.description}</Paragraph>
-              </div>
-              <div
-                className={clsx(
-                  'grid mb-8 gap-8 pint:mb-4 print:gap-8 print:justify-center print:!grid-cols-6 print:sm:!grid-cols-6',
-                  gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
-                )}
-              >
-                {section?.products?.map((item: ProductWithCollectionsGraphqlDto) => (
-                  <ProductCard
-                    key={`${item?.id}`}
-                    size={gridType === 'smallGrid' ? 'sm' : 'lg'}
-                    isSelectable={isSelectable}
-                    isSelected={!!selectedRows?.includes(item.id)}
-                    selectedVariants={selectedVariants}
-                    onSelect={setSelectedRows}
-                    isCollection={!isPdf}
-                    isPdf={true}
-                    imageUrl={
-                      (gridType === 'grid'
-                        ? item?.attachments?.[0]?.large_image_url
-                        : item?.attachments?.[0]?.medium_image_url) || ''
-                    }
-                    {...item}
-                  />
-                ))}
-              </div>
-            </div>
-          </>
-        )): (<div className="min-h-[300px] mt-20 mb-8 text-center">
-        <Icon
-          name="icon-info-circle"
-          className="mx-auto text-shades-black"
-          height={32}
-          width={32}
-        />
-        <p className="mt-2 mb-8 text-center text-shades-black text-[24px]">
-          No sections founds!!
-        </p>
-      </div>)}
+        ) : sections?.length ? (
+          renderSections
+        ) : (
+          <div className="min-h-[300px] mt-20 mb-8 text-center">
+            <Icon
+              name="icon-info-circle"
+              className="mx-auto text-shades-black"
+              height={32}
+              width={32}
+            />
+            <p className="mt-2 mb-8 text-center text-shades-black text-[24px]">
+              No sections founds!!
+            </p>
+          </div>
+        )}
       </div>
       <EditCollection
         isOpen={isEditModal}
