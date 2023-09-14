@@ -86,7 +86,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
     null
   );
   const [pageNo, setPageNo] = useState(0);
-  const [rows] = useState(5);
+  const [rows] = useState(1000);
   const [sections, setSections] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState(null);
   const collectionDetailRef = useRef<any>(null);
