@@ -72,11 +72,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({
 
                 {item.key !== 'buyer_id' && item.key !== 'retailer_id' && (
                   <Input
-                    onChange={(event: any) => {
-                      console.log(event.target.value, item.value);
-                      handleEditInputs(item.key, event?.target?.value);
-                    }
-                    }
+                    onChange={(event: any) => handleEditInputs(item.key, event?.target?.value)}
                     editMode={editMode}
                     label={item.name}
                     value={item.value}
