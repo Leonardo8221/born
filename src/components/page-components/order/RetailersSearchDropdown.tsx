@@ -39,7 +39,7 @@ const RetailersSearchDropdown: FC<RetailersSearchDropdownProps> = ({
   }, []);
 
   useEffect(() => {
-    setSearchKeyword(!searchKeyword ? value : searchKeyword);
+    setSearchKeyword(value);
   }, [value]);
 
   const { data, loading } = useQuery(GET_RETAILERS, {

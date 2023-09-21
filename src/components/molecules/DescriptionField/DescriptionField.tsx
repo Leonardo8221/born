@@ -6,7 +6,7 @@ import styles from './DescriptionField.module.css';
 export interface DescriptionFieldProps {
   onError?: (message: string) => void;
   onChange?: (event: string) => void;
-  label: string;
+  label?: string;
   value?: string;
   placeholder?: string;
   isError?: boolean;
@@ -14,6 +14,7 @@ export interface DescriptionFieldProps {
   className?: string;
   inputClasses?: string;
   readOnly?: boolean;
+  wrapperClasses?: string;
 }
 
 const DescriptionField: FC<DescriptionFieldProps> = ({
@@ -27,6 +28,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   inputClasses,
   disabled = false,
   readOnly = false,
+  wrapperClasses,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
@@ -44,11 +46,13 @@ const DescriptionField: FC<DescriptionFieldProps> = ({
   return (
     <div className={clsx('w-full', className)}>
       <div>
-        <label className={styles.label}>{label}</label>
+        {label && (
+          <label className={styles.label}>{label}</label>
+        )}
         <div
           className={clsx('w-full border border-[#CCCCCC] rounded h-[190px] print:!h-[140px]', {
             [styles.errorTextarea]: isError === true,
-          })}
+          }, wrapperClasses)}
         >
           <textarea
             disabled={disabled}

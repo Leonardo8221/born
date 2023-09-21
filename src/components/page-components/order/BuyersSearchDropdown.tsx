@@ -42,7 +42,7 @@ const BuyersSearchDropdown: FC<BuyersSearchDropdownProps> = ({
 
 
   useEffect(() => {
-    setSearchKeyword(!searchKeyword ? value : searchKeyword);
+    setSearchKeyword(value);
   }, [value]);
  
   const { data, loading } = useQuery(

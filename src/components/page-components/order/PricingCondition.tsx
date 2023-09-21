@@ -56,7 +56,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
           />
         </div>
         <Input
-          value={details?.discount}
+          value={details?.discount || ''}
           label="Discount (%)"
           min={0}
           type="number"
@@ -68,7 +68,7 @@ const PricingCondition: FC<PricingConditionProps> = ({
           disabled={isDisabled || disabled}
         />
         <Input
-          value={details?.surcharge}
+          value={details?.surcharge || ''}
           label="Surcharge (%)"
           type="number"
           name="surcharge"

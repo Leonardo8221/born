@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import OrderListTable from '@/components/organisms/Tables/Product/OrderListTable';
 import OrderDetails from '@/components/molecules/OrderDetails/OrderDetails';
 import { useQuery } from '@apollo/client';
@@ -97,86 +97,92 @@ function OrderPreview() {
   }, [debouncedSurcharge]);
 
   const handleEditInputs = (key: any, val: any) => {
+    console.log(key, val)
     let payload = { ...orderDetails };
     payload[key] = val;
     setDetails(payload);
   };
 
-  const columnData = {
-    column1: [
-      {
-        name: 'Purchase order',
-        key: 'purchase_order',
-        value: orderDetails?.purchase_order,
-      },
-      {
-        name: 'Retailer',
-        key: 'retailer_id',
-        value: `${orderDetails?.retailer_data?.store_name} ${orderDetails?.retailer_data?.billing_store_address_line_1}`,
-      },
-      {
-        name: 'Buyer name',
-        key: 'buyer_id',
-        value: orderDetails?.buyer_data?.buyer_name,
-        retailer_id: orderDetails?.retailer_id,
-      },
-      {
-        name: 'Email Address',
-        key: 'email_address',
-        value: orderDetails?.buyer_data?.email,
-      },
-    ],
-    column2: [
-      {
-        name: 'Billing address',
-        key: 'billing_address',
-        value: orderDetails?.billing_address,
-      },
-      {
-        name: 'Delivery address',
-        key: 'delivery_address',
-        inputType: 'textarea',
-        value: orderDetails?.delivery_address,
-      },
-    ],
-    column3: [
-      {
-        name: 'Payment terms',
-        key: 'payment_terms',
-        value: orderDetails?.payment_terms,
-      },
-      {
-        name: 'Delivery lead time',
-        key: 'delivery_lead_time',
-        inputType: 'datepicker',
-        value: `${orderDetails?.delivery_window_start_date || ''} - ${
-          orderDetails?.delivery_window_end_date || ''
-        }`,
-      },
-      {
-        name: 'Last updated',
-        key: 'last_updated',
-        value: orderDetails?.last_updated,
-      },
-      {
-        name: 'Last modified',
-        key: 'last_modified_by',
-        value: orderDetails?.last_modified_by,
-      },
-      {
-        name: 'Order type',
-        key: 'order_type',
-        value: orderDetails?.order_type,
-        options: orderTypes,
-      },
-      {
-        name: 'Season',
-        key: 'season',
-        value: orderDetails?.season,
-        options: seasons,
-      },
-    ],
-  };
+  const columnData = useMemo(
+    () => ({
+      column1: [
+        {
+          name: 'Purchase order',
+          key: 'purchase_order',
+          value: orderDetails?.purchase_order,
+        },
+        {
+          name: 'Retailer',
+          key: 'retailer_id',
+          value: `${orderDetails?.retailer_data?.store_name || ''} ${
+            orderDetails?.retailer_data?.billing_store_address_line_1 || ''
+          }`,
+        },
+        {
+          name: 'Buyer name',
+          key: 'buyer_id',
+          value: orderDetails?.buyer_data?.buyer_name || '',
+          retailer_id: orderDetails?.retailer_id,
+        },
+        {
+          name: 'Email Address',
+          key: 'email_address',
+          value: orderDetails?.buyer_data?.email || orderDetails?.email_address,
+        },
+      ],
+      column2: [
+        {
+          name: 'Billing address',
+          key: 'billing_address',
+          value: orderDetails?.billing_address,
+        },
+        {
+          name: 'Delivery address',
+          key: 'delivery_address',
+          inputType: 'textarea',
+          value: orderDetails?.delivery_address,
+        },
+      ],
+      column3: [
+        {
+          name: 'Payment terms',
+          key: 'payment_terms',
+          value: orderDetails?.payment_terms,
+        },
+        {
+          name: 'Delivery lead time',
+          key: 'delivery_lead_time',
+          inputType: 'datepicker',
+          value: `${orderDetails?.delivery_window_start_date || ''} - ${
+            orderDetails?.delivery_window_end_date || ''
+          }`,
+        },
+        {
+          name: 'Last updated',
+          key: 'last_updated',
+          value: orderDetails?.last_updated,
+        },
+        {
+          name: 'Last modified',
+          key: 'last_modified_by',
+          value: orderDetails?.last_modified_by,
+        },
+        {
+          name: 'Order type',
+          key: 'order_type',
+          value: orderDetails?.order_type,
+          options: orderTypes,
+        },
+        {
+          name: 'Season',
+          key: 'season',
+          value: orderDetails?.season,
+          options: seasons,
+        },
+      ],
+    }),
+    [orderDetails]
+  );
 
   const handleErrorMessage = (message: string) => {
     setErrorMessage(message);
@@ -321,6 +327,22 @@ function OrderPreview() {
     }
   };
 
+  const handleClear = () => {
+    setDetails({
+      ...orderDetails,
+      buyer_data: null,
+      retailer_data: null,
+      buyer_id: null,
+      retailer_id: null,
+      email_address: '',
+      billing_address: '',
+      delivery_address: '',
+      payment_terms: '',
+      order_type: '',
+      season: '',
+    });
+  };
+
   if (!details && loading) {
     return <Loading message="Loading details..." />;
   }
@@ -349,6 +371,8 @@ function OrderPreview() {
         setErrorMessage={handleErrorMessage}
         refetch={refetch}
         total_quantities={orderDetails?.total_quantity}
+        onChange={(value) => handleEditInputs('name', value)}
+        editMode={editMode}
       />
 
       <div className="mx-auto w-full max-w-[1120px] pt-16">
@@ -365,14 +389,24 @@ function OrderPreview() {
                   {editMode ? 'Cancel' : 'Edit Details'}
                 </Button>
                 {editMode && (
-                  <Button
-                    size="sm"
-                    onClick={handleSave}
-                    className="!text-[12px] !font-normal !px-[18.5] !py-0 ml-2"
-                    disabled={isLoading}
-                  >
-                    Save
-                  </Button>
+                  <>
+                    <Button
+                      size="sm"
+                      onClick={handleClear}
+                      variant="outlined"
+                      className="!text-shades-black !text-[12px] !font-normal !px-[18.5] hover:!text-shades-white ml-2"
+                    >
+                      Clear all
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleSave}
+                      className="!text-[12px] !font-normal !px-[18.5] !py-0 ml-2"
+                      disabled={isLoading}
+                    >
+                      Save
+                    </Button>
+                  </>
                 )}
               </div>
             </div>

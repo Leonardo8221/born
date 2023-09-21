@@ -51,7 +51,7 @@ const OrderPage = () => {
       rows,
       search: debounceValue,
     },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
 
   const ordersBySearch = data?.ordersBySearch?.content || [];
