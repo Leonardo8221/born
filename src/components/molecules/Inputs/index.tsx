@@ -1,4 +1,4 @@
-import { FC, HTMLProps, useRef, useState } from 'react';
+import { FC, HTMLProps, memo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { theme } from '@/config/theme';
 import styles from './Input.module.css';
@@ -85,8 +85,8 @@ const Input: FC<InputProps> = ({
                     cols={50}
                     className="w-full text-[#666666] font-light leading-tight focus:outline-none focus:shadow-outline h-full"
                     ref={inputRef}
+                    value={value || ''}
                   >
-                    {value}
                   </textarea>
                 </>
               ) : (
@@ -94,7 +94,7 @@ const Input: FC<InputProps> = ({
                   {...props}
                   className="w-full text-[#666666] font-light leading-tight focus:outline-none focus:shadow-outline h-full"
                   id="username"
-                  defaultValue={value}
+                  value={value || ''}
                   ref={inputRef}
                   readOnly={inputType === 'dropdown'}
                 />
@@ -136,4 +136,4 @@ const Input: FC<InputProps> = ({
   );
 };
 
-export default Input;
+export default memo(Input);

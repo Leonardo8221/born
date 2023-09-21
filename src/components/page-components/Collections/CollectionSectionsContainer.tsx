@@ -7,9 +7,7 @@ import Filters from '@/components/page-components/common/Filters';
 import { GridType } from '@/components/molecules/IconButtonGroup';
 import Footer from '@/components/layouts/Footer';
 import { useQuery } from '@apollo/client';
-import {
-  COLLECTION_QUERY,
-} from '@/queries/collecitons';
+import { COLLECTION_QUERY } from '@/queries/collecitons';
 import Loading from '@/components/page-components/Loading';
 import { useRouter } from 'next/router';
 import { apiConfig } from '@/utils/apiConfig';
@@ -157,7 +155,8 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   useEffect(() => {
     const newSections: any[] =
       collectionSections?.sectionProductsBySearchAndCollectionId?.content || [];
-      const pages = collectionSections?.sectionProductsBySearchAndCollectionId?.total_pages;
+    const pages =
+      collectionSections?.sectionProductsBySearchAndCollectionId?.total_pages;
 
     setTotalPages(pages ? pages : totalPages);
     if (!isProductDelete) {
@@ -336,7 +335,45 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
     return productIds;
   };
 
-  const renderSections = (
+  const renderSections = sections?.map((section) => (
+    <>
+      <div className="print:break-inside-avoid-page border rounded-2xl p-[57px] pb-0 mb-8 border-neutral-400">
+        <div className="text-center mb-8">
+          <Heading size="sm" className="text-shades-black">
+            {section?.name}
+          </Heading>
+          <Paragraph>{section?.description}</Paragraph>
+        </div>
+        <div
+          className={clsx(
+            'grid mb-8 gap-8 pint:mb-4 print:gap-8 print:justify-center print:!grid-cols-6 print:sm:!grid-cols-6',
+            gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
+          )}
+        >
+          {section?.products?.map((item: ProductWithCollectionsGraphqlDto) => (
+            <ProductCard
+              key={`${item?.id}`}
+              size={gridType === 'smallGrid' ? 'sm' : 'lg'}
+              isSelectable={isSelectable}
+              isSelected={!!selectedRows?.includes(item.id)}
+              selectedVariants={selectedVariants}
+              onSelect={setSelectedRows}
+              isCollection={!isPdf}
+              isPdf={true}
+              imageUrl={
+                (gridType === 'grid'
+                  ? item?.attachments?.[0]?.large_image_url
+                  : item?.attachments?.[0]?.medium_image_url) || ''
+              }
+              {...item}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  ));
+
+  const renderSectionsWithInfiniteScroll = (
     <InfiniteScroll
       dataLength={sections.length}
       next={async () => {
@@ -351,45 +388,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       }
       className="print:hidden"
     >
-      {sections?.map((section) => (
-        <>
-          <div className="border rounded-2xl p-[57px] pb-0 mb-8 border-neutral-400">
-            <div className="text-center mb-8">
-              <Heading size="sm" className="text-shades-black">
-                {section?.name}
-              </Heading>
-              <Paragraph>{section?.description}</Paragraph>
-            </div>
-            <div
-              className={clsx(
-                'grid mb-8 gap-8 pint:mb-4 print:gap-8 print:justify-center print:!grid-cols-6 print:sm:!grid-cols-6',
-                gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
-              )}
-            >
-              {section?.products?.map(
-                (item: ProductWithCollectionsGraphqlDto) => (
-                  <ProductCard
-                    key={`${item?.id}`}
-                    size={gridType === 'smallGrid' ? 'sm' : 'lg'}
-                    isSelectable={isSelectable}
-                    isSelected={!!selectedRows?.includes(item.id)}
-                    selectedVariants={selectedVariants}
-                    onSelect={setSelectedRows}
-                    isCollection={!isPdf}
-                    isPdf={true}
-                    imageUrl={
-                      (gridType === 'grid'
-                        ? item?.attachments?.[0]?.large_image_url
-                        : item?.attachments?.[0]?.medium_image_url) || ''
-                    }
-                    {...item}
-                  />
-                )
-              )}
-            </div>
-          </div>
-        </>
-      ))}
+      {renderSections}
     </InfiniteScroll>
   );
 
@@ -452,25 +451,28 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
             />
           </div>
         </Filters>
-        {!sections.length && collectionSectionsLoading ? (
-          <div className="my-10 min-h-[400px]">
-            <Loading message="Loading sections" />
-          </div>
-        ) : sections?.length ? (
-          renderSections
-        ) : (
-          <div className="min-h-[300px] mt-20 mb-8 text-center">
-            <Icon
-              name="icon-info-circle"
-              className="mx-auto text-shades-black"
-              height={32}
-              width={32}
-            />
-            <p className="mt-2 mb-8 text-center text-shades-black text-[24px]">
-              No sections founds!!
-            </p>
-          </div>
-        )}
+        <div className="print:hidden">
+          {!sections.length && collectionSectionsLoading ? (
+            <div className="my-10 min-h-[400px]">
+              <Loading message="Loading sections" />
+            </div>
+          ) : sections?.length ? (
+            renderSections
+          ) : (
+            <div className="min-h-[300px] mt-20 mb-8 text-center">
+              <Icon
+                name="icon-info-circle"
+                className="mx-auto text-shades-black"
+                height={32}
+                width={32}
+              />
+              <p className="mt-2 mb-8 text-center text-shades-black text-[24px]">
+                No sections founds!!
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="print:block">{renderSections}</div>
       </div>
       <EditCollection
         isOpen={isEditModal}

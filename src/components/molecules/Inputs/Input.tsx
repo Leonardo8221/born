@@ -1,11 +1,11 @@
-import { ChangeEvent, FC, InputHTMLAttributes } from 'react';
+import { ChangeEvent, FC, InputHTMLAttributes, memo } from 'react';
 import clsx from 'clsx';
 import styles from './Input.module.css';
 import CheckIcon from '@/assets/svgs/dark/icon-check.svg';
 
 export interface InputProps {
   value: string | number;
-  label: string;
+  label?: string;
   type?: string;
   name?: string;
   isValid?: boolean;
@@ -66,12 +66,14 @@ const Input: FC<InputProps> = ({
         )}
       >
         <div className="relative h-[56px]">
-          <label className={styles.label}>
-            {label}
-            {isRequired && (
-              <span className="text-neutral-600"> | Required</span>
-            )}
-          </label>
+          {label && (
+            <label className={styles.label}>
+              {label}
+              {isRequired && (
+                <span className="text-neutral-600"> | Required</span>
+              )}
+            </label>
+          )}
           {isEditMode ? null : (
             <div
               className={clsx(
@@ -81,7 +83,7 @@ const Input: FC<InputProps> = ({
               )}
             >
               <input
-                defaultValue={value}
+                value={value || ''}
                 placeholder={placeholder}
                 type={type}
                 min={min}
@@ -106,4 +108,4 @@ const Input: FC<InputProps> = ({
   );
 };
 
-export default Input;
+export default memo(Input);

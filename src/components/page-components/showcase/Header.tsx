@@ -14,7 +14,6 @@ const Header: FC<HeaderProps> = ({ heading = '', href = '', onClose }) => {
   const router = useRouter();
   const onBack = () => {
     const backPath = localStorage.getItem('edit_product_back_link');
-    console.log(backPath)
     backPath ? router.push(backPath) : router.back();
   };
   return (

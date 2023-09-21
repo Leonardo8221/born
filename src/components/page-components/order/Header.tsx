@@ -10,6 +10,9 @@ import { OrderReportResourceApi, OrderResourceApi } from 'client/command';
 import { download, downloadFile } from '@/utils/downloadFile';
 import { Icon } from '@/components/molecules/Icon';
 import { Logo } from '@/components/atoms/Logo';
+import Input from '@/components/molecules/Inputs/Input';
+import { fonts } from '@/config/fonts';
+import clsx from 'clsx';
 
 interface HeaderProps {
   heading: string;
@@ -26,6 +29,8 @@ interface HeaderProps {
   setErrorMessage?: (message: string) => void;
   refetch?: () => void;
   total_quantities?: number;
+  editMode?: boolean;
+  onChange?: (value: string) => void;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -38,6 +43,8 @@ const Header: FC<HeaderProps> = ({
   setSuccessMessage,
   refetch,
   total_quantities,
+  editMode,
+  onChange,
 }) => {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
@@ -53,7 +60,10 @@ const Header: FC<HeaderProps> = ({
         { responseType: 'blob' }
       );
       file = response?.data as any;
-      download(response.data as any, response?.headers?.['content-disposition']);
+      download(
+        response.data as any,
+        response?.headers?.['content-disposition']
+      );
     } catch (error) {
       console.log(error);
       handleErrorMessage?.('Failed to download file!');
@@ -119,99 +129,106 @@ const Header: FC<HeaderProps> = ({
 
   return (
     <>
-    <PrintHeader heading={heading} />
-    <div className="print:hidden flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[32px]">
-      <div className="flex w-[620px] gap-4 items-center">
-        <ArrowIconLeft
-          height={40}
-          width={40}
-          className="cursor-pointer"
-          onClick={() => router.back()}
-        />
-        <Pill label={getStatus()} appearance={'outlined'} size={'sm'} />
-        <Heading fontWeight="light" size="sm">
-          {heading}
-        </Heading>
-      </div>
-      <div className="flex items-center gap-x-4">
-        <div>
-          {!status?.approved && !status.cancelled && !status?.confirmed && (
-            <Button
-              label={'Add note'}
-              {...{ variant: 'outlined' }}
-              className="relative"
-              onClick={addNote}
-              disabled={isLoading}
-            >
-              <Icon name="icon-message-square" />
-            </Button>
-          )}
-          {status?.confirmed && (
-            <Button
-              label={'Revert to draft'}
-              {...{ variant: 'outlined' }}
-              className="relative"
-              onClick={() => handleActions('revert')}
-              disabled={isLoading}
-            ></Button>
-          )}
-        </div>
-        <div>
-          <DropdownMenu
-            options={items}
-            variant="button"
-            label="Download"
-            buttonProps={{
-              variant: 'outlined',
-            }}
+      <PrintHeader heading={heading} />
+      <div className="print:hidden flex w-full max-w-[1440px] mx-auto items-center justify-between pt-[32px] px-[32px]">
+        <div className="flex w-[620px] gap-4 items-center">
+          <ArrowIconLeft
+            height={40}
+            width={40}
+            className="cursor-pointer"
+            onClick={() => router.back()}
           />
+          <Pill label={getStatus()} appearance={'outlined'} size={'sm'} />
+          {editMode ? (
+            <Input
+              value={heading}
+              onChange={(value) => onChange?.(value)}
+              className="!border-neutral-400 !rounded-[4px] [&>div]:!h-auto"
+              inputProps={{ className: clsx(fonts.headings.md, 'px-[14px] !outline-none !leading-[48px]')}}
+            />
+          ) : (
+            <Heading fontWeight="light" size="sm">
+              {heading}
+            </Heading>
+          )}
         </div>
-        <div>
-          {!status?.approved && !status.cancelled && !status?.confirmed && (
-            <Button
-              className="!w-[172px] !px-[28px] text-[14px] leading-6"
-              disabled={!total_quantities || isLoading}
-              onClick={() => handleActions('confirm')}
-            >
-              Confirm
-            </Button>
-          )}
-          {status?.confirmed && (
-            <Button
-              className="!w-[172px] !px-[28px] text-[14px] leading-6"
-              onClick={() => handleActions('approve')}
-              disabled={isLoading}
-            >
-              Approve
-            </Button>
-          )}
-          {status?.approved && (
-            <Button
-              className="!w-[172px] !px-[28px] text-[14px] leading-6"
-              onClick={() => handleActions('cancel')}
-              disabled={isLoading}
-            >
-              Cancel order
-            </Button>
-          )}
+        <div className="flex items-center gap-x-4">
+          <div>
+            {!status?.approved && !status.cancelled && !status?.confirmed && (
+              <Button
+                label={'Add note'}
+                {...{ variant: 'outlined' }}
+                className="relative"
+                onClick={addNote}
+                disabled={isLoading}
+              >
+                <Icon name="icon-message-square" />
+              </Button>
+            )}
+            {status?.confirmed && (
+              <Button
+                label={'Revert to draft'}
+                {...{ variant: 'outlined' }}
+                className="relative"
+                onClick={() => handleActions('revert')}
+                disabled={isLoading}
+              ></Button>
+            )}
+          </div>
+          <div>
+            <DropdownMenu
+              options={items}
+              variant="button"
+              label="Download"
+              buttonProps={{
+                variant: 'outlined',
+              }}
+            />
+          </div>
+          <div>
+            {!status?.approved && !status.cancelled && !status?.confirmed && (
+              <Button
+                className="!w-[172px] !px-[28px] text-[14px] leading-6"
+                disabled={!total_quantities || isLoading}
+                onClick={() => handleActions('confirm')}
+              >
+                Confirm
+              </Button>
+            )}
+            {status?.confirmed && (
+              <Button
+                className="!w-[172px] !px-[28px] text-[14px] leading-6"
+                onClick={() => handleActions('approve')}
+                disabled={isLoading}
+              >
+                Approve
+              </Button>
+            )}
+            {status?.approved && (
+              <Button
+                className="!w-[172px] !px-[28px] text-[14px] leading-6"
+                onClick={() => handleActions('cancel')}
+                disabled={isLoading}
+              >
+                Cancel order
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 };
 
-const PrintHeader: FC<{ heading: string; }> = ({
-  heading,
-}) => (
-  <div className='hidden print:flex items-center max-w-[1440px] mx-auto p-8'>
-    <Logo variant='dark' />
-    <div className='w-full text-center'>
+const PrintHeader: FC<{ heading: string }> = ({ heading }) => (
+  <div className="hidden print:flex items-center max-w-[1440px] mx-auto p-8">
+    <Logo variant="dark" />
+    <div className="w-full text-center">
       <Heading fontWeight="light" size="sm">
         {heading}
       </Heading>
     </div>
   </div>
-)
+);
 
 export default Header;
