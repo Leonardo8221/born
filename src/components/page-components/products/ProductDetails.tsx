@@ -61,11 +61,12 @@ const ProductDetailsPage = () => {
 
   const currentProduct = product?.productByProductId;
 
-  const collectionId = product?.productByProductId?.collections?.[0]?.id || '';
+  const collectionId = product?.productByProductId?.collections?.[0]?.id || null;
 
   const { data: collectionProducts, loading: collectionProductsLoading } =
     useQuery(GET_PRODUCTS_BY_COLLECTION_ID, {
       variables: { collectionId: Number(collectionId), start: 0, rows: 3 },
+      skip: collectionId === null,
     });
 
   const content = collectionProducts?.productsBySearchAndCollectionId?.content;

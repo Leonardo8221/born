@@ -10,6 +10,7 @@ const SettingsPage = () => {
   const router = useRouter();
   const { data } = useQuery(GET_ORGANIZATION_BY_ID, {
     variables: { id: Number(router.query.id) },
+    skip: !router?.query?.id,
   });
   const currentOrganization =
     data?.userOrganizationByOrganizationId?.organization;

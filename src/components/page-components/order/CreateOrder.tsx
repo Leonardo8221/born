@@ -77,6 +77,7 @@ export const CreateOrder: FC<CreatOrderProps> = ({
       retailerId: details.retailer_id,
       buyerName: debouncedBuyerName,
     },
+    skip: !details.retailer_id,
   });
 
   const { data: retailers, loading: isLoadingRetailers } = useQuery(

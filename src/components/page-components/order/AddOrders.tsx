@@ -32,7 +32,7 @@ const AddOrders = ({
 }: AddOrderProp) => {
   const router = useRouter();
   const id = router?.query?.id || '';
-  const organizationId: number = +id;
+  const organizationId: number | null = id ? Number(id) : null;
 
   const [activeId, setActiveId] = useState<number>(0);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -51,6 +51,7 @@ const AddOrders = ({
       orderStatus: OrderStatus.Draft,
     },
     notifyOnNetworkStatusChange: true,
+    skip: organizationId === null,
   });
   const content = data?.ordersBySearch?.content || [];
 

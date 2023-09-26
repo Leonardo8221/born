@@ -14,7 +14,6 @@ import {
 } from '@/queries/collecitons';
 import Loading from '@/components/page-components/Loading';
 import { useRouter } from 'next/router';
-import useDebounce from '@/utils/debounce';
 import { apiConfig } from '@/utils/apiConfig';
 import {
   AttachmentResourceApi,
@@ -82,13 +81,8 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
-  const [pageNo, setPageNo] = useState(0);
-  const [rows] = useState(24);
-  const [products, setProducts] = useState<any[]>([]);
-  const [totalPages, setTotalPages] = useState(null);
   const collectionDetailRef = useRef<any>(null);
   const [gridPrevState, setGridPrevState] = useState<GridType>('grid');
-  const [isProductDelete, setIsProductDelete] = useState(false);
   const [isPdf, setIsPdf] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
 
@@ -130,6 +124,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
       collectionId,
     },
     notifyOnNetworkStatusChange: true,
+    skip: collectionId === null,
   });
 
   const collection = collecitonData?.collectionByCollectionId;
@@ -138,14 +133,15 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
     data: productsCollection,
     loading: productsCollectionLoading,
     refetch,
+    fetchMore,
   } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
     variables: {
       collectionId: collectionId,
       search: debouncedValue.toString().toLowerCase(),
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
-      rows,
-      start: pageNo * rows,
+      rows: 24,
+      start: 0,
     },
     fetchPolicy: 'network-only',
     skip: collectionId === null,
@@ -164,28 +160,10 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   const collectionProducts =
     allProducts?.productsBySearchAndCollectionId?.content || [];
 
-  useEffect(() => {
-    const newProducts: any[] =
-      productsCollection?.productsBySearchAndCollectionId?.content || [];
-    const pages =
-      productsCollection?.productsBySearchAndCollectionId?.total_pages;
-    setTotalPages(pages ? pages : totalPages);
-    if (!isProductDelete) {
-      if (!!searchKeyword || !!selectedColours.length) {
-        setProducts(
-          pageNo !== 0 && pageNo > 0
-            ? [...products, ...newProducts]
-            : newProducts
-        );
-      } else if (!!newProducts.length) {
-        setProducts(
-          pageNo !== 0 && pageNo > 0
-            ? [...products, ...newProducts]
-            : newProducts
-        );
-      }
-    }
-  }, [productsCollection]);
+  const products =
+    productsCollection?.productsBySearchAndCollectionId?.content || [];
+  const totalItems =
+    productsCollection?.productsBySearchAndCollectionId?.total_elements;
 
   useEffect(() => {
     window.onafterprint = () => {
@@ -215,8 +193,6 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
       })),
       selectedItems: selectedColours,
       action: (e: { id: string | number; label: string }) => {
-        setProducts([]);
-        setPageNo(0);
         if (selectedColours.includes(e.label)) {
           setSelectedColours(selectedColours?.filter((c) => c !== e.label));
         } else {
@@ -225,8 +201,6 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
       },
       onReset: () => {
         setSelectedColours([]);
-        setPageNo(0);
-        setProducts([]);
       },
     },
     {
@@ -237,8 +211,6 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
       })),
       selectedItems: selectedSeasons,
       action: (e: { id: string | number; label: string }) => {
-        setProducts([]);
-        setPageNo(0);
         if (selectedSeasons.includes(e.label)) {
           setSelectedSeasons(selectedSeasons?.filter((c) => c !== e.label));
         } else {
@@ -247,8 +219,6 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
       },
       onReset: () => {
         setSelectedSeasons([]);
-        setPageNo(0);
-        setProducts([]);
       },
     },
   ];
@@ -271,7 +241,6 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
 
   const handleRemoveProducts = async (id?: number) => {
     setIsLoading(true);
-    setIsProductDelete(true);
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
@@ -280,18 +249,16 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
         Number(collectionId),
         productIds
       );
-      setProducts(products.filter((item) => !productIds.includes(item.id)));
+      await refetch();
       handleSuccessMesssage(
         `Removed ${
           selectedVariants.length || 1
         } products from collections sucessfully!!`
       );
       setIsLoading(false);
-      setIsProductDelete(false);
       resetSelectedRows();
     } catch (error: any) {
       setIsLoading(false);
-      setIsProductDelete(false);
       handleErrorMesssage(
         error?.message || 'Failed to removed products, please try again!'
       );
@@ -301,13 +268,12 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
 
   const handleDeleteProducts = async (id?: number) => {
     setIsLoading(true);
-    setIsProductDelete(true);
     try {
       const ids = id ? [id] : selectedVariants;
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductDeleteProductsDelete(ids);
-      setProducts(products.filter((item) => !ids.includes(item.id)));
+      await refetch();
       setIsLoading(false);
       handleSuccessMesssage(
         `Deleted ${selectedVariants.length || 1} products successfully!`
@@ -385,6 +351,19 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
     },
   ];
 
+  const handleDragItems = async (items: { [key: string]: number }) => {
+    try {
+      const config: any = await apiConfig();
+      const api = new ProductResourceApi(config);
+      await api.apiProductUpdateProductPositionsPut(items);
+      handleSuccessMesssage('Successfully updated product position!');
+    } catch (error: any) {
+      handleErrorMesssage(
+        error?.message || 'Failed to change product position!'
+      );
+    }
+  };
+
   if (!collection && loading) {
     return <Loading message="Loading collections" />;
   }
@@ -397,6 +376,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
       selectedVariants={selectedVariants}
       selectedProducts={selectedRows}
       onSelect={setSelectedRows}
+      handleDragItems={handleDragItems}
       type="collection"
       hanldeAddToDraftOrder={(id) => {
         setSelectedRows({ id, selectedVariant: id });
@@ -412,12 +392,29 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   );
 
   const handleSearch = (e: string) => {
-    setPageNo(0);
     setSearchKeyword(e);
   };
 
+  const handleFetchMore = () => {
+    fetchMore({
+      variables: { start: products.length },
+      updateQuery: (prev: any, { fetchMoreResult }: any) => {
+        const prevItems = prev?.productsBySearchAndCollectionId?.content || [];
+        const nextItems =
+          fetchMoreResult?.productsBySearchAndCollectionId?.content || [];
+        if (!fetchMoreResult) return prev;
+        return {
+          productsBySearchAndCollectionId: {
+            ...fetchMoreResult?.productsBySearchAndCollectionId,
+            content: [...prevItems, ...nextItems],
+          },
+        };
+      },
+    });
+  };
+
   return (
-    <div className='pdf_view'>
+    <div className="pdf_view">
       <Header
         handlePrint={(e: GridType) => {
           setGridPrevState(gridType);
@@ -491,12 +488,11 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
             <InfiniteScroll
               dataLength={products.length}
               next={async () => {
-                const start = pageNo + 1;
-                totalPages && start <= totalPages && setPageNo(start);
+                totalItems > products.length && handleFetchMore();
               }}
-              hasMore={!!totalPages && pageNo < totalPages}
+              hasMore={totalItems > products.length}
               loader={
-                pageNo + 1 < (totalPages || 0) && (
+                totalItems > products.length && (
                   <Loading message="Loading more products..." />
                 )
               }

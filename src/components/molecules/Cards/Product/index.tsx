@@ -90,6 +90,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   );
 
   const handleCardPreview = (e: any) => {
+    e.preventDefault();
     router.query.product_id = selectedVariant || id;
     router.push(router, undefined, { shallow: true });
   };

@@ -104,6 +104,7 @@ const CollectionPage = () => {
     variables: {
       collectionId,
     },
+    skip: collectionId === null,
     notifyOnNetworkStatusChange: true,
   });
 

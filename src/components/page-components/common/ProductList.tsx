@@ -6,8 +6,9 @@ import {
 } from '@/components/molecules/Cards/Product';
 import { GridType } from '@/components/molecules/IconButtonGroup';
 import ListTable from '@/components/organisms/Tables/Product/ListTable';
-import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { Icon } from '@/components/molecules/Icon';
+import DraggableCards from '@/components/organisms/DraggableCards';
+import SortableItem from '@/components/organisms/DraggableCards/SortableItem';
 
 interface ProductListProps {
   products: ProductCardProps[];
@@ -26,6 +27,7 @@ interface ProductListProps {
   handleAddToCollection?: (id: number) => void;
   handleDeleteProduct?: (id: number) => void;
   type?: 'products' | 'collection';
+  handleDragItems?: (items: { [key: string]: number}) => void;
 }
 
 const ProductList: FC<ProductListProps> = ({
@@ -39,6 +41,7 @@ const ProductList: FC<ProductListProps> = ({
   hanldeAddToDraftOrder,
   type,
   selectedVariants,
+  handleDragItems
 }) => {
   if (!products?.length) {
     return (
@@ -75,13 +78,38 @@ const ProductList: FC<ProductListProps> = ({
   }
 
   return (
-    <div
-      className={clsx(
-        'grid mb-8 gap-8 pint:mb-4 print:gap-5 print:justify-center print:!grid-cols-6',
-        gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
+    <DraggableCards
+      list={products}
+      onDragEnd={(items) => handleDragItems?.(items)}
+      renderChilds={(items: any) => (
+        <div
+          className={clsx(
+            'grid mb-8 gap-8 pint:mb-4 print:gap-5 print:justify-center print:!grid-cols-6',
+            gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
+          )}
+        >
+          {items?.map((item: any) => (
+            <SortableItem key={item?.id} id={item?.id}>
+              <ProductCard
+                key={`${item?.id}`}
+                size={gridType === 'smallGrid' ? 'sm' : 'lg'}
+                isSelectable={selectable}
+                isSelected={!!selectedProducts?.includes(item.id)}
+                selectedVariants={selectedVariants}
+                onSelect={onSelect}
+                isCollection={type === 'collection'}
+                imageUrl={
+                  (gridType === 'grid'
+                    ? item?.attachments?.[0]?.large_image_url
+                    : item?.attachments?.[0]?.medium_image_url) || ''
+                }
+                {...item}
+              />
+            </SortableItem>
+          ))}
+        </div>
       )}
-    >
-      {products?.map((item: ProductWithCollectionsGraphqlDto) => (
+      activeElement={(item: any) => (
         <ProductCard
           key={`${item?.id}`}
           size={gridType === 'smallGrid' ? 'sm' : 'lg'}
@@ -97,8 +125,8 @@ const ProductList: FC<ProductListProps> = ({
           }
           {...item}
         />
-      ))}
-    </div>
+      )}
+    />
   );
 };
 

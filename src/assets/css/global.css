@@ -63,3 +63,11 @@ body {
 .image__preview__slider .slick-prev::before {
   display: none;
 }
+
+.media input[type='file'] {
+  cursor: pointer;
+}
+
+.media ::-webkit-file-upload-button {
+  cursor:pointer;
+}

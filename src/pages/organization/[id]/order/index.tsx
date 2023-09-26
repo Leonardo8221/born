@@ -31,15 +31,10 @@ const OrderPage = () => {
   const [selectedRetailers, setSelectedRetailers] = useState<string[]>([]);
   const [selectedSeasons, setSelectedSeasons] = useState<string | null>(null);
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
-  const [pageNo, setPageNo] = useState(0);
-  const [rows] = useState(24);
-  const [orders, setOrders] = useState<any[]>([]);
-  const [totalPages, setTotalPages] = useState(null);
-  const [isOrderDelete, setIsOrderDelete] = useState(false);
 
   const debounceValue = useDebounce(searchKeyword, 600);
 
-  const { data, refetch, loading } = useQuery(GET_ORDERS, {
+  const { data, refetch, loading, fetchMore } = useQuery(GET_ORDERS, {
     variables: {
       key: GET_ORDERS_LIST,
       organizationId,
@@ -47,46 +42,30 @@ const OrderPage = () => {
       buyers: selectedBuyers,
       season: selectedSeasons,
       orderStatus: tabState,
-      start: pageNo * rows,
-      rows,
+      start: 0,
+      rows: 24,
       search: debounceValue,
     },
     fetchPolicy: 'cache-and-network',
+    skip: !id,
   });
 
   const ordersBySearch = data?.ordersBySearch?.content || [];
-
-  useEffect(() => {
-    const newOrders = data?.ordersBySearch?.content || [];
-    const pages = data?.ordersBySearch?.total_pages;
-    setTotalPages(pages ? pages : totalPages);
-    if (!isOrderDelete) {
-      if (
-        !!selectedRetailers.length ||
-        !!selectedBuyers.length ||
-        !!selectedSeasons
-      ) {
-        setOrders(
-          pageNo !== 0 && pageNo > 0 ? [...orders, ...newOrders] : newOrders
-        );
-      } else if (!!newOrders.length) {
-        setOrders(pageNo !== 0 ? [...orders, ...newOrders] : newOrders);
-      }
-    }
-  }, [data]);
+  const totalItems = data?.ordersBySearch?.total_elements;
 
   const { data: buyers } = useQuery(BUYERS_QUERY, {
     variables: {
       organizationId,
     },
+    skip: !id,
   });
 
   const { data: retailers } = useQuery(RETAILERS_QUERY, {
     variables: { organizationId },
+    skip: !id,
   });
 
   const handleBuyersAction = (e: { id: number | string; label: string }) => {
-    setPageNo(0);
     if (selectedBuyers.includes(e.label)) {
       setSelectedBuyers(selectedBuyers?.filter((c) => c !== e.label));
     } else {
@@ -95,7 +74,6 @@ const OrderPage = () => {
   };
 
   const handleRetailersAction = (e: { id: number | string; label: string }) => {
-    setPageNo(0);
     if (selectedRetailers.includes(e.label)) {
       setSelectedRetailers(selectedRetailers?.filter((c) => c !== e.label));
     } else {
@@ -115,7 +93,6 @@ const OrderPage = () => {
       action: handleRetailersAction,
       onReset: () => {
         setSelectedRetailers([]);
-        setPageNo(0);
       },
     },
     {
@@ -128,7 +105,6 @@ const OrderPage = () => {
       selectedItems: selectedBuyers,
       action: handleBuyersAction,
       onReset: () => {
-        setPageNo(0);
         setSelectedBuyers([]);
       },
     },
@@ -137,11 +113,9 @@ const OrderPage = () => {
       options: seasons.map((s: string) => ({ id: s, label: s })),
       selectedItems: selectedSeasons ? [selectedSeasons] : [],
       action: (e: { id: string | number; label: string }) => {
-        setPageNo(0);
         setSelectedSeasons(e.label);
       },
       onReset: () => {
-        setPageNo(0);
         setSelectedSeasons(null);
       },
     },
@@ -172,7 +146,7 @@ const OrderPage = () => {
       !selectedOrders.length ||
       selectedOrders.length !== ordersBySearch.length
     ) {
-      setSelectedOrders(ordersBySearch.map((item: any) => item.id));
+      setSelectedOrders(ordersBySearch?.map((item: any) => item.id) || []);
     } else {
       setSelectedOrders([]);
     }
@@ -222,7 +196,6 @@ const OrderPage = () => {
 
   const handleDeleteOrder = async (id?: number) => {
     setIsLoading(true);
-    setIsOrderDelete(true);
     try {
       const config = await apiConfig();
       const api = new OrderResourceApi(config);
@@ -231,7 +204,6 @@ const OrderPage = () => {
           api.apiOrderDeleteOrderDelete(item)
         );
         await Promise.all(promises);
-        setOrders(orders.filter((item) => !selectedOrders.includes(item.id)));
         setSelectedOrders([]);
         setSuccessMessage(
           selectedOrders.length <= 1
@@ -240,12 +212,10 @@ const OrderPage = () => {
         );
       } else {
         await api.apiOrderDeleteOrderDelete(id);
-        setOrders(orders.filter((item) => item.id !== id));
         setSuccessMessage('Order deleted successfully!');
       }
       await refetch();
       setIsLoading(false);
-      setIsOrderDelete(false);
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
@@ -255,30 +225,47 @@ const OrderPage = () => {
       setTimeout(() => {
         setErrorMessage('');
       }, 3000);
-      setIsOrderDelete(false);
     }
   };
+
+  const handleFetchMore = () => {
+    fetchMore({
+      variables: { start: ordersBySearch.length },
+      updateQuery: (prev: any, { fetchMoreResult }: any) => {
+        const prevItems =
+          prev?.ordersBySearch?.content || [];
+        const nextItems =
+          fetchMoreResult?.ordersBySearch?.content || [];
+        if (!fetchMoreResult) return prev;
+        return {
+          ordersBySearch: {
+            ...fetchMoreResult?.ordersBySearch,
+            content: [...prevItems, ...nextItems],
+          },
+        };
+      },
+    });
+  }
 
   const renderTabContent = (type: OrderStatus) => {
     return (
       <InfiniteScroll
-        dataLength={orders.length}
+        dataLength={ordersBySearch?.length}
         next={async () => {
-          const start = pageNo + 1;
-          totalPages && start < totalPages && setPageNo(start);
+          totalItems > ordersBySearch?.length && handleFetchMore();
         }}
-        hasMore={!!totalPages && pageNo < totalPages}
+        hasMore={totalItems > ordersBySearch?.length}
         loader={
-          pageNo + 1 < (totalPages || 0) &&
-          orders.length && <Loading message="Loading more items..." />
+          totalItems > ordersBySearch?.length && <Loading message="Loading more items..." />
         }
+        style={{ minHeight: '400px' }}
       >
         <DraftTable
           handleActions={handleActions}
           actionsLoading={isLoading}
-          loading={!orders.length && loading}
+          loading={!ordersBySearch?.length && loading}
           type={type.toLowerCase()}
-          content={orders}
+          content={ordersBySearch}
           searchKeyword={searchKeyword}
           setSearchKeyword={setSearchKeyword}
           filterTags={filterTags}
@@ -327,7 +314,7 @@ const OrderPage = () => {
     <>
       <TopBar title="Order Management" onBack={onBack} />
       <div className="min-h-[calc(100vh-72px)] pt-[72px] mt-2">
-        <div className="max-w-[1120px] mx-auto">
+        <div className="max-w-[1120px] mx-auto h-full">
           <Tabs
             tabs={tabs}
             active={activeTab}
