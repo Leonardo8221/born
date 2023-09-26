@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const { data, loading, refetch } = useQuery(GET_ORGANIZATION_BY_ID, {
     variables: { id: Number(router.query.id) },
     notifyOnNetworkStatusChange: true,
+    skip: !router?.query?.id,
   });
   const currentOrganization =
     data?.userOrganizationByOrganizationId?.organization;

@@ -24,9 +24,10 @@ const CollectionsForm: FC<CollectionsFormProps> = ({ product }) => {
   const [selectedCollections, setSelectedCollections] = useState([]);
 
   const router = useRouter();
-  const organizationId = Number(router?.query?.id);
+  const organizationId = router?.query?.id ? Number(router?.query?.id) : router?.query?.id;
   const { data, loading } = useQuery(COLLECTION_FILTER_QUERY, {
     variables: { organizationId },
+    skip: organizationId === null,
   });
 
   useEffect(() => {

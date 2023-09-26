@@ -44,78 +44,55 @@ const Products: FC = () => {
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
   const [selectedSeasons, setSelectedSeasons] = useState<string[]>([]);
-  const [pageNo, setPageNo] = useState(0);
-  const [rows] = useState(24);
-  const [products, setProducts] = useState<any[]>([]);
-  const [totalPages, setTotalPages] = useState(null);
-  const [isProductDelete, setIsProductDelete] = useState(false);
   const [productId, setProductId] = useState<null | number>(null);
 
   const router = useRouter();
-  const id = router?.query?.id || '';
-  const organizationId: number = +id;
+  const id = router?.query?.id || null;
+  const organizationId: number | null = id ? Number(id) : null;
 
   useEffect(() => {
     const product_id: any = router?.query?.product_id || null;
     setProductId(product_id);
   }, [router]);
 
-  const { data, error, loading, refetch }: any = useQuery(PRODUCTS_QUERY, {
-    variables: {
-      organizationId,
-      search: debouncedValue.toString().toLowerCase(),
-      collectionNames: selectedCollections,
-      colourFamilies: selectedColours,
-      seasons: selectedSeasons,
-      rows: rows,
-      start: pageNo * rows,
-    },
-    fetchPolicy: 'network-only',
-  });
-
-  useEffect(() => {
-    const newProducts: any[] =
-      data?.productsBySearchAndOrganizationId?.content || [];
-    const pages = data?.productsBySearchAndOrganizationId?.total_pages;
-      setTotalPages(pages ? pages : totalPages);
-    if (!isProductDelete) {
-      if (
-        !!searchKeyword ||
-        !!selectedCollections.length ||
-        !!selectedColours.length
-      ) {
-        setProducts(
-          pageNo !== 0 && pageNo > 0
-            ? [...products, ...newProducts]
-            : newProducts
-        );
-      } else if (!!newProducts.length) {
-        const newProducts: any[] =
-          data?.productsBySearchAndOrganizationId?.content || [];
-        setProducts(pageNo !== 0 ? [...products, ...newProducts] : newProducts);
-        
-      }
+  const { data, error, loading, refetch, fetchMore }: any = useQuery(
+    PRODUCTS_QUERY,
+    {
+      variables: {
+        organizationId,
+        search: debouncedValue.toString().toLowerCase(),
+        collectionNames: selectedCollections,
+        colourFamilies: selectedColours,
+        seasons: selectedSeasons,
+        rows: 24,
+        start: 0,
+      },
+      fetchPolicy: 'network-only',
+      skip: organizationId === null,
     }
-  }, [data]);
+  );
+  const products = data?.productsBySearchAndOrganizationId?.content || [];
+  const totalItems = data?.productsBySearchAndOrganizationId?.total_elements;
 
   const { data: collections } = useQuery(COLLECTION_FILTER_QUERY, {
     variables: { organizationId },
+    skip: organizationId === null,
     fetchPolicy: 'network-only',
   });
 
   const { data: colourFamilies } = useQuery(COLOUR_FAMILIES_QUERY, {
     variables: { organizationId },
+    skip: organizationId === null,
     notifyOnNetworkStatusChange: true,
   });
 
   const { data: seasons } = useQuery(SEASONS_BY_ORGANIZATION_ID, {
     variables: { organizationId },
+    skip: organizationId === null,
     notifyOnNetworkStatusChange: true,
   });
 
   const handleFilterCollections = (e: Item) => {
-    setProducts([]);
-    setPageNo(0);
     if (selectedCollections.includes(e.label)) {
       setSelectedCollections(selectedCollections?.filter((c) => c !== e.label));
     } else {
@@ -124,8 +101,6 @@ const Products: FC = () => {
   };
 
   const handleFilterColours = (e: Item) => {
-    setProducts([]);
-    setPageNo(0);
     if (selectedColours.includes(e.label)) {
       setSelectedColours(selectedColours?.filter((c) => c !== e.label));
     } else {
@@ -134,8 +109,6 @@ const Products: FC = () => {
   };
 
   const handleFilterSeasons = (e: Item) => {
-    setProducts([]);
-    setPageNo(0);
     if (selectedSeasons.includes(e.label)) {
       setSelectedSeasons(selectedSeasons?.filter((c) => c !== e.label));
     } else {
@@ -156,8 +129,6 @@ const Products: FC = () => {
       selectedItems: selectedCollections,
       onReset: () => {
         setSelectedCollections([]);
-        setProducts([]);
-        setPageNo(0);
       },
     },
     {
@@ -171,8 +142,6 @@ const Products: FC = () => {
       selectedItems: selectedColours,
       onReset: () => {
         setSelectedColours([]);
-        setProducts([]);
-        setPageNo(0);
       },
     },
     {
@@ -186,8 +155,7 @@ const Products: FC = () => {
       selectedItems: selectedSeasons,
       onReset: () => {
         setSelectedSeasons([]);
-        // setProducts([]);
-        setPageNo(0);
+        //
       },
     },
   ];
@@ -240,14 +208,16 @@ const Products: FC = () => {
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      const res: any = await api.apiCollectionCreateNewCollectionPost(
-        organizationId,
-        newCollection
-      );
-      await handleAddToCollection(res?.data?.id);
+      if(organizationId) {
+        const res: any = await api.apiCollectionCreateNewCollectionPost(
+          organizationId,
+          newCollection
+        );
+        await handleAddToCollection(res?.data?.id);
+        handleSuccessMesssage('New collection added successfully!');
+        setIsCreateModal(false);
+      }
       setIsLoading(false);
-      setIsCreateModal(false);
-      handleSuccessMesssage('New collection added successfully!');
     } catch (error) {
       handleErrorMesssage('Faild to add new collection!');
       console.error(error);
@@ -255,14 +225,12 @@ const Products: FC = () => {
   };
 
   const handleDeleteProducts = async (id?: number) => {
-    setIsProductDelete(true);
     setIsLoading(true);
-    const productIds = id ? [id] : selectedVariants;
     try {
       const config: any = await apiConfig();
       const api = new ProductResourceApi(config);
       await api.apiProductDeleteProductsDelete(id ? [id] : selectedVariants);
-      // await refetch();
+      await refetch();
       setIsLoading(false);
       handleSuccessMesssage(
         selectedVariants.length > 0
@@ -270,14 +238,11 @@ const Products: FC = () => {
           : 'Deleted product successfully!'
       );
       resetSelectedRows();
-      setIsProductDelete(false);
-      setProducts(products?.filter((item) => !productIds.includes(item.id)));
     } catch (error: any) {
       setIsLoading(false);
       handleErrorMesssage(
         error?.message || 'Failed to delete produts, please try again!'
       );
-      setIsProductDelete(false);
     }
   };
 
@@ -303,6 +268,38 @@ const Products: FC = () => {
     return <ErrorMessage errorMessage={error?.message} refetch={refetch} />;
   }
 
+  const handleFetchMore = () => {
+    fetchMore({
+      variables: { start: products.length },
+      updateQuery: (prev: any, { fetchMoreResult }: any) => {
+        const prevItems =
+          prev?.productsBySearchAndOrganizationId?.content || [];
+        const nextItems =
+          fetchMoreResult?.productsBySearchAndOrganizationId?.content || [];
+        if (!fetchMoreResult) return prev;
+        return {
+          productsBySearchAndOrganizationId: {
+            ...fetchMoreResult?.productsBySearchAndOrganizationId,
+            content: [...prevItems, ...nextItems],
+          },
+        };
+      },
+    });
+  };
+
+  const handleDragItems = async(items: { [key: string]: number }) => {
+    try {
+      const config: any = await apiConfig();
+      const api = new ProductResourceApi(config);
+      await api.apiProductUpdateProductPositionsPut(items);
+      handleSuccessMesssage('Successfully updated product position!');
+    } catch (error: any) {
+      handleErrorMesssage(
+        error?.message || 'Failed to change product position!'
+      );
+    }
+  }
+
   return (
     <div>
       <div className="relative max-w-[1120px] mx-auto">
@@ -314,7 +311,6 @@ const Products: FC = () => {
             searchKeyword={searchKeyword}
             onSearch={(keyword: string) => {
               setSearchKeyword(keyword);
-              setPageNo(0);
             }}
             isSelectable={isSelectable}
             filterTags={filterTags}
@@ -330,12 +326,11 @@ const Products: FC = () => {
             <InfiniteScroll
               dataLength={products.length}
               next={async () => {
-                const start = pageNo + 1;
-                totalPages && start < totalPages && setPageNo(start);
+                totalItems > products.length && handleFetchMore();
               }}
-              hasMore={!!totalPages && pageNo < totalPages}
+              hasMore={totalItems > products.length}
               loader={
-                (pageNo + 1) < (totalPages || 0) && (
+                totalItems > products.length && (
                   <Loading message="Loading more products..." />
                 )
               }
@@ -346,6 +341,7 @@ const Products: FC = () => {
                 selectable={isSelectable}
                 selectedProducts={selectedRows}
                 selectedVariants={selectedVariants}
+                handleDragItems={handleDragItems}
                 hanldeAddToDraftOrder={(id) => {
                   setSelectedRows({
                     id,

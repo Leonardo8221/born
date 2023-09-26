@@ -26,13 +26,14 @@ const Collections: FC<CollectionsProps> = ({
 }) => {
   const router = useRouter();
   const id = router?.query?.id || '';
-  const organizationId: number = +id;
+  const organizationId: number | null = id ? Number(id) : null;
   const [isCreateModal, setIsCreateModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   const { data, loading, error, refetch } = useQuery(COLLECTIONS_QUERY, {
     variables: { organizationId, rows: 50 },
+    skip: organizationId === null,
     fetchPolicy: 'network-only',
   });
 
@@ -57,13 +58,15 @@ const Collections: FC<CollectionsProps> = ({
     try {
       const config: any = await apiConfig();
       const api = new CollectionResourceApi(config);
-      await api.apiCollectionCreateNewCollectionPost(
-        organizationId,
-        newCollection
-      );
-      await refetch();
-      toggleCollectionsModal?.(false);
-      handleSuccessMesssage('New collection added successfully!');
+      if(organizationId) {
+        await api.apiCollectionCreateNewCollectionPost(
+          organizationId,
+          newCollection
+        );
+        await refetch();
+        toggleCollectionsModal?.(false);
+        handleSuccessMesssage('New collection added successfully!');
+      }
     } catch (error) {
       handleErrorMesssage('Faild to add new collection!');
       console.error(error);

@@ -131,6 +131,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       collectionId,
     },
     notifyOnNetworkStatusChange: true,
+    skip: collectionId === null,
   });
 
   const collection = collecitonData?.collectionByCollectionId;

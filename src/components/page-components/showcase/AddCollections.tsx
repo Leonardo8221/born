@@ -22,10 +22,11 @@ const AddCollections: FC<AddCollectionsProps> = ({
 }) => {
   const router = useRouter();
   const id = router?.query?.id || '';
-  const organizationId: number = +id;
+  const organizationId: number | null = id ? Number(id) : null;
 
   const { data, loading, refetch } = useQuery(COLLECTIONS_QUERY, {
     variables: { organizationId },
+    skip: organizationId === null,
   });
 
   useEffect(() => {

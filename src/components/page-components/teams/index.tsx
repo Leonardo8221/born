@@ -12,13 +12,15 @@ import Toast from '../Toast';
 
 const Teams = () => {
   const router = useRouter();
-  const organizationId = Number(router?.query?.id);
+  const id = router?.query?.id;
+  const organizationId: number | null = id ? Number(id) : null;
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   const { data, loading, refetch } = useQuery(USERS_QUERY, {
     variables: { organizationId },
     fetchPolicy: 'network-only',
+    skip: organizationId === null,
   });
 
   const handleErrorMesssage = (message: string) => {
@@ -41,12 +43,14 @@ const Teams = () => {
     try {
       const config = await apiConfig();
       const api = new UserOrganizationResourceApi(config);
-      await api.apiUserOrganizationRemoveUserFromOrganizationPut(
-        organizationId,
-        userId
-      );
-      await refetch();
-      handleSuccessMesssage('User removed successfully!');
+      if(organizationId) {
+        await api.apiUserOrganizationRemoveUserFromOrganizationPut(
+          organizationId,
+          userId
+        );
+        await refetch();
+        handleSuccessMesssage('User removed successfully!');
+      }
     } catch (error: any) {
       handleErrorMesssage(error?.message || 'Failed to remove user!');
       console.error(error);
@@ -60,24 +64,26 @@ const Teams = () => {
     try {
       const config = await apiConfig();
       const api = new UserOrganizationResourceApi(config);
-      const arr = users?.map((user) =>
-        api.apiUserOrganizationAddUserToOrganizationPut(
-          organizationId,
-          user.role,
-          Number(user.user_id)
-        )
-      );
-      await Promise.all([arr]);
-      callback?.([
-        {
-          id: Date.now(),
-          email: '',
-          role: 'MANAGER',
-          user_id: '',
-        },
-      ]);
-      await refetch();
-      handleSuccessMesssage(`Invited ${users?.length} users successfully!`);
+      if(organizationId) {
+        const arr = users?.map((user) =>
+          api.apiUserOrganizationAddUserToOrganizationPut(
+            organizationId,
+            user.role,
+            Number(user.user_id)
+          )
+        );
+        await Promise.all([arr]);
+        callback?.([
+          {
+            id: Date.now(),
+            email: '',
+            role: 'MANAGER',
+            user_id: '',
+          },
+        ]);
+        await refetch();
+        handleSuccessMesssage(`Invited ${users?.length} users successfully!`);
+      }
     } catch (error) {
       handleErrorMesssage('Failed to invite users!');
     }

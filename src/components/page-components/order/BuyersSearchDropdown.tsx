@@ -52,6 +52,7 @@ const BuyersSearchDropdown: FC<BuyersSearchDropdownProps> = ({
         retailerId,
         buyerName: debouncedValue || null,
       },
+      skip: retailerId === null,
     }
   );
 

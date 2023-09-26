@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  ProductWithCollectionsGraphqlDto,
-} from '@/generated/types';
+import { ProductWithCollectionsGraphqlDto } from '@/generated/types';
 import { Button } from '@/components/molecules/Button';
 import { apiConfig } from '@/utils/apiConfig';
 import Toast from '../Toast';
@@ -10,6 +8,8 @@ import { Icon } from '@/components/molecules/Icon';
 import { AttachmentResourceApi } from 'client/command';
 import { useRouter } from 'next/router';
 import Loading from '../Loading';
+import DraggableCards from '@/components/organisms/DraggableCards';
+import SortableItem from '@/components/organisms/DraggableCards/SortableItem';
 
 interface MediaFormProps {
   product: ProductWithCollectionsGraphqlDto;
@@ -18,47 +18,33 @@ interface MediaFormProps {
 }
 
 const MediaForm: FC<MediaFormProps> = ({ product, refetch, loading }) => {
-  const [attachments, setAttachments] = useState<any[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMesage] = useState('');
-  const [id, setId] = useState<number | null>(null);
 
   const router = useRouter();
   const organizationId = Number(router?.query?.id);
 
-  useEffect(() => {
-    setAttachments(product?.attachments || []);
-  }, [product]);
-
-  const handleUpload = async (e: any, index: number) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    setId(index);
-    setIsSubmitted(true);
+  const handleUpload = async (files: File[]) => {
+    setIsUploading(true);
     try {
       const config = await apiConfig();
       const api = new AttachmentResourceApi(config);
-      await api.apiAttachmentUploadProductImagePost(
+      await api.apiAttachmentUploadProductImagesPost(
         organizationId,
         product?.id,
-        file,
-        file.name
+        files
       );
-      const updatedAttachments = [...attachments];
-      const selectedAttachments = updatedAttachments[index];
-      selectedAttachments.medium_image_url = URL.createObjectURL(file);
-      updatedAttachments[index] = selectedAttachments;
-      setAttachments(updatedAttachments);
-      setSuccessMessage('Product Image uploaded successfully!');
+      setSuccessMessage('Product Images uploaded successfully!');
       setTimeout(() => setSuccessMessage(''), 3000);
-      setTimeout(async() => {
+      setTimeout(async () => {
         await refetch();
-        setIsSubmitted(false);
-      }, 3000)
+        setIsUploading(false);
+      }, 5000);
     } catch (error) {
-      setIsSubmitted(false);
-      setErrorMesage('Failed to upload product image!');
+      setIsUploading(false);
+      setErrorMesage('Failed to upload product images!');
       setTimeout(() => setErrorMesage(''), 3000);
       console.error(error);
     }
@@ -82,80 +68,96 @@ const MediaForm: FC<MediaFormProps> = ({ product, refetch, loading }) => {
     }
   };
 
-  if(loading) {
-    <Loading message='Loading attachments' />
+  const handleFileChange = (e: any) => {
+    const files: any = e?.target?.files || [];
+    const filesArr: File[] = Array.from(files)?.map((item: any) => item) || [];
+    handleUpload(filesArr);
+  };
+
+  const handleDragItems = async (items: { [key: string]: number; }) => {
+    setIsSubmitted(true);
+    try {
+      const config = await apiConfig();
+      const api = new AttachmentResourceApi(config);
+      await api.apiAttachmentUpdateProductAttachmentPositionsPut(product?.id, items);
+      await refetch();
+      setIsSubmitted(false);
+      setSuccessMessage('Image position changed successfully!');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      setIsSubmitted(false);
+      setErrorMesage('Failed to change image position!');
+      setTimeout(() => setErrorMesage(''), 3000);
+      console.error(error);
+    }
+  };
+
+  const renderImage = (item: any) => (
+    <div key={item?.id} className="h-[352px] w-[352px] p-6 bg-shades-white">
+      <div className="relative flex flex-col justify-center items-center w-full h-full rounded bg-neutral-200">
+        {item?.medium_image_url && (
+          <>
+            <img
+              src={item.medium_image_url}
+              alt="File"
+              className="object-cover w-full h-full rounded"
+            />
+            <Button
+              size="sm"
+              color="white"
+              className="absolute bottom-6 right-6 !text-[12px] !font-light hover:!bg-shades-black hover:!text-shades-white"
+              onClick={() => handleDeleteAttachment(item?.id)}
+              disabled={isSubmitted}
+            >
+              Delete
+            </Button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  if (loading || isUploading) {
+    return (
+      <Loading
+        message={
+          loading
+            ? 'Loading attachments'
+            : 'It will take a few seconds to upload images...'
+        }
+      />
+    );
   }
 
   return (
     <div className="max-w-[1119px]">
-      <div className="flex flex-wrap gap-4">
-        {attachments?.map((item, index) => (
-          <div
-            key={item?.id}
-            className="h-[352px] w-[352px] p-6 bg-shades-white"
-          >
-            <div className="relative flex flex-col justify-center items-center w-full h-full rounded bg-neutral-200">
-              {item?.medium_image_url ? (
-                <>
-                  <img
-                    src={item.medium_image_url}
-                    alt="File"
-                    className="object-cover w-full h-full rounded"
-                  />
-                  <Button
-                    size="sm"
-                    color="white"
-                    className="absolute bottom-6 right-6 !text-[12px] !font-light hover:!bg-shades-black hover:!text-shades-white"
-                    onClick={() => handleDeleteAttachment(item?.id)}
-                    disabled={isSubmitted}
-                  >
-                    Delete
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <input
-                    type="file"
-                    className="cursor-pointer opacity-0 absolute left-0 top-0 w-full h-full z-10"
-                    onChange={(e) => handleUpload(e, index)}
-                    disabled={isSubmitted}
-                  />
-                  {(isSubmitted && id === index) ? (
-                    <Loading message="It will take a few seconds to upload" className='px-6' />
-                  ) : (
-                    <div>
-                      <ImageUpload
-                        height={32}
-                        width={32}
-                        className="mx-auto mb-6"
-                      />
-                      <Button
-                        size="sm"
-                        variant="outlined"
-                        className="!border-[#999999] !text-[12px] !font-light"
-                      >
-                        Upload
-                      </Button>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+      <DraggableCards
+        list={product?.attachments || []}
+        onDragEnd={(items) => handleDragItems?.(items)}
+        renderChilds={(items: any) => (
+          <div className="flex flex-wrap gap-4">
+            {items?.map((item: any) => (
+              <SortableItem key={item?.id} id={item?.id}>
+                {renderImage(item)}
+              </SortableItem>
+            ))}
           </div>
-        ))}
-      </div>
+        )}
+        activeElement={(item: any) => renderImage(item)}
+      />
       <div>
-        <div className="inline-flex">
+        <div className="media inline-flex">
           <Button
             variant="link"
-            className="!bg-shades-white !text-shades-black"
-            onClick={() =>
-              setAttachments([
-                ...attachments,
-                { id: new Date(), medium_image_url: '' },
-              ])
-            }
+            className="relative !bg-shades-white !text-shades-black"
           >
+            <input
+              type="file"
+              multiple
+              className="absolute w-full h-full left-0 top-0 opacity-0"
+              onChange={handleFileChange}
+              accept="image/png, image/gif, image/jpeg"
+            />
             <Icon name="icon-add" /> Add Media
           </Button>
         </div>

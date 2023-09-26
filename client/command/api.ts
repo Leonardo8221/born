@@ -1049,6 +1049,48 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
+         * @param {number} [productId] 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUpdateProductAttachmentPositionsPut: async (productId?: number, requestBody?: { [key: string]: number; }, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/attachment/update-product-attachment-positions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (productId !== undefined) {
+                localVarQueryParameter['product_id'] = productId;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} collectionId 
          * @param {FileType} fileType 
          * @param {File} [file] 
@@ -1234,6 +1276,64 @@ export const AttachmentResourceApiAxiosParamCreator = function (configuration?: 
          * 
          * @param {number} organizationId 
          * @param {number} productId 
+         * @param {Array<File>} [files] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUploadProductImagesPost: async (organizationId: number, productId: number, files?: Array<File>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationId' is not null or undefined
+            assertParamExists('apiAttachmentUploadProductImagesPost', 'organizationId', organizationId)
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('apiAttachmentUploadProductImagesPost', 'productId', productId)
+            const localVarPath = `/api/attachment/upload-product-images`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (organizationId !== undefined) {
+                localVarQueryParameter['organization_id'] = organizationId;
+            }
+
+            if (productId !== undefined) {
+                localVarQueryParameter['product_id'] = productId;
+            }
+
+            if (files) {
+                files.forEach((element) => {
+                    localVarFormParams.append('files', element as any);
+                })
+            }
+
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
          * @param {File} [file] 
          * @param {string} [fileName] 
          * @param {*} [options] Override http request option.
@@ -1345,6 +1445,17 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} [productId] 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAttachmentUpdateProductAttachmentPositionsPut(productId?: number, requestBody?: { [key: string]: number; }, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUpdateProductAttachmentPositionsPut(productId, requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {number} collectionId 
          * @param {FileType} fileType 
          * @param {File} [file] 
@@ -1380,6 +1491,18 @@ export const AttachmentResourceApiFp = function(configuration?: Configuration) {
          */
         async apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {Array<File>} [files] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiAttachmentUploadProductImagesPost(organizationId: number, productId: number, files?: Array<File>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiAttachmentUploadProductImagesPost(organizationId, productId, files, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1445,6 +1568,16 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
         },
         /**
          * 
+         * @param {number} [productId] 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUpdateProductAttachmentPositionsPut(productId?: number, requestBody?: { [key: string]: number; }, options?: any): AxiosPromise<void> {
+            return localVarFp.apiAttachmentUpdateProductAttachmentPositionsPut(productId, requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {number} collectionId 
          * @param {FileType} fileType 
          * @param {File} [file] 
@@ -1478,6 +1611,17 @@ export const AttachmentResourceApiFactory = function (configuration?: Configurat
          */
         apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: any): AxiosPromise<void> {
             return localVarFp.apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {number} productId 
+         * @param {Array<File>} [files] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiAttachmentUploadProductImagesPost(organizationId: number, productId: number, files?: Array<File>, options?: any): AxiosPromise<void> {
+            return localVarFp.apiAttachmentUploadProductImagesPost(organizationId, productId, files, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1549,6 +1693,18 @@ export class AttachmentResourceApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [productId] 
+     * @param {{ [key: string]: number; }} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AttachmentResourceApi
+     */
+    public apiAttachmentUpdateProductAttachmentPositionsPut(productId?: number, requestBody?: { [key: string]: number; }, options?: AxiosRequestConfig) {
+        return AttachmentResourceApiFp(this.configuration).apiAttachmentUpdateProductAttachmentPositionsPut(productId, requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {number} collectionId 
      * @param {FileType} fileType 
      * @param {File} [file] 
@@ -1587,6 +1743,19 @@ export class AttachmentResourceApi extends BaseAPI {
      */
     public apiAttachmentUploadProductImagePost(organizationId: number, productId: number, file?: File, fileName?: string, options?: AxiosRequestConfig) {
         return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadProductImagePost(organizationId, productId, file, fileName, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} organizationId 
+     * @param {number} productId 
+     * @param {Array<File>} [files] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AttachmentResourceApi
+     */
+    public apiAttachmentUploadProductImagesPost(organizationId: number, productId: number, files?: Array<File>, options?: AxiosRequestConfig) {
+        return AttachmentResourceApiFp(this.configuration).apiAttachmentUploadProductImagesPost(organizationId, productId, files, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3702,6 +3871,43 @@ export const ProductResourceApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiProductUpdateProductPositionsPut: async (requestBody?: { [key: string]: number; }, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/product/update-product-positions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} [productId] 
          * @param {ProductRequestDTO} [productRequestDTO] 
          * @param {*} [options] Override http request option.
@@ -3764,6 +3970,16 @@ export const ProductResourceApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiProductUpdateProductPositionsPut(requestBody?: { [key: string]: number; }, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiProductUpdateProductPositionsPut(requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {number} [productId] 
          * @param {ProductRequestDTO} [productRequestDTO] 
          * @param {*} [options] Override http request option.
@@ -3794,6 +4010,15 @@ export const ProductResourceApiFactory = function (configuration?: Configuration
         },
         /**
          * 
+         * @param {{ [key: string]: number; }} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiProductUpdateProductPositionsPut(requestBody?: { [key: string]: number; }, options?: any): AxiosPromise<void> {
+            return localVarFp.apiProductUpdateProductPositionsPut(requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {number} [productId] 
          * @param {ProductRequestDTO} [productRequestDTO] 
          * @param {*} [options] Override http request option.
@@ -3821,6 +4046,17 @@ export class ProductResourceApi extends BaseAPI {
      */
     public apiProductDeleteProductsDelete(requestBody?: Array<number>, options?: AxiosRequestConfig) {
         return ProductResourceApiFp(this.configuration).apiProductDeleteProductsDelete(requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {{ [key: string]: number; }} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductResourceApi
+     */
+    public apiProductUpdateProductPositionsPut(requestBody?: { [key: string]: number; }, options?: AxiosRequestConfig) {
+        return ProductResourceApiFp(this.configuration).apiProductUpdateProductPositionsPut(requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3934,6 +4170,294 @@ export class RegistrationResourceApi extends BaseAPI {
      */
     public apiUserRegisterPost(userOrganizationRequestDTO?: UserOrganizationRequestDTO, options?: AxiosRequestConfig) {
         return RegistrationResourceApiFp(this.configuration).apiUserRegisterPost(userOrganizationRequestDTO, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * ScriptResourceApi - axios parameter creator
+ * @export
+ */
+export const ScriptResourceApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRefreshAllCollectionPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/script/refresh-all-collection`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRefreshCollectionPost: async (organizationId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'organizationId' is not null or undefined
+            assertParamExists('apiScriptRefreshCollectionPost', 'organizationId', organizationId)
+            const localVarPath = `/api/script/refresh-collection`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+            if (organizationId !== undefined) {
+                localVarQueryParameter['organization_id'] = organizationId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRefreshProductsPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/script/refresh-products`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRemoveDuplicateProductsPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/script/remove-duplicate-products`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication keycloak-swagger-oauth2 required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "keycloak-swagger-oauth2", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ScriptResourceApi - functional programming interface
+ * @export
+ */
+export const ScriptResourceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ScriptResourceApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiScriptRefreshAllCollectionPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiScriptRefreshAllCollectionPost(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiScriptRefreshCollectionPost(organizationId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiScriptRefreshCollectionPost(organizationId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiScriptRefreshProductsPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiScriptRefreshProductsPost(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiScriptRemoveDuplicateProductsPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiScriptRemoveDuplicateProductsPost(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ScriptResourceApi - factory interface
+ * @export
+ */
+export const ScriptResourceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ScriptResourceApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRefreshAllCollectionPost(options?: any): AxiosPromise<void> {
+            return localVarFp.apiScriptRefreshAllCollectionPost(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} organizationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRefreshCollectionPost(organizationId: number, options?: any): AxiosPromise<void> {
+            return localVarFp.apiScriptRefreshCollectionPost(organizationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRefreshProductsPost(options?: any): AxiosPromise<void> {
+            return localVarFp.apiScriptRefreshProductsPost(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiScriptRemoveDuplicateProductsPost(options?: any): AxiosPromise<void> {
+            return localVarFp.apiScriptRemoveDuplicateProductsPost(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ScriptResourceApi - object-oriented interface
+ * @export
+ * @class ScriptResourceApi
+ * @extends {BaseAPI}
+ */
+export class ScriptResourceApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ScriptResourceApi
+     */
+    public apiScriptRefreshAllCollectionPost(options?: AxiosRequestConfig) {
+        return ScriptResourceApiFp(this.configuration).apiScriptRefreshAllCollectionPost(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} organizationId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ScriptResourceApi
+     */
+    public apiScriptRefreshCollectionPost(organizationId: number, options?: AxiosRequestConfig) {
+        return ScriptResourceApiFp(this.configuration).apiScriptRefreshCollectionPost(organizationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ScriptResourceApi
+     */
+    public apiScriptRefreshProductsPost(options?: AxiosRequestConfig) {
+        return ScriptResourceApiFp(this.configuration).apiScriptRefreshProductsPost(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ScriptResourceApi
+     */
+    public apiScriptRemoveDuplicateProductsPost(options?: AxiosRequestConfig) {
+        return ScriptResourceApiFp(this.configuration).apiScriptRemoveDuplicateProductsPost(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

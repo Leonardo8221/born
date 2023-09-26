@@ -11,6 +11,7 @@ const TeamsPage = () => {
   const { data } = useQuery(GET_ORGANIZATION_BY_ID, {
     variables: { id: Number(router.query.id) },
     fetchPolicy: 'network-only',
+    skip: !router?.query?.id,
   });
   const currentOrganization =
     data?.userOrganizationByOrganizationId?.organization;
