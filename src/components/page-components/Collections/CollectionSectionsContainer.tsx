@@ -83,13 +83,9 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   const [selectedOrder, setSelectedOrder] = useState<OrderGraphqlDto | null>(
     null
   );
-  const [pageNo, setPageNo] = useState(0);
   const [rows] = useState(1000);
-  const [sections, setSections] = useState<any[]>([]);
-  const [totalPages, setTotalPages] = useState(null);
   const collectionDetailRef = useRef<any>(null);
   const [gridPrevState, setGridPrevState] = useState<GridType>('grid');
-  const [isProductDelete, setIsProductDelete] = useState(false);
   const [isPdf, setIsPdf] = useState(false);
   const [isUpload, setIsUpload] = useState(false);
 
@@ -147,36 +143,13 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       colourFamilies: selectedColours,
       seasons: selectedSeasons,
       rows,
-      start: pageNo * rows,
+      start: 0,
     },
     fetchPolicy: 'network-only',
     skip: collectionId === null,
   });
 
-  useEffect(() => {
-    const newSections: any[] =
-      collectionSections?.sectionProductsBySearchAndCollectionId?.content || [];
-    const pages =
-      collectionSections?.sectionProductsBySearchAndCollectionId?.total_pages;
-
-    setTotalPages(pages ? pages : totalPages);
-    if (!isProductDelete) {
-      if (!!searchKeyword || !!selectedColours.length) {
-        setSections(
-          pageNo !== 0 && pageNo > 0
-            ? [...newSections, ...newSections]
-            : newSections
-        );
-      } else if (!!newSections.length) {
-        setSections(
-          pageNo !== 0 && pageNo > 0
-            ? [...newSections, ...newSections]
-            : newSections
-        );
-      }
-    }
-  }, [collectionSections]);
-
+  const sections = collectionSections?.sectionProductsBySearchAndCollectionId?.content || [];
   useEffect(() => {
     window.onafterprint = () => {
       setGrid(gridPrevState);
@@ -205,8 +178,6 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       })),
       selectedItems: selectedColours,
       action: (e: { id: string | number; label: string }) => {
-        setSections([]);
-        setPageNo(0);
         if (selectedColours.includes(e.label)) {
           setSelectedColours(selectedColours?.filter((c) => c !== e.label));
         } else {
@@ -215,8 +186,6 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       },
       onReset: () => {
         setSelectedColours([]);
-        setPageNo(0);
-        setSections([]);
       },
     },
     {
@@ -227,8 +196,6 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       })),
       selectedItems: selectedSeasons,
       action: (e: { id: string | number; label: string }) => {
-        setSections([]);
-        setPageNo(0);
         if (selectedSeasons.includes(e.label)) {
           setSelectedSeasons(selectedSeasons?.filter((c) => c !== e.label));
         } else {
@@ -237,8 +204,6 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       },
       onReset: () => {
         setSelectedSeasons([]);
-        setPageNo(0);
-        setSections([]);
       },
     },
   ];
@@ -318,13 +283,12 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
   }
 
   const handleSearch = (e: string) => {
-    setPageNo(0);
     setSearchKeyword(e);
   };
 
   const getProductIds = () => {
     const productIds: any = [];
-    sections.forEach((item) => {
+    sections.forEach((item: any) => {
       item.products.forEach((product: any) => {
         productIds.push({
           id: product.id,
@@ -336,7 +300,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
     return productIds;
   };
 
-  const renderSections = sections?.map((section) => (
+  const renderSections = sections?.map((section: any) => (
     <>
       <div className="print:break-inside-avoid-page border rounded-2xl p-[57px] pb-0 mb-8 border-neutral-400">
         <div className="text-center mb-8">
@@ -373,25 +337,6 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
       </div>
     </>
   ));
-
-  const renderSectionsWithInfiniteScroll = (
-    <InfiniteScroll
-      dataLength={sections.length}
-      next={async () => {
-        const start = pageNo + 1;
-        totalPages && start <= totalPages && setPageNo(start);
-      }}
-      hasMore={!!totalPages && pageNo < totalPages}
-      loader={
-        pageNo + 1 < (totalPages || 0) && (
-          <Loading message="Loading more sections..." />
-        )
-      }
-      className="print:hidden"
-    >
-      {renderSections}
-    </InfiniteScroll>
-  );
 
   return (
     <div className="pdf_view">
@@ -473,7 +418,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
             </div>
           )}
         </div>
-        <div className="print:block">{renderSections}</div>
+        <div className="hidden print:block">{renderSections}</div>
       </div>
       <EditCollection
         isOpen={isEditModal}
