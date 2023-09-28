@@ -150,7 +150,7 @@ const CollectionsContainer: FC<CollectionsContainerProps> = ({
   const { data: allProducts } = useQuery(PRODUCTS_BY_COLLECTION_ID_QUERY, {
     variables: {
       collectionId: collectionId,
-      rows: 1000,
+      rows: 24,
       start: 0,
     },
     fetchPolicy: 'network-only',

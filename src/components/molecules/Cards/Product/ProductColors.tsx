@@ -36,7 +36,7 @@ const ProductColors: FC<ProductColorsProps> = ({
         )}
         lang="es"
       >
-        {colour_name?.toLowerCase()}
+        {colour_name}
       </span>
     </div>
   );
