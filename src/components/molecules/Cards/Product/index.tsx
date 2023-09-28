@@ -152,12 +152,12 @@ export const ProductCard: FC<ProductCardProps> = ({
             {style_name}
           </h3>
           <div className="flex items-center gap-2 flex-wrap">
-            {(isPdf || isCollection) && (
+            {(isCollection || isPdf) && (
               <ProductColors
                 colour_families={colour_families || []}
                 swatchImage={swatchImage?.small_image_url}
                 colour_name={colour_name || ''}
-                isHideLabel={true}
+                isHideLabel={false}
               />
             )}
             {!isPdf &&

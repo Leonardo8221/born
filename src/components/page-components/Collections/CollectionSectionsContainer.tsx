@@ -323,7 +323,7 @@ const CollectionSectionsContainer: FC<CollectionSectionsContainerProps> = ({
               isSelected={!!selectedRows?.includes(item.id)}
               selectedVariants={selectedVariants}
               onSelect={setSelectedRows}
-              isCollection={!isPdf}
+              isCollection={true}
               isPdf={true}
               imageUrl={
                 (gridType === 'grid'
