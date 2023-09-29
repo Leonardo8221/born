@@ -26,8 +26,16 @@ const DraggableCards: FC<{
   const [items, setItems] = useState<any[]>([]);
   const [activeItem, setActiveItem] = useState<any | null>(null);
   const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 50,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        distance: 50,
+      },
+    }),
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 50,
