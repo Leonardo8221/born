@@ -16,6 +16,7 @@ const SortableItem: FC<ItemProps> = ({ children, ...props }) => {
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: transition || undefined,
+    touchAction: 'manipulation',
   };
 
   return (
