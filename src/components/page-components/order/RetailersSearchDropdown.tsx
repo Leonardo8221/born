@@ -11,7 +11,7 @@ interface RetailersSearchDropdownProps extends HTMLProps<HTMLInputElement> {
   label: string;
   value: string;
   className?: string;
-  handleSelect?: (id: string) => void;
+  handleSelect?: (id: string, item?: any) => void;
 }
 
 const RetailersSearchDropdown: FC<RetailersSearchDropdownProps> = ({
@@ -48,13 +48,7 @@ const RetailersSearchDropdown: FC<RetailersSearchDropdownProps> = ({
     },
   });
 
-  const options =
-    data?.retailersByStoreName?.map((item: any) => ({
-      id: item?.id,
-      label: `${item.store_name || ''} ${
-        item?.billing_store_address_line_1 || ''
-      }`,
-    })) || [];
+  const options = data?.retailersByStoreName || [];
 
   const focusInput = () => {
     setIsDropdownOpen(true);
@@ -92,13 +86,19 @@ const RetailersSearchDropdown: FC<RetailersSearchDropdownProps> = ({
                     key={item?.id}
                     className="cursor-pointer flex items-center p-2"
                     onClick={() => {
-                      handleSelect?.(item?.id);
-                      setSearchKeyword(item?.label);
+                      handleSelect?.(item?.id, item);
+                      setSearchKeyword(
+                        `${item.store_name || ''} ${
+                          item?.billing_store_address_line_1 || ''
+                        }`
+                      );
                       setIsDropdownOpen(false);
                     }}
                   >
                     <div className="w-[132px] mr-4"></div>
-                    <div>{item.label}</div>
+                    <div>{`${item.store_name || ''} ${
+                      item?.billing_store_address_line_1 || ''
+                    }`}</div>
                   </div>
                 ))
               ) : (
