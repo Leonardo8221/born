@@ -72,6 +72,7 @@ export const GET_BUYERS = gql`
     ) {
       id
       buyer_name
+      email
     }
   }
 `;

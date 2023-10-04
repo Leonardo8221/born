@@ -11,7 +11,7 @@ interface BuyersSearchDropdownProps extends HTMLProps<HTMLInputElement> {
   label: string;
   value: string;
   className?: string;
-  handleSelect?: (id: number) => void;
+  handleSelect?: (id: number, item?: any) => void;
   retailerId?: number;
 }
 
@@ -56,7 +56,7 @@ const BuyersSearchDropdown: FC<BuyersSearchDropdownProps> = ({
     }
   );
 
-  const options = data?.buyersByRetailerIdAndName?.map((item: any) => ({ id: item?.id, label: item.buyer_name})) || []
+  const options = data?.buyersByRetailerIdAndName || []
 
   const focusInput = () => {
     setIsDropdownOpen(true);
@@ -94,13 +94,13 @@ const BuyersSearchDropdown: FC<BuyersSearchDropdownProps> = ({
                     key={item?.id}
                     className="cursor-pointer flex items-center p-2"
                     onClick={() => {
-                      handleSelect?.(item?.id);
-                      setSearchKeyword(item?.label);
+                      handleSelect?.(item?.id, item);
+                      setSearchKeyword(item?.buyer_name);
                       setIsDropdownOpen(false);
                     }}
                   >
                     <div className="w-[132px] mr-4"></div>
-                    <div>{item.label}</div>
+                    <div>{item.buyer_name}</div>
                   </div>
                 ))
               ) : (

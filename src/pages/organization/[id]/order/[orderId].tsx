@@ -96,10 +96,15 @@ function OrderPreview() {
     debouncedSurcharge !== -1 && update();
   }, [debouncedSurcharge]);
 
-  const handleEditInputs = (key: any, val: any) => {
-    console.log(key, val)
+  const handleEditInputs = (key: any, val: any, item?: any) => {
     let payload = { ...orderDetails };
     payload[key] = val;
+    if(key === 'buyer_id' && item) {
+      payload.buyer_data = item
+    }
+    if(key === 'retailer_id' && item) {
+      payload.retailer_data = item;
+    }
     setDetails(payload);
   };
 
@@ -327,20 +332,24 @@ function OrderPreview() {
     }
   };
 
-  const handleClear = () => {
-    setDetails({
-      ...orderDetails,
-      buyer_data: null,
-      retailer_data: null,
-      buyer_id: null,
-      retailer_id: null,
-      email_address: '',
-      billing_address: '',
-      delivery_address: '',
-      payment_terms: '',
-      order_type: '',
-      season: '',
-    });
+  const handleClear = async () => {
+    setIsLoading(true);
+    try {
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      await api.apiOrderCleanOrderDataPut(orderId);
+      await refetch();
+      setIsLoading(false);
+      handleSuccessMessage(
+        'cleared order details successfully!'
+      );
+    } catch (error: any) {
+      handleErrorMessage(
+        error?.response?.message || 'Failed to clear order detail!'
+      );
+      setIsLoading(false);
+      console.log(error);
+    }
   };
 
   if (!details && loading) {

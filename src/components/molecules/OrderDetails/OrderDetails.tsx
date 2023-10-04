@@ -55,8 +55,8 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                   <RetailersSearchDropdown
                     label={item.name}
                     value={item.value}
-                    handleSelect={(e) => {
-                      handleEditInputs(item.key, e);
+                    handleSelect={(e, retailer) => {
+                      handleEditInputs(item.key, e, retailer);
                     }}
                   />
                 )}
@@ -66,7 +66,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({
                     label={item.name}
                     value={item.value}
                     retailerId={item.retailer_id}
-                    handleSelect={(e: number) => handleEditInputs(item.key, e)}
+                    handleSelect={(e: number, buyer) => handleEditInputs(item.key, e, buyer)}
                   />
                 )}
 
