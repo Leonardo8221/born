@@ -26,6 +26,12 @@ body {
   overflow: hidden !important;
 }
 
+@media print {
+  .order__list-table {
+    zoom: 65%;
+  }
+}
+
 @media print and (max-width: 874px) {
   .pdf_view {
     zoom: 75%;
