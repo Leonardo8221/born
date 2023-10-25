@@ -13,9 +13,16 @@ import Toast from '@/components/page-components/Toast';
 import AddNote from '@/components/page-components/order/AddNote';
 import Loading from '@/components/page-components/Loading';
 import PricingCondition from '@/components/page-components/order/PricingCondition';
-import useDebounce from '@/utils/debounce';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { orderTypes, seasons } from '@/utils/constants';
+import Dropdown from '@/components/molecules/Dropdown';
+import clsx from 'clsx';
+
+export enum OrderProductsSort {
+  None = 'NONE',
+  EarliestFirst = 'EARLIEST_FIRST',
+  LatestFirst = 'LATEST_FIRST'
+}
 
 function OrderPreview() {
   const router = useRouter();
@@ -28,11 +35,22 @@ function OrderPreview() {
   const [successMessage, setSuccessMessage] = useState('');
   const [orderNote, setOrderNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [discount, setDiscount] = useState(-1);
-  const [surcharge, setSurchange] = useState(-1);
   const [orderDetailId, setorderDetailId] = useState(null);
-  const debouncedDiscount = useDebounce(discount, 500);
-  const debouncedSurcharge = useDebounce(surcharge, 500);
+  const [sortProductsBy, setSortProductsBy] = useState({
+    name: 'None',
+    value: OrderProductsSort.None,
+  });
+
+  const SortOptions = [{
+    name: 'None',
+    value: OrderProductsSort.None,
+  }, {
+    name: 'Delivery Date (Earliest First)',
+    value: OrderProductsSort.EarliestFirst,
+  }, {
+    name: 'Delivery Date (Latest First)',
+    value: OrderProductsSort.LatestFirst,
+  }]
 
   const { loading, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId },
@@ -53,56 +71,13 @@ function OrderPreview() {
     }
   }, [data]);
 
-  useEffect(() => {
-    const oId = Number(router?.query?.orderId);
-    const update = async () => {
-      setIsLoading(true);
-      try {
-        const config: any = await apiConfig();
-        const api = new OrderResourceApi(config);
-        await api.apiOrderUpdateDraftOrderPut(oId, {
-          ...orderDetails,
-          discount: Number(debouncedDiscount),
-        });
-        await refetch();
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.error(error);
-      }
-    };
-    debouncedDiscount !== -1 && update();
-  }, [debouncedDiscount]);
-
-  useEffect(() => {
-    const oId = Number(router?.query?.orderId);
-    const update = async () => {
-      setIsLoading(true);
-      try {
-        const config: any = await apiConfig();
-        const api = new OrderResourceApi(config);
-        await api.apiOrderUpdateDraftOrderPut(oId, {
-          ...orderDetails,
-          surcharge: Number(debouncedSurcharge),
-        });
-        await refetch();
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.error(error);
-      }
-    };
-
-    debouncedSurcharge !== -1 && update();
-  }, [debouncedSurcharge]);
-
   const handleEditInputs = (key: any, val: any, item?: any) => {
     let payload = { ...orderDetails };
     payload[key] = val;
-    if(key === 'buyer_id' && item) {
-      payload.buyer_data = item
+    if (key === 'buyer_id' && item) {
+      payload.buyer_data = item;
     }
-    if(key === 'retailer_id' && item) {
+    if (key === 'retailer_id' && item) {
       payload.retailer_data = item;
     }
     setDetails(payload);
@@ -208,71 +183,50 @@ function OrderPreview() {
     try {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
+      const apiOrderDetails = new OrderDetailResourceApi(config);
       await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
+      await apiOrderDetails.apiOrderUpdateDraftOrderDetailPut(orderId, {
+        order_details: orderDetails.order_details,
+      });
       await refetch();
       setIsLoading(false);
       setEditMode(false);
       setIsLoading(false);
-      handleSuccessMessage('Order modified successfully');
+      handleSuccessMessage('Changes saved successfully.');
     } catch (error: any) {
       setIsLoading(false);
-      handleErrorMessage(error?.response?.message || 'Order update failed');
+      handleErrorMessage(error?.response?.message || 'Failed to save changes.');
       console.log(error);
     }
   };
 
   const handleSaveNote = async () => {
-    try {
-      const config: any = await apiConfig();
-      if (!orderNote && !orderNote.length) return;
-      if (orderDetailId) {
-        const api = new OrderDetailResourceApi(config);
-        await api.apiOrderUpdateDraftOrderDetailPut(orderDetailId, orderId, {
-          note: orderNote,
-        });
-      } else {
-        const api = new OrderResourceApi(config);
-        await api.apiOrderUpdateDraftOrderPut(orderId, {
-          ...orderDetails,
-          note: orderNote,
-        });
-      }
-      await refetch();
-      setIsAddNoteOpen(!isAddNoteOpen);
-      setOrderNote('');
-      setorderDetailId(null);
-      handleSuccessMessage('Note added successfully');
-    } catch (error: any) {
-      handleErrorMessage(error?.response?.message || 'Failed to add note!');
-      console.log(error);
+    if (!orderNote && !orderNote.length) return;
+    if (orderDetailId) {
+      const orders = [...orderDetails.order_details];
+      const selectedOrderIndex = orders.findIndex(
+        (i) => i.id === orderDetailId
+      );
+      const selectedorder = orders[selectedOrderIndex];
+      orders[selectedOrderIndex] = { ...selectedorder, note: orderNote };
+      setDetails({
+        ...orderDetails,
+        order_details: orders,
+      });
+    } else {
+      setDetails({
+        ...orderDetails,
+        note: orderNote,
+      });
     }
+    setIsAddNoteOpen(false);
   };
 
   const handleDropdownChange = async (val: any) => {
-    setIsLoading(true);
-    try {
-      const config: any = await apiConfig();
-      const api = new OrderResourceApi(config);
-      await api.apiOrderUpdateDraftOrderPut(orderId, {
-        ...orderDetails,
-        pricing_condition: val,
-      });
-      await refetch();
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
-  };
-
-  const debounce = (func: Function) => {
-    let timerId: any;
-    return (...args: any[]) => {
-      clearTimeout(timerId);
-      timerId = setTimeout(() => {
-        func.apply(null, args);
-      }, 0);
-    };
+    setDetails({
+      ...orderDetails,
+      pricing_condition: val,
+    });
   };
 
   const handleQuantities = async (
@@ -280,38 +234,23 @@ function OrderPreview() {
     orderDetailId: number,
     id: number
   ) => {
-    try {
-      const payload = {
-        order_detail_sizes: [
-          {
-            order_detail_size_id: id,
-            quantity: Number(val),
-          },
-        ],
-      };
-      const config: any = await apiConfig();
-      const api = new OrderDetailResourceApi(config);
-      await api.apiOrderUpdateDraftOrderDetailPut(
-        orderDetailId,
-        orderId,
-        payload
-      );
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+    const orders = [...orderDetails.order_details];
+    const selectedOrderIndex = orders.findIndex((i) => i.id === orderDetailId);
+    const selectedorder = orders[selectedOrderIndex];
+    const sizes = [...selectedorder.order_detail_sizes];
+    const selectedSizeIndex = sizes.findIndex((i) => i.id === id);
+    const selectedSize = sizes[selectedOrderIndex];
+    selectedSize[selectedSizeIndex] = { ...selectedSize, quantity: val };
+    sizes[selectedSizeIndex] = selectedSize;
+    orders[selectedOrderIndex] = selectedorder;
+    setDetails({
+      ...orderDetails,
+      order_details: orders,
+    });
   };
-
-  const debouncedHandleQuantities = debounce(handleQuantities);
 
   const handleChange = async (key: any, val: any) => {
     setDetails({ ...orderDetails, [key]: val });
-
-    if (key === 'discount') {
-      setDiscount(val);
-    } else {
-      setSurchange(val);
-    }
   };
 
   const handleDelete = async (id: number) => {
@@ -340,9 +279,7 @@ function OrderPreview() {
       await api.apiOrderCleanOrderDataPut(orderId);
       await refetch();
       setIsLoading(false);
-      handleSuccessMessage(
-        'cleared order details successfully!'
-      );
+      handleSuccessMessage('cleared order details successfully!');
     } catch (error: any) {
       handleErrorMessage(
         error?.response?.message || 'Failed to clear order detail!'
@@ -382,6 +319,7 @@ function OrderPreview() {
         total_quantities={orderDetails?.total_quantity}
         onChange={(value) => handleEditInputs('name', value)}
         editMode={editMode}
+        handleSave={handleSave}
       />
 
       <div className="mx-auto w-full max-w-[1120px] pt-16">
@@ -447,20 +385,38 @@ function OrderPreview() {
           />
         </div>
       </div>
+      {orderDetails?.order_status !== 'CANCELLED' && 
+        <div className="max-w-[1376px] mx-auto flex justify-end items-center pb-4 pt-4">
+          <Dropdown
+            options={SortOptions}
+            isValid={false}
+            label="Sort products"
+            onChange={(option: any) =>
+              setSortProductsBy(option)
+            }
+            className={clsx(
+              'w-[278px]',
+              isDisabled && '!pointer-events-none'
+            )}
+            selectedOption={sortProductsBy}
+          />
+        </div>
+
+      }
       <div className="max-w-[1376px] mx-auto pb-16 overflow-x-auto">
         <OrderListTable
-          handleQuantities={debouncedHandleQuantities}
           handleOrderNote={(id, note) => {
             setIsAddNoteOpen(true);
             setorderDetailId(id);
             setOrderNote(note || '');
           }}
-          products={details?.order_details}
+          products={orderDetails?.order_details}
           pricing_condition={orderDetails?.pricing_condition}
           quantity={orderDetails?.quantity}
           total_price={orderDetails?.total_price}
           editMode={!isDisabled && !isLoading}
           handleDelete={handleDelete}
+          handleQuantities={handleQuantities}
         />
       </div>
       <AddNote

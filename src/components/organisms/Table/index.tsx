@@ -11,7 +11,7 @@ export interface TableProps {
   loading?: boolean;
   size?: boolean;
   editMode?: boolean;
-  handleQuantities?: (val: string, id: number) => void;
+  handleQuantities?: (val: string, orderDetailId: number, id: number) => void;
   handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 
@@ -25,16 +25,16 @@ export const Table: FC<TableProps> = ({
   handleQuantities,
   handleOrderNote,
 }) => {
-  const [data, setData] = useState<any[]>([]);
+  // const [data, setData] = useState<any[]>([]);
 
-  useEffect(() => {
-    if (tableData && Array.isArray(tableData)) {
-      setData(tableData);
-    }
-  }, [tableData]);
+  // useEffect(() => {
+  //   if (tableData && Array.isArray(tableData)) {
+  //     setData(tableData);
+  //   }
+  // }, [tableData]);
 
   const table = useReactTable({
-    data,
+    data: tableData || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
