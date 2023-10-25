@@ -50,7 +50,7 @@ export const TableBody: FC<TableBodyProps> = ({
   return (
     <tbody>
       {getRowModel()?.rows &&
-        getRowModel().rows.map((row: any) => (
+        getRowModel().rows.map((row: any, index: number) => (
           <>
             <tr key={row.id} className="print:break-inside-avoid-page">
               {row.getVisibleCells().map((cell: any) => (

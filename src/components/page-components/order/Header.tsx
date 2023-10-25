@@ -24,6 +24,7 @@ interface HeaderProps {
   };
   handleErrorMessage?: (error: string) => void;
   addNote?: () => void;
+  handleSave?: () => void;
   id?: number;
   setSuccessMessage?: (message: string) => void;
   setErrorMessage?: (message: string) => void;
@@ -45,6 +46,7 @@ const Header: FC<HeaderProps> = ({
   total_quantities,
   editMode,
   onChange,
+  handleSave,
 }) => {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
@@ -57,6 +59,7 @@ const Header: FC<HeaderProps> = ({
       let file: BlobPart;
       const response = await api.apiOrderDownloadOrderReportAsExcelGet(
         orderId,
+        undefined,
         { responseType: 'blob' }
       );
       file = response?.data as any;
@@ -144,7 +147,12 @@ const Header: FC<HeaderProps> = ({
               value={heading}
               onChange={(value) => onChange?.(value)}
               className="!border-neutral-400 !rounded-[4px] [&>div]:!h-auto"
-              inputProps={{ className: clsx(fonts.headings.md, 'px-[14px] !outline-none !leading-[48px]')}}
+              inputProps={{
+                className: clsx(
+                  fonts.headings.md,
+                  'px-[14px] !outline-none !leading-[48px]'
+                ),
+              }}
             />
           ) : (
             <Heading fontWeight="light" size="sm">
@@ -156,9 +164,8 @@ const Header: FC<HeaderProps> = ({
           <div>
             {!status?.approved && !status.cancelled && !status?.confirmed && (
               <Button
-                label={'Add note'}
                 {...{ variant: 'outlined' }}
-                className="relative"
+                className="relative h-10 w-10 !p-0"
                 onClick={addNote}
                 disabled={isLoading}
               >
@@ -175,6 +182,18 @@ const Header: FC<HeaderProps> = ({
               ></Button>
             )}
           </div>
+          {!status?.approved && !status.cancelled && !status?.confirmed && (
+            <div>
+              <Button
+                {...{ variant: 'outlined' }}
+                className="relative h-10 w-10 !p-0"
+                onClick={handleSave}
+                disabled={isLoading}
+              >
+                <Icon name="icon-save" />
+              </Button>
+            </div>
+          )}
           <div>
             <DropdownMenu
               options={items}

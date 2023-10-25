@@ -30,6 +30,7 @@ import IconScale from '@/assets/svgs/collection/scale.svg';
 import IconUnScale from '@/assets/svgs/collection/no-scale.svg';
 import IconChevronLeft from '@/assets/svgs/chevron-left.svg';
 import IconChevronRight from '@/assets/svgs/chevron-right.svg';
+import IconSave from '@/assets/svgs/dark/save.svg';
 
 export const icons = {
   "icon-arrow-left": IconArrowLeft,
@@ -64,6 +65,7 @@ export const icons = {
   'icon-unscale': IconUnScale,
   'icon-chevron-left': IconChevronLeft,
   'icon-chevron-right': IconChevronRight,
+  'icon-save': IconSave,
 };
 
 export type Icons = keyof typeof icons;
