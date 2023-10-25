@@ -15,6 +15,14 @@ import Loading from '@/components/page-components/Loading';
 import PricingCondition from '@/components/page-components/order/PricingCondition';
 import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
 import { orderTypes, seasons } from '@/utils/constants';
+import Dropdown from '@/components/molecules/Dropdown';
+import clsx from 'clsx';
+
+export enum OrderProductsSort {
+  None = 'NONE',
+  EarliestFirst = 'EARLIEST_FIRST',
+  LatestFirst = 'LATEST_FIRST'
+}
 
 function OrderPreview() {
   const router = useRouter();
@@ -28,6 +36,21 @@ function OrderPreview() {
   const [orderNote, setOrderNote] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [orderDetailId, setorderDetailId] = useState(null);
+  const [sortProductsBy, setSortProductsBy] = useState({
+    name: 'None',
+    value: OrderProductsSort.None,
+  });
+
+  const SortOptions = [{
+    name: 'None',
+    value: OrderProductsSort.None,
+  }, {
+    name: 'Delivery Date (Earliest First)',
+    value: OrderProductsSort.EarliestFirst,
+  }, {
+    name: 'Delivery Date (Latest First)',
+    value: OrderProductsSort.LatestFirst,
+  }]
 
   const { loading, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId },
@@ -362,6 +385,24 @@ function OrderPreview() {
           />
         </div>
       </div>
+      {orderDetails?.order_status !== 'CANCELLED' && 
+        <div className="max-w-[1376px] mx-auto flex justify-end items-center pb-4 pt-4">
+          <Dropdown
+            options={SortOptions}
+            isValid={false}
+            label="Sort products"
+            onChange={(option: any) =>
+              setSortProductsBy(option)
+            }
+            className={clsx(
+              'w-[278px]',
+              isDisabled && '!pointer-events-none'
+            )}
+            selectedOption={sortProductsBy}
+          />
+        </div>
+
+      }
       <div className="max-w-[1376px] mx-auto pb-16 overflow-x-auto">
         <OrderListTable
           handleOrderNote={(id, note) => {

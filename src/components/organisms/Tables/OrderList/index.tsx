@@ -171,6 +171,12 @@ const OrderListTable: FC<OrderListTableProps> = ({
           });
         }
 
+        options.push({
+          label: 'Clone',
+          value: 'clone',
+          action: () => handleActions('clone', info?.row?.original?.id),
+        })
+
         return (
           !!options.length && (
             <div className="[&>div]:justify-center">

@@ -121,10 +121,50 @@ const OrderPage = () => {
     },
   ];
 
+  const handleCloneOrders = async (id?: number) => {
+    const config: any = await apiConfig();
+    const api = new OrderResourceApi(config);
+    setIsLoading(true);
+    try {
+      if (id) {
+        await api.apiOrderCloneOrderPost(id);
+        setSuccessMessage('Order cloned successfully!');
+      }
+      if (selectedOrders.length) {
+        const cloneOrderRequest = selectedOrders.map((item) =>
+          api.apiOrderCloneOrderPost(item)
+        );
+        await Promise.all(cloneOrderRequest);
+        setSuccessMessage(
+          selectedOrders.length + ' Orders cloned successfully!'
+        );
+      }
+      await refetch();
+      setIsLoading(false);
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (error: any) {
+      setIsLoading(false);
+      setIsLoading(false);
+      setErrorMessage(
+        error?.message ?? 'Request Failed, please try again later!'
+      );
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+    }
+  };
+
   const actions: Action[] = [
     {
       name: 'Delete',
       action: () => handleDeleteOrder(),
+      disabled: isLoading,
+    },
+    {
+      name: 'Clone',
+      action: () => handleCloneOrders(),
       disabled: isLoading,
     },
   ];
@@ -165,32 +205,38 @@ const OrderPage = () => {
   );
 
   const handleActions = async (action: string, id: number) => {
-    const config: any = await apiConfig();
-    const api = new OrderResourceApi(config);
-    try {
-      setIsLoading(true);
-      if (action === 'confirm') {
-        await api.apiOrderConfirmOrderPut(id);
+    if (action !== 'clone') {
+      const config: any = await apiConfig();
+      const api = new OrderResourceApi(config);
+      try {
+        setIsLoading(true);
+        if (action === 'confirm') {
+          await api.apiOrderConfirmOrderPut(id);
+        }
+        if (action === 'cancel') {
+          await api.apiOrderCancelOrderPut(id);
+        }
+        if (action === 'approve') {
+          await api.apiOrderApproveOrderPut(id);
+        }
+        refetch();
+        setIsLoading(false);
+        setSuccessMessage('Order modified successfully!');
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 3000);
+      } catch (error: any) {
+        setIsLoading(false);
+        setErrorMessage(
+          error?.message ?? 'Request Failed, please try again later!'
+        );
+        setTimeout(() => {
+          setErrorMessage('');
+        }, 3000);
+        console.log(error);
       }
-      if (action === 'cancel') {
-        await api.apiOrderCancelOrderPut(id);
-      }
-      if (action === 'approve') {
-        await api.apiOrderApproveOrderPut(id);
-      }
-      refetch();
-      setIsLoading(false);
-      setSuccessMessage('Order modified successfully!');
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 3000);
-    } catch (error: any) {
-      setIsLoading(false);
-      setErrorMessage(error?.message ?? 'Order modified failed!');
-      setTimeout(() => {
-        setErrorMessage('');
-      }, 3000);
-      console.log(error);
+    } else {
+      handleCloneOrders(id);
     }
   };
 
@@ -232,10 +278,8 @@ const OrderPage = () => {
     fetchMore({
       variables: { start: ordersBySearch.length },
       updateQuery: (prev: any, { fetchMoreResult }: any) => {
-        const prevItems =
-          prev?.ordersBySearch?.content || [];
-        const nextItems =
-          fetchMoreResult?.ordersBySearch?.content || [];
+        const prevItems = prev?.ordersBySearch?.content || [];
+        const nextItems = fetchMoreResult?.ordersBySearch?.content || [];
         if (!fetchMoreResult) return prev;
         return {
           ordersBySearch: {
@@ -245,7 +289,7 @@ const OrderPage = () => {
         };
       },
     });
-  }
+  };
 
   const renderTabContent = (type: OrderStatus) => {
     return (
@@ -256,7 +300,9 @@ const OrderPage = () => {
         }}
         hasMore={totalItems > ordersBySearch?.length}
         loader={
-          totalItems > ordersBySearch?.length && <Loading message="Loading more items..." />
+          totalItems > ordersBySearch?.length && (
+            <Loading message="Loading more items..." />
+          )
         }
         style={{ minHeight: '400px' }}
       >
