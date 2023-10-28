@@ -1,27 +1,27 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import OrderListTable from '@/components/organisms/Tables/Product/OrderListTable';
-import OrderDetails from '@/components/molecules/OrderDetails/OrderDetails';
-import { useQuery } from '@apollo/client';
-import { useRouter } from 'next/router';
-import Footer from '@/components/layouts/Footer';
-import Header from '@/components/page-components/order/Header';
-import { GET_ORDER_BY_ID } from '@/queries/orders/details';
-import { Button } from '@/components/molecules/Button';
-import { OrderDetailResourceApi, OrderResourceApi } from 'client/command';
-import { apiConfig } from '@/utils/apiConfig';
-import Toast from '@/components/page-components/Toast';
-import AddNote from '@/components/page-components/order/AddNote';
-import Loading from '@/components/page-components/Loading';
-import PricingCondition from '@/components/page-components/order/PricingCondition';
-import DescriptionField from '@/components/molecules/DescriptionField/DescriptionField';
-import { orderTypes, seasons } from '@/utils/constants';
-import Dropdown from '@/components/molecules/Dropdown';
-import clsx from 'clsx';
+import React, { useEffect, useMemo, useState } from "react";
+import OrderListTable from "@/components/organisms/Tables/Product/OrderListTable";
+import OrderDetails from "@/components/molecules/OrderDetails/OrderDetails";
+import { useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
+import Footer from "@/components/layouts/Footer";
+import Header from "@/components/page-components/order/Header";
+import { GET_ORDER_BY_ID } from "@/queries/orders/details";
+import { Button } from "@/components/molecules/Button";
+import { OrderDetailResourceApi, OrderResourceApi } from "client/command";
+import { apiConfig } from "@/utils/apiConfig";
+import Toast from "@/components/page-components/Toast";
+import AddNote from "@/components/page-components/order/AddNote";
+import Loading from "@/components/page-components/Loading";
+import PricingCondition from "@/components/page-components/order/PricingCondition";
+import DescriptionField from "@/components/molecules/DescriptionField/DescriptionField";
+import { orderTypes, seasons } from "@/utils/constants";
+import Dropdown from "@/components/molecules/Dropdown";
+import clsx from "clsx";
 
 export enum OrderProductsSort {
-  None = 'NONE',
-  EarliestFirst = 'EARLIEST_FIRST',
-  LatestFirst = 'LATEST_FIRST'
+  None = "NONE",
+  EarliestFirst = "EARLIEST_FIRST",
+  LatestFirst = "LATEST_FIRST",
 }
 
 function OrderPreview() {
@@ -31,31 +31,35 @@ function OrderPreview() {
   const [editMode, setEditMode] = useState(false);
   const [isAddNoteOpen, setIsAddNoteOpen] = useState(false);
   const [orderDetails, setDetails] = useState<any>({});
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [orderNote, setOrderNote] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [orderNote, setOrderNote] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [orderDetailId, setorderDetailId] = useState(null);
   const [sortProductsBy, setSortProductsBy] = useState({
-    name: 'None',
+    name: "None",
     value: OrderProductsSort.None,
   });
 
-  const SortOptions = [{
-    name: 'None',
-    value: OrderProductsSort.None,
-  }, {
-    name: 'Delivery Date (Earliest First)',
-    value: OrderProductsSort.EarliestFirst,
-  }, {
-    name: 'Delivery Date (Latest First)',
-    value: OrderProductsSort.LatestFirst,
-  }]
+  const SortOptions = [
+    {
+      name: "None",
+      value: OrderProductsSort.None,
+    },
+    {
+      name: "Delivery Date (Earliest First)",
+      value: OrderProductsSort.EarliestFirst,
+    },
+    {
+      name: "Delivery Date (Latest First)",
+      value: OrderProductsSort.LatestFirst,
+    },
+  ];
 
   const { loading, data, refetch } = useQuery(GET_ORDER_BY_ID, {
     variables: { orderId },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
     skip: !orderId,
   });
 
@@ -74,10 +78,10 @@ function OrderPreview() {
   const handleEditInputs = (key: any, val: any, item?: any) => {
     let payload = { ...orderDetails };
     payload[key] = val;
-    if (key === 'buyer_id' && item) {
+    if (key === "buyer_id" && item) {
       payload.buyer_data = item;
     }
-    if (key === 'retailer_id' && item) {
+    if (key === "retailer_id" && item) {
       payload.retailer_data = item;
     }
     setDetails(payload);
@@ -87,75 +91,75 @@ function OrderPreview() {
     () => ({
       column1: [
         {
-          name: 'Purchase order',
-          key: 'purchase_order',
+          name: "Purchase order",
+          key: "purchase_order",
           value: orderDetails?.purchase_order,
         },
         {
-          name: 'Retailer',
-          key: 'retailer_id',
-          value: `${orderDetails?.retailer_data?.store_name || ''} ${
-            orderDetails?.retailer_data?.billing_store_address_line_1 || ''
+          name: "Retailer",
+          key: "retailer_id",
+          value: `${orderDetails?.retailer_data?.store_name || ""} ${
+            orderDetails?.retailer_data?.billing_store_address_line_1 || ""
           }`,
         },
         {
-          name: 'Buyer name',
-          key: 'buyer_id',
-          value: orderDetails?.buyer_data?.buyer_name || '',
+          name: "Buyer name",
+          key: "buyer_id",
+          value: orderDetails?.buyer_data?.buyer_name || "",
           retailer_id: orderDetails?.retailer_id,
         },
         {
-          name: 'Email Address',
-          key: 'email_address',
+          name: "Email Address",
+          key: "email_address",
           value: orderDetails?.buyer_data?.email || orderDetails?.email_address,
         },
       ],
       column2: [
         {
-          name: 'Billing address',
-          key: 'billing_address',
+          name: "Billing address",
+          key: "billing_address",
           value: orderDetails?.billing_address,
         },
         {
-          name: 'Delivery address',
-          key: 'delivery_address',
-          inputType: 'textarea',
+          name: "Delivery address",
+          key: "delivery_address",
+          inputType: "textarea",
           value: orderDetails?.delivery_address,
         },
       ],
       column3: [
         {
-          name: 'Payment terms',
-          key: 'payment_terms',
+          name: "Payment terms",
+          key: "payment_terms",
           value: orderDetails?.payment_terms,
         },
         {
-          name: 'Delivery lead time',
-          key: 'delivery_lead_time',
-          inputType: 'datepicker',
-          value: `${orderDetails?.delivery_window_start_date || ''} - ${
-            orderDetails?.delivery_window_end_date || ''
+          name: "Delivery lead time",
+          key: "delivery_lead_time",
+          inputType: "datepicker",
+          value: `${orderDetails?.delivery_window_start_date || ""} - ${
+            orderDetails?.delivery_window_end_date || ""
           }`,
         },
         {
-          name: 'Last updated',
-          key: 'last_updated',
+          name: "Last updated",
+          key: "last_updated",
           value: orderDetails?.last_updated,
         },
         {
-          name: 'Last modified',
-          key: 'last_modified_by',
+          name: "Last modified",
+          key: "last_modified_by",
           value: orderDetails?.last_modified_by,
         },
         {
-          name: 'Order type',
-          key: 'order_type',
+          name: "Order type",
+          key: "order_type",
           value: orderDetails?.order_type,
           options: orderTypes,
         },
         {
-          name: 'Season',
-          key: 'season',
+          name: "Season",
+          key: "season",
           value: orderDetails?.season,
           options: seasons,
         },
@@ -167,14 +171,14 @@ function OrderPreview() {
   const handleErrorMessage = (message: string) => {
     setErrorMessage(message);
     setTimeout(() => {
-      setErrorMessage('');
+      setErrorMessage("");
     }, 3000);
   };
 
   const handleSuccessMessage = (message: string) => {
     setSuccessMessage(message);
     setTimeout(() => {
-      setSuccessMessage('');
+      setSuccessMessage("");
     }, 3000);
   };
 
@@ -184,6 +188,16 @@ function OrderPreview() {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       const apiOrderDetails = new OrderDetailResourceApi(config);
+      const europeBerlinTimeZone = "Europe/Zurich";
+      orderDetails.delivery_window_start_date = convertToTimeZone(
+        orderDetails.delivery_window_start_date,
+        europeBerlinTimeZone
+      );
+      orderDetails.delivery_window_end_date = convertToTimeZone(
+        orderDetails.delivery_window_end_date,
+        europeBerlinTimeZone
+      );
+
       await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
       await apiOrderDetails.apiOrderUpdateDraftOrderDetailPut(orderId, {
         order_details: orderDetails.order_details,
@@ -192,13 +206,16 @@ function OrderPreview() {
       setIsLoading(false);
       setEditMode(false);
       setIsLoading(false);
-      handleSuccessMessage('Changes saved successfully.');
+      handleSuccessMessage("Changes saved successfully.");
     } catch (error: any) {
       setIsLoading(false);
-      handleErrorMessage(error?.response?.message || 'Failed to save changes.');
+      handleErrorMessage(error?.response?.message || "Failed to save changes.");
       console.log(error);
     }
   };
+
+  const convertToTimeZone = (date: Date, timeZone: string): Date =>
+    new Date(date.toLocaleString("en-US", { timeZone }));
 
   const handleSaveNote = async () => {
     if (!orderNote && !orderNote.length) return;
@@ -261,10 +278,10 @@ function OrderPreview() {
       await api.apiOrderRemoveProductsFromDraftOrderPut(orderId, [id]);
       await refetch();
       setIsLoading(false);
-      handleSuccessMessage('Order detail deleted successfully');
+      handleSuccessMessage("Order detail deleted successfully");
     } catch (error: any) {
       handleErrorMessage(
-        error?.response?.message || 'Failed to remove order detail!'
+        error?.response?.message || "Failed to remove order detail!"
       );
       setIsLoading(false);
       console.log(error);
@@ -279,10 +296,10 @@ function OrderPreview() {
       await api.apiOrderCleanOrderDataPut(orderId);
       await refetch();
       setIsLoading(false);
-      handleSuccessMessage('cleared order details successfully!');
+      handleSuccessMessage("cleared order details successfully!");
     } catch (error: any) {
       handleErrorMessage(
-        error?.response?.message || 'Failed to clear order detail!'
+        error?.response?.message || "Failed to clear order detail!"
       );
       setIsLoading(false);
       console.log(error);
@@ -295,7 +312,7 @@ function OrderPreview() {
 
   const isDisabled =
     orderDetails?.order_status &&
-    !['DRAFT'].includes(orderDetails?.order_status);
+    !["DRAFT"].includes(orderDetails?.order_status);
 
   return (
     <div className="mx-auto overflow-x-hidden pdf_view">
@@ -303,10 +320,10 @@ function OrderPreview() {
         id={orderDetails?.id}
         heading={orderDetails?.name}
         status={{
-          confirmed: orderDetails?.order_status === 'CONFIRMED',
-          approved: orderDetails?.order_status === 'APPROVED',
-          cancelled: orderDetails?.order_status === 'CANCELLED',
-          draft: orderDetails?.order_status === 'DRAFT',
+          confirmed: orderDetails?.order_status === "CONFIRMED",
+          approved: orderDetails?.order_status === "APPROVED",
+          cancelled: orderDetails?.order_status === "CANCELLED",
+          draft: orderDetails?.order_status === "DRAFT",
         }}
         handleErrorMessage={handleErrorMessage}
         addNote={() => {
@@ -317,14 +334,14 @@ function OrderPreview() {
         setErrorMessage={handleErrorMessage}
         refetch={refetch}
         total_quantities={orderDetails?.total_quantity}
-        onChange={(value) => handleEditInputs('name', value)}
+        onChange={(value) => handleEditInputs("name", value)}
         editMode={editMode}
         handleSave={handleSave}
       />
 
       <div className="mx-auto w-full max-w-[1120px] pt-16">
         <div className="bg-[#fff]]">
-          {orderDetails?.order_status === 'DRAFT' && (
+          {orderDetails?.order_status === "DRAFT" && (
             <div className="print:hidden flex flex-1 justify-end mb-6">
               <div className="flex items-center">
                 <Button
@@ -333,7 +350,7 @@ function OrderPreview() {
                   variant="outlined"
                   className="!text-shades-black !text-[12px] !font-normal !px-[18.5] hover:!text-shades-white"
                 >
-                  {editMode ? 'Cancel' : 'Edit Details'}
+                  {editMode ? "Cancel" : "Edit Details"}
                 </Button>
                 {editMode && (
                   <>
@@ -385,30 +402,24 @@ function OrderPreview() {
           />
         </div>
       </div>
-      {orderDetails?.order_status !== 'CANCELLED' && 
+      {orderDetails?.order_status !== "CANCELLED" && (
         <div className="max-w-[1376px] mx-auto flex justify-end items-center pb-4 pt-4">
           <Dropdown
             options={SortOptions}
             isValid={false}
             label="Sort products"
-            onChange={(option: any) =>
-              setSortProductsBy(option)
-            }
-            className={clsx(
-              'w-[278px]',
-              isDisabled && '!pointer-events-none'
-            )}
+            onChange={(option: any) => setSortProductsBy(option)}
+            className={clsx("w-[278px]", isDisabled && "!pointer-events-none")}
             selectedOption={sortProductsBy}
           />
         </div>
-
-      }
+      )}
       <div className="max-w-[1376px] mx-auto pb-16 overflow-x-auto">
         <OrderListTable
           handleOrderNote={(id, note) => {
             setIsAddNoteOpen(true);
             setorderDetailId(id);
-            setOrderNote(note || '');
+            setOrderNote(note || "");
           }}
           products={orderDetails?.order_details}
           pricing_condition={orderDetails?.pricing_condition}
@@ -425,7 +436,7 @@ function OrderPreview() {
         isOpen={isAddNoteOpen}
         onClose={() => {
           setIsAddNoteOpen(!isAddNoteOpen);
-          setOrderNote('');
+          setOrderNote("");
           setorderDetailId(null);
         }}
         handleChange={setOrderNote}
