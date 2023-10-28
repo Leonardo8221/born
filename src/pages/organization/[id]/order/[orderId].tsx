@@ -185,10 +185,8 @@ function OrderPreview() {
       const api = new OrderResourceApi(config);
       const apiOrderDetails = new OrderDetailResourceApi(config);
       const europeBerlinTimeZone = 'Europe/Zurich';
-      console.log(orderDetails.delivery_window_start_date)
       orderDetails.delivery_window_start_date = convertToTimeZone(orderDetails.delivery_window_start_date, europeBerlinTimeZone);
       orderDetails.delivery_window_end_date = convertToTimeZone(orderDetails.delivery_window_end_date, europeBerlinTimeZone);
-      console.log(orderDetails.delivery_window_start_date)
 
       await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
       await apiOrderDetails.apiOrderUpdateDraftOrderDetailPut(orderId, {
