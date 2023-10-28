@@ -184,6 +184,12 @@ function OrderPreview() {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       const apiOrderDetails = new OrderDetailResourceApi(config);
+      const europeBerlinTimeZone = 'Europe/Zurich';
+      console.log(orderDetails.delivery_window_start_date)
+      orderDetails.delivery_window_start_date = convertToTimeZone(orderDetails.delivery_window_start_date, europeBerlinTimeZone);
+      orderDetails.delivery_window_end_date = convertToTimeZone(orderDetails.delivery_window_end_date, europeBerlinTimeZone);
+      console.log(orderDetails.delivery_window_start_date)
+
       await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
       await apiOrderDetails.apiOrderUpdateDraftOrderDetailPut(orderId, {
         order_details: orderDetails.order_details,
@@ -199,6 +205,9 @@ function OrderPreview() {
       console.log(error);
     }
   };
+
+  const convertToTimeZone = (date: Date, timeZone: string): Date =>
+  new Date(date.toLocaleString('en-US', { timeZone }));
 
   const handleSaveNote = async () => {
     if (!orderNote && !orderNote.length) return;
