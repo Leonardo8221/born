@@ -6,8 +6,12 @@ import { Heading } from '@/components/molecules/Heading';
 import { Pill } from '@/components/atoms/Pill';
 import { useRouter } from 'next/router';
 import { apiConfig } from '@/utils/apiConfig';
-import { OrderReportResourceApi, OrderResourceApi } from 'client/command';
-import { download, downloadFile } from '@/utils/downloadFile';
+import {
+  OrderProductsSort,
+  OrderReportResourceApi,
+  OrderResourceApi,
+} from 'client/command';
+import { download } from '@/utils/downloadFile';
 import { Icon } from '@/components/molecules/Icon';
 import { Logo } from '@/components/atoms/Logo';
 import Input from '@/components/molecules/Inputs/Input';
@@ -32,6 +36,7 @@ interface HeaderProps {
   total_quantities?: number;
   editMode?: boolean;
   onChange?: (value: string) => void;
+  orderProductsSort: OrderProductsSort;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -47,6 +52,7 @@ const Header: FC<HeaderProps> = ({
   editMode,
   onChange,
   handleSave,
+  orderProductsSort,
 }) => {
   const router = useRouter();
   const orderId = Number(router?.query?.orderId);
@@ -59,7 +65,7 @@ const Header: FC<HeaderProps> = ({
       let file: BlobPart;
       const response = await api.apiOrderDownloadOrderReportAsExcelGet(
         orderId,
-        undefined,
+        orderProductsSort,
         { responseType: 'blob' }
       );
       file = response?.data as any;

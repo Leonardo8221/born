@@ -1,8 +1,14 @@
 import { gql } from '@apollo/client';
 
 export const GET_ORDER_BY_ID = gql`
-  query GetOrderByID($orderId: BigInteger!) {
-    orderByOrderId(orderId: $orderId) {
+  query GetOrderByID(
+    $orderId: BigInteger!
+    $orderProductsSort: OrderProductsSort
+  ) {
+    orderByOrderId(
+      orderId: $orderId
+      orderProductsSort: $orderProductsSort
+    ) {
       id
       name
       billing_address
