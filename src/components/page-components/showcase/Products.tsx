@@ -24,6 +24,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { SEASONS_BY_ORGANIZATION_ID } from '@/queries/filters';
 import useVariantSelect from '../common/useVariantSelect';
 import ProductDetailsPage from '../products/ProductDetails';
+import clsx from 'clsx';
 
 const Products: FC = () => {
   const [gridType, setGrid] = useState<GridType>('grid');
@@ -248,12 +249,12 @@ const Products: FC = () => {
 
   const actions = [
     {
-      name: 'Add to draft order',
+      name: '+ draft order',
       action: () => setIsModalVisible(true),
       disabled: isLoading || selectedRows.length === 0,
     },
     {
-      name: 'Add to collection',
+      name: '+ collection',
       action: () => setIsAddCollections(true),
       disabled: isLoading || selectedRows.length === 0,
     },
@@ -301,8 +302,8 @@ const Products: FC = () => {
   }
 
   return (
-    <div>
-      <div className="relative max-w-[1120px] mx-auto">
+    <div className='flex max-w-[1140px] mx-auto'>
+      <div className={clsx("flex-1 max-w-[1120px]", productId && "mr-[calc(1133px-50vw)] ml-[20px]")}>
         <div>
           <Filters
             onGridChange={setGrid}
@@ -317,6 +318,7 @@ const Products: FC = () => {
             actions={actions}
             selectedItems={selectedRows}
             onDeselect={resetSelectedRows}
+            productId={productId}
           />
           {!products.length && loading ? (
             <div className="mt-6 min-h-[400px]">
@@ -363,6 +365,7 @@ const Products: FC = () => {
                   handleDeleteProducts(id);
                 }}
                 onSelect={setSelectedRows}
+                productId={productId}
               />
             </InfiniteScroll>
           )}

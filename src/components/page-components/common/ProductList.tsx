@@ -28,6 +28,7 @@ interface ProductListProps {
   handleDeleteProduct?: (id: number) => void;
   type?: 'products' | 'collection';
   handleDragItems?: (items: { [key: string]: number}) => void;
+  productId: null | number;
 }
 
 const ProductList: FC<ProductListProps> = ({
@@ -41,7 +42,8 @@ const ProductList: FC<ProductListProps> = ({
   hanldeAddToDraftOrder,
   type,
   selectedVariants,
-  handleDragItems
+  handleDragItems,
+  productId
 }) => {
   if (!products?.length) {
     return (
@@ -85,7 +87,7 @@ const ProductList: FC<ProductListProps> = ({
         <div
           className={clsx(
             'grid mb-8 gap-8 pint:mb-4 print:gap-5 print:justify-center print:!grid-cols-6',
-            gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
+            gridType === 'smallGrid'  ? productId ? 'grid-cols-4' : 'grid-cols-6' : productId ? 'grid-cols-2' : 'grid-cols-3'
           )}
         >
           {items?.map((item: any) => (

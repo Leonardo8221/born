@@ -82,10 +82,10 @@ export default function ShowcaseLayout<T>({ children }: LayoutProps<T>) {
   );
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header items={items} rightNavNode={rightNavNode} fixed />
-      <main className="min-h-[calc(100vh-72px)] pt-[72px]">{children}</main>
+      <main className="flex-1 pt-[72px]">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }

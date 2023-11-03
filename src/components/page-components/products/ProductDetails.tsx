@@ -31,12 +31,12 @@ const ProductDetailsPage = () => {
   );
   const [isAttachmentsPreivew, setIsAttachmentsPreivew] = useState(false);
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = 'hidden';
+  //   return () => {
+  //     document.body.style.overflow = 'auto';
+  //   };
+  // }, []);
 
   const {
     data: product,
@@ -139,8 +139,7 @@ const ProductDetailsPage = () => {
 
   return (
     <div>
-      <div className="fixed left-0 top-0 h-screen w-full bg-[rgba(30,30,30,0.58)] z-[990]"></div>
-      <div className="fixed top-0 right-0 h-screen w-full max-w-[806px] z-[999] bg-shades-white overflow-y-auto">
+      <div className="fixed top-0 right-0 h-screen w-full max-w-[513px] z-[999] bg-shades-white overflow-y-auto border-l border-neutral-400">
         <ProductHeader
           productRefectch={productRefectch}
           currentProduct={currentProduct}
@@ -148,7 +147,7 @@ const ProductDetailsPage = () => {
           onDraftOrder={() => setIsModalVisible(true)}
         />
         <div className="min-h-[calc(100vh-225px)] px-12">
-          <div className="max-w-[1200px] mx-auto">
+          <div className="mx-auto">
             {loading ? (
               <Loading message="Loading product details..." />
             ) : (
@@ -190,19 +189,6 @@ const ProductDetailsPage = () => {
                   specifications={specifications}
                 />
               </>
-            )}
-            <div className="h-[1px] w-full bg-neutral-400 mt-10"></div>
-            <div className="flex justify-between mt-8 mb-5">
-              <h2 className="text-[24px] leading-[40px] font-normal">
-                From this collection
-              </h2>
-            </div>
-            {!content && collectionProductsLoading ? (
-              <Loading message="Loading collecitons" />
-            ) : (
-              content?.map((item: ProductWithCollectionsGraphqlDto) => (
-                <ProductListItem product={item} key={item.id} />
-              ))
             )}
           </div>
           {isAttachmentsPreivew && (

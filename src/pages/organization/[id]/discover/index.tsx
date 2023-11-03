@@ -45,11 +45,16 @@ const StoryPage = () => {
         filters.style.top = '128px';
         filters.style.left = '0px';
         filters.style.right = '0px';
+        filters.style.margin = 'auto';
+        filters.style.paddingLeft  = '20px';
+        filters.style.paddingRight = 'calc(1133px - 50vw)';
       } else {
         filters.style.position = '';
         filters.style.top = '';
         filters.style.left = '';
         filters.style.right = '';
+        filters.style.paddingLeft  = '0';
+        filters.style.paddingRight = '0';
       }
     }
   }
