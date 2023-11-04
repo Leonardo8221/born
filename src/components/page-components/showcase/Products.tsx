@@ -318,7 +318,6 @@ const Products: FC = () => {
             actions={actions}
             selectedItems={selectedRows}
             onDeselect={resetSelectedRows}
-            productId={productId}
           />
           {!products.length && loading ? (
             <div className="mt-6 min-h-[400px]">

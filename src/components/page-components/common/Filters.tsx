@@ -43,7 +43,6 @@ interface FiltersProps {
   isAllOrdersSelected?: boolean;
   onDeselect?: () => void;
   children?: JSX.Element;
-  productId: null | number;
 }
 
 const Filters: FC<FiltersProps> = ({
@@ -59,8 +58,7 @@ const Filters: FC<FiltersProps> = ({
   isAllOrdersSelected,
   onDeselect,
   children,
-  onSelect,
-  productId
+  onSelect
 }) => {
   const router = useRouter();
   const handleExportOrders = async () => {
@@ -94,7 +92,7 @@ const Filters: FC<FiltersProps> = ({
   };
 
   return (
-    <div className={clsx("w-full min-h-[32px] z-[2] bg-shades-white print:hidden", productId && "max-w-[1140px]")} id="filters">
+    <div className={clsx("w-full min-h-[32px] z-[2] bg-shades-white print:hidden mx-auto max-w-[1140px]")} id="filters">
       <div
         className={clsx(
           'w-full max-w-[1120px] mx-auto print:hidden pt-4 pb-6 flex items-center justify-between bg-shades-white',

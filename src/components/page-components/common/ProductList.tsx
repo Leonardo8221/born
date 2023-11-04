@@ -28,7 +28,7 @@ interface ProductListProps {
   handleDeleteProduct?: (id: number) => void;
   type?: 'products' | 'collection';
   handleDragItems?: (items: { [key: string]: number}) => void;
-  productId: null | number;
+  productId?: null | number;
 }
 
 const ProductList: FC<ProductListProps> = ({

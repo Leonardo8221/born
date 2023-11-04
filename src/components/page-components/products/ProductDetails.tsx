@@ -31,12 +31,28 @@ const ProductDetailsPage = () => {
   );
   const [isAttachmentsPreivew, setIsAttachmentsPreivew] = useState(false);
 
-  // useEffect(() => {
-  //   document.body.style.overflow = 'hidden';
-  //   return () => {
-  //     document.body.style.overflow = 'auto';
-  //   };
-  // }, []);
+  useEffect(() => {
+    setFilterAttribute()
+    window.addEventListener('scroll', setFilterAttribute);
+    return () => {
+      window.removeEventListener('scroll', setFilterAttribute);
+    }
+  }, [productIdQuery]);
+
+  const setFilterAttribute = () => {
+    const doc: Document = document;
+    const filters: any = doc.getElementById('filters');
+    if(filters) {
+      if(productIdQuery && doc?.scrollingElement && doc?.scrollingElement?.scrollTop >= 220) {
+          filters.style.paddingLeft = "20px";
+          filters.style.paddingRight = "calc(1133px - 50vw)";
+      }
+      else {
+        filters.style.paddingLeft = "0";
+        filters.style.paddingRight = "0";
+      }
+    }
+  }
 
   const {
     data: product,
