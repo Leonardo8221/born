@@ -58,7 +58,7 @@ const Filters: FC<FiltersProps> = ({
   isAllOrdersSelected,
   onDeselect,
   children,
-  onSelect,
+  onSelect
 }) => {
   const router = useRouter();
   const handleExportOrders = async () => {
@@ -92,7 +92,7 @@ const Filters: FC<FiltersProps> = ({
   };
 
   return (
-    <div className="w-full min-h-[32px] z-[2] bg-shades-white print:hidden" id="filters">
+    <div className={clsx("w-full min-h-[32px] z-[2] bg-shades-white print:hidden mx-auto max-w-[1140px]")} id="filters">
       <div
         className={clsx(
           'w-full max-w-[1120px] mx-auto print:hidden pt-4 pb-6 flex items-center justify-between bg-shades-white',
@@ -136,12 +136,12 @@ const Filters: FC<FiltersProps> = ({
                 <Button
                   variant="outlined"
                   size="sm"
-                  className="!inline-flex !max-w-auto !w-auto !border-neutral-600 text-shades-black !text-[12px] !px-3 !bg-neutral-300 hover:!bg-neutral-300 hover:!text-shades-black !rounded-[100px]"
+                  className="!inline-flex !w-[32px] !h-[32px] !border-neutral-600 text-shades-black !p-0 !bg-neutral-300 hover:!bg-neutral-300 hover:!text-shades-black !rounded-full"
                   onClick={() => onDeselect?.()}
                 >
-                  {isAllOrdersSelected ? 'All selected' : 'Selected'}{' '}
+                  {isAllOrdersSelected ? 'All selected' : ''}{' '}
                   {selectedItems && selectedItems?.length > 0 && (
-                    <span className="flex items-center justify-center ml-[-6px] mt-[-1px] bg-accent-a-200 h-3 w-3 text-shades-white text-[8px] leading-[9.99px] tracking-[0.06em] rounded-full">
+                    <span className="flex items-center justify-center bg-accent-a-200 !h-[24px] !w-[24px] !m-0 !p-0 text-shades-white text-[16px] rounded-full">
                       {selectedItems.length}
                     </span>
                   )}

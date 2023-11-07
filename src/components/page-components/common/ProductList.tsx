@@ -9,6 +9,7 @@ import ListTable from '@/components/organisms/Tables/Product/ListTable';
 import { Icon } from '@/components/molecules/Icon';
 import DraggableCards from '@/components/organisms/DraggableCards';
 import SortableItem from '@/components/organisms/DraggableCards/SortableItem';
+import { getGridType } from '@/utils/constants';
 
 interface ProductListProps {
   products: ProductCardProps[];
@@ -28,6 +29,7 @@ interface ProductListProps {
   handleDeleteProduct?: (id: number) => void;
   type?: 'products' | 'collection';
   handleDragItems?: (items: { [key: string]: number}) => void;
+  productId?: null | number;
 }
 
 const ProductList: FC<ProductListProps> = ({
@@ -41,7 +43,8 @@ const ProductList: FC<ProductListProps> = ({
   hanldeAddToDraftOrder,
   type,
   selectedVariants,
-  handleDragItems
+  handleDragItems,
+  productId
 }) => {
   if (!products?.length) {
     return (
@@ -85,7 +88,7 @@ const ProductList: FC<ProductListProps> = ({
         <div
           className={clsx(
             'grid mb-8 gap-8 pint:mb-4 print:gap-5 print:justify-center print:!grid-cols-6',
-            gridType === 'smallGrid' ? 'grid-cols-6' : 'grid-cols-3'
+            getGridType(productId, gridType)
           )}
         >
           {items?.map((item: any) => (
