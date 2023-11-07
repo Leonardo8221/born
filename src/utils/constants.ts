@@ -18,3 +18,7 @@ export const orderTypes: string[] = [
   'ATS',
   'Seasonal',
 ];
+
+export const  getGridType = (productId, gridType) => {
+  return gridType === 'smallGrid' ? (productId ? 'grid-cols-4' : 'grid-cols-6') : (productId ? 'grid-cols-2' : 'grid-cols-3');
+}

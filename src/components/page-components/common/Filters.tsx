@@ -136,7 +136,7 @@ const Filters: FC<FiltersProps> = ({
                 <Button
                   variant="outlined"
                   size="sm"
-                  className="!inline-flex !max-w-auto !w-[32px] !h-[32px] !border-neutral-600 text-shades-black px-0 !bg-neutral-300 hover:!bg-neutral-300 hover:!text-shades-black !rounded-full"
+                  className="!inline-flex !w-[32px] !h-[32px] !border-neutral-600 text-shades-black !p-0 !bg-neutral-300 hover:!bg-neutral-300 hover:!text-shades-black !rounded-full"
                   onClick={() => onDeselect?.()}
                 >
                   {isAllOrdersSelected ? 'All selected' : ''}{' '}
