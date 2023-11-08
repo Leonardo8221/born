@@ -4,7 +4,7 @@ import { useCallback } from "react";
 interface Props {
   orderDetailSizes: any;
   editMode?: boolean;
-  handleQuantities?: (val: string, id: number) => void;
+  handleQuantities?: (val: number, id: number) => void;
 }
 
 const TableComponent: React.FC<Props> = ({
@@ -44,7 +44,6 @@ const TableComponent: React.FC<Props> = ({
               onChange={(e: any) =>
                 handleQuantities && handleQuantities(e.target.value, item.id)
               }
-              key={item.quantity}
               defaultValue={item.quantity}
               className="outline-none border-r bg-none border-[#D8D8D8] w-[110px] p-[10px] text-center"
             />

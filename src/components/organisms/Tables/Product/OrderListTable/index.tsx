@@ -23,7 +23,7 @@ export interface OrderDetails {
   total_price?: number;
   pricing_condition?: any;
   editMode?: boolean;
-  handleQuantities?: (val: string, orderDetailId: number, id: number) => void;
+  handleQuantities?: (val: number, orderDetailId: number, id: number) => void;
   handleOrderNote?: (id?: any, note?: string) => void;
   handleDelete?: (id: number) => void;
 }

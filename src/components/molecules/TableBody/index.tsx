@@ -13,7 +13,7 @@ interface TableBodyProps {
   loading?: boolean;
   editMode?: boolean;
   size?: boolean;
-  handleQuantities?: (val: string, orderDetailId: number, id: number) => void;
+  handleQuantities?: (val: number, orderDetailId: number, id: number) => void;
   handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 
@@ -75,7 +75,7 @@ export const TableBody: FC<TableBodyProps> = ({
                   <div className='w-full'>
                     <TableComponent
                       editMode={editMode}
-                      handleQuantities={(val: string, id: number) => handleQuantities?.(val, Number(row?.original?.id), id)}
+                      handleQuantities={(val: number, id: number) => handleQuantities?.(val, Number(row?.original?.id), id)}
                       orderDetailSizes={
                         row?.getVisibleCells()[0]?.row?.original?.order_detail_sizes
                       }

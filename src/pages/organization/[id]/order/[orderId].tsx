@@ -17,6 +17,7 @@ import DescriptionField from '@/components/molecules/DescriptionField/Descriptio
 import { orderTypes, seasons } from '@/utils/constants';
 import Dropdown from '@/components/molecules/Dropdown';
 import clsx from 'clsx';
+import moment from 'moment';
 
 export enum OrderProductsSort {
   None = 'NONE',
@@ -191,7 +192,15 @@ function OrderPreview() {
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       const apiOrderDetails = new OrderDetailResourceApi(config);
-      await api.apiOrderUpdateDraftOrderPut(orderId, orderDetails);
+      await api.apiOrderUpdateDraftOrderPut(orderId, {
+        ...orderDetails,
+        delivery_window_start_date: orderDetails.delivery_window_start_date
+          ? moment(orderDetails.delivery_window_start_date).format()
+          : '',
+        delivery_window_end_date: orderDetails.delivery_window_end_date
+          ? moment(orderDetails.delivery_window_end_date).format()
+          : '',
+      });
       await apiOrderDetails.apiOrderUpdateDraftOrderDetailPut(orderId, {
         order_details: orderDetails.order_details,
       });
@@ -237,21 +246,22 @@ function OrderPreview() {
   };
 
   const handleQuantities = async (
-    val: string,
+    val: number,
     orderDetailId: number,
     id: number
   ) => {
-    const orders = [...orderDetails.order_details];
+    const { order_details, ...details } = orderDetails;
+    const orders = [...order_details];
     const selectedOrderIndex = orders.findIndex((i) => i.id === orderDetailId);
     const selectedorder = orders[selectedOrderIndex];
     const sizes = [...selectedorder.order_detail_sizes];
     const selectedSizeIndex = sizes.findIndex((i) => i.id === id);
-    const selectedSize = sizes[selectedOrderIndex];
-    selectedSize[selectedSizeIndex] = { ...selectedSize, quantity: val };
-    sizes[selectedSizeIndex] = selectedSize;
+    const selectedSize = sizes[selectedSizeIndex];
+    sizes[selectedSizeIndex] = { ...selectedSize, order_detail_size_id: id, quantity: Number(val) };
+    selectedorder.order_detail_sizes = sizes;
     orders[selectedOrderIndex] = selectedorder;
     setDetails({
-      ...orderDetails,
+      ...details,
       order_details: orders,
     });
   };
