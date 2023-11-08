@@ -34,6 +34,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({
 }) => {
   const format = (date: any) => {
     const dates: any = date?.split(' - ') || [];
+    console.log(formatDate(dates[0]));
     return `${dates[0] ? formatDate(dates[0]) : ''} - ${
       dates[1] ? formatDate(dates[1]) : ''
     }`;

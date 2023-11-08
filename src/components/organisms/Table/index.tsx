@@ -11,7 +11,7 @@ export interface TableProps {
   loading?: boolean;
   size?: boolean;
   editMode?: boolean;
-  handleQuantities?: (val: string, orderDetailId: number, id: number) => void;
+  handleQuantities?: (val: number, orderDetailId: number, id: number) => void;
   handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 

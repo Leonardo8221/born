@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatDate } from '@/utils';
+import moment from 'moment';
 
 interface DateRangePickerProps {
   className?: string;
@@ -29,12 +30,14 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
     const [start, end]: any = value?.split(' - ');
     setStartDate(
       (start &&
-        (new Date(start) as any) !== 'Invalid Date' &&
-        new Date(start)) ||
+        (moment(start).toDate() as any) !== 'Invalid Date' &&
+        moment(start).toDate()) ||
         null
     );
     setEndDate(
-      (end && (new Date(end) as any) !== 'Invalid Date' && new Date(end)) ||
+      (end &&
+        (moment(start).toDate() as any) !== 'Invalid Date' &&
+        moment(start).toDate()) ||
         null
     );
   }, []);
@@ -42,13 +45,13 @@ const DateRangePicker: FC<DateRangePickerProps> = ({
   const handleChange = (date: any) => {
     if (!startDate) {
       setStartDate(date[0]);
-      handleStartDate?.(date[0])
+      handleStartDate?.(date[0]);
       setEndDate(null);
       return;
     } else if (startDate && !endDate) {
       setStartDate(date[0]);
       setEndDate(date[1]);
-      handleEndDate?.(date[1])
+      handleEndDate?.(date[1]);
       setIsOpen(false);
       return;
     } else if ((!startDate && !endDate) || (startDate && endDate)) {
