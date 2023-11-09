@@ -189,11 +189,12 @@ function OrderPreview() {
   const handleSave = async () => {
     setIsLoading(true);
     try {
+      const { order_details, ...details } = orderDetails;
       const config: any = await apiConfig();
       const api = new OrderResourceApi(config);
       const apiOrderDetails = new OrderDetailResourceApi(config);
       await api.apiOrderUpdateDraftOrderPut(orderId, {
-        ...orderDetails,
+        ...details,
         delivery_window_start_date: orderDetails.delivery_window_start_date
           ? moment(orderDetails.delivery_window_start_date).format()
           : '',
@@ -202,7 +203,7 @@ function OrderPreview() {
           : '',
       });
       await apiOrderDetails.apiOrderUpdateDraftOrderDetailPut(orderId, {
-        order_details: orderDetails.order_details,
+        order_details,
       });
       await refetch();
       setIsLoading(false);
@@ -257,7 +258,11 @@ function OrderPreview() {
     const sizes = [...selectedorder.order_detail_sizes];
     const selectedSizeIndex = sizes.findIndex((i) => i.id === id);
     const selectedSize = sizes[selectedSizeIndex];
-    sizes[selectedSizeIndex] = { ...selectedSize, order_detail_size_id: id, quantity: Number(val) };
+    sizes[selectedSizeIndex] = {
+      ...selectedSize,
+      order_detail_size_id: id,
+      quantity: Number(val),
+    };
     selectedorder.order_detail_sizes = sizes;
     orders[selectedOrderIndex] = selectedorder;
     setDetails({
