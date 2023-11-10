@@ -203,7 +203,15 @@ function OrderPreview() {
           : '',
       });
       await apiOrderDetails.apiOrderUpdateDraftOrderDetailPut(orderId, {
-        order_details,
+        order_details:
+          order_details?.map((item: any) => ({
+            id: item.id,
+            note: item.note,
+            order_detail_sizes: item.order_detail_sizes.map((size: any) => ({
+              order_detail_size_id: size.id,
+              quantity: Number(size.quantity),
+            })),
+          })) || [],
       });
       await refetch();
       setIsLoading(false);
@@ -261,7 +269,7 @@ function OrderPreview() {
     sizes[selectedSizeIndex] = {
       ...selectedSize,
       order_detail_size_id: id,
-      quantity: Number(val),
+      quantity: val,
     };
     selectedorder.order_detail_sizes = sizes;
     orders[selectedOrderIndex] = selectedorder;
