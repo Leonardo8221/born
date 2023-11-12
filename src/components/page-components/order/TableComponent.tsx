@@ -1,10 +1,10 @@
-import { filter } from "lodash";
-import { useCallback } from "react";
+import { filter } from 'lodash';
+import { useCallback } from 'react';
 
 interface Props {
   orderDetailSizes: any;
   editMode?: boolean;
-  handleQuantities?: (val: number, id: number) => void;
+  handleQuantities?: (val: number, sizeIndex: number) => void;
 }
 
 const TableComponent: React.FC<Props> = ({
@@ -12,7 +12,6 @@ const TableComponent: React.FC<Props> = ({
   handleQuantities,
   editMode,
 }) => {
-
   return (
     <div className="text-[12px] text-[#333333]">
       <div className="flex items-center border border-[#D8D8D8] h-[39px] rounded-t flex-nowrap w-max min-w-full">
@@ -32,7 +31,7 @@ const TableComponent: React.FC<Props> = ({
         <h2 className="border-r border-[#D8D8D8] min-w-[200px] max-w-[200px] py-[10px] px-[10px]">
           Quantities
         </h2>
-        {orderDetailSizes?.map((item: any) => (
+        {orderDetailSizes?.map((item: any, index: number) => (
           <p
             key={item.id}
             className="border-r border-[#D8D8D8] !min-w-[110px] !max-w-[110px] text-center overflow-hidden"
@@ -42,7 +41,7 @@ const TableComponent: React.FC<Props> = ({
               min="0"
               disabled={!editMode}
               onChange={(e: any) =>
-                handleQuantities && handleQuantities(e.target.value, item.id)
+                handleQuantities && handleQuantities(e.target.value, index)
               }
               defaultValue={item.quantity}
               className="outline-none border-r bg-none border-[#D8D8D8] w-[110px] p-[10px] text-center"

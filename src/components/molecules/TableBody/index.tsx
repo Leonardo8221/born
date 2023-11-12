@@ -13,7 +13,11 @@ interface TableBodyProps {
   loading?: boolean;
   editMode?: boolean;
   size?: boolean;
-  handleQuantities?: (val: number, orderDetailId: number, id: number) => void;
+  handleQuantities?: (
+    val: number,
+    orderIndex: number,
+    sizeIndex: number
+  ) => void;
   handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 
@@ -71,13 +75,19 @@ export const TableBody: FC<TableBodyProps> = ({
             </tr>
             {size && (
               <tr>
-                <td colSpan={row.getAllCells().length} className="!overflow-x-auto">
-                  <div className='w-full'>
+                <td
+                  colSpan={row.getAllCells().length}
+                  className="!overflow-x-auto"
+                >
+                  <div className="w-full">
                     <TableComponent
                       editMode={editMode}
-                      handleQuantities={(val: number, id: number) => handleQuantities?.(val, Number(row?.original?.id), id)}
+                      handleQuantities={(val: number, sizeIndex: number) =>
+                        handleQuantities?.(val, index, sizeIndex)
+                      }
                       orderDetailSizes={
-                        row?.getVisibleCells()[0]?.row?.original?.order_detail_sizes
+                        row?.getVisibleCells()[0]?.row?.original
+                          ?.order_detail_sizes
                       }
                     />
                   </div>
@@ -88,7 +98,8 @@ export const TableBody: FC<TableBodyProps> = ({
                         handleOrderNote(
                           val,
                           row.getVisibleCells()[0].row.original.id,
-                          row.getVisibleCells()[0].row.original.order_detail_sizes
+                          row.getVisibleCells()[0].row.original
+                            .order_detail_sizes
                         )
                       }
                       value={row.getVisibleCells()[0].row.original.note}

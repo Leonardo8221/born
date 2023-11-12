@@ -7,9 +7,7 @@ import { Table } from '../../../Table';
 import Badges from '../Badges';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Icon } from '@/components/molecules/Icon';
-import {
-  VariantColors,
-} from '@/components/molecules/ColorVariant';
+import { VariantColors } from '@/components/molecules/ColorVariant';
 import moment from 'moment';
 
 enum retailPrices {
@@ -23,7 +21,11 @@ export interface OrderDetails {
   total_price?: number;
   pricing_condition?: any;
   editMode?: boolean;
-  handleQuantities?: (val: number, orderDetailId: number, id: number) => void;
+  handleQuantities?: (
+    val: number,
+    orderIndex: number,
+    sizeIndex: number
+  ) => void;
   handleOrderNote?: (id?: any, note?: string) => void;
   handleDelete?: (id: number) => void;
 }
@@ -126,8 +128,9 @@ const OrderListTable: FC<OrderDetails> = ({
       size: 108,
       id: 'msrp',
       cell: (info: any) => {
-        const currency: keyof typeof retailPrices = pricing_condition?.split('_')?.[0];
-        const price = info?.row?.original?.[retailPrices[currency]]
+        const currency: keyof typeof retailPrices =
+          pricing_condition?.split('_')?.[0];
+        const price = info?.row?.original?.[retailPrices[currency]];
         return (
           <div
             className={clsx(

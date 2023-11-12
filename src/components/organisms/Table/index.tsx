@@ -11,7 +11,11 @@ export interface TableProps {
   loading?: boolean;
   size?: boolean;
   editMode?: boolean;
-  handleQuantities?: (val: number, orderDetailId: number, id: number) => void;
+  handleQuantities?: (
+    val: number,
+    orderIndex: number,
+    sizeIndex: number
+  ) => void;
   handleOrderNote?: (val: string, id: number, details: any) => void;
 }
 

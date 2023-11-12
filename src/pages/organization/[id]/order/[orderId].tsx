@@ -256,23 +256,21 @@ function OrderPreview() {
 
   const handleQuantities = async (
     val: number,
-    orderDetailId: number,
-    id: number
+    orderIndex: number,
+    sizeIndex: number
   ) => {
     const { order_details, ...details } = orderDetails;
     const orders = [...order_details];
-    const selectedOrderIndex = orders.findIndex((i) => i.id === orderDetailId);
-    const selectedorder = orders[selectedOrderIndex];
+    const selectedorder = orders[orderIndex];
     const sizes = [...selectedorder.order_detail_sizes];
-    const selectedSizeIndex = sizes.findIndex((i) => i.id === id);
-    const selectedSize = sizes[selectedSizeIndex];
-    sizes[selectedSizeIndex] = {
+    const selectedSize = sizes[sizeIndex];
+    sizes[sizeIndex] = {
       ...selectedSize,
-      order_detail_size_id: id,
+      order_detail_size_id: selectedSize.id,
       quantity: val,
     };
     selectedorder.order_detail_sizes = sizes;
-    orders[selectedOrderIndex] = selectedorder;
+    orders[orderIndex] = selectedorder;
     setDetails({
       ...details,
       order_details: orders,
