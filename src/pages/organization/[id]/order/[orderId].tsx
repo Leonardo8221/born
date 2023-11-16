@@ -259,7 +259,9 @@ function OrderPreview() {
     orderIndex: number,
     sizeIndex: number
   ) => {
-    const { order_details, ...details } = orderDetails;
+    const { order_details, ...details } = JSON.parse(
+      JSON.stringify(orderDetails)
+    );
     const orders = [...order_details];
     const selectedorder = orders[orderIndex];
     const sizes = [...selectedorder.order_detail_sizes];
